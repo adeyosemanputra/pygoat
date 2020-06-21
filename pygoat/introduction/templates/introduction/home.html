@@ -1,10 +1,7 @@
-<!DOCTYPE html>
-{% load static %}
-<html>
-<head>
-    <link rel="stylesheet" type="text/css" href="{% static 'introduction/home.css' %}">
-</head>
-<body>
-    <h1>Welcome To Pygoat</h1>
-</body>
-</html>
+{% extends "introduction/base.html" %}
+{% block content %}
+<h2>Welcome To PyGoat</h2>
+<p>Pygoat is a vulnerable web application developed in python to teach developers and Web app pentesters about Owasp top 10 and how to avoid them.</p>
+
+<div class="line"></div>
+{% endblock content %}
