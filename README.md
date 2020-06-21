@@ -15,11 +15,12 @@ our roadmap build intentionally vuln web Application in flask or django the vuln
 • A10:2017-Insufficient Logging & Monitoring<br>
 
 To setup the project on your local machine:
-
-    1. Click on Fork.
-    2. Go to your fork and clone the project to your local machine.
-    3. Install the requirements ` pip install -r requirements.txt `.
-    4. Apply the migrations ` python manage.py migrate `.
-    5. Finally, run the development server ` python manage.py runserver `.
+<br>
+    1. Click on Fork.<br>
+    2. Go to your fork and clone the project to your local machine.<br>
+    3. Install the requirements `pip install -r requirements.txt`.<br>
+    4. Apply the migrations `python manage.py migrate`.<br>
+    5. Finally, run the development server `python manage.py runserver`.<br>
+    
 
 The project will be available at 127.0.0.1:8000.
