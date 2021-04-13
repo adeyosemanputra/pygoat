@@ -1,0 +1,33 @@
+{% extends "introduction/base.html" %}
+{% block content %}
+<
+<div class="content">
+    <h3>Description</h3>
+    <div class="box">
+
+        <h4>What is Cross Site Scripting or XSS?<h4>
+            <p class="bp">Cross-site scripting (also known as XSS) is a web security vulnerability that allows an attacker to compromise the interactions that users have with a vulnerable application. It allows an attacker to circumvent the same origin policy, which is designed to segregate different websites from each other. Cross-site scripting vulnerabilities normally allow an attacker to masquerade as a victim user, to carry out any actions that the user is able to perform, and to access any of the user's data. If the victim user has privileged access within the application, then the attacker might be able to gain full control over all of the application's functionality and data.</p>
+        <button class="coll btn btn-info">Lab Details</button>
+        <div class="lab">
+              <p class="bp">Stored XSS (also known as persistent or second-order XSS) arises when an application receives data from an untrusted source and includes that data within its later HTTP responses in an unsafe way.
+
+The data in question might be submitted to the application via HTTP requests; for example, comments on a blog post, user nicknames in a chat room, or contact details on a customer order. In other cases, the data might arrive from other untrusted sources; for example, a webmail application displaying messages received over SMTP, a marketing application displaying social media posts, or a network monitoring application displaying packet data from network traffic.
+
+Here is a simple example of a stored XSS vulnerability. A message board application lets users submit messages, which are displayed to other users:
+              <br>
+                  <div align="right"> <button class="btn btn-primary" type="button" onclick="window.location.href='/xssL'">Access Lab</button></div>
+
+              </p>
+        </div>
+        <h4>Mitigation<h4>
+             <p class="bp">Content goes here</p>
+
+
+
+    </div>
+</div>
+
+<script>
+
+
+{% endblock content %}
