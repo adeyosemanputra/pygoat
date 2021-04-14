@@ -6,14 +6,39 @@
     <div class="box">
 
         <h4>What is Cross Site Scripting or XSS?<h4>
-            <p class="bp">Cross-site scripting (also known as XSS) is a web security vulnerability that allows an attacker to compromise the interactions that users have with a vulnerable application. It allows an attacker to circumvent the same origin policy, which is designed to segregate different websites from each other. Cross-site scripting vulnerabilities normally allow an attacker to masquerade as a victim user, to carry out any actions that the user is able to perform, and to access any of the user's data. If the victim user has privileged access within the application, then the attacker might be able to gain full control over all of the application's functionality and data.</p>
+            <p class="bp">Cross site scripting or XSS is a client side code injection .In this type of attack the attacker tries to inject malicious script into a trusted site.The malicious script is usually a javascript code , which helps the attacker to perform malicious activities, like redirecting the victim to an attacker site , stealing cookies etc. Some times XSS vulnerability can be chained with other vulnerabilities to create great impact
+            <br>
+Talking about XSS we have different type of it:
+
+>Reflected XSS
+> Stored XSS
+>DOM XSS
+<br>
+Reflected XSS
+
+Reflected XSS occurs when user input is immediately returned by a web application in an error message, search result, or any other response that includes some or all of the input provided by the user as part of the request, without that data being made safe to render in the browser, and without permanently storing the user provided data.
+<br>
+Stored XSS
+
+Stored XSS generally occurs when user input is stored on the target server, such as in a database, in a message forum, visitor log, comment field, etc. And then a victim is able to retrieve the stored data from the web application without that data being made safe to render in the browser.
+
+Blog comments sessions  are places which can be vulnerable to stored xss , once a vulnerable xss payload is posted  then every user that visits the blog comment session would have the impact of the vulnerability.
+<br>
+DOM XSS
+
+This type of XSS is possible when javascript takes in an user controllable code and passes it to a sink ,for code execution . Examples of sinks are window.location , innerhtml , document.write .When the attacker tries to inject malicious code into a sink , then this type of XSS is called the DOM Xss
+
+</p>
         <button class="coll btn btn-info">Lab Details</button>
         <div class="lab">
-              <p class="bp">Stored XSS (also known as persistent or second-order XSS) arises when an application receives data from an untrusted source and includes that data within its later HTTP responses in an unsafe way.
+              <p class="bp">
 
-The data in question might be submitted to the application via HTTP requests; for example, comments on a blog post, user nicknames in a chat room, or contact details on a customer order. In other cases, the data might arrive from other untrusted sources; for example, a webmail application displaying messages received over SMTP, a marketing application displaying social media posts, or a network monitoring application displaying packet data from network traffic.
+This lab will help you to understand the Reflective Type of XSS.
 
-Here is a simple example of a stored XSS vulnerability. A message board application lets users submit messages, which are displayed to other users:
+The lab consists of a Search page called FAANG IT , which helps you to get some information about Facebook, Apple ,Amazon ,Netflix, Google. The user can input one of the companies into the search bar and see the info related to it.
+
+            <p class="bp">If a user searches for something else , he can see a message saying that the search term is not part of the Company </p>
+
               <br>
                   <div align="right"> <button class="btn btn-primary" type="button" onclick="window.location.href='/xssL'">Access Lab</button></div>
 
