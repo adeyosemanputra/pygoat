@@ -201,6 +201,51 @@ a.article:hover {
     transition: all 0.3s;
 }
 
+.box{
+margin-top:2rem;
+border-radius:10px;
+padding:2rem;
+background-color:#f8ede3;
+
+}
+.bp{
+font-size:1em;
+font-height:1.2em;
+color:black;
+
+}
+.coll {
+  background-color: #159c80;
+  color: black;
+  cursor: pointer;
+  padding: auto;
+  width:auto;
+
+  text-align: center;
+  outline: none;
+  font-size: 20px;
+
+}
+
+/* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+.active, .coll:hover {
+  background-color:#bfb051 ;
+
+}
+
+/* Style the collapsible content. Note: hidden by default */
+.lab {
+  padding: 0 18px;
+  display: none;
+  overflow: hidden;
+  background-color: #f1f1f1;
+  border-radius:1rem;
+}
+.display{
+padding:20px;
+
+}
+
 /* ---------------------------------------------------
     MEDIAQUERIES
 ----------------------------------------------------- */
