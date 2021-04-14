@@ -1,6 +1,6 @@
 {% extends "introduction/base.html" %}
 {% block content %}
-<
+
 <div class="content">
     <h3>Description</h3>
     <div class="box">
@@ -38,6 +38,13 @@ This lab will help you to understand the Reflective Type of XSS.
 The lab consists of a Search page called FAANG IT , which helps you to get some information about Facebook, Apple ,Amazon ,Netflix, Google. The user can input one of the companies into the search bar and see the info related to it.
 
             <p class="bp">If a user searches for something else , he can see a message saying that the search term is not part of the Company </p>
+
+            <p class="bp">What can go wrong Here? Yes, this html page reflects the search query back to the page when the user enters something which is not part of the FAANG.
+
+Exploiting the Reflection of the search query
+
+Now instead of giving a search term try giving a script <code>< script>alert('xss')  < /script> </code> .
+</p>
 
               <br>
                   <div align="right"> <button class="btn btn-primary" type="button" onclick="window.location.href='/xssL'">Access Lab</button></div>
