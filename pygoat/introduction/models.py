@@ -9,8 +9,11 @@ class FAANG (models.Model):
 
 class info(models.Model):
     faang=models.ForeignKey(to=FAANG,on_delete=models.CASCADE)
+
     ceo=models.CharField(max_length=200)
     about=models.CharField(max_length=200)
 
-
+class login(models.Model):
+    user=models.CharField(max_length=200)
+    password=models.CharField(max_length=300)
 
