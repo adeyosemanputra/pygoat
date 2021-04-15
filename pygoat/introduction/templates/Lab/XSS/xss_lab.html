@@ -23,9 +23,12 @@
     <h3>Company Name :        <i>{{company}}</i></h3>
     <h3>Ceo Name     :          <i>{{ceo}}</i></h3>
     <h3>About        :        <i>{{about}}</i></h3>
-    {% else %}
+    {% elif query %}
     <h3> The company '{{query|safe}}' You searched for is not Part of FAANG</h3>
+    {% else %}
+
     {% endif %}
+
 
 </div>
 

@@ -12,3 +12,5 @@ for (i = 0; i < coll.length; i++) {
     }
   });
 }
+p=document.getElementById("t")
+p.innerHTML="alert(1)"
