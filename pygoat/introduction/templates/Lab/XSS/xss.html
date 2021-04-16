@@ -5,54 +5,126 @@
     <h3>Description</h3>
     <div class="box">
 
-        <h4>What is Cross Site Scripting or XSS?<h4>
-            <p class="bp">Cross site scripting or XSS is a client side code injection .In this type of attack the attacker tries to inject malicious script into a trusted site.The malicious script is usually a javascript code , which helps the attacker to perform malicious activities, like redirecting the victim to an attacker site , stealing cookies etc. Some times XSS vulnerability can be chained with other vulnerabilities to create great impact
-            <br>
-Talking about XSS we have different type of it:
+        <h4>What is Cross Site Scripting or XSS?</h4>
+            <p class="bp">
+            Cross site scripting or XSS is a client side code injection.<br>In this type of attack the attacker tries to inject malicious script into a trusted site.The malicious script is usually a javascript code ,which helps the attacker to perform malicious activities, like redirecting the victim to an attacker site , stealing cookies etc. Some times XSS vulnerability can be chained with other vulnerabilities to create great impact .
+                Talking about XSS we have different types of it: </p>
+                <ul>
+                  <li>Reflected XSS</li>
+                  <li>Stored XSS</li>
+                  <li>DOM XSS</li>
+                </ul>
 
->Reflected XSS
-> Stored XSS
->DOM XSS
-<br>
-Reflected XSS
+            <h4>Reflected XSS</h4>
+            <p class="bp"> Reflected XSS occurs when user input is immediately returned by a web application in an error message, search result, or any other response that includes some or all of the input provided by the user as part of the request, without that data being made safe to render in the browser, and without permanently storing the user provided data.</p>
 
-Reflected XSS occurs when user input is immediately returned by a web application in an error message, search result, or any other response that includes some or all of the input provided by the user as part of the request, without that data being made safe to render in the browser, and without permanently storing the user provided data.
-<br>
-Stored XSS
+            <h4>Stored XSS</h4>
+            <p class="bp">Stored XSS generally occurs when user input is stored on the target server, such as in a database, in a message forum, visitor log, comment field, etc. And then a victim is able to retrieve the stored data from the web application without that data being made safe to render in the browser.Blog comments sessions  are places which can be vulnerable to stored xss , once a vulnerable xss payload is posted  then every user that visits the blog comment session would have the impact of the vulnerability.</p>
 
-Stored XSS generally occurs when user input is stored on the target server, such as in a database, in a message forum, visitor log, comment field, etc. And then a victim is able to retrieve the stored data from the web application without that data being made safe to render in the browser.
+            <h4>DOM XSS</h4>
+            <p class="bp">This type of XSS is possible when javascript takes in an user controllable code and passes it to a sink ,for code execution . Examples of sinks are window.location , innerhtml , document.write .When the attacker tries to inject malicious code into a sink , then this type of XSS is called the DOM Xss</p>
 
-Blog comments sessions  are places which can be vulnerable to stored xss , once a vulnerable xss payload is posted  then every user that visits the blog comment session would have the impact of the vulnerability.
-<br>
-DOM XSS
 
-This type of XSS is possible when javascript takes in an user controllable code and passes it to a sink ,for code execution . Examples of sinks are window.location , innerhtml , document.write .When the attacker tries to inject malicious code into a sink , then this type of XSS is called the DOM Xss
 
-</p>
-        <button class="coll btn btn-info">Lab Details</button>
+            <button class="coll btn btn-info">Lab Details</button>
         <div class="lab">
               <p class="bp">
+                  This lab will help you to understand the Reflective Type of XSS.
 
-This lab will help you to understand the Reflective Type of XSS.
+            <p class="bp"> The lab consists of a Search page called <b>FAANG IT</b>.Which helps you to get some information about <i>Facebook, Apple ,Amazon ,Netflix, Google.</i> The user can input one of the companies into the search bar and see the information  related to it. </p>
+<p class="bp">If a user searches for something else , he can see a message saying that the search term is not part of the Company.</p>
 
-The lab consists of a Search page called FAANG IT , which helps you to get some information about Facebook, Apple ,Amazon ,Netflix, Google. The user can input one of the companies into the search bar and see the info related to it.
+<p class="bp"> What can go wrong Here? Yes, this html page reflects the search query back to the page when the user enters something which is not part of the FAANG.</p>
+<h4>Exploiting the Reflection of the search query </h4>
+            <ul>
+                <li>Instead of giving a search term try giving a  html tag,  <code>&lt;h4 &gt;Hello &lt;/h4>.</code></li>
+                <li>Now you can see that the word Hello has been parsed as a Heading in the page.</li>
+                <li>This shows that the page is able to render the user given html tags.</li>
+                <li>In order to get an xss , the user needs to execute javascript code in the browser.</li>
+                <li>This can be acheived by using a script tag and malicious javascript code.</li>
+                <li>For now let's just use a basic javascript code to alert a text to prove that xss is possible .</li>
 
-            <p class="bp">If a user searches for something else , he can see a message saying that the search term is not part of the Company </p>
+                           <div class="container">  <code> &lt;script &gt;alert(“xss”) &lt;/script &gt;</code></div>
 
-            <p class="bp">What can go wrong Here? Yes, this html page reflects the search query back to the page when the user enters something which is not part of the FAANG.
 
-Exploiting the Reflection of the search query
+<li>Now when a search query is performed with the above payload you can see that the browser is able to render the script tag and execute the javascript , thus alerting “xss” with a pop up.</li>
 
-                Now instead of giving a search term try giving a script &lt;script&gt;alert(1)&lt;/script&gt;
+
+            </ul>
+
+
+
+
 </p>
 
               <br>
                   <div align="right"> <button class="btn btn-primary" type="button" onclick="window.location.href='/xssL'">Access Lab</button></div>
 
               </p>
-        </div>
-        <h4>Mitigation<h4>
-             <p class="bp">Content goes here !!!!</p>
+        </div><br>
+        <br><h4>Mitigation</h4><br>
+        <p class="bp"> First let's analyse what part of the code has resulted in this vulnerability.
+
+
+                           <br><b>#code in views.py</b><br></bt><code>return render(request,'Lab/XSS/xss_lab.html',{'query': q})</code><br>
+        <br><b>#code in html template</b><br>
+            <code> &lt;h3&gt; The company '{query|safe}' You searched for is not Part of FAANG &lt;/h3&gt;</code>
+        </p>
+
+        <p class="bp">In the above code the q variable holds the users input . This input is stored in a variable called <b>‘query’</b> , which is sent to a html template which renders a html along with the value of the query. </p>
+        <p class="bp">The query received from the user is considered to be safe which resulted in the template rendering the user input without escaping the input. This can be seen by using the keyword <b>'safe'</b> in the html template.</p>
+
+       <br>
+        <p class="bp">
+        <h4>What happens without the safe keyword?</h4><br>
+
+
+        <p class="bp">Without the safe keyword  Django would automatically escape the malicious string in the query context variable.</p>
+
+        <p class="bp">It does this by passing all string data through Python’s <code>html.escape()</code> function. This function will:</p>
+            <ul class="bp">
+                <li>Replace any & with an <code>& amp;</code> ampersand HTML character-reference</li>
+                <li>Replace any < or > with an & lt; or & gt; HTML character-reference</li>
+                <li>Replace any " with an escaped \"</li>
+                <li>Replace any ' with an escaped \'</li>
+
+
+            </ul>
+
+        </p>
+<p class="bp">
+
+
+<br><h4>Now talking about the mitigation</h4>
+
+<br><ol>
+<li>Encode the following characters with HTML entity encoding to prevent switching into any execution context, such as script, style, or event handlers. Using hex entities is recommended in the spec. The 5 characters significant in XML.
+
+<ul>
+ <li>& --> & amp;</li>
+ <li>< --> & lt;</li>
+ <li> --> & gt;</li>
+ <li>" --> & quot;</li>
+ <li>' --> &# x27;</li>
+</ul>
+</li>
+
+<li>CSS Encode And Strictly Validate Before Inserting Untrusted Data into HTML Style Property Values</li>
+ <li>JavaScript Encode Before Inserting Untrusted Data into JavaScript Data Values</li>
+
+
+<li>HTML Encode JSON values in an HTML context and read the data with JSON.parse</li>
+
+<li>URL Encode Before Inserting Untrusted Data into HTML URL Parameter Values</li>
+<li>Implement Content Security Policy</li>
+<li>Use HTTPOnly cookie flag</li>
+
+
+</ol>
+
+</p>
+
+
 
 
 
