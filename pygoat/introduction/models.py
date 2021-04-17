@@ -17,3 +17,7 @@ class login(models.Model):
     user=models.CharField(max_length=200)
     password=models.CharField(max_length=300)
 
+class comments(models.Model):
+    name=models.CharField(max_length=200)
+    comment=models.CharField(max_length=600)
+

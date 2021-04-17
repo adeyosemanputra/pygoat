@@ -1,0 +1,22 @@
+{% extends "introduction/base.html" %}
+{% load static %}
+{% block content %}
+{% block title %}
+<title>XXE LAB</title>
+{% endblock  %}
+
+ <script defer src="{% static 'Lab/xss.js' %}"></script>
+<!--<button type="button" onclick="window.location.href='/xxe_see'"> Click ME</button> -->
+<form name="ajax" onsubmit="SendToServer()">
+
+    <input  id="comment" type="text" name="comment">
+    <button type="submit" >GO</button>
+</form>
+<div class="conatiner">
+    <h4>To see your comments click here</h4><br>
+    <button type="button" onclick="window.location.href='/xxe_see'">Click Here</button>
+    <h5> Your comment was : {{com}}</h5>
+</div>
+<script defer src="{% static 'Lab/xss.js' %}"></script>
+
+{% endblock %}
