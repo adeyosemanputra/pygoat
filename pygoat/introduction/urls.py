@@ -15,5 +15,9 @@ urlpatterns = [
     path("xxe",views.xxe,name="xxe"),
     path("xxe_lab",views.xxe_lab,name="xxe_lab"),
     path("xxe_see",views.xxe_see,name="xxe_see"),
-    path("xxe_parse",views.xxe_parse,name="xxe_parse")
+    path("xxe_parse",views.xxe_parse,name="xxe_parse"),
+    path("ba",views.ba,name="Broken Access Control"),
+    path("ba_lab",views.ba_lab,name="Broken Access Control Lab"),
+
+
 ]

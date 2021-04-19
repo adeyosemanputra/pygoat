@@ -115,3 +115,38 @@ def xxe_parse(request):
     p=comments.objects.filter(id=1).update(comment=text);
 
     return render(request, 'Lab/XXE/xxe_lab.html')
+
+
+
+#***************************************************************Broken Access Control************************************************************#
+@csrf_exempt
+def ba(request):
+    return render(request,"Lab/BrokenAccess/ba.html")
+@csrf_exempt
+def ba_lab(request):
+    name = request.POST.get('name')
+    password = request.POST.get('pass')
+    if name:
+
+
+        if request.COOKIES.get('admin') == "1":
+            return render(request, 'Lab/BrokenAccess/ba_lab.html', {"data":"Here is your Secret Key :3600"})
+        elif login.objects.filter(user=name) and login.objects.filter(password=password):
+            html = render(request, 'Lab/BrokenAccess/ba_lab.html', {"data":"Here is your Secret Key :3600"})
+            html.set_cookie("admin", "1",max_age=2);
+            return html
+        else:
+            html = render(request, 'Lab/BrokenAccess/ba_lab.html',{"data":"Welcome :"+name} )
+            html.set_cookie("admin", "0");
+            return html
+    else:
+        return render(request,'Lab/BrokenAccess/ba_lab.html',{"data":"Please Provide Credentials"})
+
+
+
+
+
+
+
+
+
