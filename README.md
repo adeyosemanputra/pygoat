@@ -1,7 +1,7 @@
 # pygoat<br>
 
-intentionally vuln web Application Security in flask or django.
-our roadmap build intentionally vuln web Application in flask or django the vulnerability can based on OWASP top ten
+intentionally vuln web Application Security in django.
+our roadmap build intentionally vuln web Application in django. The Vulnerability can based on OWASP top ten
 <br>
 • A1:2017-Injection<br>
 • A2:2017-Broken Authentication<br>

@@ -9,6 +9,10 @@ from xml.sax.handler import feature_external_ges
 from xml.sax import make_parser
 from django.views.decorators.csrf import csrf_exempt
 
+import pickle
+import base64
+from dataclasses import dataclass
+
 def home(request):
     
     return render(request,'introduction/home.html')
@@ -53,6 +57,31 @@ def sql_lab(request):
     else:
         return render(request, 'Lab/SQL/sql_lab.html')
 
+#***************** INSECURE DESERIALIZATION***************************************************************#
+def insec_des(request):
+    return  render(request,'Lab/insec_des/insec_des.html')
+
+@dataclass
+class TestUser:
+    admin: int = 0
+pickled_user = pickle.dumps(TestUser())
+encoded_user = base64.b64encode(pickled_user)
+
+def insec_des_lab(request):
+    response = render(request,'Lab/insec_des/insec_des_lab.html', {"message":"Only Admins can see this page"})
+    token = request.COOKIES.get('token')
+    if token == None:
+        token = encoded_user
+        response.set_cookie(key='token',value=token.decode('utf-8'))
+    else:
+        token = base64.b64decode(token)
+        admin = pickle.loads(token)
+        if admin.admin == 1:
+            response = render(request,'Lab/insec_des/insec_des_lab.html', {"message":"Welcome Admin, SECRETKEY:ADMIN123"})
+            return response
+
+    return response
+
 #****************************************************XXE********************************************************#
 
 
@@ -86,6 +115,7 @@ def xxe_parse(request):
     p=comments.objects.filter(id=1).update(comment=text);
 
     return render(request, 'Lab/XXE/xxe_lab.html')
+
 
 
 #***************************************************************Broken Access Control************************************************************#
