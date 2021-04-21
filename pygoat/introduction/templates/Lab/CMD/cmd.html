@@ -1,0 +1,34 @@
+{% extends 'introduction/base.html' %}
+{% block content %}
+{% block title %}
+<title>Command Injection</title>
+{% endblock %}
+<div class="content">
+    <h3>Command Injection</h3>
+    <div class="box">
+
+        <h4>What is Command Injection</h4>
+            <p class="bp"> Command injection is an attack in which the goal is execution of arbitrary commands on the host operating system via a vulnerable application. Command injection attacks are possible when an application passes unsafe user supplied data (forms, cookies, HTTP headers etc.) to a system shell. In this attack, the attacker-supplied operating system commands are usually executed with the privileges of the vulnerable application. Command injection attacks are possible largely due to insufficient input validation.
+</p>
+        <button class="coll btn btn-info">Lab Details</button>
+        <div class="lab">
+              <p class="bp">
+        Command injection is an attack in which the goal is execution of arbitrary commands on the host operating system via a vulnerable application. Command injection attacks are possible when an application passes unsafe user supplied data (forms, cookies, HTTP headers etc.) to a system shell. In this attack, the attacker-supplied operating system commands are usually executed with the privileges of the vulnerable application. Command injection attacks are possible largely due to insufficient input validation.
+</p>
+
+              <br>
+                  <div align="right"> <button class="btn btn-primary" type="button" onclick="window.location.href='/cmd_lab'">Access Lab</button></div>
+
+              </p>
+        </div>
+        <h4>Mitigation<h4>
+             <p class="bp">Content goes here !!!!</p>
+
+
+
+    </div>
+</div>
+
+
+
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends "introduction/base.html" %}
+{% block content %}
+{% block title %}
+<title>Command Injection</title>
+{% endblock %}
+<div class="jumbotron">
+<div class="container">
+    <h3 align="center">Name Server Lookup  </h3>
+    <form method="post" action="/cmd_lab">
+        <input type="text"  name="domain" placeholder="Enter Domain Here"><br><br>
+        <input type="radio" id="linux" name="os" value="linux">
+        <label for="linux">Linux</label>
+        <input type="radio" id="windows" name="os" value="win">
+        <label for="windows">Windows</label><br>
+        <button class="btn btn-primary" type="submit" style="align:right">GO</button>
+    </form>
+</div>
+</div>
+<div class="container">
+    {% if output %}
+    <h6><b>Output</b></h6><br>
+    <b>{{output}}</b>
+    {% endif %}
+</div>
+
+
+
+{% endblock %}

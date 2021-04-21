@@ -18,6 +18,8 @@ urlpatterns = [
     path("xxe_parse",views.xxe_parse,name="xxe_parse"),
     path("ba",views.ba,name="Broken Access Control"),
     path("ba_lab",views.ba_lab,name="Broken Access Control Lab"),
+    path("cmd",views.cmd,name="Command Injection"),
+    path("cmd_lab",views.cmd_lab,name="Command Injection Lab"),
 
 
 ]
