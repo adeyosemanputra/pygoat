@@ -4,6 +4,7 @@ from .models import  FAANG,info,login,comments
 from django.core import serializers
 from requests.structures import CaseInsensitiveDict
 import requests
+import subprocess
 from xml.dom.pulldom import parseString, START_ELEMENT
 from xml.sax.handler import feature_external_ges
 from xml.sax import make_parser
@@ -28,7 +29,7 @@ def xss_lab(request):
         return render(request,'Lab/XSS/xss_lab.html', {'query': q})
 
 
-#***********************************SQL*******************************SQL*********************************#
+#***********************************SQL****************************************************************#
 
 def sql(request):
     return  render(request,'Lab/SQL/sql.html')
@@ -133,16 +134,18 @@ def ba_lab(request):
             return render(request, 'Lab/BrokenAccess/ba_lab.html', {"data":"Here is your Secret Key :3600"})
         elif login.objects.filter(user=name) and login.objects.filter(password=password):
             html = render(request, 'Lab/BrokenAccess/ba_lab.html', {"data":"Here is your Secret Key :3600"})
-            html.set_cookie("admin", "1",max_age=2);
+            html.set_cookie("admin", "1",max_age=20);
             return html
         else:
             html = render(request, 'Lab/BrokenAccess/ba_lab.html',{"data":"Welcome :"+name} )
-            html.set_cookie("admin", "0");
+            html.set_cookie("admin", "0",max_age=20);
             return html
     else:
         return render(request,'Lab/BrokenAccess/ba_lab.html',{"data":"Please Provide Credentials"})
 
+
 #********************************************************Sensitive Data Exposure*****************************************************#
+
 
 def data_exp(request):
     return  render(request,'Lab/DataExp/data_exp.html')
@@ -157,3 +160,28 @@ def robots(request):
 
 def error(request):
     return 
+
+
+#******************************************************  Command Injection  ***********************************************************************#
+def cmd(request):
+    return render(request,'Lab/CMD/cmd.html')
+@csrf_exempt
+def cmd_lab(request):
+    if(request.method=="POST"):
+        domain=request.POST.get('domain')
+        domain=domain.replace("https://www.",'')
+        os=request.POST.get('os')
+        print(os)
+        if(os=='win'):
+            command="nslookup {}".format(domain)
+        else:
+            command = "dig {}".format(domain)
+
+        output=subprocess.check_output(command,shell=True,encoding="UTF-8");
+        print(output)
+        return render(request,'Lab/CMD/cmd_lab.html',{"output":output})
+    else:
+        return render(request, 'Lab/CMD/cmd_lab.html')
+
+
+

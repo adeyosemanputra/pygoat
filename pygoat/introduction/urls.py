@@ -21,6 +21,8 @@ urlpatterns = [
     path("data_exp",views.data_exp,name="data_exp"),
     path("data_exp_lab",views.data_exp_lab,name="data_exp_lab"),
     path("robots.txt",views.robots,name="robots.txt"),
-    path("500error",views.error,name="500error")
+    path("500error",views.error,name="500error"),
+    path("cmd",views.cmd,name="Command Injection"),
+    path("cmd_lab",views.cmd_lab,name="Command Injection Lab"),
 
 ]
