@@ -20,6 +20,6 @@ urlpatterns = [
     path("ba_lab",views.ba_lab,name="Broken Access Control Lab"),
     path("cmd",views.cmd,name="Command Injection"),
     path("cmd_lab",views.cmd_lab,name="Command Injection Lab"),
-
+  
 
 ]
