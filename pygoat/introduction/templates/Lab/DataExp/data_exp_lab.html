@@ -6,23 +6,10 @@
 {% endblock  %}
 
 <div class="jumbotron">
-    <h4 style="text-align:center"></h4>
-    <div class="login">
-        <form method="post" action="/ba_lab">
-
-            <input id="input" type="text" name="name" placeholder="User Name"><br>
-            <input id="input" type="password" name="pass" placeholder="Password"><br>
-            <button  style="margin-top:20px" class="btn btn-primary" type="submit"> Log in</button>
-
-
-        </form>
-    </div>
+    <h4 style="text-align:center">Sensitive Data Exposure</h4>
 </div>
 <div class="container">
-    {% if data %}
-           <h2>{{data}}</h2>
-    {% endif %}
-
+Can you find a page to trigger 500 error? Can you find 'SENSITIVE_DATA'?
 </div>
 
 
