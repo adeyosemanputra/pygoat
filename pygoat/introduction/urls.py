@@ -24,5 +24,4 @@ urlpatterns = [
     path("500error",views.error,name="500error"),
     path("cmd",views.cmd,name="Command Injection"),
     path("cmd_lab",views.cmd_lab,name="Command Injection Lab"),
-
 ]
