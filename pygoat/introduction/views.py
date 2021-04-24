@@ -1,15 +1,12 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import  FAANG,info,login,comments
-from django.core import serializers
-from requests.structures import CaseInsensitiveDict
-import requests
-import subprocess
+from .models import  FAANG,info,login,comments,otp
+from random import randint
 from xml.dom.pulldom import parseString, START_ELEMENT
 from xml.sax.handler import feature_external_ges
 from xml.sax import make_parser
 from django.views.decorators.csrf import csrf_exempt
-
+import subprocess
 import pickle
 import base64
 from dataclasses import dataclass
@@ -182,6 +179,50 @@ def cmd_lab(request):
         return render(request,'Lab/CMD/cmd_lab.html',{"output":output})
     else:
         return render(request, 'Lab/CMD/cmd_lab.html')
+
+
+#******************************************Broken Authentication**************************************************#
+def bau(request):
+    return render(request,"Lab/BrokenAuth/bau.html")
+def bau_lab(request):
+    if request.method=="GET":
+        return render(request,"Lab/BrokenAuth/bau_lab.html")
+    else:
+        return render(request, 'Lab/BrokenAuth/bau_lab.html', {"wrongpass":"yes"})
+
+
+
+def login_otp(request):
+    return render(request,"Lab/BrokenAuth/otp.html")
+
+@csrf_exempt
+def Otp(request):
+    if request.method=="GET":
+        email=request.GET.get('email');
+        otpN=randint(100,999)
+        if email and otpN:
+            if email=="admin@pygoat.com":
+                otp.objects.filter(id=2).update(otp=otpN)
+                html = render(request, "Lab/BrokenAuth/otp.html", {"otp":"Sent To Admin Mail ID"})
+                html.set_cookie("email", email);
+                return html
+
+            else:
+                otp.objects.filter(id=1).update(email=email, otp=otpN)
+                html=render (request,"Lab/BrokenAuth/otp.html",{"otp":otpN})
+                html.set_cookie("email",email);
+                return html;
+        else:
+            return render(request,"Lab/BrokenAuth/otp.html")
+    else:
+        otpR=request.POST.get("otp")
+        email=request.COOKIES.get("email")
+        if otp.objects.filter(email=email,otp=otpR) or otp.objects.filter(id=2,otp=otpR):
+            return HttpResponse("<h3>Login Success for email:::"+email+"</h3>")
+        else:
+            return render(request,"Lab/BrokenAuth/otp.html",{"otp":"Invalid OTP Please Try Again"})
+
+
 
 
 
