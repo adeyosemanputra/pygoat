@@ -20,6 +20,10 @@ urlpatterns = [
     path("ba_lab",views.ba_lab,name="Broken Access Control Lab"),
     path("cmd",views.cmd,name="Command Injection"),
     path("cmd_lab",views.cmd_lab,name="Command Injection Lab"),
+    path("bau", views.bau, name="Broken Authe"),
+    path("bau_lab", views.bau_lab, name="LAB"),
+    path("login_otp", views.login_otp, name="OTP Login"),
+    path("otp", views.Otp, name="OTP Verification"),
 
 
 ]

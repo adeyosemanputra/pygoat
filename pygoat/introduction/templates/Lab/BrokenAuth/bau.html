@@ -1,0 +1,38 @@
+{% extends 'introduction/base.html' %}
+{% block content %}
+{% block title %}
+<title>Command Injection</title>
+{% endblock %}
+<div class="content">
+    <h3>Command Injection</h3>
+    <div class="box">
+
+        <h4>What is Broken Authentication</h4>
+            <p class="bp">Broken authentication is an umbrella term for several vulnerabilities that attackers exploit to impersonate legitimate users online. Broadly, broken authentication refers to weaknesses in two areas: session management and credential management. Both are classified as broken authentication because attackers can use either avenue to masquerade as a user: hijacked session IDs or stolen login credentials.
+
+Attackers employ a wide variety of strategies to take advantage of these weaknesses, ranging from huge credential stuffing attacks to highly targeted schemes aimed at gaining access to a specific person’s credentials.
+            </p>
+        <button class="coll btn btn-info">Lab Details</button>
+        <div class="lab">
+              <p class="bp">Broken authentication is an umbrella term for several vulnerabilities that attackers exploit to impersonate legitimate users online. Broadly, broken authentication refers to weaknesses in two areas: session management and credential management. Both are classified as broken authentication because attackers can use either avenue to masquerade as a user: hijacked session IDs or stolen login credentials.
+
+Attackers employ a wide variety of strategies to take advantage of these weaknesses, ranging from huge credential stuffing attacks to highly targeted schemes aimed at gaining access to a specific person’s credentials.
+
+              </p>
+
+              <br>
+                  <div align="right"> <button class="btn btn-primary" type="button" onclick="window.location.href='/bau_lab'">Access Lab</button></div>
+
+              </p>
+        </div>
+        <h4>Mitigation<h4>
+             <p class="bp">Content goes here !!!!</p>
+
+
+
+    </div>
+</div>
+
+
+
+{% endblock %}
