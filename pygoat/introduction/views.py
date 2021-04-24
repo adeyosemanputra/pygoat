@@ -26,7 +26,7 @@ def xss_lab(request):
         return render(request,'Lab/XSS/xss_lab.html', {'query': q})
 
 
-#***********************************SQL*******************************SQL*********************************#
+#***********************************SQL****************************************************************#
 
 def sql(request):
     return  render(request,'Lab/SQL/sql.html')
@@ -140,6 +140,25 @@ def ba_lab(request):
     else:
         return render(request,'Lab/BrokenAccess/ba_lab.html',{"data":"Please Provide Credentials"})
 
+
+#********************************************************Sensitive Data Exposure*****************************************************#
+
+
+def data_exp(request):
+    return  render(request,'Lab/DataExp/data_exp.html')
+
+def data_exp_lab(request):
+    return  render(request,'Lab/DataExp/data_exp_lab.html')
+
+def robots(request):
+    response = render(request,'Lab/DataExp/robots.txt')
+    response['Content-Type'] =  'text/plain'
+    return response
+
+def error(request):
+    return 
+
+
 #******************************************************  Command Injection  ***********************************************************************#
 def cmd(request):
     return render(request,'Lab/CMD/cmd.html')
@@ -190,16 +209,6 @@ def Otp(request):
             return HttpResponse("<h3>Login Success Full</h3>")
         else:
             return render(request,"Lab/BrokenAuth/otp.html",{"otp":"Invalid OTP Please Try Again"})
-
-
-
-
-
-
-
-
-
-
 
 
 

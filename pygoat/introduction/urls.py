@@ -18,12 +18,17 @@ urlpatterns = [
     path("xxe_parse",views.xxe_parse,name="xxe_parse"),
     path("ba",views.ba,name="Broken Access Control"),
     path("ba_lab",views.ba_lab,name="Broken Access Control Lab"),
+    path("data_exp",views.data_exp,name="data_exp"),
+    path("data_exp_lab",views.data_exp_lab,name="data_exp_lab"),
+    path("robots.txt",views.robots,name="robots.txt"),
+    path("500error",views.error,name="500error"),
     path("cmd",views.cmd,name="Command Injection"),
     path("cmd_lab",views.cmd_lab,name="Command Injection Lab"),
     path("bau", views.bau, name="Broken Authe"),
     path("bau_lab", views.bau_lab, name="LAB"),
     path("login_otp", views.login_otp, name="OTP Login"),
     path("otp", views.Otp, name="OTP Verification"),
+
 
 
 ]
