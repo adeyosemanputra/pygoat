@@ -184,8 +184,13 @@ def cmd_lab(request):
 #******************************************Broken Authentication**************************************************#
 def bau(request):
     return render(request,"Lab/BrokenAuth/bau.html")
-def bau_lab     (request):
-    return render(request,"Lab/BrokenAuth/bau_lab.html")
+def bau_lab(request):
+    if request.method=="GET":
+        return render(request,"Lab/BrokenAuth/bau_lab.html")
+    else:
+        return render(request, 'Lab/BrokenAuth/bau_lab.html', {"wrongpass":"yes"})
+
+
 
 def login_otp(request):
     return render(request,"Lab/BrokenAuth/otp.html")
@@ -196,16 +201,23 @@ def Otp(request):
         email=request.GET.get('email');
         otpN=randint(100,999)
         if email and otpN:
-            otp.objects.filter(id=1).update(email=email, otp=otpN)
-            html=render (request,"Lab/BrokenAuth/otp.html",{"otp":otpN})
-            html.set_cookie("email",email);
-            return html;
+            if email=="admin@pygoat.com":
+                otp.objects.filter(id=2).update(otp=otpN)
+                html = render(request, "Lab/BrokenAuth/otp.html", {"otp":"Sent To Admin Mail ID"})
+                html.set_cookie("email", email);
+                return html
+
+            else:
+                otp.objects.filter(id=1).update(email=email, otp=otpN)
+                html=render (request,"Lab/BrokenAuth/otp.html",{"otp":otpN})
+                html.set_cookie("email",email);
+                return html;
         else:
             return render(request,"Lab/BrokenAuth/otp.html")
     else:
         otpR=request.POST.get("otp")
         email=request.COOKIES.get("email")
-        if otp.objects.filter(email=email,otp=otpR):
+        if otp.objects.filter(email=email,otp=otpR) or otp.objects.filter(id=2,otp=otpR):
             return HttpResponse("<h3>Login Success Full</h3>")
         else:
             return render(request,"Lab/BrokenAuth/otp.html",{"otp":"Invalid OTP Please Try Again"})

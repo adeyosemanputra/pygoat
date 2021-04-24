@@ -5,13 +5,13 @@
 {% endblock  %}
 
 <div class="jumbotron">
-    <h4 style="text-align:center"> Can You Log in as Admin</h4>
+    <h4 style="text-align:center">Login as Admin</h4>
     <div class="login">
-        <form method="post" action="/sql_lab">
+        <form method="post" action="/bau_lab">
             {% csrf_token %}
             <input id="input" type="text" name="name" placeholder="User Name"><br>
-            <input id="input" type="password" name="pass" placeholder="Password"><br>
-            <a href="/login_otp">Login Through OTP</a>
+            <input id="input" type="password" name="pass" placeholder="Password"><br><br>
+            <a href="/login_otp"><u>Login With OTP</u></a><br>
             <button  style="margin-top:20px" class="btn btn-primary" type="submit"> Log in</button>
 
 
@@ -20,16 +20,8 @@
 </div>
 
 <div class="container">
-    {% if user1 %}
-       <h4>Logged in as: {{user1}}</h4>
-
-    {% elif wrongpass %}
-       <h4> The password you have entered doesnt match the username!</h4>
-
-    {% elif  no %}
-       <h4>User Not Found </h4>
-    {% else %}
-
+    {% if wrongpass %}
+       <h4>Wrong Password Try Using Login With OTP</h4>
     {% endif %}
 
 
