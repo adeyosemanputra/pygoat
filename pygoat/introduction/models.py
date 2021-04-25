@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import MaxValueValidator
 
 # Create your models here.
 
@@ -20,8 +21,9 @@ class login(models.Model):
 class comments(models.Model):
     name=models.CharField(max_length=200)
     comment=models.CharField(max_length=600)
+
 class otp(models.Model):
     email=models.CharField(max_length=200)
-    otp=models.IntegerField(max_length=300)
+    otp=models.IntegerField(validators=[MaxValueValidator(300)])
 
 
