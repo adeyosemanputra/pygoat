@@ -23,7 +23,7 @@ Attackers employ a wide variety of strategies to take advantage of these weaknes
                       When the users clicks the <i>login with otp</i> feature. User is directed to a page, which asks users email id to send the otp.
                       When the user provides an email id , you can see that the 3 digit opt is sent back to the page itself.
                       This is not the general scenario , usually the code is sent to the registered email of the user.
-                      The user on receiving the 3 digit code can now enter the code in the input box that says <i>Enter your OTP</i>
+                     <br>The user on receiving the 3 digit code can now enter the code in the input box that says <i>Enter your OTP</i>
                       On entering the valid OTP the user gets a page which says <i>Login Success as:::user email</i> .
                        If the Otp is wrong then the user gets a message saying <i>Invalid OTP</i>
                   </p>
@@ -32,7 +32,7 @@ Attackers employ a wide variety of strategies to take advantage of these weaknes
                   <b>The Bug</b>
 
                   <p class="bp">
-                     The main aim of this app is to login as admin, for that you are gonna exploit the lack of <i>rate limiting</i> feature in the otp verification flow.
+                     The main aim of this lab is to login as admin, for that you are gonna exploit the lack of <i>rate limiting</i> feature in the otp verification flow.
                      You can see that the otp is only of 3 digit(for demo purposes) and the application doesnt have any <i>captcha</i> or restricts number of tries for the otp.
                    </p>
 
