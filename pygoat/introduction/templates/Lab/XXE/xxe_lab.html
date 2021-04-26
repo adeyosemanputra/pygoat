@@ -1,0 +1,28 @@
+{% extends "introduction/base.html" %}
+{% load static %}
+{% block content %}
+{% block title %}
+<title>XXE LAB</title>
+{% endblock  %}
+
+ <script defer src="{% static 'Lab/xss.js' %}"></script>
+<!--<button type="button" onclick="window.location.href='/xxe_see'"> Click ME</button> -->
+<div class="jumbotron">
+
+        <img class="img" src="{% static 'Lab/image/xxe.jpg' %}"><br><br>
+
+
+    <form name="ajax" onsubmit="SendToServer()">
+        <label for="comment">Comment Your Thoughts:</label>
+        <input  id="comment" type="text" name="comment">
+        <button class="btn btn-primary" type="submit" >Let the world see</button>
+    </form>
+</div>
+<div class="conatiner">
+    <h4>To see your comments </h4>
+    <button class="btn btn-info" type="button" onclick="window.location.href='/xxe_see'">Click Here</button><br><br>
+    <br><h5> Your comments : {{com}}</h5>
+</div>
+<script defer src="{% static 'Lab/xss.js' %}"></script>
+
+{% endblock %}

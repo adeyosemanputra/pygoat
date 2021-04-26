@@ -220,7 +220,7 @@ color:black;
   cursor: pointer;
   padding: auto;
   width:auto;
-
+  margin-bottom:20px;
   text-align: center;
   outline: none;
   font-size: 20px;
@@ -245,7 +245,20 @@ color:black;
 padding:20px;
 
 }
-
+code {
+    padding: 2px 4px;
+    font-size: 90%;
+    color: #c7254e;
+    background-color: #f9f2f4;
+    border-radius: 4px;
+}
+.img{
+  border-radius: 8px;
+  display:block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+ }
 /* ---------------------------------------------------
     MEDIAQUERIES
 ----------------------------------------------------- */

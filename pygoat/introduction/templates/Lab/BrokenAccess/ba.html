@@ -1,0 +1,36 @@
+{% extends 'introduction/base.html' %}
+{% block content %}
+{% block title %}
+<title>Broken Access Control</title>
+{% endblock %}
+<div class="content">
+    <h3>Description</h3>
+    <div class="box">
+
+        <h4>What is Broken Access Control</h4>
+            <p class="bp"> Access control, sometimes called authorization, is how a web application grants access to content and functions to some users and not others. These checks are performed after authentication, and govern what ‘authorized’ users are allowed to do. Access control sounds like a simple problem but is insidiously difficult to implement correctly. A web application’s access control model is closely tied to the content and functions that the site provides. In addition, the users may fall into a number of groups or roles with different abilities or privileges.
+
+</p>
+        <button class="coll btn btn-info">Lab Details</button>
+        <div class="lab">
+              <p class="bp">
+                  Access control, sometimes called authorization, is how a web application grants access to content and functions to some users and not others. These checks are performed after authentication, and govern what ‘authorized’ users are allowed to do. Access control sounds like a simple problem but is insidiously difficult to implement correctly. A web application’s access control model is closely tied to the content and functions that the site provides. In addition, the users may fall into a number of groups or roles with different abilities or privileges.
+
+</p>
+
+              <br>
+                  <div align="right"> <button class="btn btn-primary" type="button" onclick="window.location.href='/ba_lab'">Access Lab</button></div>
+
+              </p>
+        </div>
+        <h4>Mitigation<h4>
+             <p class="bp">Content goes here !!!!</p>
+
+
+
+    </div>
+</div>
+
+
+
+{% endblock %}
