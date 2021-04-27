@@ -129,14 +129,17 @@ def ba_lab(request):
 
         if request.COOKIES.get('admin') == "1":
             return render(request, 'Lab/BrokenAccess/ba_lab.html', {"data":"Here is your Secret Key :3600"})
-        elif login.objects.filter(user=name) and login.objects.filter(password=password):
+        elif login.objects.filter(user='admin',password=password):
             html = render(request, 'Lab/BrokenAccess/ba_lab.html', {"data":"Here is your Secret Key :3600"})
             html.set_cookie("admin", "1",max_age=20);
             return html
-        else:
-            html = render(request, 'Lab/BrokenAccess/ba_lab.html',{"data":"Welcome :"+name} )
+        elif login.objects.filter(user=name,password=password):
+            html = render(request, 'Lab/BrokenAccess/ba_lab.html',{"data":"Welcome Jack"} )
             html.set_cookie("admin", "0",max_age=20);
             return html
+        else:
+            return render(request, 'Lab/BrokenAccess/ba_lab.html', {"data": "User Not Found"})
+
     else:
         return render(request,'Lab/BrokenAccess/ba_lab.html',{"data":"Please Provide Credentials"})
 
