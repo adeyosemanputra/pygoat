@@ -1,0 +1,16 @@
+{% extends "introduction/base.html" %}
+{% load static %}
+{% block content %}
+{% block title %}
+<title>Security Misconfiguration</title>
+{% endblock  %}
+<script defer src="{% static 'Lab/sec_mis.js' %}"></script>
+
+<div class="jumbotron" id="display">
+	<button class="btn btn-info" type="button" onclick="window.location.href ='/secret'">Secret Key</button><br><br>
+
+	{{secret}}
+</div>
+<script defer src="{% static 'Lab/sec_mis.js' %}"></script>
+
+{% endblock content %}
