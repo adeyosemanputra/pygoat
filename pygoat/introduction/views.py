@@ -226,6 +226,18 @@ def Otp(request):
             return render(request,"Lab/BrokenAuth/otp.html",{"otp":"Invalid OTP Please Try Again"})
 
 
+#*****************************************Security Misconfiguration**********************************************#
 
+def sec_mis(request):
+    return render(request,"Lab/sec_mis/sec_mis.html")
+
+def sec_mis_lab(request):
+    return render(request,"Lab/sec_mis/sec_mis_lab.html")
+
+def secret(request):
+    if(request.headers['X-Host'] == 'admin.localhost:8000'):
+        return render(request,"Lab/sec_mis/sec_mis_lab.html", {"secret": "SECERTKEY123"})
+    else:
+        return render(request,"Lab/sec_mis/sec_mis_lab.html", {"secret": "Only admin.localhost:8000 can access, Your X-Host is " + request.headers['X-Host']})
 
 
