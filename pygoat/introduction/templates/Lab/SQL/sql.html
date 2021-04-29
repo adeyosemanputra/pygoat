@@ -21,10 +21,41 @@ Data enters a program from an untrusted source.
 The data used to dynamically construct a SQL query
 The main consequences are:
 
-Confidentiality: Since SQL databases generally hold sensitive data, loss of confidentiality is a frequent problem with SQL Injection vulnerabilities.
-Authentication: If poor SQL commands are used to check user names and passwords, it may be possible to connect to a system as another user with no previous knowledge of the password.
-Authorization: If authorization information is held in a SQL database, it may be possible to change this information through the successful exploitation of a SQL Injection vulnerability.
-Integrity: Just as it may be possible to read sensitive information, it is also possible to make changes or even delete this information with a SQL Injection attack.
+ <p class="bp">
+            This lab helps you to exploit the common type of sql injection vulnerability, caused due to the lack of input validation and directly exposing input into the query.<br>
+
+            The user on accessing the lab is given with a log in page . The user has to try to login in as admin.
+            The user can identify the vulnerability to be sql injection just by injecting a <i>'</i> in any of the field.
+            This would result in an sql error.<br>
+
+            <b>Exploiting the SQL Injection.</b>
+            <ul>
+            <li>Enter the user name as admin</li>
+            <li>Enter the password as <code>anything 1' OR '1' ='1</code></li>
+            <li>This should log you in as admin, without knowing the admins password.</li>
+        </ul><br>
+            <b>Understanding the Exploit</b><br>
+            <br><p class="bp">
+                Lets first analyse the sql query used to compare the username and password in the database.
+                <br><code>"SELECT * FROM introduction_login WHERE user='"+name+"'AND password='"+password+"'"</code><br>
+                The name and password parameter is the one you give as input, which is directly inserted into the query.<br>
+
+              <br><b>Why the error?</b><br><br>
+
+                When we inserted a <i>'</i> in the input it threw an error , this is because the sql query was not balanced and it threw an error.
+                <br><code>SELECT * FROM introduction_login WHERE user='admin' AND password='''</code><br>
+                The query quotes in the password field are unbalanced, this can be balanced by adding another quote to it.
+
+                <br><br>Lets just plug our payload into the query and see what it looks like.
+                <br><code>SELECT * FROM introduction_login WHERE user='admin' AND password='<b>anything 1' OR '1' ='1</b>'</code><br>
+
+                Now the query means select username = admin where password is anything or 1=1 .
+                1=1 will always result in true and the query fetches the user with name admin and password=true.
+
+                <br>Thus allowing us to login in as admin.
+
+            </p>
+        </p>
 </p>
 
               <br>
@@ -32,8 +63,16 @@ Integrity: Just as it may be possible to read sensitive information, it is also 
 
               </p>
         </div>
-        <h4>Mitigation<h4>
-             <p class="bp">Content goes here !!!!</p>
+        <br><h4>Mitigation</h4>
+             <p class="bp">
+        <ul>
+            <li> Use of Prepared Statements (with Parameterized Queries)</li>
+            <li> Use of Stored Procedures</li>
+            <li> Allow-list Input Validation</li>
+            <li> Escaping All User Supplied Input.</li>
+        </ul>
+
+        </p>
 
 
 
