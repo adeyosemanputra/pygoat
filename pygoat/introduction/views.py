@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import  FAANG,info,login,comments
+from .models import  FAANG,info,login,comments,authLogin
 from django.core import serializers
 from requests.structures import CaseInsensitiveDict
 import requests
@@ -8,6 +8,7 @@ from xml.dom.pulldom import parseString, START_ELEMENT
 from xml.sax.handler import feature_external_ges
 from xml.sax import make_parser
 from django.views.decorators.csrf import csrf_exempt
+from django.template.loader import render_to_string
 
 def home(request):
     
@@ -87,7 +88,66 @@ def xxe_parse(request):
 
     return render(request, 'Lab/XXE/xxe_lab.html')
 
+def auth_home(request):
+    return render(request,'Lab/AUTH/auth_home.html')
 
+
+def auth_lab(request):
+    return render(request,'Lab/AUTH/auth_lab.html')
+
+def auth_lab_signup(request):
+    if request.method == 'GET':
+        return render(request,'Lab/AUTH/auth_lab_signup.html')
+    elif request.method == 'POST':
+        try:
+            name = request.POST['name']
+            user_name = request.POST['username']
+            passwd  = request.POST['pass']
+            obj = authLogin.objects.create(name=name,username=user_name,password=passwd)
+            try:
+                rendered = render_to_string('Lab/AUTH/auth_success.html', {'username': obj.username,'userid':obj.userid,'name':obj.name,'err_msg':'Cookie Set'})
+                response = HttpResponse(rendered)
+                response.set_cookie('userid', obj.userid, max_age=31449600, samesite=None, secure=False)
+                print('Setting cookie successful')
+                return response
+            except:
+                render(request,'Lab/AUTH/auth_lab_signup.html',{'err_msg':'Cookie cannot be set'})
+        except:
+            return render(request,'Lab/AUTH/auth_lab_signup.html',{'err_msg':'Username already exists'})
+
+def auth_lab_login(request):
+    if request.method == 'GET':
+        try:
+            obj = authLogin.objects.filter(userid=request.COOKIES['userid'])[0]
+            rendered = render_to_string('Lab/AUTH/auth_success.html', {'username': obj.username,'userid':obj.userid,'name':obj.name, 'err_msg':'Login Successful'})
+            response = HttpResponse(rendered)
+            response.set_cookie('userid', obj.userid, max_age=31449600, samesite=None, secure=False)
+            print('Login successful')
+            return response
+        except:
+            return render(request,'Lab/AUTH/auth_lab_login.html')
+    elif request.method == 'POST':
+        try:
+            user_name = request.POST['username']
+            passwd  = request.POST['pass']
+            print(user_name,passwd)
+            obj = authLogin.objects.filter(username=user_name,password=passwd)[0]
+            try:
+                rendered = render_to_string('Lab/AUTH/auth_success.html', {'username': obj.username,'userid':obj.userid,'name':obj.name, 'err_msg':'Login Successful'})
+                response = HttpResponse(rendered)
+                response.set_cookie('userid', obj.userid, max_age=31449600, samesite=None, secure=False)
+                print('Login successful')
+                return response
+            except:
+                render(request,'Lab/AUTH/auth_lab_login.html',{'err_msg':'Cookie cannot be set'})
+        except:
+            return render(request,'Lab/AUTH/auth_lab_login.html',{'err_msg':'Check your credentials'})
+
+def auth_lab_logout(request):
+    rendered = render_to_string('Lab/AUTH/auth_lab.html',context={'err_msg':'Logout successful'})
+    response = HttpResponse(rendered)    
+    response.delete_cookie('userid')
+    return response
 
 
 

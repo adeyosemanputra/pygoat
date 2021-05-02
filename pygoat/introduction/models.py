@@ -21,3 +21,8 @@ class comments(models.Model):
     name=models.CharField(max_length=200)
     comment=models.CharField(max_length=600)
 
+class authLogin(models.Model):
+    username=models.CharField(max_length=200, unique = True)
+    name=models.CharField(max_length=200)
+    password=models.CharField(max_length=200)
+    userid = models.AutoField(primary_key=True)

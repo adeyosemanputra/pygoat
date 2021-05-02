@@ -1,0 +1,22 @@
+{% extends "introduction/base.html" %}
+{% block content %}
+{% block title %}
+<title>BROKEN AUTH LAB</title>
+{% endblock  %}
+
+<div class="jumbotron">
+    <h4 style="text-align:center"> Your Information</h4>
+    <div class="login" style="text-align:center">
+        Username : {{username}}
+        <br>
+        Name : {{name}}
+        <br>
+        UserId : {{userid}}
+    </div>
+    <br>
+    <div style="text-align:center">
+        <button onclick="window.location.href='/auth_lab/logout'"  class="btn btn-primary">Logout</button>
+    </div>
+</div>
+<i>{{err_msg}}</i>
+{% endblock %}
