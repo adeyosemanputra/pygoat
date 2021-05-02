@@ -24,10 +24,21 @@
       ]
     },
     {
+
       "login": "adeyosemanputra",
       "name": "adeyosemanputra",
       "avatar_url": "https://avatars.githubusercontent.com/u/24958168?v=4",
       "profile": "https://github.com/adeyosemanputra",
+"contributions": [
+        "code",
+        "doc"
+      ]
+    },
+    {
+      "login": "gaurav618618",
+      "name": "gaurav618618",
+      "avatar_url": "https://avatars.githubusercontent.com/u/29380890?v=4",
+      "profile": "https://github.com/gaurav618618",
       "contributions": [
         "code",
         "doc"
