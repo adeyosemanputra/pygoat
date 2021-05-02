@@ -1,0 +1,24 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "pwned-17",
+      "name": "pwned-17",
+      "avatar_url": "https://avatars.githubusercontent.com/u/61360833?v=4",
+      "profile": "https://github.com/pwned-17",
+      "contributions": [
+        "code"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "pygoat",
+  "projectOwner": "adeyosemanputra",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}
