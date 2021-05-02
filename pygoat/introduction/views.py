@@ -242,3 +242,9 @@ def secret(request):
         return render(request,"Lab/sec_mis/sec_mis_lab.html", {"secret": "Only admin.localhost:8000 can access, Your X-Host is " + XHost})
 
 
+#**********************************************************A9*************************************************#
+
+def a9(request):
+    return render(request,"Lab/A9/a9.html")
+def a9_lab(request):
+    return render(request,"Lab/A9/a9_lab.html")
