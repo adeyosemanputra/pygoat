@@ -248,3 +248,16 @@ def a9(request):
     return render(request,"Lab/A9/a9.html")
 def a9_lab(request):
     return render(request,"Lab/A9/a9_lab.html")
+
+#*********************************************************A10*************************************************#
+
+def a10(request):
+    return render(request,"Lab/A10/a10.html")
+
+def a10_lab(request):
+    return render(request,"Lab/A10/a10_lab.html")
+
+def debug(request):
+    response = render(request,'Lab/A10/debug.log')
+    response['Content-Type'] =  'text/plain'
+    return response
