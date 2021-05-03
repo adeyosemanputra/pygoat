@@ -9,6 +9,8 @@ from django.views.decorators.csrf import csrf_exempt
 import subprocess
 import pickle
 import base64
+import yaml
+import json
 from dataclasses import dataclass
 
 def home(request):
@@ -246,8 +248,23 @@ def secret(request):
 
 def a9(request):
     return render(request,"Lab/A9/a9.html")
+@csrf_exempt
 def a9_lab(request):
-    return render(request,"Lab/A9/a9_lab.html")
+    if request.method=="GET":
+        return render(request,"Lab/A9/a9_lab.html")
+    else:
+
+        try :
+            file=request.FILES["file"]
+            data = yaml.load(file)
+            return render(request,"Lab/A9/a9_lab.html",{"data":data})
+        except:
+            return render(request, "Lab/A9/a9_lab.html", {"data":"Please Upload a Yaml file."})
+
+def get_version(request):
+      return render(request,"Lab/A9/a9_lab.html",{"version":"pyyaml v5.1"})
+
+
 
 #*********************************************************A10*************************************************#
 
