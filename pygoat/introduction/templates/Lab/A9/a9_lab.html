@@ -6,16 +6,24 @@
 {% endblock  %}
 
 <div class="jumbotron">
-    <h4 style="text-align:center"> Jack's Libraries </h4>
-    <code>
-        <ul>
-            <li>Drupal version=8.6.8</li>
-            <li>django-tastypie  version=0.9.10</li>
-            <li>PyYAML version=5.3.1</li>
-            <li>xml.sax</li>
-            <li>urllib3 version=1.23</li>
-        </ul>
-    </code>
+    <h4 style="text-align:center"> Yaml To Json Converter</h4>
+   <form enctype="multipart/form-data" method="post" action="/a9_lab">
+       <input type="file" name="file"><br>
+       <br>
+       <button  class="btn btn-primary" type="submit">Upload</button>
+   </form>
+</div>  <br>
+<br>
+<div class="container">
+    {% if data %}
+    <h5>Here is your output:</h5><br><code>{{data}}</code><br>
+    {% endif %}
+</div>
+<br>
+<div class="container">
+    <button  class="btn btn-info" onclick="window.location.href='/get_version'">Get Version</button><code>{{version}}</code>
+
+</div>
 
 
 
