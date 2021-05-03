@@ -15,11 +15,23 @@
         <button class="coll btn btn-info">Lab Details</button>
         <div class="lab">
               <p class="bp">
-                 This lab helps us to understand some areas where this threat can occur.
-                  <br>The user on accessing the lab is given with certain libraries used by jack in his project.
-                  Try to identify if they are safe or vulnerable.
+                 This lab helps us to understand why components with know vulnerability can be a serious issue.
+                  <br>
+                 The user on accessing the lab is provided with a feature to convert yaml files into json objects.
+                  The user needs to choose an yaml file and click upload to get the json data.
+                  There is also a get version feature which tells the user the version of the library the app uses.
 
+                  <b>Exploiting the vulnerability.</b>
+                  <ul>
+                    <li>The app uses <code>pyyaml 5.1</code> Which is vulnerable to code execution.</li>
+                    <li>You can google the library with the version to get the poc and vulnerability details</li>
+                    <li> Create An yaml file with this payload:</li>
+            <code>!!python/object/apply:subprocess.Popen<br>
+                - ls
+            </code>
+             <li> On Uploading this file the user should be able to see the output of the command executed.</li>
 
+                  </ul>
 
                 </p>
 </p>
@@ -29,7 +41,7 @@
 
               </p>
         </div>
-        <h4>Mitigation</h4>
+        <br><h4>Mitigation</h4>
              <p class="bp">
                  <ul>
                 <li>Remove unused dependencies, unnecessary features, components, files, and documentation.</li>
