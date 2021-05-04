@@ -14,3 +14,255 @@ INFO "GET /admin/logout/ HTTP/1.1" 302 0
 INFO "GET /admin/ HTTP/1.1" 302 0
 INFO "GET /admin/login/?next=/admin/ HTTP/1.1" 200 1913
 INFO "GET /static/admin/css/login.css HTTP/1.1" 304 0
+INFO Watching for file changes with StatReloader
+INFO "GET / HTTP/1.1" 200 8157
+INFO "GET /static/introduction/style4.css HTTP/1.1" 304 0
+WARNING Not Found: /favicon.ico
+WARNING "GET /favicon.ico HTTP/1.1" 404 9350
+INFO "GET /login HTTP/1.1" 301 0
+INFO "GET /login/ HTTP/1.1" 200 7978
+INFO "GET /logout HTTP/1.1" 301 0
+INFO "GET /logout/ HTTP/1.1" 200 1207
+INFO "GET /static/admin/css/base.css HTTP/1.1" 304 0
+INFO "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+INFO "GET /static/admin/css/fonts.css HTTP/1.1" 200 423
+INFO "GET /static/admin/fonts/Roboto-Regular-webfont.woff HTTP/1.1" 200 85876
+INFO "GET /static/admin/fonts/Roboto-Light-webfont.woff HTTP/1.1" 200 85692
+INFO "GET /admin/ HTTP/1.1" 302 0
+INFO "GET /admin/login/?next=/admin/ HTTP/1.1" 200 1913
+INFO "GET /static/admin/css/login.css HTTP/1.1" 200 1233
+INFO "GET /logout/ HTTP/1.1" 200 1207
+INFO "GET /login/ HTTP/1.1" 200 7978
+INFO A:\wsl\Pygoat\pygoat\pygoat\pygoat\urls.py changed, reloading.
+INFO Watching for file changes with StatReloader
+INFO A:\wsl\Pygoat\pygoat\pygoat\introduction\views.py changed, reloading.
+INFO Watching for file changes with StatReloader
+ERROR Internal Server Error: /register
+Traceback (most recent call last):
+  File "A:\wsl\Pygoat\venv\lib\site-packages\django\core\handlers\exception.py", line 34, in inner
+    response = get_response(request)
+  File "A:\wsl\Pygoat\venv\lib\site-packages\django\core\handlers\base.py", line 124, in _get_response
+    raise ValueError(
+ValueError: The view introduction.views.register didn't return an HttpResponse object. It returned None instead.
+ERROR "GET /register HTTP/1.1" 500 63038
+INFO A:\wsl\Pygoat\pygoat\pygoat\introduction\views.py changed, reloading.
+INFO Watching for file changes with StatReloader
+INFO "GET /register HTTP/1.1" 200 18
+INFO A:\wsl\Pygoat\pygoat\pygoat\introduction\views.py changed, reloading.
+INFO Watching for file changes with StatReloader
+INFO A:\wsl\Pygoat\pygoat\pygoat\introduction\views.py changed, reloading.
+INFO Watching for file changes with StatReloader
+INFO A:\wsl\Pygoat\pygoat\pygoat\introduction\views.py changed, reloading.
+INFO Watching for file changes with StatReloader
+INFO A:\wsl\Pygoat\pygoat\pygoat\introduction\views.py changed, reloading.
+INFO Watching for file changes with StatReloader
+INFO A:\wsl\Pygoat\pygoat\pygoat\introduction\views.py changed, reloading.
+INFO Watching for file changes with StatReloader
+INFO A:\wsl\Pygoat\pygoat\pygoat\introduction\views.py changed, reloading.
+INFO Watching for file changes with StatReloader
+INFO "GET /register HTTP/1.1" 200 9207
+INFO A:\wsl\Pygoat\pygoat\pygoat\introduction\views.py changed, reloading.
+INFO Watching for file changes with StatReloader
+INFO A:\wsl\Pygoat\pygoat\pygoat\introduction\views.py changed, reloading.
+INFO Watching for file changes with StatReloader
+INFO A:\wsl\Pygoat\pygoat\pygoat\introduction\views.py changed, reloading.
+INFO Watching for file changes with StatReloader
+INFO A:\wsl\Pygoat\pygoat\pygoat\introduction\views.py changed, reloading.
+INFO Watching for file changes with StatReloader
+INFO A:\wsl\Pygoat\pygoat\pygoat\introduction\views.py changed, reloading.
+INFO Watching for file changes with StatReloader
+INFO "GET /register HTTP/1.1" 200 9341
+INFO "POST /register HTTP/1.1" 302 0
+INFO "GET /login/ HTTP/1.1" 200 7978
+INFO "GET / HTTP/1.1" 200 8157
+INFO "GET /admin HTTP/1.1" 301 0
+INFO "GET /admin/ HTTP/1.1" 302 0
+INFO "GET /admin/login/?next=/admin/ HTTP/1.1" 200 1913
+INFO "GET /admin/ HTTP/1.1" 302 0
+INFO "GET /admin/login/?next=/admin/ HTTP/1.1" 200 1913
+INFO "POST /admin/login/?next=/admin/ HTTP/1.1" 200 2074
+INFO "GET /static/admin/fonts/Roboto-Bold-webfont.woff HTTP/1.1" 200 86184
+INFO "POST /admin/login/?next=/admin/ HTTP/1.1" 200 2074
+INFO "POST /admin/login/?next=/admin/ HTTP/1.1" 200 2074
+INFO "POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+INFO "GET /admin/ HTTP/1.1" 200 8514
+INFO "GET /static/admin/css/dashboard.css HTTP/1.1" 200 412
+INFO "GET /static/admin/img/icon-addlink.svg HTTP/1.1" 200 331
+INFO "GET /static/admin/img/icon-changelink.svg HTTP/1.1" 200 380
+INFO "GET /admin/auth/user/ HTTP/1.1" 200 7440
+INFO "GET /static/admin/css/changelists.css HTTP/1.1" 304 0
+INFO "GET /static/admin/js/jquery.init.js HTTP/1.1" 200 363
+INFO "GET /static/admin/js/actions.js HTTP/1.1" 200 6766
+INFO "GET /admin/jsi18n/ HTTP/1.1" 200 3223
+INFO "GET /static/admin/js/core.js HTTP/1.1" 200 5723
+INFO "GET /static/admin/js/urlify.js HTTP/1.1" 200 8941
+INFO "GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 200 6918
+INFO "GET /static/admin/js/prepopulate.js HTTP/1.1" 200 1530
+INFO "GET /static/admin/js/jquery.init.js HTTP/1.1" 200 363
+INFO "GET /static/admin/js/actions.js HTTP/1.1" 200 6766
+INFO "GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 200 6918
+INFO "GET /static/admin/js/core.js HTTP/1.1" 200 5723
+INFO "GET /admin/jsi18n/ HTTP/1.1" 200 3223
+INFO "GET /static/admin/js/urlify.js HTTP/1.1" 200 8941
+INFO "GET /static/admin/js/prepopulate.js HTTP/1.1" 200 1530
+INFO "GET /static/admin/js/vendor/xregexp/xregexp.js HTTP/1.1" 200 128820
+INFO "GET /static/admin/img/search.svg HTTP/1.1" 200 458
+INFO "GET /static/admin/js/vendor/xregexp/xregexp.js HTTP/1.1" 200 128820
+INFO "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 200 280364
+INFO "GET /static/admin/img/icon-no.svg HTTP/1.1" 200 560
+INFO "GET /static/admin/img/icon-yes.svg HTTP/1.1" 200 436
+INFO "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 200 280364
+INFO "GET /static/admin/img/tooltag-add.svg HTTP/1.1" 304 0
+INFO "GET /static/admin/img/sorting-icons.svg HTTP/1.1" 200 1097
+INFO "GET /admin/auth/user/2/change/ HTTP/1.1" 200 15914
+INFO "GET /static/admin/css/forms.css HTTP/1.1" 304 0
+INFO "GET /admin/jsi18n/ HTTP/1.1" 200 3223
+INFO "GET /static/admin/css/widgets.css HTTP/1.1" 304 0
+INFO "GET /static/admin/js/calendar.js HTTP/1.1" 200 7777
+INFO "GET /static/admin/js/SelectBox.js HTTP/1.1" 200 5753
+INFO "GET /static/admin/js/admin/DateTimeShortcuts.js HTTP/1.1" 200 20232
+INFO "GET /static/admin/js/SelectFilter2.js HTTP/1.1" 200 12318
+INFO "GET /admin/jsi18n/ HTTP/1.1" 200 3223
+INFO "GET /static/admin/js/calendar.js HTTP/1.1" 200 7777
+INFO "GET /static/admin/js/SelectBox.js HTTP/1.1" 200 5753
+INFO "GET /static/admin/js/admin/DateTimeShortcuts.js HTTP/1.1" 200 20232
+INFO "GET /static/admin/js/SelectFilter2.js HTTP/1.1" 200 12318
+INFO "GET /static/admin/js/prepopulate_init.js HTTP/1.1" 304 0
+INFO "GET /static/admin/js/change_form.js HTTP/1.1" 304 0
+INFO "GET /static/admin/js/change_form.js HTTP/1.1" 304 0
+INFO "GET /static/admin/js/prepopulate_init.js HTTP/1.1" 304 0
+INFO "GET /static/admin/img/icon-unknown-alt.svg HTTP/1.1" 200 655
+INFO "GET /static/admin/img/icon-clock.svg HTTP/1.1" 200 677
+INFO "GET /static/admin/img/icon-unknown.svg HTTP/1.1" 200 655
+INFO "GET /static/admin/img/icon-calendar.svg HTTP/1.1" 200 1086
+INFO "GET /static/admin/img/selector-icons.svg HTTP/1.1" 200 3291
+INFO "GET /admin/auth/user/ HTTP/1.1" 200 7440
+INFO "GET /admin/auth/user/3/change/ HTTP/1.1" 200 15835
+INFO "GET /admin/jsi18n/ HTTP/1.1" 200 3223
+INFO "GET /admin/jsi18n/ HTTP/1.1" 200 3223
+INFO "GET /admin/auth/user/ HTTP/1.1" 200 7440
+INFO A:\wsl\Pygoat\pygoat\pygoat\pygoat\settings.py changed, reloading.
+INFO Watching for file changes with StatReloader
+INFO A:\wsl\Pygoat\pygoat\pygoat\pygoat\settings.py changed, reloading.
+INFO Watching for file changes with StatReloader
+ERROR Internal Server Error: /register
+Traceback (most recent call last):
+  File "A:\wsl\Pygoat\venv\lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+  File "A:\wsl\Pygoat\venv\lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+  File "A:\wsl\Pygoat\venv\lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+  File "A:\wsl\Pygoat\venv\lib\site-packages\django\template\base.py", line 936, in render
+    bit = node.render_annotated(context)
+  File "A:\wsl\Pygoat\venv\lib\site-packages\django\template\base.py", line 903, in render_annotated
+    return self.render(context)
+  File "A:\wsl\Pygoat\venv\lib\site-packages\django\template\loader_tags.py", line 150, in render
+    return compiled_parent._render(context)
+  File "A:\wsl\Pygoat\venv\lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+  File "A:\wsl\Pygoat\venv\lib\site-packages\django\template\base.py", line 936, in render
+    bit = node.render_annotated(context)
+  File "A:\wsl\Pygoat\venv\lib\site-packages\django\template\base.py", line 903, in render_annotated
+    return self.render(context)
+  File "A:\wsl\Pygoat\venv\lib\site-packages\django\template\loader_tags.py", line 62, in render
+    result = block.nodelist.render(context)
+  File "A:\wsl\Pygoat\venv\lib\site-packages\django\template\base.py", line 936, in render
+    bit = node.render_annotated(context)
+  File "A:\wsl\Pygoat\venv\lib\site-packages\django\template\base.py", line 903, in render_annotated
+    return self.render(context)
+  File "A:\wsl\Pygoat\venv\lib\site-packages\django\template\base.py", line 986, in render
+    output = self.filter_expression.resolve(context)
+  File "A:\wsl\Pygoat\venv\lib\site-packages\django\template\base.py", line 697, in resolve
+    new_obj = func(obj, *arg_vals)
+  File "A:\wsl\Pygoat\venv\lib\site-packages\crispy_forms\templatetags\crispy_forms_filters.py", line 61, in as_crispy_form
+    template = uni_form_template(template_pack)
+  File "A:\wsl\Pygoat\venv\lib\site-packages\crispy_forms\templatetags\crispy_forms_filters.py", line 22, in uni_form_template
+    return get_template("%s/uni_form.html" % template_pack)
+  File "A:\wsl\Pygoat\venv\lib\site-packages\django\template\loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: boostrap4/uni_form.html
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "A:\wsl\Pygoat\venv\lib\site-packages\django\core\handlers\exception.py", line 34, in inner
+    response = get_response(request)
+  File "A:\wsl\Pygoat\venv\lib\site-packages\django\core\handlers\base.py", line 115, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "A:\wsl\Pygoat\venv\lib\site-packages\django\core\handlers\base.py", line 113, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "A:\wsl\Pygoat\pygoat\pygoat\introduction\views.py", line 32, in register
+    return render(request,"registration/register.html",{"form":form})
+  File "A:\wsl\Pygoat\venv\lib\site-packages\django\shortcuts.py", line 19, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "A:\wsl\Pygoat\venv\lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+  File "A:\wsl\Pygoat\venv\lib\site-packages\django\template\backends\django.py", line 63, in render
+    reraise(exc, self.backend)
+  File "A:\wsl\Pygoat\venv\lib\site-packages\django\template\backends\django.py", line 84, in reraise
+    raise new from exc
+django.template.exceptions.TemplateDoesNotExist: boostrap4/uni_form.html
+ERROR "GET /register HTTP/1.1" 500 176529
+INFO A:\wsl\Pygoat\pygoat\pygoat\pygoat\settings.py changed, reloading.
+INFO Watching for file changes with StatReloader
+INFO "GET /register HTTP/1.1" 200 9946
+INFO "GET /register HTTP/1.1" 200 9928
+INFO "GET /register HTTP/1.1" 200 9928
+INFO "GET /login HTTP/1.1" 301 0
+INFO "GET /login/ HTTP/1.1" 200 8931
+INFO "POST /login/ HTTP/1.1" 302 0
+WARNING Not Found: /accounts/profile/
+WARNING "GET /accounts/profile/ HTTP/1.1" 404 9497
+INFO "GET /login/ HTTP/1.1" 200 8931
+INFO "POST /login/ HTTP/1.1" 200 9120
+INFO "GET /login/ HTTP/1.1" 200 8993
+INFO "GET /login/ HTTP/1.1" 200 9004
+INFO "GET /register HTTP/1.1" 200 9928
+INFO A:\wsl\Pygoat\pygoat\pygoat\introduction\views.py changed, reloading.
+INFO Watching for file changes with StatReloader
+INFO A:\wsl\Pygoat\pygoat\pygoat\introduction\views.py changed, reloading.
+INFO Watching for file changes with StatReloader
+INFO "GET /register HTTP/1.1" 200 9928
+INFO "GET / HTTP/1.1" 200 8157
+INFO "GET /logout HTTP/1.1" 301 0
+INFO "GET /logout/ HTTP/1.1" 200 1207
+INFO "GET /admin/ HTTP/1.1" 302 0
+INFO "GET /admin/login/?next=/admin/ HTTP/1.1" 200 1913
+INFO "GET /logout/ HTTP/1.1" 200 1207
+INFO "GET / HTTP/1.1" 200 8303
+INFO "GET / HTTP/1.1" 200 8303
+INFO A:\wsl\Pygoat\pygoat\pygoat\introduction\views.py changed, reloading.
+INFO Watching for file changes with StatReloader
+INFO "GET / HTTP/1.1" 302 0
+INFO "GET /login/ HTTP/1.1" 200 9004
+INFO "GET /register HTTP/1.1" 200 9928
+INFO "GET / HTTP/1.1" 302 0
+INFO "GET /login/ HTTP/1.1" 200 9004
+INFO "POST /login/ HTTP/1.1" 302 0
+WARNING Not Found: /accounts/profile/
+WARNING "GET /accounts/profile/ HTTP/1.1" 404 9497
+INFO A:\wsl\Pygoat\pygoat\pygoat\pygoat\settings.py changed, reloading.
+INFO Watching for file changes with StatReloader
+INFO "GET /login/ HTTP/1.1" 200 9004
+INFO "POST /login/ HTTP/1.1" 302 0
+WARNING Not Found: /home
+WARNING "GET /home HTTP/1.1" 404 9458
+INFO "GET /login/ HTTP/1.1" 200 9004
+INFO "GET / HTTP/1.1" 200 8157
+INFO "GET / HTTP/1.1" 200 8157
+INFO "GET / HTTP/1.1" 200 8157
+INFO A:\wsl\Pygoat\pygoat\pygoat\pygoat\settings.py changed, reloading.
+INFO Watching for file changes with StatReloader
+INFO "GET /login/ HTTP/1.1" 200 9004
+INFO "GET /logout/ HTTP/1.1" 200 1207
+INFO "GET /admin/ HTTP/1.1" 302 0
+INFO "GET /admin/login/?next=/admin/ HTTP/1.1" 200 1913
+INFO "GET /logout/ HTTP/1.1" 200 1207
+INFO "GET /admin/ HTTP/1.1" 302 0
+INFO "GET /admin/login/?next=/admin/ HTTP/1.1" 200 1913
+INFO "GET /logout/ HTTP/1.1" 200 1207
+INFO "GET / HTTP/1.1" 302 0
+INFO "GET /login/ HTTP/1.1" 200 9004
+INFO "POST /login/ HTTP/1.1" 302 0
+INFO "GET / HTTP/1.1" 200 8157

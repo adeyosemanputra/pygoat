@@ -1,5 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.http import HttpResponse
+from django.contrib.auth import login,authenticate
+from django.contrib.auth.forms import UserCreationForm
+
+#*****************************************Lab Requirements****************************************************#
+
 from .models import  FAANG,info,login,comments,otp
 from random import randint
 from xml.dom.pulldom import parseString, START_ELEMENT
@@ -13,9 +18,25 @@ import yaml
 import json
 from dataclasses import dataclass
 
+
+
+def register(request):
+    if request.method=="POST":
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+        return redirect("login")
+
+    else:
+        form=UserCreationForm();
+        return render(request,"registration/register.html",{"form":form})
+
 def home(request):
-    
-    return render(request,'introduction/home.html')
+    if request.user.is_authenticated:
+        return render(request,'introduction/home.html')
+    else:
+         return redirect('login');
+
 def xss(request):
     return render(request,"Lab/XSS/xss.html")
 def xss_lab(request):
