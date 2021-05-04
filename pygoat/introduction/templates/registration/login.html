@@ -2,6 +2,7 @@
 {% block content %}
 {% load crispy_forms_tags %}
 <div class="conatiner">
+    <h2 align="center">Please Login to Access Lab</h2>
     <form method="post">
         {% csrf_token %}
         {{form|crispy}}

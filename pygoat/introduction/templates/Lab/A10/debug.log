@@ -266,3 +266,82 @@ INFO "GET / HTTP/1.1" 302 0
 INFO "GET /login/ HTTP/1.1" 200 9004
 INFO "POST /login/ HTTP/1.1" 302 0
 INFO "GET / HTTP/1.1" 200 8157
+INFO "GET / HTTP/1.1" 200 8170
+INFO "GET /register HTTP/1.1" 200 9941
+INFO "GET /login/ HTTP/1.1" 200 9017
+INFO "GET / HTTP/1.1" 200 8170
+INFO "GET / HTTP/1.1" 200 8170
+INFO "GET / HTTP/1.1" 200 8170
+INFO "GET /login/ HTTP/1.1" 200 9017
+INFO "GET /register HTTP/1.1" 200 9941
+INFO "POST /register HTTP/1.1" 302 0
+INFO "GET /login/ HTTP/1.1" 200 9017
+INFO "POST /login/ HTTP/1.1" 302 0
+INFO "GET / HTTP/1.1" 200 8170
+INFO "GET / HTTP/1.1" 200 8170
+INFO "GET /admin/ HTTP/1.1" 302 0
+INFO "GET /admin/login/?next=/admin/ HTTP/1.1" 200 2069
+INFO "POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+INFO "GET /admin/ HTTP/1.1" 200 8514
+INFO "GET /admin/auth/user/ HTTP/1.1" 200 7858
+INFO "GET /admin/jsi18n/ HTTP/1.1" 200 3223
+INFO "GET /admin/jsi18n/ HTTP/1.1" 200 3223
+INFO "POST /admin/auth/user/ HTTP/1.1" 200 3468
+INFO "GET /static/admin/js/cancel.js HTTP/1.1" 200 409
+INFO "GET /static/admin/js/cancel.js HTTP/1.1" 200 409
+INFO "POST /admin/auth/user/ HTTP/1.1" 302 0
+INFO "GET /admin/auth/user/ HTTP/1.1" 200 7147
+INFO "GET /admin/jsi18n/ HTTP/1.1" 200 3223
+INFO "GET /admin/jsi18n/ HTTP/1.1" 200 3223
+INFO "GET /admin/auth/user/1/change/ HTTP/1.1" 200 15887
+INFO "GET /admin/jsi18n/ HTTP/1.1" 200 3223
+INFO "GET /admin/jsi18n/ HTTP/1.1" 200 3223
+INFO Watching for file changes with StatReloader
+INFO "GET / HTTP/1.1" 200 8170
+WARNING Not Found: /favicon.ico
+WARNING "GET /favicon.ico HTTP/1.1" 404 9479
+INFO "GET /login/ HTTP/1.1" 200 9017
+INFO "GET /login/ HTTP/1.1" 200 9017
+INFO "GET /logout/ HTTP/1.1" 200 1207
+INFO "GET /login/ HTTP/1.1" 200 9017
+INFO "GET / HTTP/1.1" 302 0
+INFO "GET /login/ HTTP/1.1" 200 9017
+INFO "GET /bau HTTP/1.1" 200 13044
+INFO "GET /bau_lab HTTP/1.1" 302 0
+INFO "GET /login/ HTTP/1.1" 200 9017
+INFO "GET /register HTTP/1.1" 200 9941
+INFO "GET /sec_mis HTTP/1.1" 200 10652
+INFO "GET /sec_mis_lab HTTP/1.1" 302 0
+INFO "GET /login/ HTTP/1.1" 200 9017
+INFO "GET /a10 HTTP/1.1" 200 8674
+INFO "GET /a10_lab HTTP/1.1" 302 0
+INFO "GET /login/ HTTP/1.1" 200 9017
+INFO "GET /login/ HTTP/1.1" 200 9072
+INFO "GET / HTTP/1.1" 302 0
+INFO "GET /login/ HTTP/1.1" 200 9072
+INFO A:\wsl\Pygoat\pygoat\pygoat\introduction\views.py changed, reloading.
+INFO Watching for file changes with StatReloader
+INFO "GET /login/ HTTP/1.1" 200 9072
+INFO "GET / HTTP/1.1" 200 8170
+INFO "GET /cmd HTTP/1.1" 200 11401
+INFO "GET /cmd_lab HTTP/1.1" 302 0
+INFO "GET /login/ HTTP/1.1" 200 9072
+INFO "GET /register HTTP/1.1" 200 9941
+INFO "GET /sql HTTP/1.1" 200 11784
+INFO "GET /sql HTTP/1.1" 200 11876
+INFO "GET /sql HTTP/1.1" 200 11876
+INFO "GET /data_exp HTTP/1.1" 200 9800
+INFO "GET / HTTP/1.1" 200 8262
+INFO Watching for file changes with StatReloader
+INFO "GET / HTTP/1.1" 200 8262
+INFO "GET /register HTTP/1.1" 200 10033
+INFO "GET /login/ HTTP/1.1" 200 9164
+INFO "GET /xxe HTTP/1.1" 200 13098
+INFO "GET /xxe_lab HTTP/1.1" 302 0
+INFO "GET /login/ HTTP/1.1" 200 9164
+INFO "GET /login/ HTTP/1.1" 200 9157
+INFO A:\wsl\Pygoat\pygoat\pygoat\introduction\views.py changed, reloading.
+INFO Watching for file changes with StatReloader
+INFO "GET / HTTP/1.1" 200 8255
+INFO A:\wsl\Pygoat\pygoat\pygoat\introduction\views.py changed, reloading.
+INFO Watching for file changes with StatReloader
