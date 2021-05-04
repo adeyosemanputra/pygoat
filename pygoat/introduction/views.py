@@ -29,54 +29,59 @@ def register(request):
 
     else:
         form=UserCreationForm();
-        return render(request,"registration/register.html",{"form":form})
+        return render(request,"registration/register.html",{"form":form,})
 
 def home(request):
-    if request.user.is_authenticated:
-        return render(request,'introduction/home.html')
-    else:
-         return redirect('login');
+    return render(request,'introduction/home.html',)
+
 
 def xss(request):
     return render(request,"Lab/XSS/xss.html")
-def xss_lab(request):
-    q=request.GET.get('q','');
-    f=FAANG.objects.filter(company=q)
-    if f:
-        args={"company":f[0].company,"ceo":f[0].info_set.all()[0].ceo,"about":f[0].info_set.all()[0].about}
-        return render(request,'Lab/XSS/xss_lab.html',args)
-    else:
-        return render(request,'Lab/XSS/xss_lab.html', {'query': q})
 
+def xss_lab(request):
+    if request.user.is_authenticated:
+        q=request.GET.get('q','');
+        f=FAANG.objects.filter(company=q)
+        if f:
+            args={"company":f[0].company,"ceo":f[0].info_set.all()[0].ceo,"about":f[0].info_set.all()[0].about}
+            return render(request,'Lab/XSS/xss_lab.html',args)
+        else:
+            return render(request,'Lab/XSS/xss_lab.html', {'query': q})
+    else:
+        return redirect('login')
 
 #***********************************SQL****************************************************************#
 
 def sql(request):
+
     return  render(request,'Lab/SQL/sql.html')
 
 def sql_lab(request):
+    if request.user.is_authenticated:
 
-    name=request.POST.get('name')
+        name=request.POST.get('name')
 
-    password=request.POST.get('pass')
+        password=request.POST.get('pass')
 
-    if name:
+        if name:
 
-        if login.objects.filter(user=name):
+            if login.objects.filter(user=name):
 
 
 
-            val=login.objects.raw("SELECT * FROM introduction_login WHERE user='"+name+"'AND password='"+password+"'")
+                val=login.objects.raw("SELECT * FROM introduction_login WHERE user='"+name+"'AND password='"+password+"'")
 
-            if val:
-                user=val[0].user;
-                return render(request, 'Lab/SQL/sql_lab.html',{"user1":user})
+                if val:
+                    user=val[0].user;
+                    return render(request, 'Lab/SQL/sql_lab.html',{"user1":user})
+                else:
+                    return render(request, 'Lab/SQL/sql_lab.html',{"wrongpass":password})
             else:
-                return render(request, 'Lab/SQL/sql_lab.html',{"wrongpass":password})
+                return render(request, 'Lab/SQL/sql_lab.html',{"no": "User not found"})
         else:
-            return render(request, 'Lab/SQL/sql_lab.html',{"no": "User not found"})
+            return render(request, 'Lab/SQL/sql_lab.html')
     else:
-        return render(request, 'Lab/SQL/sql_lab.html')
+        return redirect('login')
 
 #***************** INSECURE DESERIALIZATION***************************************************************#
 def insec_des(request):
@@ -89,40 +94,50 @@ pickled_user = pickle.dumps(TestUser())
 encoded_user = base64.b64encode(pickled_user)
 
 def insec_des_lab(request):
-    response = render(request,'Lab/insec_des/insec_des_lab.html', {"message":"Only Admins can see this page"})
-    token = request.COOKIES.get('token')
-    if token == None:
-        token = encoded_user
-        response.set_cookie(key='token',value=token.decode('utf-8'))
-    else:
-        token = base64.b64decode(token)
-        admin = pickle.loads(token)
-        if admin.admin == 1:
-            response = render(request,'Lab/insec_des/insec_des_lab.html', {"message":"Welcome Admin, SECRETKEY:ADMIN123"})
-            return response
+    if request.user.is_authenticated:
+        response = render(request,'Lab/insec_des/insec_des_lab.html', {"message":"Only Admins can see this page"})
+        token = request.COOKIES.get('token')
+        if token == None:
+            token = encoded_user
+            response.set_cookie(key='token',value=token.decode('utf-8'))
+        else:
+            token = base64.b64decode(token)
+            admin = pickle.loads(token)
+            if admin.admin == 1:
+                response = render(request,'Lab/insec_des/insec_des_lab.html', {"message":"Welcome Admin, SECRETKEY:ADMIN123"})
+                return response
 
-    return response
+        return response
+    else:
+        return redirect('login')
 
 #****************************************************XXE********************************************************#
 
 
 def xxe(request):
+
     return render (request,'Lab/XXE/xxe.html')
 
 def xxe_lab(request):
-    return render(request,'Lab/XXE/xxe_lab.html')
+    if request.user.is_authenticated:
+        return render(request,'Lab/XXE/xxe_lab.html')
+    else:
+        return redirect('login')
 
 @csrf_exempt
 def xxe_see(request):
+    if request.user.is_authenticated:
 
-    data=comments.objects.all();
-    com=data[0].comment
-    return render(request,'Lab/XXE/xxe_lab.html',{"com":com})
-
+        data=comments.objects.all();
+        com=data[0].comment
+        return render(request,'Lab/XXE/xxe_lab.html',{"com":com})
+    else:
+        return redirect('login')
 
 
 @csrf_exempt
 def xxe_parse(request):
+
     parser = make_parser()
     parser.setFeature(feature_external_ges, True)
     doc = parseString(request.body.decode('utf-8'), parser=parser)
@@ -145,27 +160,29 @@ def ba(request):
     return render(request,"Lab/BrokenAccess/ba.html")
 @csrf_exempt
 def ba_lab(request):
-    name = request.POST.get('name')
-    password = request.POST.get('pass')
-    if name:
+    if request.user.is_authenticated:
+        name = request.POST.get('name')
+        password = request.POST.get('pass')
+        if name:
 
 
-        if request.COOKIES.get('admin') == "1":
-            return render(request, 'Lab/BrokenAccess/ba_lab.html', {"data":"Here is your Secret Key :3600"})
-        elif login.objects.filter(user='admin',password=password):
-            html = render(request, 'Lab/BrokenAccess/ba_lab.html', {"data":"Here is your Secret Key :3600"})
-            html.set_cookie("admin", "1",max_age=20);
-            return html
-        elif login.objects.filter(user=name,password=password):
-            html = render(request, 'Lab/BrokenAccess/ba_lab.html',{"data":"Welcome Jack"} )
-            html.set_cookie("admin", "0",max_age=20);
-            return html
+            if request.COOKIES.get('admin') == "1":
+                return render(request, 'Lab/BrokenAccess/ba_lab.html', {"data":"Here is your Secret Key :3600"})
+            elif login.objects.filter(user='admin',password=password):
+                html = render(request, 'Lab/BrokenAccess/ba_lab.html', {"data":"Here is your Secret Key :3600"})
+                html.set_cookie("admin", "1",max_age=20);
+                return html
+            elif login.objects.filter(user=name,password=password):
+                html = render(request, 'Lab/BrokenAccess/ba_lab.html',{"data":"Welcome Jack"} )
+                html.set_cookie("admin", "0",max_age=20);
+                return html
+            else:
+                return render(request, 'Lab/BrokenAccess/ba_lab.html', {"data": "User Not Found"})
+
         else:
-            return render(request, 'Lab/BrokenAccess/ba_lab.html', {"data": "User Not Found"})
-
+            return render(request,'Lab/BrokenAccess/ba_lab.html',{"data":"Please Provide Credentials"})
     else:
-        return render(request,'Lab/BrokenAccess/ba_lab.html',{"data":"Please Provide Credentials"})
-
+        return redirect('login')
 
 #********************************************************Sensitive Data Exposure*****************************************************#
 
@@ -174,12 +191,15 @@ def data_exp(request):
     return  render(request,'Lab/DataExp/data_exp.html')
 
 def data_exp_lab(request):
-    return  render(request,'Lab/DataExp/data_exp_lab.html')
-
+    if request.user.is_authenticated:
+        return  render(request,'Lab/DataExp/data_exp_lab.html')
+    else:
+        return redirect('login')
 def robots(request):
-    response = render(request,'Lab/DataExp/robots.txt')
-    response['Content-Type'] =  'text/plain'
-    return response
+    if request.user.is_authenticated:
+        response = render(request,'Lab/DataExp/robots.txt')
+        response['Content-Type'] =  'text/plain'
+        return response
 
 def error(request):
     return 
@@ -190,32 +210,36 @@ def cmd(request):
     return render(request,'Lab/CMD/cmd.html')
 @csrf_exempt
 def cmd_lab(request):
-    if(request.method=="POST"):
-        domain=request.POST.get('domain')
-        domain=domain.replace("https://www.",'')
-        os=request.POST.get('os')
-        print(os)
-        if(os=='win'):
-            command="nslookup {}".format(domain)
+    if request.user.is_authenticated:
+        if(request.method=="POST"):
+            domain=request.POST.get('domain')
+            domain=domain.replace("https://www.",'')
+            os=request.POST.get('os')
+            print(os)
+            if(os=='win'):
+                command="nslookup {}".format(domain)
+            else:
+                command = "dig {}".format(domain)
+
+            output=subprocess.check_output(command,shell=True,encoding="UTF-8");
+            print(output)
+            return render(request,'Lab/CMD/cmd_lab.html',{"output":output})
         else:
-            command = "dig {}".format(domain)
-
-        output=subprocess.check_output(command,shell=True,encoding="UTF-8");
-        print(output)
-        return render(request,'Lab/CMD/cmd_lab.html',{"output":output})
+            return render(request, 'Lab/CMD/cmd_lab.html')
     else:
-        return render(request, 'Lab/CMD/cmd_lab.html')
-
+        return redirect('login')
 
 #******************************************Broken Authentication**************************************************#
 def bau(request):
     return render(request,"Lab/BrokenAuth/bau.html")
 def bau_lab(request):
-    if request.method=="GET":
-        return render(request,"Lab/BrokenAuth/bau_lab.html")
+    if request.user.is_authenticated:
+        if request.method=="GET":
+            return render(request,"Lab/BrokenAuth/bau_lab.html")
+        else:
+            return render(request, 'Lab/BrokenAuth/bau_lab.html', {"wrongpass":"yes"})
     else:
-        return render(request, 'Lab/BrokenAuth/bau_lab.html', {"wrongpass":"yes"})
-
+        return redirect('login')
 
 
 def login_otp(request):
@@ -255,7 +279,10 @@ def sec_mis(request):
     return render(request,"Lab/sec_mis/sec_mis.html")
 
 def sec_mis_lab(request):
-    return render(request,"Lab/sec_mis/sec_mis_lab.html")
+    if request.user.is_authenticated:
+        return render(request,"Lab/sec_mis/sec_mis_lab.html")
+    else:
+        return redirect('login')
 
 def secret(request):
     XHost = request.headers.get('X-Host', 'None')
@@ -271,21 +298,23 @@ def a9(request):
     return render(request,"Lab/A9/a9.html")
 @csrf_exempt
 def a9_lab(request):
-    if request.method=="GET":
-        return render(request,"Lab/A9/a9_lab.html")
-    else:
+    if request.user.is_authenticated:
+        if request.method=="GET":
+            return render(request,"Lab/A9/a9_lab.html")
+        else:
 
-        try :
-            file=request.FILES["file"]
             try :
-                data = yaml.load(file)
-                return render(request,"Lab/A9/a9_lab.html",{"data":data})
+                file=request.FILES["file"]
+                try :
+                    data = yaml.load(file)
+                    return render(request,"Lab/A9/a9_lab.html",{"data":data})
+                except:
+                    return render(request, "Lab/A9/a9_lab.html", {"data": "Error"})
+
             except:
-                return render(request, "Lab/A9/a9_lab.html", {"data": "Error"})
-
-        except:
-            return render(request, "Lab/A9/a9_lab.html", {"data":"Please Upload a Yaml file."})
-
+                return render(request, "Lab/A9/a9_lab.html", {"data":"Please Upload a Yaml file."})
+    else:
+        return redirect('login')
 def get_version(request):
       return render(request,"Lab/A9/a9_lab.html",{"version":"pyyaml v5.1"})
 
@@ -297,7 +326,10 @@ def a10(request):
     return render(request,"Lab/A10/a10.html")
 
 def a10_lab(request):
-    return render(request,"Lab/A10/a10_lab.html")
+    if request.user.is_authenticated:
+        return render(request,"Lab/A10/a10_lab.html")
+    else:
+        return redirect('login')
 
 def debug(request):
     response = render(request,'Lab/A10/debug.log')
