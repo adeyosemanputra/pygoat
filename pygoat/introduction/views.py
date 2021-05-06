@@ -327,7 +327,18 @@ def a10(request):
 
 def a10_lab(request):
     if request.user.is_authenticated:
-        return render(request,"Lab/A10/a10_lab.html")
+        if request.method=="GET":
+
+            return render(request,"Lab/A10/a10_lab.html")
+        else:
+
+            user=request.POST.get("name")
+            password=request.POST.get("pass")
+            if login.objects.filter(user=user,password=password):
+                return render(request,"Lab/A10/a10_lab.html",{"name":user})
+            else:
+                return render(request, "Lab/A10/a10_lab.html", {"error": " Wrong username or Password"})
+
     else:
         return redirect('login')
 
