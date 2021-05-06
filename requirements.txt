@@ -1,7 +1,12 @@
-﻿asgiref==3.2.7
+asgiref==3.2.7
 Django==3.0.14
 pytz==2020.1
 sqlparse==0.3.1
 php-wsgi
+<<<<<<< Updated upstream
 pyyaml==5.1
 django-crispy-forms
+=======
+pyyaml==5.1
+django-crispy-forms
+>>>>>>> Stashed changes
