@@ -129,27 +129,4 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 LOGIN_REDIRECT_URL='/'
 
-LOGGING ={
-    'version': 1,
-    'loggers': {
-        'django': {
-            'handlers': ['file'],
-            'level': 'DEBUG'
-        }
-    },
-    'handlers': {
-        'file': {
-            'level': 'INFO',
-            'class': 'logging.FileHandler',
-            'filename': './introduction/templates/Lab/A10/debug.log',
-            'formatter': 'simpleRe',
-        }
-    },
-    'formatters': {
-        'simpleRe': {
-            'format': '{levelname} {message}',
-            'style': '{',
-        }
-    }
-}
 
