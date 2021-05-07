@@ -28,6 +28,9 @@ To setup the project on your local machine:
 
 The project will be available at 127.0.0.1:8000.
 
+Installation Video Below<br>
+[![](http://img.youtube.com/vi/rfzQiMeiwso/0.jpg)](http://www.youtube.com/watch?v=rfzQiMeiwso "Installation Pygoat")
+
 ## Contributors ✨
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
