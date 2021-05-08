@@ -1,0 +1,36 @@
+{% extends "introduction/base.html" %}
+{% load static %}
+{% block content %}
+{% block title %}
+<title>Insufficient Logging & Monitoring</title>
+{% endblock  %}
+
+
+   <div class="jumbotron">
+    <h4 style="text-align:center">The Logs have been Leaked. </h4>
+    <div class="login">
+        <form method="post" action="/a10_lab">
+            {% csrf_token %}
+            <input id="input" type="text" name="name" placeholder="User Name"><br>
+            <input id="input" type="password" name="pass" placeholder="Password"><br>
+            <button  style="margin-top:20px" class="btn btn-primary" type="submit"> Log in</button>
+
+
+        </form>
+    </div>
+
+
+</div>
+
+<div class="container">
+    {% if name %}
+         <h2>Logged in as {{name}}</h2>
+    {% else %}
+         <h2>{{error}}</h2>
+    {% endif %}
+
+</div>
+
+
+
+{% endblock %}

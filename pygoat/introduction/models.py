@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import MaxValueValidator
 
 # Create your models here.
 
@@ -26,3 +27,7 @@ class authLogin(models.Model):
     name=models.CharField(max_length=200)
     password=models.CharField(max_length=200)
     userid = models.AutoField(primary_key=True)
+
+class otp(models.Model):
+    email=models.CharField(max_length=200)
+    otp=models.IntegerField(validators=[MaxValueValidator(300)])
