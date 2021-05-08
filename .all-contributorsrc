@@ -1,0 +1,54 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "pwned-17",
+      "name": "pwned-17",
+      "avatar_url": "https://avatars.githubusercontent.com/u/61360833?v=4",
+      "profile": "https://github.com/pwned-17",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "prince-7",
+      "name": "Aman Singh",
+      "avatar_url": "https://avatars.githubusercontent.com/u/53997924?v=4",
+      "profile": "https://github.com/prince-7",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+
+      "login": "adeyosemanputra",
+      "name": "adeyosemanputra",
+      "avatar_url": "https://avatars.githubusercontent.com/u/24958168?v=4",
+      "profile": "https://github.com/adeyosemanputra",
+"contributions": [
+        "code",
+        "doc"
+      ]
+    },
+    {
+      "login": "gaurav618618",
+      "name": "gaurav618618",
+      "avatar_url": "https://avatars.githubusercontent.com/u/29380890?v=4",
+      "profile": "https://github.com/gaurav618618",
+      "contributions": [
+        "code",
+        "doc"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "pygoat",
+  "projectOwner": "adeyosemanputra",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}

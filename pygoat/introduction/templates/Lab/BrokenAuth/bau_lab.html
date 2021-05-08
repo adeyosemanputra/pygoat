@@ -1,0 +1,29 @@
+{% extends "introduction/base.html" %}
+{% block content %}
+{% block title %}
+<title>Broken Authentication Lab</title>
+{% endblock  %}
+
+<div class="jumbotron">
+    <h4 style="text-align:center">Login as Admin</h4>
+    <div class="login">
+        <form method="post" action="/bau_lab">
+            {% csrf_token %}
+            <input id="input" type="text" name="name" placeholder="User Name"><br>
+            <input id="input" type="password" name="pass" placeholder="Password"><br><br>
+            <a href="/login_otp"><u>Login With OTP</u></a><br>
+            <button  style="margin-top:20px" class="btn btn-primary" type="submit"> Log in</button>
+
+
+        </form>
+    </div>
+</div>
+
+<div class="container">
+    {% if wrongpass %}
+       <h4>Wrong Password Try Using Login With OTP</h4>
+    {% endif %}
+
+
+</div>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends "introduction/base.html" %}
+{% load static %}
+{% block content %}
+{% block title %}
+<title>Broken Access Control.</title>
+{% endblock  %}
+
+<div class="jumbotron">
+    <h4 style="text-align:center"> Admins Have the Secretkey</h4>
+    <div class="login">
+        <form method="post" action="/ba_lab">
+
+            <input id="input" type="text" name="name" placeholder="User Name"><br>
+            <input id="input" type="password" name="pass" placeholder="Password"><br>
+            <button  style="margin-top:20px" class="btn btn-primary" type="submit"> Log in</button>
+
+
+        </form>
+    </div>
+</div>
+<div class="container">
+    {% if data %}
+           <h2>{{data}}</h2>
+    {% endif %}
+
+</div>
+
+
+
+{% endblock %}

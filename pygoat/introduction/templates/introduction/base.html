@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         {% block title %}
-            <title>Collapsible sidebar using Bootstrap 4</title>
+            <title>OWASP Pygoat</title>
         {% endblock %}
 
     
@@ -45,29 +45,55 @@
                         </ul>
                     </li>
                     <li>
-                        <a href="/xss">
-                            <i class="fas fa-bug"></i>
-                            XSS
-                        </a>
 
                         <a href="#sqlSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                             <i class="fas fa-bug"></i>
-                            Sql Injection
+                            A1: Injection
                         </a>
                         <ul class="collapse list-unstyled" id="sqlSubmenu">
                             <li>
                                 <a href="/sql">SQl Injection </a>
                             </li>
                             <li>
-                                <a href="#">Page 2</a>
-                            </li>
-                            <li>
-                                <a href="#">Page 3</a>
+                                <a href="/cmd">Command Injection</a>
                             </li>
                         </ul>
+						 <a href="/bau">
+                            <i class="fas fa-bug"></i>
+                            A2: Broken Authentication
+                        </a>
+						 <a href="/data_exp">
+                            <i class="fas fa-bug"></i>
+                            A3: Sensitive Data Exposure
+                        </a>
                         <a href="/xxe">
                             <i class="fas fa-bug"></i>
-                            XXE
+                            A4: XML External Entities (XXE)
+                        </a>
+                         <a href="/ba">
+                            <i class="fas fa-bug"></i>
+                            A5: Broken Access Control
+                        </a>
+						 <a href="/sec_mis">
+                            <i class="fas fa-bug"></i>
+                            A6: Security Misconfiguration
+                        </a>
+                         <a href="/xss">
+                            <i class="fas fa-bug"></i>
+                            A7: Cross Site Scripting
+                        </a>
+
+                        <a href="/insec_des">
+                            <i class="fas fa-bug"></i>
+                            A8: Insecure Deserialization
+                        </a>
+						<a href="/a9">
+                            <i class="fas fa-bug"></i>
+                            A9: Using Components with Known Vulnerabilities
+                        </a>
+						<a href="/a10">
+                            <i class="fas fa-bug"></i>
+                            A10: Insufficient Logging & Monitoring
                         </a>
                         <a href="/auth">
                             <i class="fas fa-bug"></i>
@@ -116,12 +142,20 @@
     
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                             <ul class="nav navbar-nav ml-auto">
-                                <li class="nav-item active">
-                                    <a class="nav-link" href="#">Register</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">Login</a>
-                                </li>
+                                {% if user.is_authenticated %}
+                                   <li class="nav-item active">
+                                            <a class="nav-link" href="/logout">Logout</a>
+                                        </li>
+
+                                {% else %}
+                                     <li class="nav-item">
+                                        <a class="nav-link" href="/register">Register</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/login">Login</a>
+                                    </li>
+                                {% endif %}
+
                                 <!-- <li class="nav-item">
                                     <a class="nav-link" href="#">Profile</a>
                                 </li> -->

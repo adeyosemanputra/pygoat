@@ -1,0 +1,62 @@
+{% extends 'introduction/base.html' %}
+{% block content %}
+{% block title %}
+<title>Broken Access Control</title>
+{% endblock %}
+<div class="content">
+    <h3>Broken Access Control</h3>
+    <div class="box">
+
+        <h4>What is Broken Access Control</h4>
+            <p class="bp"> Access control, sometimes called authorization, is how a web application grants access to content and functions to some users and not others. These checks are performed after authentication, and govern what ‘authorized’ users are allowed to do.      A web application’s access control model is closely tied to the content and functions that the site provides. In addition, the users may fall into a number of groups or roles with different abilities or privileges.
+
+</p>
+        <button class="coll btn btn-info">Lab Details</button>
+        <div class="lab">
+              <p class="bp">
+                  <p class="bp">
+                    This lab helps us to understand one of the authentication flaws which leads to an attacker gaining unauthorized control of an account.
+                    On accessing the lab the user is provided with a simple login in page which requires a username and password.
+                    <br>The credentials for the user Jack is <b><i>jack:jacktheripper</i></b>.
+                    <br>Use the above info to log in.<br>
+                    The main aim of this lab is to login with admin privileges to get the secret key.
+
+                   <br><br><b>Exploiting the Broken Access</b>
+                     <ul>
+                     <li>Every time a valid user logs in,the user session is set with a cookie called admin</li>
+                     <li>When you notice the cookie value when logged in as jack it is set to 0</li>
+                     <li>Use BurpSuite to intercept the request change the value of the admin cookie from 0 to 1</li>
+                     <li>This should log you in as a admin user  and display the secret key</li>
+
+                    </ul>
+
+
+
+
+                </p>
+</p>
+
+              <br>
+                  <div align="right"> <button class="btn btn-primary" type="button" onclick="window.location.href='/ba_lab'">Access Lab</button></div>
+
+              </p>
+        </div>
+        <h4>Mitigation</h4>
+             <p class="bp">
+                 <ul>
+                <li>Using proper Session management techniques</li>
+                <li>Using Tokens such as JWT to authorize the users.</li>
+                <li>Unless a resource is intended to be publicly accessible, deny access by default</li>
+                <li>Thoroughly audit and test access controls to ensure they are working as designed</li>
+
+                </ul>
+             </p>
+
+
+
+    </div>
+</div>
+
+
+
+{% endblock %}

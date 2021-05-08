@@ -1,0 +1,48 @@
+{% extends 'introduction/base.html' %}
+{% block content %}
+{% block title %}
+<title>Insufficient Logging & Monitoring</title>
+{% endblock %}
+<div class="content">
+    <h3>Insufficient Logging & Monitoring</h3>
+    <div class="box">
+      <h4>What does Insufficient Logging & Monitoring means?</h4>
+      <p class="bp">
+        
+      </p>
+    <button class="coll btn btn-info">Lab Details</button>
+    <div class="lab">
+      <p class="bp">
+          This lab helps you to get an idea of how sometimes improper logging can result in information disclosure.
+
+          The user on accessing the lab is given with a login page which says the log have been leaked.
+          The user needs to find the leak and try to gain the credentials that have been leaked in the logs.
+
+          <br><b>Finding the Log</b>
+          <ul>
+             <li>The log has been exposed in <code>/debug</code> route </li>
+            <li>This can be found out with subdomain brute-forcing or just by guess</li>
+            <li>On seeing the Log try to get the required login details as there is a leak and the logging is improperly handled.</li>
+
+          </ul>
+        
+      </p>
+      <br>
+      <div align="right"> <button class="btn btn-primary" type="button" onclick="window.location.href='/a10_lab'">Access Lab</button></div>
+    </div>
+  <div>
+    <br><h4>Mitigation</h4>
+    <p class="bp">
+      <ul>
+        <li>Ensure that logs are created in a format that can be easily used by central log management tools.</li>
+        <li>High-value transactions should have an audit trail with integrity controls to prevent manipulation or deletion.</li>
+        <li>Effective monitoring and alerting should be established so that suspicious activities can be detected and responded to in a timely manner.</li>
+        <li>Make sure that there arent any sensitive information like passwords are being logged</li>
+      </ul>
+    </p>
+  </div>
+</div>
+
+
+
+{% endblock %}
