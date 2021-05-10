@@ -23,6 +23,6 @@ RUN pip install -r requirements.txt
 
 # copy project
 COPY . /opt/app/
-RUN chmod +x /opt/app/entrypoint.sh
+RUN chmod +x /opt/app/pygoat/entrypoint.sh
 
-ENTRYPOINT [ "/opt/app/entrypoint.sh" ]
+ENTRYPOINT [ "/opt/app/pygoat/entrypoint.sh" ]
