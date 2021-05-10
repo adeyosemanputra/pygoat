@@ -13,10 +13,9 @@ RUN pip install --upgrade pip
 COPY ./requirements.txt /pygoat/pygoat
 RUN pip install -r requirements.txt
 
-# copy project
-COPY . /pygoat
+# Requirements installation
+RUN pip install -r requirements.txt
 
-EXPOSE 8000
-
-CMD python3 manage.py migrate 
-CMD python3 manage.py runserver  
+#COPY ./entrypoint.sh /
+#ENTRYPOINT ["entrypoint.sh"]
+#CMD ["python manage.py runserver"]
