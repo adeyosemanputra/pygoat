@@ -30,7 +30,7 @@ The project will be available at 127.0.0.1:8000.
 
 ### Docker Container
 1. Install [Docker](https://www.docker.com)
-2. Run `docker pull pygoat/pygoat:latest`
+2. Run `docker pull pygoat/pygoat`
 3. Run `docker run --rm -p 8000:8000 pygoat/pygoat` or `docker run pygoat/pygoat`
 4. Browse to <http://127.0.0.1:8000> 
 
