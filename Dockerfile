@@ -16,6 +16,6 @@ RUN pip install -r requirements.txt
 # Requirements installation
 RUN pip install -r requirements.txt
 
-#COPY ./entrypoint.sh /
+#COPY ./entrypoint.sh /pygoat
 #ENTRYPOINT ["entrypoint.sh"]
 #CMD ["python manage.py runserver"]
