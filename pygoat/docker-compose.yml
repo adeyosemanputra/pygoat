@@ -1,0 +1,20 @@
+services:
+  web:
+    build: .
+    image: pygoat
+    command: python manage.py runserver 0.0.0.0:8000
+    ports:
+      - "3000:3000"
+      - "8000:8000"
+    volumes:
+      - .:/code
+    depends_on:
+      - migration
+      - db
+  migration:
+    image: pygoat
+    command: python manage.py migrate --noinput
+    volumes:
+      - .:/code
+    depends_on:
+      - db
