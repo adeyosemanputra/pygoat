@@ -10,11 +10,11 @@ ENV PYTHONUNBUFFERED 1
 
 # install dependencies
 RUN pip install --upgrade pip 
-COPY ./requirements.txt /pygoat
+COPY ./requirements.txt /pygoat/pygoat
 RUN pip install -r requirements.txt
 
 # copy project
-COPY . /pygoat
+COPY . /pygoat/pygoat
 
 EXPOSE 8000
 
