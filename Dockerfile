@@ -2,7 +2,7 @@
 FROM python:3.8.3-alpine
 
 # set work directory
-WORKDIR /pygoat
+WORKDIR /pygoat/pygoat
 
 # set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
@@ -14,7 +14,7 @@ COPY ./requirements.txt /pygoat/pygoat
 RUN pip install -r requirements.txt
 
 # copy project
-COPY . /pygoat/pygoat
+COPY . /pygoat
 
 EXPOSE 8000
 
