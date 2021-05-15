@@ -2,10 +2,9 @@ services:
   web:
     build: .
     image: pygoat
-    command: python manage.py runserver 0.0.0.0:8000
+    command: python3 manage.py runserver 
     ports:
-      - "3000:3000"
-      - "8000:8000"
+     - "8000:8000"
     volumes:
       - .:/opt/app
     depends_on:
@@ -13,7 +12,7 @@ services:
       - db
   migration:
     image: pygoat
-    command: python manage.py migrate --noinput
+    command: python3 manage.py migrate
     volumes:
       - .:/opt/app
     depends_on:
