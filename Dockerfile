@@ -12,3 +12,6 @@ RUN pip install -r requirements.txt
 
 # copy project
 COPY . /app/
+
+RUN python3 pygoat/manage.py migrate
+RUN python3 pygoat/manage.py runserver
