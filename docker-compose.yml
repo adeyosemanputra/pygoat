@@ -7,7 +7,7 @@ services:
       - "3000:3000"
       - "8000:8000"
     volumes:
-      - .:/code
+      - .:/opt/app
     depends_on:
       - migration
       - db
@@ -15,6 +15,6 @@ services:
     image: pygoat
     command: python manage.py migrate --noinput
     volumes:
-      - .:/code
+      - .:/opt/app
     depends_on:
       - db
