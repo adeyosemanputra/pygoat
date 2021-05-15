@@ -12,6 +12,16 @@
     ```anything 1' OR '1' ='1```.
     Click login and now you will see that you have successfully logged into admins account.
     
+  ##### Login :
+   
+   ![image](https://user-images.githubusercontent.com/61360833/118371215-27758800-b5c9-11eb-8591-212f448ddc13.png)
+  
+  ##### On Successful injection
+  
+   ![image](https://user-images.githubusercontent.com/61360833/118371252-5986ea00-b5c9-11eb-9efb-6beedd558f56.png)
+
+
+    
     
  * ### Command Injection
     The user on accessing the lab is provided with a feature to perform a name server lookup on the given domain. The user has to give a domain name and the server would         perform a ns lookup and return back to the client. If the user is running the lab, based on the OS he can select Windows or Linux.
@@ -20,6 +30,9 @@
    The user can give a domain say ```google.com && [any cmd]```
    In This case lets give``` google.com && dir```and choose windows.
    This should give you the output for both```ns lookup``` as well as for the ```dir```.
+   
+   ![image](https://user-images.githubusercontent.com/61360833/118371341-cef2ba80-b5c9-11eb-9860-4f274ed22c8a.png)
+
     
     
 ## A2:Broken Authentication
@@ -50,6 +63,19 @@ Now to send the otp to admins mail you need to figure out the admins mail id. Lu
   The user has to find a way to trigger server error , so that the server throws some sensitive data in its error .
   Here the developer has forgoten to turn ```debug to false``` which resulted in showing the ```settings.py``` file whihc has some sensitive data.
   Try entering a ```random route``` to trigger the error and go through the settings.py file to find the sensitive data.
+  
+  ##### Triggering Error:
+  
+  ![image](https://user-images.githubusercontent.com/61360833/118371395-1da05480-b5ca-11eb-9d70-8a6d7708d039.png)
+
+ ##### Finding the routes:
+  
+  ![image](https://user-images.githubusercontent.com/61360833/118371562-be8f0f80-b5ca-11eb-937f-b877ebfcc3a1.png)
+  
+#####  Finding the flag :
+    
+   ![image](https://user-images.githubusercontent.com/61360833/118371534-a919e580-b5ca-11eb-8f7d-02d0c9322a94.png)
+
 
 
 ## A4:XML External Entities
@@ -96,6 +122,28 @@ When you notice the cookie value when logged in as jack it is set to ```0```
 Use BurpSuite to intercept the request change the value of the admin cookie from ```0 to 1```
 This should log you in as a admin user and display the ```secret key```
 
+###### The Scenario
+
+![image](https://user-images.githubusercontent.com/61360833/118371737-9358f000-b5cb-11eb-900c-1b955f4d0078.png)
+
+
+###### The cookies
+
+![image](https://user-images.githubusercontent.com/61360833/118371826-f6e31d80-b5cb-11eb-808b-a76cc29d2947.png)
+
+
+###### Changing the cookie value
+
+![image](https://user-images.githubusercontent.com/61360833/118371851-0ebaa180-b5cc-11eb-9499-e1592cf30fc7.png)
+
+
+###### Reloading the page
+
+![image](https://user-images.githubusercontent.com/61360833/118371880-28f47f80-b5cc-11eb-99e8-5cbf34400be0.png)
+
+
+
+
 ## A6:Security Misconfiguration
  
 The user is provided with a button which say secret key on clicking the button it provides us with some information.
@@ -114,7 +162,13 @@ This should give you the secret key.
                    ```<script >alert(“xss”) </script >```
 * Now when a search query is performed with the above payload you can see that the browser is able to render the script tag and execute the javascript , thus alerting “xss” with a pop up.
 
-## A8:
+## A8:Insecure Deserialization
+
+This Lab consists of a Page that has some content only available to for the admin to see, How can we access that page as admin? How is our role defined?
+
+If we check the cookie we see that it is base64 encoded, on decoding we realise it is pickle serialised and we can see some attributes, can you change the attributes to make the page readable?
+
+Try to flip the bit of the admin from ```...admin\x94K\x00... to ...admin\x94K\x00...```
 
 ## A9:Using Components with Know Vulnerability
  
@@ -142,5 +196,6 @@ The user on accessing the lab is given with a login page which says the log have
 * On looking at the log we can see a get request ot the server that has a username and password to it 
  ``` INFO "GET /a10_lab?username=Hacker&password=Hacker HTTP/1.1" 301 0 ```
 * Now use the credentials to log in .
+
 
 
