@@ -24,3 +24,7 @@ RUN pip install -r requirements.txt
 
 # copy project
 COPY . /opt/app/
+
+EXPOSE 8000
+
+CMD python3 pygoat/manage.py runserver
