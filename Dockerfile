@@ -9,6 +9,7 @@ RUN apt-get update && apt-get install -y libpq-dev \
 RUN pip install psycopg2==2.8.3
 RUN apt-get autoremove -y gcc
 # set work directory
+RUN mkdir /opt/app
 WORKDIR /opt/app
 
 # set environment variables
@@ -23,6 +24,3 @@ RUN pip install -r requirements.txt
 
 # copy project
 COPY . /opt/app/
-RUN chmod +x /opt/app/pygoat/entrypoint.sh
-
-ENTRYPOINT [ "/opt/app/pygoat/entrypoint.sh" ]
