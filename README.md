@@ -17,6 +17,9 @@ our roadmap build intentionally vuln web Application in django. The Vulnerabilit
 • A9:2017-Using Components with Known Vulnerabilities<br>
 • A10:2017-Insufficient Logging & Monitoring<br>
 
+## Installation
+
+### From Sources
 To setup the project on your local machine:
 <br>
     1. Click on Fork.<br>
@@ -35,12 +38,13 @@ The project will be available at 127.0.0.1:8000.
 4. Browse to <http://127.0.0.1:8000> 
 
 
-Installation Video Below<br>
+### Installation Video
 [![](http://img.youtube.com/vi/rfzQiMeiwso/0.jpg)](http://www.youtube.com/watch?v=rfzQiMeiwso "Installation Pygoat")
 
-<p align="center">
+## Solutions 
       <a href="/pygoat/Solutions/solution.md">Challenge solutions</a> •
 </p>    
+
 ## Contributors ✨
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
