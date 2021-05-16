@@ -1,4 +1,4 @@
-# pygoat<br>
+# pygoat
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 [![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
@@ -16,6 +16,16 @@ our roadmap build intentionally vuln web Application in django. The Vulnerabilit
 • A8:2017-Insecure Deserialization<br>
 • A9:2017-Using Components with Known Vulnerabilities<br>
 • A10:2017-Insufficient Logging & Monitoring<br>
+
+Table of Contents
+=================
+
+* [pygoat](#pygoat)
+   * [Installation](#installation)
+      * [From Sources](#from-sources)
+      * [Docker Container](#docker-container)
+      * [Installation Video](#installation-video)
+   * [Solutions](#solutions)
 
 ## Installation
 
@@ -37,12 +47,11 @@ The project will be available at 127.0.0.1:8000.
 3. Run `docker run --rm -p 8000:8000 pygoat/pygoat` or `docker run pygoat/pygoat`
 4. Browse to <http://127.0.0.1:8000> 
 
-
 ### Installation Video
 [![](http://img.youtube.com/vi/rfzQiMeiwso/0.jpg)](http://www.youtube.com/watch?v=rfzQiMeiwso "Installation Pygoat")
 
 ## Solutions 
-      <a href="/pygoat/Solutions/solution.md">Challenge solutions</a> •
+<a href="/pygoat/Solutions/solution.md">Challenge solutions</a> •
 </p>    
 
 ## Contributors ✨
