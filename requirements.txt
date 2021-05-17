@@ -6,6 +6,5 @@ php-wsgi
 pyyaml==5.1
 django-crispy-forms
 gunicorn
-
-
-
+django-heroku
+whitenoise
