@@ -1,5 +1,6 @@
 <!Doctype html>
 {% load static %}
+
 <html lang="en">
     <head>
         <meta charset="utf-8">
@@ -140,7 +141,8 @@
                             <ul class="nav navbar-nav ml-auto">
                                 {% if user.is_authenticated %}
                                    <li class="nav-item active">
-                                            <a class="nav-link" href="/logout">Logout</a>
+                                            <a class="nav-link" href='{% url "logout" %}?next=/'>Logout</a>
+
                                         </li>
 
                                 {% else %}
