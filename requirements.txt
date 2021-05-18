@@ -8,3 +8,4 @@ django-crispy-forms
 gunicorn
 django-heroku
 whitenoise
+django-allauth

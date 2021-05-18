@@ -1,8 +1,9 @@
-from django.urls import path
+from django.urls import path,include
 
 from .import views
 
 urlpatterns = [
+    path('accounts/', include('allauth.urls')),
     path('', views.home, name='homepage'),
     path('xss', views.xss,name="xss"),
     path('xssL',views.xss_lab,name='xss_lab'),
