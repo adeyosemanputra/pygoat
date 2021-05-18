@@ -58,6 +58,10 @@ The project will be available at 127.0.0.1:8000.
 http://pygoat-web.herokuapp.com <br>
 http://pygoat.herokuapp.com
 
+cred:<br>
+username : user<br>
+password : user12345<br>
+
 ## Contributors ✨
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
