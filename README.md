@@ -58,7 +58,7 @@ The project will be available at 127.0.0.1:8000.
 http://pygoat-web.herokuapp.com <br>
 http://pygoat.herokuapp.com
 
-cred:<br>
+credential:<br>
 username : user<br>
 password : user12345<br>
 
