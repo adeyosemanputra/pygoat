@@ -54,6 +54,10 @@ The project will be available at 127.0.0.1:8000.
 <a href="/pygoat/Solutions/solution.md">Challenge solutions</a> •
 </p>    
 
+## Live Demo
+http://pygoat-web.herokuapp.com <br>
+http://pygoat.herokuapp.com
+
 ## Contributors ✨
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
