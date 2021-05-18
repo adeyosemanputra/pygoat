@@ -5,3 +5,6 @@ sqlparse==0.3.1
 php-wsgi
 pyyaml==5.1
 django-crispy-forms
+gunicorn
+django-heroku
+whitenoise
