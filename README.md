@@ -56,11 +56,12 @@ The project will be available at 127.0.0.1:8000.
 
 ## Live Demo
 http://pygoat-web.herokuapp.com <br>
-http://pygoat.herokuapp.com
-
+http://pygoat.herokuapp.com <br>
+http://pygoat-dep.herokuapp.com <br>
 credential:<br>
 username : user<br>
 password : user12345<br>
+or you could login with 0auth (google) <br>
 
 ## Contributors ✨
 
