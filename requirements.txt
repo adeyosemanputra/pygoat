@@ -1,0 +1,11 @@
+asgiref==3.2.7
+Django==3.0.14
+pytz==2020.1
+sqlparse==0.3.1
+php-wsgi
+pyyaml==5.1
+django-crispy-forms
+gunicorn
+django-heroku
+whitenoise
+django-allauth
