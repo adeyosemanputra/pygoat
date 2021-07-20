@@ -1,0 +1,838 @@
+{
+  "version": "12.0.0",
+  "artifacts": {
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    },
+    "LoadBalancerStack": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "LoadBalancerStack.template.json",
+        "validateOnSynth": false
+      },
+      "metadata": {
+        "/LoadBalancerStack/VPC/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VPCB9E5F0B4",
+            "trace": [
+              "new Vpc (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:355:25)",
+              "/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8154:58",
+              "Kernel._wrapSandboxCode (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8582:24)",
+              "Kernel._create (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8154:34)",
+              "Kernel.create (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:7895:29)",
+              "KernelHost.processRequest (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9479:36)",
+              "KernelHost.run (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9442:22)",
+              "Immediate._onImmediate (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9443:46)",
+              "processImmediate (internal/timers.js:461:21)"
+            ]
+          }
+        ],
+        "/LoadBalancerStack/VPC/PublicSubnet1/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VPCPublicSubnet1SubnetB4246D30",
+            "trace": [
+              "new Subnet (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:679:24)",
+              "new PublicSubnet (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:844:9)",
+              "/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:577:42",
+              "Array.forEach (<anonymous>)",
+              "Vpc.createSubnetResources (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:561:32)",
+              "Vpc.createSubnets (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:557:18)",
+              "new Vpc (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:376:14)",
+              "/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8154:58",
+              "Kernel._wrapSandboxCode (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8582:24)",
+              "Kernel._create (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8154:34)",
+              "Kernel.create (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:7895:29)",
+              "KernelHost.processRequest (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9479:36)",
+              "KernelHost.run (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9442:22)",
+              "Immediate._onImmediate (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9443:46)",
+              "processImmediate (internal/timers.js:461:21)"
+            ]
+          }
+        ],
+        "/LoadBalancerStack/VPC/PublicSubnet1/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VPCPublicSubnet1RouteTableFEE4B781",
+            "trace": [
+              "new Subnet (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:695:23)",
+              "new PublicSubnet (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:844:9)",
+              "/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:577:42",
+              "Array.forEach (<anonymous>)",
+              "Vpc.createSubnetResources (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:561:32)",
+              "Vpc.createSubnets (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:557:18)",
+              "new Vpc (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:376:14)",
+              "/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8154:58",
+              "Kernel._wrapSandboxCode (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8582:24)",
+              "Kernel._create (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8154:34)",
+              "Kernel.create (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:7895:29)",
+              "KernelHost.processRequest (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9479:36)",
+              "KernelHost.run (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9442:22)",
+              "Immediate._onImmediate (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9443:46)",
+              "processImmediate (internal/timers.js:461:21)"
+            ]
+          }
+        ],
+        "/LoadBalancerStack/VPC/PublicSubnet1/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VPCPublicSubnet1RouteTableAssociation0B0896DC",
+            "trace": [
+              "new Subnet (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:700:9)",
+              "new PublicSubnet (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:844:9)",
+              "/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:577:42",
+              "Array.forEach (<anonymous>)",
+              "Vpc.createSubnetResources (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:561:32)",
+              "Vpc.createSubnets (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:557:18)",
+              "new Vpc (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:376:14)",
+              "/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8154:58",
+              "Kernel._wrapSandboxCode (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8582:24)",
+              "Kernel._create (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8154:34)",
+              "Kernel.create (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:7895:29)",
+              "KernelHost.processRequest (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9479:36)",
+              "KernelHost.run (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9442:22)",
+              "Immediate._onImmediate (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9443:46)",
+              "processImmediate (internal/timers.js:461:21)"
+            ]
+          }
+        ],
+        "/LoadBalancerStack/VPC/PublicSubnet1/DefaultRoute": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VPCPublicSubnet1DefaultRoute91CEF279",
+            "trace": [
+              "PublicSubnet.addDefaultInternetRoute (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:735:23)",
+              "/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:388:30",
+              "Array.forEach (<anonymous>)",
+              "new Vpc (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:387:32)",
+              "/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8154:58",
+              "Kernel._wrapSandboxCode (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8582:24)",
+              "Kernel._create (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8154:34)",
+              "Kernel.create (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:7895:29)",
+              "KernelHost.processRequest (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9479:36)",
+              "KernelHost.run (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9442:22)",
+              "Immediate._onImmediate (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9443:46)",
+              "processImmediate (internal/timers.js:461:21)"
+            ]
+          }
+        ],
+        "/LoadBalancerStack/VPC/PublicSubnet1/EIP": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VPCPublicSubnet1EIP6AD938E8",
+            "trace": [
+              "PublicSubnet.addNatGateway (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:864:27)",
+              "NatGatewayProvider.configureNat (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/nat.js:77:33)",
+              "Vpc.createNatGateways (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:535:18)",
+              "new Vpc (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:393:22)",
+              "/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8154:58",
+              "Kernel._wrapSandboxCode (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8582:24)",
+              "Kernel._create (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8154:34)",
+              "Kernel.create (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:7895:29)",
+              "KernelHost.processRequest (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9479:36)",
+              "KernelHost.run (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9442:22)",
+              "Immediate._onImmediate (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9443:46)",
+              "processImmediate (internal/timers.js:461:21)"
+            ]
+          }
+        ],
+        "/LoadBalancerStack/VPC/PublicSubnet1/NATGateway": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VPCPublicSubnet1NATGatewayE0556630",
+            "trace": [
+              "PublicSubnet.addNatGateway (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:862:21)",
+              "NatGatewayProvider.configureNat (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/nat.js:77:33)",
+              "Vpc.createNatGateways (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:535:18)",
+              "new Vpc (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:393:22)",
+              "/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8154:58",
+              "Kernel._wrapSandboxCode (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8582:24)",
+              "Kernel._create (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8154:34)",
+              "Kernel.create (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:7895:29)",
+              "KernelHost.processRequest (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9479:36)",
+              "KernelHost.run (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9442:22)",
+              "Immediate._onImmediate (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9443:46)",
+              "processImmediate (internal/timers.js:461:21)"
+            ]
+          }
+        ],
+        "/LoadBalancerStack/VPC/PublicSubnet2/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VPCPublicSubnet2Subnet74179F39",
+            "trace": [
+              "new Subnet (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:679:24)",
+              "new PublicSubnet (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:844:9)",
+              "/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:577:42",
+              "Array.forEach (<anonymous>)",
+              "Vpc.createSubnetResources (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:561:32)",
+              "Vpc.createSubnets (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:557:18)",
+              "new Vpc (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:376:14)",
+              "/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8154:58",
+              "Kernel._wrapSandboxCode (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8582:24)",
+              "Kernel._create (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8154:34)",
+              "Kernel.create (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:7895:29)",
+              "KernelHost.processRequest (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9479:36)",
+              "KernelHost.run (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9442:22)",
+              "Immediate._onImmediate (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9443:46)",
+              "processImmediate (internal/timers.js:461:21)"
+            ]
+          }
+        ],
+        "/LoadBalancerStack/VPC/PublicSubnet2/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VPCPublicSubnet2RouteTable6F1A15F1",
+            "trace": [
+              "new Subnet (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:695:23)",
+              "new PublicSubnet (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:844:9)",
+              "/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:577:42",
+              "Array.forEach (<anonymous>)",
+              "Vpc.createSubnetResources (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:561:32)",
+              "Vpc.createSubnets (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:557:18)",
+              "new Vpc (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:376:14)",
+              "/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8154:58",
+              "Kernel._wrapSandboxCode (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8582:24)",
+              "Kernel._create (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8154:34)",
+              "Kernel.create (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:7895:29)",
+              "KernelHost.processRequest (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9479:36)",
+              "KernelHost.run (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9442:22)",
+              "Immediate._onImmediate (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9443:46)",
+              "processImmediate (internal/timers.js:461:21)"
+            ]
+          }
+        ],
+        "/LoadBalancerStack/VPC/PublicSubnet2/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VPCPublicSubnet2RouteTableAssociation5A808732",
+            "trace": [
+              "new Subnet (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:700:9)",
+              "new PublicSubnet (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:844:9)",
+              "/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:577:42",
+              "Array.forEach (<anonymous>)",
+              "Vpc.createSubnetResources (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:561:32)",
+              "Vpc.createSubnets (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:557:18)",
+              "new Vpc (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:376:14)",
+              "/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8154:58",
+              "Kernel._wrapSandboxCode (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8582:24)",
+              "Kernel._create (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8154:34)",
+              "Kernel.create (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:7895:29)",
+              "KernelHost.processRequest (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9479:36)",
+              "KernelHost.run (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9442:22)",
+              "Immediate._onImmediate (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9443:46)",
+              "processImmediate (internal/timers.js:461:21)"
+            ]
+          }
+        ],
+        "/LoadBalancerStack/VPC/PublicSubnet2/DefaultRoute": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VPCPublicSubnet2DefaultRouteB7481BBA",
+            "trace": [
+              "PublicSubnet.addDefaultInternetRoute (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:735:23)",
+              "/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:388:30",
+              "Array.forEach (<anonymous>)",
+              "new Vpc (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:387:32)",
+              "/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8154:58",
+              "Kernel._wrapSandboxCode (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8582:24)",
+              "Kernel._create (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8154:34)",
+              "Kernel.create (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:7895:29)",
+              "KernelHost.processRequest (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9479:36)",
+              "KernelHost.run (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9442:22)",
+              "Immediate._onImmediate (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9443:46)",
+              "processImmediate (internal/timers.js:461:21)"
+            ]
+          }
+        ],
+        "/LoadBalancerStack/VPC/PublicSubnet2/EIP": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VPCPublicSubnet2EIP4947BC00",
+            "trace": [
+              "PublicSubnet.addNatGateway (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:864:27)",
+              "NatGatewayProvider.configureNat (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/nat.js:77:33)",
+              "Vpc.createNatGateways (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:535:18)",
+              "new Vpc (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:393:22)",
+              "/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8154:58",
+              "Kernel._wrapSandboxCode (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8582:24)",
+              "Kernel._create (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8154:34)",
+              "Kernel.create (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:7895:29)",
+              "KernelHost.processRequest (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9479:36)",
+              "KernelHost.run (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9442:22)",
+              "Immediate._onImmediate (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9443:46)",
+              "processImmediate (internal/timers.js:461:21)"
+            ]
+          }
+        ],
+        "/LoadBalancerStack/VPC/PublicSubnet2/NATGateway": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VPCPublicSubnet2NATGateway3C070193",
+            "trace": [
+              "PublicSubnet.addNatGateway (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:862:21)",
+              "NatGatewayProvider.configureNat (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/nat.js:77:33)",
+              "Vpc.createNatGateways (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:535:18)",
+              "new Vpc (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:393:22)",
+              "/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8154:58",
+              "Kernel._wrapSandboxCode (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8582:24)",
+              "Kernel._create (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8154:34)",
+              "Kernel.create (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:7895:29)",
+              "KernelHost.processRequest (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9479:36)",
+              "KernelHost.run (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9442:22)",
+              "Immediate._onImmediate (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9443:46)",
+              "processImmediate (internal/timers.js:461:21)"
+            ]
+          }
+        ],
+        "/LoadBalancerStack/VPC/PrivateSubnet1/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VPCPrivateSubnet1Subnet8BCA10E0",
+            "trace": [
+              "new Subnet (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:679:24)",
+              "new PrivateSubnet (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:884:9)",
+              "/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:582:43",
+              "Array.forEach (<anonymous>)",
+              "Vpc.createSubnetResources (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:561:32)",
+              "Vpc.createSubnets (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:557:18)",
+              "new Vpc (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:376:14)",
+              "/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8154:58",
+              "Kernel._wrapSandboxCode (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8582:24)",
+              "Kernel._create (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8154:34)",
+              "Kernel.create (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:7895:29)",
+              "KernelHost.processRequest (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9479:36)",
+              "KernelHost.run (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9442:22)",
+              "Immediate._onImmediate (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9443:46)",
+              "processImmediate (internal/timers.js:461:21)"
+            ]
+          }
+        ],
+        "/LoadBalancerStack/VPC/PrivateSubnet1/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VPCPrivateSubnet1RouteTableBE8A6027",
+            "trace": [
+              "new Subnet (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:695:23)",
+              "new PrivateSubnet (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:884:9)",
+              "/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:582:43",
+              "Array.forEach (<anonymous>)",
+              "Vpc.createSubnetResources (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:561:32)",
+              "Vpc.createSubnets (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:557:18)",
+              "new Vpc (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:376:14)",
+              "/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8154:58",
+              "Kernel._wrapSandboxCode (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8582:24)",
+              "Kernel._create (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8154:34)",
+              "Kernel.create (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:7895:29)",
+              "KernelHost.processRequest (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9479:36)",
+              "KernelHost.run (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9442:22)",
+              "Immediate._onImmediate (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9443:46)",
+              "processImmediate (internal/timers.js:461:21)"
+            ]
+          }
+        ],
+        "/LoadBalancerStack/VPC/PrivateSubnet1/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VPCPrivateSubnet1RouteTableAssociation347902D1",
+            "trace": [
+              "new Subnet (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:700:9)",
+              "new PrivateSubnet (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:884:9)",
+              "/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:582:43",
+              "Array.forEach (<anonymous>)",
+              "Vpc.createSubnetResources (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:561:32)",
+              "Vpc.createSubnets (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:557:18)",
+              "new Vpc (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:376:14)",
+              "/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8154:58",
+              "Kernel._wrapSandboxCode (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8582:24)",
+              "Kernel._create (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8154:34)",
+              "Kernel.create (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:7895:29)",
+              "KernelHost.processRequest (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9479:36)",
+              "KernelHost.run (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9442:22)",
+              "Immediate._onImmediate (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9443:46)",
+              "processImmediate (internal/timers.js:461:21)"
+            ]
+          }
+        ],
+        "/LoadBalancerStack/VPC/PrivateSubnet1/DefaultRoute": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VPCPrivateSubnet1DefaultRouteAE1D6490",
+            "trace": [
+              "PrivateSubnet.addRoute (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:782:23)",
+              "NatGatewayProvider.configureSubnet (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/nat.js:92:16)",
+              "NatGatewayProvider.configureNat (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/nat.js:86:18)",
+              "Vpc.createNatGateways (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:535:18)",
+              "new Vpc (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:393:22)",
+              "/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8154:58",
+              "Kernel._wrapSandboxCode (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8582:24)",
+              "Kernel._create (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8154:34)",
+              "Kernel.create (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:7895:29)",
+              "KernelHost.processRequest (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9479:36)",
+              "KernelHost.run (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9442:22)",
+              "Immediate._onImmediate (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9443:46)",
+              "processImmediate (internal/timers.js:461:21)"
+            ]
+          }
+        ],
+        "/LoadBalancerStack/VPC/PrivateSubnet2/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VPCPrivateSubnet2SubnetCFCDAA7A",
+            "trace": [
+              "new Subnet (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:679:24)",
+              "new PrivateSubnet (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:884:9)",
+              "/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:582:43",
+              "Array.forEach (<anonymous>)",
+              "Vpc.createSubnetResources (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:561:32)",
+              "Vpc.createSubnets (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:557:18)",
+              "new Vpc (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:376:14)",
+              "/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8154:58",
+              "Kernel._wrapSandboxCode (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8582:24)",
+              "Kernel._create (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8154:34)",
+              "Kernel.create (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:7895:29)",
+              "KernelHost.processRequest (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9479:36)",
+              "KernelHost.run (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9442:22)",
+              "Immediate._onImmediate (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9443:46)",
+              "processImmediate (internal/timers.js:461:21)"
+            ]
+          }
+        ],
+        "/LoadBalancerStack/VPC/PrivateSubnet2/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VPCPrivateSubnet2RouteTable0A19E10E",
+            "trace": [
+              "new Subnet (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:695:23)",
+              "new PrivateSubnet (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:884:9)",
+              "/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:582:43",
+              "Array.forEach (<anonymous>)",
+              "Vpc.createSubnetResources (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:561:32)",
+              "Vpc.createSubnets (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:557:18)",
+              "new Vpc (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:376:14)",
+              "/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8154:58",
+              "Kernel._wrapSandboxCode (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8582:24)",
+              "Kernel._create (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8154:34)",
+              "Kernel.create (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:7895:29)",
+              "KernelHost.processRequest (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9479:36)",
+              "KernelHost.run (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9442:22)",
+              "Immediate._onImmediate (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9443:46)",
+              "processImmediate (internal/timers.js:461:21)"
+            ]
+          }
+        ],
+        "/LoadBalancerStack/VPC/PrivateSubnet2/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VPCPrivateSubnet2RouteTableAssociation0C73D413",
+            "trace": [
+              "new Subnet (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:700:9)",
+              "new PrivateSubnet (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:884:9)",
+              "/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:582:43",
+              "Array.forEach (<anonymous>)",
+              "Vpc.createSubnetResources (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:561:32)",
+              "Vpc.createSubnets (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:557:18)",
+              "new Vpc (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:376:14)",
+              "/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8154:58",
+              "Kernel._wrapSandboxCode (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8582:24)",
+              "Kernel._create (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8154:34)",
+              "Kernel.create (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:7895:29)",
+              "KernelHost.processRequest (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9479:36)",
+              "KernelHost.run (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9442:22)",
+              "Immediate._onImmediate (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9443:46)",
+              "processImmediate (internal/timers.js:461:21)"
+            ]
+          }
+        ],
+        "/LoadBalancerStack/VPC/PrivateSubnet2/DefaultRoute": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VPCPrivateSubnet2DefaultRouteF4F5CFD2",
+            "trace": [
+              "PrivateSubnet.addRoute (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:782:23)",
+              "NatGatewayProvider.configureSubnet (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/nat.js:92:16)",
+              "NatGatewayProvider.configureNat (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/nat.js:86:18)",
+              "Vpc.createNatGateways (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:535:18)",
+              "new Vpc (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:393:22)",
+              "/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8154:58",
+              "Kernel._wrapSandboxCode (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8582:24)",
+              "Kernel._create (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8154:34)",
+              "Kernel.create (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:7895:29)",
+              "KernelHost.processRequest (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9479:36)",
+              "KernelHost.run (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9442:22)",
+              "Immediate._onImmediate (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9443:46)",
+              "processImmediate (internal/timers.js:461:21)"
+            ]
+          }
+        ],
+        "/LoadBalancerStack/VPC/IGW": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VPCIGWB7E252D3",
+            "trace": [
+              "new Vpc (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:380:25)",
+              "/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8154:58",
+              "Kernel._wrapSandboxCode (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8582:24)",
+              "Kernel._create (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8154:34)",
+              "Kernel.create (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:7895:29)",
+              "KernelHost.processRequest (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9479:36)",
+              "KernelHost.run (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9442:22)",
+              "Immediate._onImmediate (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9443:46)",
+              "processImmediate (internal/timers.js:461:21)"
+            ]
+          }
+        ],
+        "/LoadBalancerStack/VPC/VPCGW": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VPCVPCGW99B986DC",
+            "trace": [
+              "new Vpc (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/vpc.js:383:25)",
+              "/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8154:58",
+              "Kernel._wrapSandboxCode (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8582:24)",
+              "Kernel._create (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8154:34)",
+              "Kernel.create (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:7895:29)",
+              "KernelHost.processRequest (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9479:36)",
+              "KernelHost.run (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9442:22)",
+              "Immediate._onImmediate (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9443:46)",
+              "processImmediate (internal/timers.js:461:21)"
+            ]
+          }
+        ],
+        "/LoadBalancerStack/ASG/InstanceSecurityGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ASGInstanceSecurityGroup0525485D",
+            "trace": [
+              "new SecurityGroup (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/security-group.js:213:30)",
+              "new AutoScalingGroup (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-autoscaling/lib/auto-scaling-group.js:413:53)",
+              "/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8154:58",
+              "Kernel._wrapSandboxCode (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8582:24)",
+              "Kernel._create (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8154:34)",
+              "Kernel.create (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:7895:29)",
+              "KernelHost.processRequest (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9479:36)",
+              "KernelHost.run (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9442:22)",
+              "Immediate._onImmediate (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9443:46)",
+              "processImmediate (internal/timers.js:461:21)"
+            ]
+          }
+        ],
+        "/LoadBalancerStack/ASG/InstanceSecurityGroup/from LoadBalancerStackLBSecurityGroupB71A4BA8:80": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ASGInstanceSecurityGroupfromLoadBalancerStackLBSecurityGroupB71A4BA880C28BC1C3",
+            "trace": [
+              "SecurityGroup.addIngressRule (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/security-group.js:55:13)",
+              "SecurityGroup.addIngressRule (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/security-group.js:305:19)",
+              "/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/connections.js:106:31",
+              "ReactiveList.forEachAndForever (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/connections.js:226:13)",
+              "/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/connections.js:105:51",
+              "ReactiveList.forEachAndForever (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/connections.js:226:13)",
+              "Connections.allowFrom (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/connections.js:104:30)",
+              "ApplicationListener.registerConnectable (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-elasticloadbalancingv2/lib/alb/application-listener.js:322:33)",
+              "ApplicationTargetGroup.registerListener (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-elasticloadbalancingv2/lib/alb/application-target-group.js:134:22)",
+              "TargetGroupListenerAction.bind (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-elasticloadbalancingv2/lib/alb/application-listener-action.js:229:16)",
+              "ApplicationListener.setDefaultAction (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-elasticloadbalancingv2/lib/alb/application-listener.js:340:16)",
+              "ApplicationListener.addTargetGroups (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-elasticloadbalancingv2/lib/alb/application-listener.js:205:18)",
+              "ApplicationListener.addTargets (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-elasticloadbalancingv2/lib/alb/application-listener.js:241:14)",
+              "/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:7970:134",
+              "Kernel._wrapSandboxCode (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8582:24)",
+              "/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:7970:107",
+              "Kernel._ensureSync (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8563:28)",
+              "Kernel.invoke (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:7970:34)",
+              "KernelHost.processRequest (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9479:36)",
+              "KernelHost.run (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9442:22)",
+              "Immediate._onImmediate (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9443:46)",
+              "processImmediate (internal/timers.js:461:21)"
+            ]
+          }
+        ],
+        "/LoadBalancerStack/ASG/InstanceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ASGInstanceRoleE263A41B",
+            "trace": [
+              "new Role (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-iam/lib/role.js:72:22)",
+              "new AutoScalingGroup (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-autoscaling/lib/auto-scaling-group.js:420:35)",
+              "/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8154:58",
+              "Kernel._wrapSandboxCode (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8582:24)",
+              "Kernel._create (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8154:34)",
+              "Kernel.create (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:7895:29)",
+              "KernelHost.processRequest (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9479:36)",
+              "KernelHost.run (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9442:22)",
+              "Immediate._onImmediate (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9443:46)",
+              "processImmediate (internal/timers.js:461:21)"
+            ]
+          }
+        ],
+        "/LoadBalancerStack/ASG/InstanceProfile": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ASGInstanceProfile0A2834D7",
+            "trace": [
+              "new AutoScalingGroup (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-autoscaling/lib/auto-scaling-group.js:428:28)",
+              "/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8154:58",
+              "Kernel._wrapSandboxCode (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8582:24)",
+              "Kernel._create (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8154:34)",
+              "Kernel.create (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:7895:29)",
+              "KernelHost.processRequest (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9479:36)",
+              "KernelHost.run (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9442:22)",
+              "Immediate._onImmediate (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9443:46)",
+              "processImmediate (internal/timers.js:461:21)"
+            ]
+          }
+        ],
+        "/LoadBalancerStack/ASG/LaunchConfig": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ASGLaunchConfigC00AF12B",
+            "trace": [
+              "new AutoScalingGroup (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-autoscaling/lib/auto-scaling-group.js:436:30)",
+              "/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8154:58",
+              "Kernel._wrapSandboxCode (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8582:24)",
+              "Kernel._create (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8154:34)",
+              "Kernel.create (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:7895:29)",
+              "KernelHost.processRequest (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9479:36)",
+              "KernelHost.run (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9442:22)",
+              "Immediate._onImmediate (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9443:46)",
+              "processImmediate (internal/timers.js:461:21)"
+            ]
+          }
+        ],
+        "/LoadBalancerStack/ASG/ASG": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ASG46ED3070",
+            "trace": [
+              "new AutoScalingGroup (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-autoscaling/lib/auto-scaling-group.js:521:33)",
+              "/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8154:58",
+              "Kernel._wrapSandboxCode (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8582:24)",
+              "Kernel._create (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8154:34)",
+              "Kernel.create (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:7895:29)",
+              "KernelHost.processRequest (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9479:36)",
+              "KernelHost.run (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9442:22)",
+              "Immediate._onImmediate (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9443:46)",
+              "processImmediate (internal/timers.js:461:21)"
+            ]
+          }
+        ],
+        "/LoadBalancerStack/ASG/ScalingPolicyAModestLoad/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ASGScalingPolicyAModestLoadC5714E5A",
+            "trace": [
+              "new TargetTrackingScalingPolicy (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-autoscaling/lib/target-tracking-scaling-policy.js:28:25)",
+              "AutoScalingGroup.scaleOnRequestCount (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-autoscaling/lib/auto-scaling-group.js:347:24)",
+              "/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:7970:134",
+              "Kernel._wrapSandboxCode (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8582:24)",
+              "/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:7970:107",
+              "Kernel._ensureSync (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8563:28)",
+              "Kernel.invoke (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:7970:34)",
+              "KernelHost.processRequest (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9479:36)",
+              "KernelHost.run (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9442:22)",
+              "Immediate._onImmediate (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9443:46)",
+              "processImmediate (internal/timers.js:461:21)"
+            ]
+          }
+        ],
+        "/LoadBalancerStack/SsmParameterValue:--aws--service--ami-amazon-linux-latest--amzn2-ami-hvm-x86_64-gp2:C96584B6-F00A-464E-AD19-53AFF4B05118.Parameter": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SsmParameterValueawsserviceamiamazonlinuxlatestamzn2amihvmx8664gp2C96584B6F00A464EAD1953AFF4B05118Parameter",
+            "trace": [
+              "Function.fromStringParameterAttributes (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ssm/lib/parameter.js:134:15)",
+              "Function.valueForTypedStringParameter (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ssm/lib/parameter.js:208:21)",
+              "AmazonLinuxImage.getImage (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/machine-image.js:127:41)",
+              "new AutoScalingGroup (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-autoscaling/lib/auto-scaling-group.js:432:48)",
+              "/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8154:58",
+              "Kernel._wrapSandboxCode (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8582:24)",
+              "Kernel._create (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8154:34)",
+              "Kernel.create (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:7895:29)",
+              "KernelHost.processRequest (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9479:36)",
+              "KernelHost.run (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9442:22)",
+              "Immediate._onImmediate (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9443:46)",
+              "processImmediate (internal/timers.js:461:21)"
+            ]
+          }
+        ],
+        "/LoadBalancerStack/LB/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LB8A12904C",
+            "trace": [
+              "new BaseLoadBalancer (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-elasticloadbalancingv2/lib/shared/base-load-balancer.js:35:26)",
+              "new ApplicationLoadBalancer (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-elasticloadbalancingv2/lib/alb/application-load-balancer.js:28:9)",
+              "/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8154:58",
+              "Kernel._wrapSandboxCode (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8582:24)",
+              "Kernel._create (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8154:34)",
+              "Kernel.create (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:7895:29)",
+              "KernelHost.processRequest (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9479:36)",
+              "KernelHost.run (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9442:22)",
+              "Immediate._onImmediate (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9443:46)",
+              "processImmediate (internal/timers.js:461:21)"
+            ]
+          }
+        ],
+        "/LoadBalancerStack/LB/SecurityGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LBSecurityGroup8A41EA2B",
+            "trace": [
+              "new SecurityGroup (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/security-group.js:213:30)",
+              "new ApplicationLoadBalancer (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-elasticloadbalancingv2/lib/alb/application-load-balancer.js:34:56)",
+              "/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8154:58",
+              "Kernel._wrapSandboxCode (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8582:24)",
+              "Kernel._create (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8154:34)",
+              "Kernel.create (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:7895:29)",
+              "KernelHost.processRequest (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9479:36)",
+              "KernelHost.run (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9442:22)",
+              "Immediate._onImmediate (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9443:46)",
+              "processImmediate (internal/timers.js:461:21)"
+            ]
+          }
+        ],
+        "/LoadBalancerStack/LB/SecurityGroup/to LoadBalancerStackASGInstanceSecurityGroupB0050A17:80": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LBSecurityGrouptoLoadBalancerStackASGInstanceSecurityGroupB0050A1780E09A2D36",
+            "trace": [
+              "SecurityGroup.addEgressRule (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/security-group.js:70:13)",
+              "SecurityGroup.addEgressRule (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/security-group.js:345:19)",
+              "/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/connections.js:81:31",
+              "ReactiveList.forEachAndForever (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/connections.js:226:13)",
+              "/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/connections.js:80:51",
+              "ReactiveList.forEachAndForever (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/connections.js:226:13)",
+              "Connections.allowTo (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/connections.js:79:30)",
+              "Connections.allowFrom (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-ec2/lib/connections.js:112:31)",
+              "ApplicationListener.registerConnectable (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-elasticloadbalancingv2/lib/alb/application-listener.js:322:33)",
+              "ApplicationTargetGroup.registerListener (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-elasticloadbalancingv2/lib/alb/application-target-group.js:134:22)",
+              "TargetGroupListenerAction.bind (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-elasticloadbalancingv2/lib/alb/application-listener-action.js:229:16)",
+              "ApplicationListener.setDefaultAction (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-elasticloadbalancingv2/lib/alb/application-listener.js:340:16)",
+              "ApplicationListener.addTargetGroups (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-elasticloadbalancingv2/lib/alb/application-listener.js:205:18)",
+              "ApplicationListener.addTargets (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-elasticloadbalancingv2/lib/alb/application-listener.js:241:14)",
+              "/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:7970:134",
+              "Kernel._wrapSandboxCode (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8582:24)",
+              "/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:7970:107",
+              "Kernel._ensureSync (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8563:28)",
+              "Kernel.invoke (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:7970:34)",
+              "KernelHost.processRequest (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9479:36)",
+              "KernelHost.run (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9442:22)",
+              "Immediate._onImmediate (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9443:46)",
+              "processImmediate (internal/timers.js:461:21)"
+            ]
+          }
+        ],
+        "/LoadBalancerStack/LB/Listener/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LBListener49E825B4",
+            "trace": [
+              "new BaseListener (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-elasticloadbalancingv2/lib/shared/base-listener.js:21:26)",
+              "new ApplicationListener (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-elasticloadbalancingv2/lib/alb/application-listener.js:32:9)",
+              "ApplicationLoadBalancer.addListener (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-elasticloadbalancingv2/lib/alb/application-load-balancer.js:74:26)",
+              "/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:7970:134",
+              "Kernel._wrapSandboxCode (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8582:24)",
+              "/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:7970:107",
+              "Kernel._ensureSync (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8563:28)",
+              "Kernel.invoke (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:7970:34)",
+              "KernelHost.processRequest (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9479:36)",
+              "KernelHost.run (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9442:22)",
+              "Immediate._onImmediate (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9443:46)",
+              "processImmediate (internal/timers.js:461:21)"
+            ]
+          }
+        ],
+        "/LoadBalancerStack/LB/Listener/TargetGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LBListenerTargetGroupF04FCF6D",
+            "trace": [
+              "new TargetGroupBase (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-elasticloadbalancingv2/lib/shared/base-target-group.js:44:25)",
+              "new ApplicationTargetGroup (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-elasticloadbalancingv2/lib/alb/application-target-group.js:26:9)",
+              "ApplicationListener.addTargets (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/aws-elasticloadbalancingv2/lib/alb/application-listener.js:228:23)",
+              "/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:7970:134",
+              "Kernel._wrapSandboxCode (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8582:24)",
+              "/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:7970:107",
+              "Kernel._ensureSync (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8563:28)",
+              "Kernel.invoke (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:7970:34)",
+              "KernelHost.processRequest (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9479:36)",
+              "KernelHost.run (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9442:22)",
+              "Immediate._onImmediate (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9443:46)",
+              "processImmediate (internal/timers.js:461:21)"
+            ]
+          }
+        ],
+        "/LoadBalancerStack/LoadBalancer": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LoadBalancer",
+            "trace": [
+              "/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8154:58",
+              "Kernel._wrapSandboxCode (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8582:24)",
+              "Kernel._create (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8154:34)",
+              "Kernel.create (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:7895:29)",
+              "KernelHost.processRequest (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9479:36)",
+              "KernelHost.run (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9442:22)",
+              "Immediate._onImmediate (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9443:46)",
+              "processImmediate (internal/timers.js:461:21)"
+            ]
+          }
+        ],
+        "/LoadBalancerStack/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata",
+            "trace": [
+              "new MetadataResource (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/core/lib/private/metadata-resource.js:22:30)",
+              "/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/core/lib/private/synthesis.js:139:9",
+              "visit (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/core/lib/private/synthesis.js:200:9)",
+              "visit (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/core/lib/private/synthesis.js:197:9)",
+              "injectMetadataResources (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/core/lib/private/synthesis.js:128:5)",
+              "Object.synthesize (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/core/lib/private/synthesis.js:17:5)",
+              "App.synth (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/core/lib/stage.js:100:41)",
+              "/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:7970:134",
+              "Kernel._wrapSandboxCode (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8582:24)",
+              "/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:7970:107",
+              "Kernel._ensureSync (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8563:28)",
+              "Kernel.invoke (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:7970:34)",
+              "KernelHost.processRequest (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9479:36)",
+              "KernelHost.run (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9442:22)",
+              "Immediate._onImmediate (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9443:46)",
+              "processImmediate (internal/timers.js:461:21)"
+            ]
+          }
+        ],
+        "/LoadBalancerStack/CDKMetadata/Condition": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadataAvailable",
+            "trace": [
+              "new MetadataResource (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/core/lib/private/metadata-resource.js:30:35)",
+              "/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/core/lib/private/synthesis.js:139:9",
+              "visit (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/core/lib/private/synthesis.js:200:9)",
+              "visit (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/core/lib/private/synthesis.js:197:9)",
+              "injectMetadataResources (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/core/lib/private/synthesis.js:128:5)",
+              "Object.synthesize (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/core/lib/private/synthesis.js:17:5)",
+              "App.synth (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/jsii-kernel-Gckn28/node_modules/@aws-cdk/core/lib/stage.js:100:41)",
+              "/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:7970:134",
+              "Kernel._wrapSandboxCode (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8582:24)",
+              "/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:7970:107",
+              "Kernel._ensureSync (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:8563:28)",
+              "Kernel.invoke (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:7970:34)",
+              "KernelHost.processRequest (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9479:36)",
+              "KernelHost.run (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9442:22)",
+              "Immediate._onImmediate (/private/var/folders/px/128_1r4d0298kvt8x38jfdyw0000gp/T/tmp4uw01ozc/lib/program.js:9443:46)",
+              "processImmediate (internal/timers.js:461:21)"
+            ]
+          }
+        ]
+      },
+      "displayName": "LoadBalancerStack"
+    }
+  }
+}
