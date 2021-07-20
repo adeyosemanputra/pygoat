@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert --controller deployment
+    kompose.version: 1.22.0 (HEAD)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: migration
+  name: migration
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: migration
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert --controller deployment
+        kompose.version: 1.22.0 (HEAD)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: migration
+    spec:
+      containers:
+        - args:
+            - python
+            - pygoat/manage.py
+            - migrate
+            - --noinput
+          image: pygoat/pygoat
+          name: migration
+          resources: {}
+          volumeMounts:
+            - mountPath: /app
+              name: migration-claim0
+          securityContext:
+              privileged: true
+      restartPolicy: Always
+      volumes:
+        - name: migration-claim0
+          persistentVolumeClaim:
+            claimName: migration-claim0
+status: {}
