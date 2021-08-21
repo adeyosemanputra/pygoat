@@ -4,6 +4,8 @@ FROM python:3.8
 WORKDIR /app
 
 # set environment variables
+RUN apt-get update
+RUN apt-get -y install dnsutils
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
