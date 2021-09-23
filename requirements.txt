@@ -9,3 +9,6 @@ gunicorn
 django-heroku
 whitenoise
 django-allauth
+Jinja2==2.7.2
+python-etcd==0.4.5
+urllib=1.24.2
