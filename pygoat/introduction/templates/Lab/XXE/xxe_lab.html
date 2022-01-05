@@ -15,6 +15,7 @@
     <form name="ajax" onsubmit="SendToServer()">
         <label for="comment">Comment Your Thoughts:</label>
         <input  id="comment" type="text" name="comment">
+        <input type="hidden" id="Url" data-url="{% url 'xxe_parse' %}" />
         <button class="btn btn-primary" type="submit" >Let the world see</button>
     </form>
 </div>
