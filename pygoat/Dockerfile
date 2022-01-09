@@ -22,5 +22,9 @@ COPY ./requirements.txt /opt/app/requirements.txt
 RUN chmod +x /opt/app/requirements.txt
 RUN pip install -r requirements.txt
 
+
 # copy project
 COPY . /opt/app/
+RUN chmod +x /opt/app/docker-entrypoint.sh
+
+ENTRYPOINT [ "/opt/app/docker-entrypoint.sh" ]
