@@ -1,0 +1,5 @@
+!!python/object/apply:subprocess.Popen
+- !!python/tuple
+ - ls
+ - -ltr
+ - "/"

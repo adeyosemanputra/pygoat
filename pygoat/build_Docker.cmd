@@ -1,1 +1,1 @@
-docker build -t hezro/pygoat .
+docker build -t snyk/pygoat .

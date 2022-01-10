@@ -1,7 +1,7 @@
 services:
   web:
     build: .
-    image: hezro/pygoat
+    image: snyk/pygoat
     command: python manage.py runserver 0.0.0.0:8000
     ports:
       - "3000:3000"
