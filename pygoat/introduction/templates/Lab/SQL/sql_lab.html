@@ -20,10 +20,11 @@
 
 <div class="container">
     {% if user1 %}
-       <h4>Logged in as: {{user1}}</h4>
+       <h4>Logged in as: <pre>{{user1}}</pre></h4>
 
     {% elif wrongpass %}
        <h4> The password you have entered doesnt match the username!</h4>
+       <h4> The SQL query being submitted is <pre>{{ sql_error }}</pre></h4>
 
     {% elif  no %}
        <h4>User Not Found </h4>
