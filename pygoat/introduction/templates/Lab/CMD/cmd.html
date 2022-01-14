@@ -8,7 +8,7 @@
     <div class="box">
 
         <h4>What is Command Injection</h4>
-            <p class="bp"> Command injection is an attack in which the goal is execution of arbitrary commands on the host operating system via a vulnerable application. Command injection attacks are possible when an application passes unsafe user supplied data (forms, cookies, HTTP headers etc.) to a system shell. In this attack, the attacker-supplied operating system commands are usually executed with the privileges of the vulnerable application. Command injection attacks are possible largely due to insufficient input validation.
+            <p class="bp"> Command injection is an attack where the goal is execution of arbitrary commands on the host operating system via a vulnerable application. Command injection attacks are possible when an application passes unsafe user supplied data (forms, cookies, HTTP headers etc.) to a system shell. In this attack, the attacker-supplied operating system commands are usually executed with the privileges of the vulnerable application. Command injection attacks are possible largely due to insufficient input validation.
 </p>
         <button class="coll btn btn-info">Lab Details</button>
         <div class="lab">
@@ -18,19 +18,27 @@
                   <br>
 
                   The user on accessing the lab is provided with a feature to perform a name server lookup on the given domain.
-                  The user has to give a domain name and the server would perform a ns lookup and return back to the client.
-                  If the user is running the lab, based on the OS he can select Windows or Linux.
+                  A domain name has to be provided after which the server would perform a ns lookup and return back to the client.
+                  If the user is running the lab, based on the OS they can select Windows or Linux.
 
                   <br>
 
                   <br><b>Exploiting the Bug </b>
-                  <ul>
+                  <ol>
+                    <li>Method 1</li>
+                    <ul>
                         <li>The user can cause the server to execute commands ,because of the lack of input validation.</li>
-                        <li>The user can give a domain say <code>google.com && [any cmd]</code></li>
+                        <li>The user can give a domain say <code>domain && [any cmd]</code></li>
                         <li>In This case lets give <code>google.com && dir</code> and choose windows.</li>
                         <li>This should give you the output for both ns lookup as well as for the <code>dir</code></li>
-
-                 </ul>
+                    </ul>
+                    <li>Method 2</li>
+                    <ul>
+                        <li>The user can give a domain say <code>domain; [any cmd]</code></li>
+                        <li>In This case lets give <code>google.com; dir</code> and choose windows.</li>
+                        <li>This should give you the output for both ns lookup as well as for the <code>dir</code></li>
+                    </ul>
+                  </ol>
                 <br>
                <b>Understanding the cause</b><br>
                 <p class="bp">
@@ -42,9 +50,14 @@
                     If the user inputs google.com the command variable will hold <code>nslookup google.com</code>.
 
                     <br><br>
+                    <b>How CMD injection works</b>
+                    Method 1
                     Now when the user enters <code>google.com && dir</code> The command variable will hold <code>nslookup google.com && dir</code>.
-                    The <code>&&</code> means <code>and</code>.<br>The system will execute <code>nslookup google.com</code> first and <code>dir</code>
+                    The <code>&&</code> means <code>and</code>.<br>The system will execute <code>nslookup google.com</code> first and then <code>dir</code><br>
 
+                    Method 2
+                    When the user enters <code>google.com ; dir</code> The command variable will hold <code>nslookup google.com ; dir</code>.
+                    The <code>;</code> implies the completion of the command before it, in this case the nslookup command.<br>The system will execute <code>nslookup google.com</code> first and then <code>dir</code><br>
 
                 </p>
 

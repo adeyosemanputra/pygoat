@@ -19,10 +19,16 @@
 <div class="container">
     {% if output %}
     <h6><b>Output</b></h6><br>
-    <b>{{output}}</b>
+    <b><pre>{{output}}</pre></b>
+    
     {% endif %}
 </div>
 
+
+<br>
+<div align="right"> <button class="btn btn-primary" type="button" onclick="window.location.href='/cmd'">Back to lab details</button></div>
+
+</p>
 
 
 {% endblock %}

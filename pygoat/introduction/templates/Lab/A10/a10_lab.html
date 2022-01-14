@@ -24,13 +24,16 @@
 
 <div class="container">
     {% if name %}
-         <h2>Logged in as {{name}}</h2>
+         <h2>Logged in as <pre><{{name}}/pre> </h2>
     {% else %}
-         <h2>{{error}}</h2>
+         <h2> <pre>{{error}}</pre></h2>
     {% endif %}
 
 </div>
 
+<br>
+<div align="right"> <button class="btn btn-primary" type="button" onclick="window.location.href='/a10'">Back to Lab Details</button></div>
 
+</p>
 
 {% endblock %}

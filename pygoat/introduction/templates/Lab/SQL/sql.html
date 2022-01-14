@@ -24,21 +24,22 @@ The main consequences are:
  <p class="bp">
             This lab helps you to exploit the common type of sql injection vulnerability, caused due to the lack of input validation and directly exposing input into the query.<br>
 
-            The user on accessing the lab is given with a log in page . The user has to try to login in as admin.
-            The user can identify the vulnerability to be sql injection just by injecting a <i>'</i> in any of the field.
-            This would result in an sql error.<br>
+            The user on accessing the lab is given a log in page . The user has to try to login in as admin.
+            SQL Injection vulnerability can be identified by injecting a <i>'</i> in any of the fields. If it results in an SQL error, SQL injection vulnerability is identified
+            <br>
 
-            <b>Exploiting the SQL Injection.</b>
+            <b>Exploiting SQL Injection Vulnerability</b>
             <ul>
             <li>Enter the user name as admin</li>
-            <li>Enter the password as <code>anything 1' OR '1' ='1</code></li>
+            <li>Enter the password as <code>anything' OR '1' ='1</code></li>
             <li>This should log you in as admin, without knowing the admins password.</li>
         </ul><br>
             <b>Understanding the Exploit</b><br>
             <br><p class="bp">
+                The website logs a user in by checking the entered username and password against the ones stored in the database. If they match, the user is logged in.
                 Lets first analyse the sql query used to compare the username and password in the database.
                 <br><code>"SELECT * FROM introduction_login WHERE user='"+name+"'AND password='"+password+"'"</code><br>
-                The name and password parameter is the one you give as input, which is directly inserted into the query.<br>
+                The name and password parameters are the ones you give as input, which is directly inserted into the query.<br>
 
               <br><b>Why the error?</b><br><br>
 
@@ -47,10 +48,10 @@ The main consequences are:
                 The query quotes in the password field are unbalanced, this can be balanced by adding another quote to it.
 
                 <br><br>Lets just plug our payload into the query and see what it looks like.
-                <br><code>SELECT * FROM introduction_login WHERE user='admin' AND password='<b>anything 1' OR '1' ='1</b>'</code><br>
+                <br><code>SELECT * FROM introduction_login WHERE user='admin' AND password='<b>anything' OR '1' ='1</b>'</code><br>
 
-                Now the query means select username = admin where password is anything or 1=1 .
-                1=1 will always result in true and the query fetches the user with name admin and password=true.
+                Now the query means select username = admin where password is <code>anything OR '1'='1'</code>  . <br>
+                <code>'1'='1'</code> will always result in TRUE and the query fetches the user with name admin and password=TRUE.
 
                 <br>Thus allowing us to login in as admin.
 

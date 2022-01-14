@@ -24,6 +24,8 @@ import json
 from dataclasses import dataclass
 
 
+#*****************************************Login and Registration****************************************************#
+
 
 def register(request):
     if request.method=="POST":
@@ -41,6 +43,8 @@ def home(request):
         return render(request,'introduction/home.html',)
     else:
         return redirect('login')
+
+#*****************************************XSS****************************************************#
 
 
 def xss(request):
@@ -81,15 +85,32 @@ def sql_lab(request):
 
             if login.objects.filter(user=name):
 
-
-
-                val=login.objects.raw("SELECT * FROM introduction_login WHERE user='"+name+"'AND password='"+password+"'")
+                sql_query = "SELECT * FROM introduction_login WHERE user='"+name+"'AND password='"+password+"'"
+                print(sql_query)
+                try:
+                    print("\nin try\n")
+                    val=login.objects.raw(sql_query)
+                except:
+                    print("\nin except\n")
+                    return render(
+                        request, 
+                        'Lab/SQL/sql_lab.html',
+                        {
+                            "wrongpass":password,
+                            "sql_error":sql_query
+                        })
 
                 if val:
                     user=val[0].user;
                     return render(request, 'Lab/SQL/sql_lab.html',{"user1":user})
                 else:
-                    return render(request, 'Lab/SQL/sql_lab.html',{"wrongpass":password})
+                    return render(
+                        request, 
+                        'Lab/SQL/sql_lab.html',
+                        {
+                            "wrongpass":password,
+                            "sql_error":sql_query
+                        })
             else:
                 return render(request, 'Lab/SQL/sql_lab.html',{"no": "User not found"})
         else:
@@ -98,6 +119,7 @@ def sql_lab(request):
         return redirect('login')
 
 #***************** INSECURE DESERIALIZATION***************************************************************#
+
 def insec_des(request):
     if request.user.is_authenticated:
         return  render(request,'Lab/insec_des/insec_des.html')
@@ -234,6 +256,7 @@ def auth_lab_logout(request):
     return response
 
 #***************************************************************Broken Access Control************************************************************#
+
 @csrf_exempt
 def ba(request):
     if request.user.is_authenticated:
@@ -291,6 +314,7 @@ def error(request):
 
 
 #******************************************************  Command Injection  ***********************************************************************#
+
 def cmd(request):
     if request.user.is_authenticated:
         return render(request,'Lab/CMD/cmd.html')
@@ -308,8 +332,24 @@ def cmd_lab(request):
                 command="nslookup {}".format(domain)
             else:
                 command = "dig {}".format(domain)
-
-            output=subprocess.check_output(command,shell=True,encoding="UTF-8");
+            
+            try:
+                # output=subprocess.check_output(command,shell=True,encoding="UTF-8")
+                process = subprocess.Popen(
+                    command,
+                    shell=True,
+                    stdout=subprocess.PIPE, 
+                    stderr=subprocess.PIPE)
+                stdout, stderr = process.communicate()
+                data = stdout.decode('utf-8')
+                stderr = stderr.decode('utf-8')
+                # res = json.loads(data)
+                # print("Stdout\n" + data)
+                output = data + stderr
+                print(data + stderr)
+            except:
+                output = "Something went wrong"
+                return render(request,'Lab/CMD/cmd_lab.html',{"output":output})
             print(output)
             return render(request,'Lab/CMD/cmd_lab.html',{"output":output})
         else:
@@ -318,6 +358,7 @@ def cmd_lab(request):
         return redirect('login')
 
 #******************************************Broken Authentication**************************************************#
+
 def bau(request):
     if request.user.is_authenticated:
 

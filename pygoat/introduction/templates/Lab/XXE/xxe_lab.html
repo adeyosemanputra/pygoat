@@ -22,8 +22,13 @@
 <div class="conatiner">
     <h4>To see your comments </h4>
     <button class="btn btn-info" type="button" onclick="window.location.href='/xxe_see'">Click Here</button><br><br>
-    <br><h5> Your comments : {{com}}</h5>
+    <br><h5> Your comments : <pre>{{com}}</pre></h5>
 </div>
 <script defer src="{% static 'Lab/xss.js' %}"></script>
+
+<br>
+<div align="right"> <button class="btn btn-primary" type="button" onclick="window.location.href='/xxe'">Back to Lab Details</button></div>
+
+</p>
 
 {% endblock %}
