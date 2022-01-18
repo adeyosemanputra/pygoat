@@ -7,29 +7,30 @@
     <h3>Using Components with Know Vulnerability</h3>
     <div class="box">
 
-        <h4>What is Using Components with Know Vulnerability means?</h4>
-            <p class="bp"> When a developer uses a piece of code or library which already has a know vulnerability, then this may result in compromise of the entire application. This occurs when the components such as libraries and frameworks used within the app almost always execute with full privileges. If a vulnerable component is exploited, it makes the hacker’s job easier to cause a serious data loss or server takeover.
+        <h4>What does Using Components with Know Vulnerability means?</h4>
+            <p class="bp"> When a developer uses a piece of code or library which already has a known vulnerability, then this may result in compromise of the entire application. This occurs when the components such as libraries and frameworks used within the app mostly execute with full privileges. If a vulnerable component is exploited, it makes the hacker’s job easier to cause a serious data loss or server takeover.
 
 </p>
 </p>
         <button class="coll btn btn-info">Lab Details</button>
         <div class="lab">
               <p class="bp">
-                 This lab helps us to understand why components with know vulnerability can be a serious issue.
+                 This lab helps us to understand why components with known vulnerabilities can be a serious issue.
                   <br>
                  The user on accessing the lab is provided with a feature to convert yaml files into json objects.
-                  The user needs to choose an yaml file and click upload to get the json data.
+                  A yaml file needs to be chosen and uploaded to get the json data.
                   There is also a get version feature which tells the user the version of the library the app uses.
 
                   <b>Exploiting the vulnerability.</b>
                   <ul>
                     <li>The app uses <code>pyyaml 5.1</code> Which is vulnerable to code execution.</li>
                     <li>You can google the library with the version to get the poc and vulnerability details</li>
+                    <li>Libraries known for the infamous code injection vulnerabilities are PyYAML 5.4 and Log4J </li>
                     <li> Create An yaml file with this payload:</li>
             <code>!!python/object/apply:subprocess.Popen<br>
                 - ls
             </code>
-             <li> On Uploading this file the user should be able to see the output of the command executed.</li>
+             <li> On Uploading this file the user should be able to see the output of the command executed in the Terminal running Django.</li>
 
                   </ul>
 
