@@ -446,6 +446,7 @@ def a9_lab(request):
                 file=request.FILES["file"]
                 try :
                     data = yaml.load(file)
+                    
                     return render(request,"Lab/A9/a9_lab.html",{"data":data})
                 except:
                     return render(request, "Lab/A9/a9_lab.html", {"data": "Error"})
