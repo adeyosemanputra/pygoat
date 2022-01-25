@@ -35,7 +35,7 @@ def register(request):
         return redirect("login")
 
     else:
-        form=UserCreationForm();
+        form=UserCreationForm()
         return render(request,"registration/register.html",{"form":form,})
 
 def home(request):
@@ -55,7 +55,7 @@ def xss(request):
 
 def xss_lab(request):
     if request.user.is_authenticated:
-        q=request.GET.get('q','');
+        q=request.GET.get('q','')
         f=FAANG.objects.filter(company=q)
         if f:
             args={"company":f[0].company,"ceo":f[0].info_set.all()[0].ceo,"about":f[0].info_set.all()[0].about}
@@ -101,7 +101,7 @@ def sql_lab(request):
                         })
 
                 if val:
-                    user=val[0].user;
+                    user=val[0].user
                     return render(request, 'Lab/SQL/sql_lab.html',{"user1":user})
                 else:
                     return render(
@@ -170,7 +170,7 @@ def xxe_lab(request):
 def xxe_see(request):
     if request.user.is_authenticated:
 
-        data=comments.objects.all();
+        data=comments.objects.all()
         com=data[0].comment
         return render(request,'Lab/XXE/xxe_lab.html',{"com":com})
     else:
@@ -190,7 +190,7 @@ def xxe_parse(request):
     startInd = text.find('>')
     endInd = text.find('<', startInd)
     text = text[startInd + 1:endInd:]
-    p=comments.objects.filter(id=1).update(comment=text);
+    p=comments.objects.filter(id=1).update(comment=text)
 
     return render(request, 'Lab/XXE/xxe_lab.html')
 
@@ -272,14 +272,32 @@ def ba_lab(request):
 
 
             if request.COOKIES.get('admin') == "1":
-                return render(request, 'Lab/BrokenAccess/ba_lab.html', {"data":"Here is your Secret Key :3600"})
+                return render(
+                    request, 
+                    'Lab/BrokenAccess/ba_lab.html', 
+                    {
+                        "data":"Here is your Secret Key :3600",
+                        "username": "admin"
+                    })
             elif login.objects.filter(user='admin',password=password):
-                html = render(request, 'Lab/BrokenAccess/ba_lab.html', {"data":"Here is your Secret Key :3600"})
-                html.set_cookie("admin", "1",max_age=200);
+                html = render(
+                    request, 
+                    'Lab/BrokenAccess/ba_lab.html', 
+                    {
+                        "data":"Here is your Secret Key :3600",
+                        "username": "admin"
+                    })
+                html.set_cookie("admin", "1",max_age=200)
                 return html
             elif login.objects.filter(user=name,password=password):
-                html = render(request, 'Lab/BrokenAccess/ba_lab.html',{"data":"Welcome Jack"} )
-                html.set_cookie("admin", "0",max_age=200);
+                html = render(
+                request, 
+                'Lab/BrokenAccess/ba_lab.html', 
+                {
+                    "data":"Here is your Secret Key :3600",
+                    "username": "admin"
+                })
+                html.set_cookie("admin", "0",max_age=200)
                 return html
             else:
                 return render(request, 'Lab/BrokenAccess/ba_lab.html', {"data": "User Not Found"})
