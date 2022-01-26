@@ -19,12 +19,20 @@
     </div>
 </div>
 <div class="container">
-    {% if user %}
-           <h2>Logged in as user: <code>{{user}}</code></h2>
+    {% if username %}
+           <h2>Logged in as user: <code>{{username}}</code></h2>
     {% endif %}
 
     {% if data %}
-           <h2><code>{{data}}</code></h2>
+           <h2>Your Secret Key is <code>{{data}}</code></h2>
+    {% endif %}
+
+    {% if not_admin %}
+           <h2><code>{{not_admin}}</code></h2>
+    {% endif %}
+
+    {% if no_creds %}
+           <h2>Please Provide Credentials</h2>
     {% endif %}
 
 </div>

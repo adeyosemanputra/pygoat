@@ -269,14 +269,12 @@ def ba_lab(request):
         name = request.POST.get('name')
         password = request.POST.get('pass')
         if name:
-
-
             if request.COOKIES.get('admin') == "1":
                 return render(
                     request, 
                     'Lab/BrokenAccess/ba_lab.html', 
                     {
-                        "data":"Here is your Secret Key :3600",
+                        "data":"0NLY_F0R_4DM1N5",
                         "username": "admin"
                     })
             elif login.objects.filter(user='admin',password=password):
@@ -284,7 +282,7 @@ def ba_lab(request):
                     request, 
                     'Lab/BrokenAccess/ba_lab.html', 
                     {
-                        "data":"Here is your Secret Key :3600",
+                        "data":"0NLY_F0R_4DM1N5",
                         "username": "admin"
                     })
                 html.set_cookie("admin", "1",max_age=200)
@@ -294,8 +292,8 @@ def ba_lab(request):
                 request, 
                 'Lab/BrokenAccess/ba_lab.html', 
                 {
-                    "data":"Here is your Secret Key :3600",
-                    "username": "admin"
+                    "not_admin":"No Secret key for this User",
+                    "username": name
                 })
                 html.set_cookie("admin", "0",max_age=200)
                 return html
@@ -303,7 +301,7 @@ def ba_lab(request):
                 return render(request, 'Lab/BrokenAccess/ba_lab.html', {"data": "User Not Found"})
 
         else:
-            return render(request,'Lab/BrokenAccess/ba_lab.html',{"data":"Please Provide Credentials"})
+            return render(request,'Lab/BrokenAccess/ba_lab.html',{"no_creds":True})
     else:
         return redirect('login')
 
@@ -442,9 +440,9 @@ def sec_mis_lab(request):
 def secret(request):
     XHost = request.headers.get('X-Host', 'None')
     if(XHost == 'admin.localhost:8000'):
-        return render(request,"Lab/sec_mis/sec_mis_lab.html", {"secret": "SECERTKEY123"})
+        return render(request,"Lab/sec_mis/sec_mis_lab.html", {"secret": "S3CR37K3Y"})
     else:
-        return render(request,"Lab/sec_mis/sec_mis_lab.html", {"secret": "Only admin.localhost:8000 can access, Your X-Host is " + XHost})
+        return render(request,"Lab/sec_mis/sec_mis_lab.html", {"no_secret": "Only admin.localhost:8000 can access, Your X-Host is " + XHost})
 
 
 #**********************************************************A9*************************************************#
