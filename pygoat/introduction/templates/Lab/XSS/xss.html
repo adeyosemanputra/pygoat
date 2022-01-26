@@ -7,8 +7,8 @@
 
         <h4>What is Cross Site Scripting or XSS?</h4>
             <p class="bp">
-            Cross site scripting or XSS is a client side code injection.<br>In this type of attack the attacker tries to inject malicious script into a trusted site.The malicious script is usually a javascript code ,which helps the attacker to perform malicious activities, like redirecting the victim to an attacker site , stealing cookies etc. Some times XSS vulnerability can be chained with other vulnerabilities to create great impact .
-                Talking about XSS we have different types of it: </p>
+            Cross site scripting or XSS is a form of client side code injection.<br>In this type of attack the attacker tries to inject malicious script into a trusted site. The malicious script is usually a piece of javascript code, which helps the attacker to perform malicious activities, like redirecting the victim to an attacker site, stealing cookies etc. Some times XSS vulnerability can be chained with other vulnerabilities to create great impact .
+                Talking about XSS, we have 3 different types: </p>
                 <ul>
                   <li>Reflected XSS</li>
                   <li>Stored XSS</li>
@@ -16,7 +16,7 @@
                 </ul>
 
             <h4>Reflected XSS</h4>
-            <p class="bp"> Reflected XSS occurs when user input is immediately returned by a web application in an error message, search result, or any other response that includes some or all of the input provided by the user as part of the request, without that data being made safe to render in the browser, and without permanently storing the user provided data.</p>
+            <p class="bp"> Reflected XSS occurs when user input is immediately returned by a web application in an error message, search result, or any other response that includes some or all of the input provided by the user as part of the request, without that data being made safe to render in the browser, and without permanently storing the user provided data. <br></p>
 
             <h4>Stored XSS</h4>
             <p class="bp">Stored XSS generally occurs when user input is stored on the target server, such as in a database, in a message forum, visitor log, comment field, etc. And then a victim is able to retrieve the stored data from the web application without that data being made safe to render in the browser.Blog comments sessions  are places which can be vulnerable to stored xss , once a vulnerable xss payload is posted  then every user that visits the blog comment session would have the impact of the vulnerability.</p>
