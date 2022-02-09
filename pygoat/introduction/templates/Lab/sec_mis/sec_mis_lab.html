@@ -9,7 +9,15 @@
 <div class="jumbotron" id="display">
 	<button class="btn btn-info" type="button" onclick="window.location.href ='/secret'">Secret Key</button><br><br>
 
-	<pre>{{secret}}</pre>
+
+	{% if secret %}
+           <h2>Success. You have the secret <pre>{{secret}}</pre></h2>
+    {% endif %}
+
+    {% if no_secret %}
+           <h3>{{no_secret}}</h3>
+    {% endif %}
+
 </div>
 <script defer src="{% static 'Lab/sec_mis.js' %}"></script>
 
