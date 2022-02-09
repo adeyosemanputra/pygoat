@@ -34,9 +34,10 @@ To setup the project on your local machine:
 <br>
     1. Click on Fork.<br>
     2. Go to your fork and clone the project to your local machine.<br>
-    3. Install the requirements `pip install -r requirements.txt`.<br>
-    4. Apply the migrations `python3 manage.py migrate`.<br>
-    5. Finally, run the development server `python3 manage.py runserver`.<br>
+    3. Install the requirements `pip install -r requirements.txt`.<br> 
+    4.Change directory to the root directory `cd pygoat`<br>
+    5. Apply the migrations `python3 manage.py migrate`.<br>
+    6. Finally, run the development server `python3 manage.py runserver`.<br>
     
 
 The project will be available at 127.0.0.1:8000.
