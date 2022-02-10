@@ -35,7 +35,7 @@ def register(request):
         return redirect("login")
 
     else:
-        form=UserCreationForm();
+        form=UserCreationForm()
         return render(request,"registration/register.html",{"form":form,})
 
 def home(request):
@@ -55,7 +55,7 @@ def xss(request):
 
 def xss_lab(request):
     if request.user.is_authenticated:
-        q=request.GET.get('q','');
+        q=request.GET.get('q','')
         f=FAANG.objects.filter(company=q)
         if f:
             args={"company":f[0].company,"ceo":f[0].info_set.all()[0].ceo,"about":f[0].info_set.all()[0].about}
@@ -101,7 +101,7 @@ def sql_lab(request):
                         })
 
                 if val:
-                    user=val[0].user;
+                    user=val[0].user
                     return render(request, 'Lab/SQL/sql_lab.html',{"user1":user})
                 else:
                     return render(
@@ -170,7 +170,7 @@ def xxe_lab(request):
 def xxe_see(request):
     if request.user.is_authenticated:
 
-        data=comments.objects.all();
+        data=comments.objects.all()
         com=data[0].comment
         return render(request,'Lab/XXE/xxe_lab.html',{"com":com})
     else:
@@ -190,7 +190,7 @@ def xxe_parse(request):
     startInd = text.find('>')
     endInd = text.find('<', startInd)
     text = text[startInd + 1:endInd:]
-    p=comments.objects.filter(id=1).update(comment=text);
+    p=comments.objects.filter(id=1).update(comment=text)
 
     return render(request, 'Lab/XXE/xxe_lab.html')
 
@@ -269,23 +269,39 @@ def ba_lab(request):
         name = request.POST.get('name')
         password = request.POST.get('pass')
         if name:
-
-
             if request.COOKIES.get('admin') == "1":
-                return render(request, 'Lab/BrokenAccess/ba_lab.html', {"data":"Here is your Secret Key :3600"})
+                return render(
+                    request, 
+                    'Lab/BrokenAccess/ba_lab.html', 
+                    {
+                        "data":"0NLY_F0R_4DM1N5",
+                        "username": "admin"
+                    })
             elif login.objects.filter(user='admin',password=password):
-                html = render(request, 'Lab/BrokenAccess/ba_lab.html', {"data":"Here is your Secret Key :3600"})
-                html.set_cookie("admin", "1",max_age=200);
+                html = render(
+                    request, 
+                    'Lab/BrokenAccess/ba_lab.html', 
+                    {
+                        "data":"0NLY_F0R_4DM1N5",
+                        "username": "admin"
+                    })
+                html.set_cookie("admin", "1",max_age=200)
                 return html
             elif login.objects.filter(user=name,password=password):
-                html = render(request, 'Lab/BrokenAccess/ba_lab.html',{"data":"Welcome Jack"} )
-                html.set_cookie("admin", "0",max_age=200);
+                html = render(
+                request, 
+                'Lab/BrokenAccess/ba_lab.html', 
+                {
+                    "not_admin":"No Secret key for this User",
+                    "username": name
+                })
+                html.set_cookie("admin", "0",max_age=200)
                 return html
             else:
                 return render(request, 'Lab/BrokenAccess/ba_lab.html', {"data": "User Not Found"})
 
         else:
-            return render(request,'Lab/BrokenAccess/ba_lab.html',{"data":"Please Provide Credentials"})
+            return render(request,'Lab/BrokenAccess/ba_lab.html',{"no_creds":True})
     else:
         return redirect('login')
 
@@ -381,29 +397,30 @@ def login_otp(request):
 @csrf_exempt
 def Otp(request):
     if request.method=="GET":
-        email=request.GET.get('email');
+        email=request.GET.get('email')
         otpN=randint(100,999)
         if email and otpN:
             if email=="admin@pygoat.com":
                 otp.objects.filter(id=2).update(otp=otpN)
                 html = render(request, "Lab/BrokenAuth/otp.html", {"otp":"Sent To Admin Mail ID"})
-                html.set_cookie("email", email);
+                html.set_cookie("email", email)
                 return html
 
             else:
                 otp.objects.filter(id=1).update(email=email, otp=otpN)
                 html=render (request,"Lab/BrokenAuth/otp.html",{"otp":otpN})
-                html.set_cookie("email",email);
-                return html;
+                html.set_cookie("email",email)
+                return html
         else:
             return render(request,"Lab/BrokenAuth/otp.html")
     else:
         otpR=request.POST.get("otp")
         email=request.COOKIES.get("email")
         if otp.objects.filter(email=email,otp=otpR) or otp.objects.filter(id=2,otp=otpR):
-            return HttpResponse("<h3>Login Success for email:::"+email+"</h3>")
+            # return HttpResponse("<h3>Login Success for email:::"+email+"</h3>")
+            return render (request,"Lab/BrokenAuth/otp.html",{"email":email})
         else:
-            return render(request,"Lab/BrokenAuth/otp.html",{"otp":"Invalid OTP Please Try Again"})
+            return render (request,"Lab/BrokenAuth/otp.html",{"otp":"Invalid OTP Please Try Again"})
 
 
 #*****************************************Security Misconfiguration**********************************************#
@@ -423,9 +440,9 @@ def sec_mis_lab(request):
 def secret(request):
     XHost = request.headers.get('X-Host', 'None')
     if(XHost == 'admin.localhost:8000'):
-        return render(request,"Lab/sec_mis/sec_mis_lab.html", {"secret": "SECERTKEY123"})
+        return render(request,"Lab/sec_mis/sec_mis_lab.html", {"secret": "S3CR37K3Y"})
     else:
-        return render(request,"Lab/sec_mis/sec_mis_lab.html", {"secret": "Only admin.localhost:8000 can access, Your X-Host is " + XHost})
+        return render(request,"Lab/sec_mis/sec_mis_lab.html", {"no_secret": "Only admin.localhost:8000 can access, Your X-Host is " + XHost})
 
 
 #**********************************************************A9*************************************************#

@@ -23,8 +23,14 @@
      </div><br>
     <div class="container">
         {% if otp %}
-           <h3 align="center">Your 3 Digit Verification Code:<i>{{otp}}</i></h3>
+           <h3 align="center">Your 3 Digit Verification Code:<code>{{otp}}</code></h3>
         {% endif %}
+
+        {% if email %}
+           <h3 align="center">Login Successful as user : <code>{{email}}</code></h3>
+        {% endif %}
+
+
 
     </div>
 <!-- In case any issue with the code please mail the administrator through this mail id : "admin@pygoat.com" -->
