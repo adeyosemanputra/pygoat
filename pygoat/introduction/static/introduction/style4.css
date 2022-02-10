@@ -54,7 +54,9 @@ span {
 /* ---------------------------------------------------
     SIDEBAR STYLE
 ----------------------------------------------------- */
-
+.sidebar-list-items{
+    background-color: #79a9cf;
+}
 .wrapper {
     display: flex;
     align-items: stretch;
