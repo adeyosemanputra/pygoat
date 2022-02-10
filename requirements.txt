@@ -1,5 +1,5 @@
-asgiref==3.2.*
-Django==3.1.13
+asgiref
+Django
 pytz==2020.1
 sqlparse==0.3.1
 php-wsgi
