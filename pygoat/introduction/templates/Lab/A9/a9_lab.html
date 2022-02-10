@@ -3,31 +3,34 @@
 {% block content %}
 {% block title %}
 <title>A9</title>
-{% endblock  %}
+{% endblock %}
 
 <div class="jumbotron">
     <h4 style="text-align:center"> Yaml To Json Converter</h4>
-   <form enctype="multipart/form-data" method="post" action="/a9_lab">
-       <input type="file" name="file"><br>
-       <br>
-       <button  class="btn btn-primary" type="submit">Upload</button>
-   </form>
-</div>  <br>
+    <form enctype="multipart/form-data" method="post" action="/a9_lab">
+        <input type="file" name="file"><br>
+        <br>
+        <button class="btn btn-info" type="submit">Upload</button>
+    </form>
+</div> <br>
 <br>
 <div class="container">
     {% if data %}
-    <h5>Here is your output:</h5><br><pre>{{data}}</pre><br>
+    <h5>Here is your output:</h5><br>
+    <pre>{{data}}</pre><br>
     <b>Check Django Terminal for Command's output</b>
     {% endif %}
 </div>
 <br>
 <div class="container">
-    <button  class="btn btn-info" onclick="window.location.href='/get_version'">Get Version</button><code>{{version}}</code>
+    <button class="btn btn-info" onclick="window.location.href='/get_version'">Get
+        Version</button><code>{{version}}</code>
 
 </div>
 
 <br>
-<div align="right"> <button class="btn btn-primary" type="button" onclick="window.location.href='/a9'">Back to Lab Details</button></div>
+<div align="right"> <button class="btn btn-info" type="button" onclick="window.location.href='/a9'">Back to Lab
+        Details</button></div>
 
 </p>
 
