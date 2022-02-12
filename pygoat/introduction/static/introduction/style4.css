@@ -50,7 +50,14 @@ i,
 span {
     display: inline-block;
 }
-
+.login-form{
+    margin-left: 10px;
+    margin-right: 10px;
+}
+.card {
+    border: #306998;
+    border-radius: 10px
+}
 /* ---------------------------------------------------
     SIDEBAR STYLE
 ----------------------------------------------------- */

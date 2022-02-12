@@ -2,7 +2,7 @@
 {% block content %}
 {% block title %}
 <title>BROKEN AUTH LAB</title>
-{% endblock  %}
+{% endblock %}
 
 <div class="jumbotron">
     <h4 style="text-align:center"> Your Information</h4>
@@ -15,8 +15,10 @@
     </div>
     <br>
     <div style="text-align:center">
-        <button onclick="window.location.href='/auth_lab/logout'"  class="btn btn-primary">Logout</button>
+        <button onclick="window.location.href='/auth_lab/logout'" class="btn btn-info">Logout</button>
     </div>
 </div>
-<i><pre>{{err_msg}}</pre></i>
+<i>
+    <pre>{{err_msg}}</pre>
+</i>
 {% endblock %}

@@ -2,7 +2,7 @@
 {% block content %}
 {% block title %}
 <title>Broken Authentication Lab</title>
-{% endblock  %}
+{% endblock %}
 
 <div class="jumbotron">
     <h4 style="text-align:center">Login as Admin</h4>
@@ -12,7 +12,7 @@
             <input id="input" type="text" name="name" placeholder="User Name"><br>
             <input id="input" type="password" name="pass" placeholder="Password"><br><br>
             <a href="/login_otp"><u>Login With OTP</u></a><br>
-            <button  style="margin-top:20px" class="btn btn-primary" type="submit"> Log in</button>
+            <button style="margin-top:20px" class="btn btn-info" type="submit"> Log in</button>
 
 
         </form>
@@ -21,14 +21,15 @@
 
 <div class="container">
     {% if wrongpass %}
-       <h4>Wrong Password Try Using Login With OTP</h4>
+    <h4>Wrong Password Try Using Login With OTP</h4>
     {% endif %}
 
 
 </div>
 
 <br>
-<div align="right"> <button class="btn btn-primary" type="button" onclick="window.location.href='/bau'">Back to Lab Details</button></div>
+<div align="right"> <button class="btn btn-info" type="button" onclick="window.location.href='/bau'">Back to Lab
+        Details</button></div>
 
 </p>
 

@@ -2,16 +2,26 @@
 {% block content %}
 {% load crispy_forms_tags %}
 {% load socialaccount %}
-<div class="conatiner">
-    <h2 align="center"> Login </h2>
+<div style="display: flex; flex-direction: row; flex-wrap: wrap">
+ <div class="card mx-auto" style="width: 25rem;margin: 10px">
+<div class="conatiner border border-info rounded">
+    <h2 align="center" style="margin-top:20px"> Login </h2>
+    
     <form method="post">
+        <div class="login-form">
         {% csrf_token %}
         {{form|crispy}}
-        <p class="bp">Click <a href="/register">Here</a> to register | <a href="{% provider_login_url 'google'%}">Login with Google</a>
+        </div>
+        <div>
+        <p class="bp" align="center">Click <a href="/register">Here</a> to register | <a href="{% provider_login_url 'google'%}">Login with Google</a>
          </p>
-        <button type="submit" class="btn btn-info">Login</button>
+        </div>
+        <div class="text-center">
+        <button type="submit" class="btn btn-info" style="margin-bottom:20px">Login</button>
+        </div>
     </form>
 
-
+</div>
+</div>
 </div>
 {% endblock %}
