@@ -32,17 +32,18 @@ Table of Contents
 ### From Sources
 To setup the project on your local machine:
 <br>
-    1. Clone the repository using GitHub website or git in Terminal using
-    ```
-    git clone https://github.com/adeyosemanputra/pygoat.git
-    ### To Download a specific branch
-    git clone -b <branch_name> https://github.com/adeyosemanputra/pygoat.git
-    ```
-    2. Install the requirements `pip install -r requirements.txt`.<br> 
-    3. Change directory to the the Django Project directory `cd pygoat`<br>
-    4. Apply the migrations `python3 manage.py migrate`.<br>
-    5. Finally, run the development server `python3 manage.py runserver`.<br>
-    
+1. Clone the repository using GitHub website or git in Terminal
+```
+  git clone https://github.com/adeyosemanputra/pygoat.git
+  ### To Download a specific branch
+  git clone -b <branch_name> https://github.com/adeyosemanputra/pygoat.git
+```
+
+2. Install the requirements `pip install -r requirements.txt`.<br> 
+3. Change directory to the the Django Project directory `cd pygoat`<br>
+4. Apply the migrations `python3 manage.py migrate`.<br>
+5. Finally, run the development server `python3 manage.py runserver`.<br>
+
 
 The project will be available at 127.0.0.1:8000.
 
