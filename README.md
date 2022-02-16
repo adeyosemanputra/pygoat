@@ -39,7 +39,7 @@ To setup the project on your local machine:
     git clone -b <branch_name> https://github.com/adeyosemanputra/pygoat.git
     ```
     2. Install the requirements `pip install -r requirements.txt`.<br> 
-    3. Change directory to the root directory `cd pygoat`<br>
+    3. Change directory to the the Django Project directory `cd pygoat`<br>
     4. Apply the migrations `python3 manage.py migrate`.<br>
     5. Finally, run the development server `python3 manage.py runserver`.<br>
     
