@@ -102,17 +102,16 @@ Sending data to the server in the form of XML is not actually vulnerable, the vu
 <?xml version='1.0'?>
 <!DOCTYPE comm [
 <!ELEMENT comm (#PCDATA)>
-<!ENTITY xxe SYSTEM "C:\windows\system32\drivers\etc\hosts">
+<!ENTITY xxe SYSTEM "File_Path_Here">
 ]>
 <comm>
 <text>&xxe;</text>
-</comm> 
+</comm>
 ```
 
-* Incase if the serve is a linux serve then use `SYSTEM "file:///etc/passwd"` instead.
+* Incase if the server is runnning linux then use file path `file:///etc/passwd` and if its running windows, use `C:\windows\system32\drivers\etc\hosts`. This will dump sensitive data about all users.
 * Forward the request and turn of intercept.
 * Go to the see comments option and click view comments this should show you the requested files in your payload if the vulnerability exists.
-
 
 ## A5:Broken Access Control
 
@@ -166,8 +165,19 @@ This should give you the secret key.
 * In order to get an xss , the user needs to execute javascript code in the browser.
 * This can be acheived by using a script tag and malicious javascript code.
 * For now let's just use a basic javascript code to alert a text to prove that xss is possible .
-```<script >alert(“xss”) </script >```
+`<script >alert(“xss”) </script >`
 * Now when a search query is performed with the above payload you can see that the browser is able to render the script tag and execute the javascript , thus alerting “xss” with a pop up.
+
+Entering input with `h4` and `font color` tags to check for XSS
+
+![xss_1](https://user-images.githubusercontent.com/70275323/154513165-672255a5-8c67-4bc3-924d-1848de072b3a.png)
+![xss_2](https://user-images.githubusercontent.com/70275323/154513170-53ec9273-f310-45fd-b30a-b09794604f3a.png)
+
+Now you can go ahead and enter `<script >alert(“xss”) </script >` once XSS is confirmed.
+
+To see results on screen, make sure your browser has JavaScript enabled. 
+
+
 
 ## A8:Insecure Deserialization
 
