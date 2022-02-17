@@ -40,13 +40,13 @@ This should give you the output for both`ns lookup` as well as for the `ifconfig
 
 ## A2:Broken Authentication
 
-The main aim of this lab is to login as admin, for that you are gonna exploit the ```lack of rate limiting ```feature in the otp verification flow. You can see that the otp is only of 3 digit(for demo purposes) and the application doesnt have any captcha or restricts number of tries for the otp.
+The main aim of this lab is to login as admin, and to acheive this, exploit the lack of `rate limiting` feature in the otp verification flow. You can see that the otp is only of 3 digit(for demo purposes) and neither does the application have any captcha nor any restriction on number of tries for the otp.
 
-Now to send the otp to admins mail you need to figure out the admins mail id. Luckily the admin has left his email id for the developers in the page source. Admins email id ```admin@pygoat.com``` Enter this email in the send otp input box and hit send,you can see that the page says that otp is sent to the email id of the admin. In order to exploit the lack of rate limiting , we can try to Brute-force the 3 digit otp.
+Now to send the otp to admins mail you need to figure out the admins mail id. Luckily the admin has left his email id for the developers in the page source. Admin's email id is `admin@pygoat.com` Enter this email in the send otp input box and hit send,you can see that the page says that otp is sent to the email id of the admin. 
 
+In order to exploit the lack of rate limiting , we can try to Brute-force the 3 digit otp.
 
-
-##### Steps to Brute force: 
+#### Steps to Brute force: 
 
 * Open Burpsuite and configure your browser to intercept the web trafic, but dont turn intercept on.
 * Send the otp to the admins mail id with the help of send otp feature.
@@ -61,7 +61,6 @@ Now to send the otp to admins mail you need to figure out the admins mail id. Lu
 * You can figure out if it has guessed the correct opt by seeing the difference in length of the response for each request.
 * The correct otp will have a small response length .
 * Using this otp you will be able to login into admins account.
-
 
 ## A3:Senstive Data Exposure
 
@@ -99,16 +98,18 @@ Sending data to the server in the form of XML is not actually vulnerable, the vu
 
 ##### The Payload
 
-``` <?xml version='1.0'?>
+``` 
+<?xml version='1.0'?>
 <!DOCTYPE comm [
 <!ELEMENT comm (#PCDATA)>
 <!ENTITY xxe SYSTEM "C:\windows\system32\drivers\etc\hosts">
 ]>
 <comm>
 <text>&xxe;</text>
-</comm> ```
+</comm> 
+```
 
-* Incase if the serve is a linux serve then use ``` SYSTEM "file:///etc/passwd" ``` instead.
+* Incase if the serve is a linux serve then use `SYSTEM "file:///etc/passwd"` instead.
 * Forward the request and turn of intercept.
 * Go to the see comments option and click view comments this should show you the requested files in your payload if the vulnerability exists.
 
@@ -116,23 +117,26 @@ Sending data to the server in the form of XML is not actually vulnerable, the vu
 ## A5:Broken Access Control
 
 On accessing the lab the user is provided with a simple login in page which requires a username and password.
-The credentials for the user Jack is ```jack:jacktheripper.```
+
+The credentials for the user Jack is `jack:jacktheripper`
+
 Use the above info to log in.
+
 The main aim of this lab is to login with admin privileges to get the secret key.
 
-##### Exploiting the Broken Access
+#### Exploiting the Broken Access
 
-Every time a valid user logs in,the user session is set with a cookie called ``` admin```
-When you notice the cookie value when logged in as jack it is set to ```0```
-Use BurpSuite to intercept the request change the value of the admin cookie from ```0 to 1```
-This should log you in as a admin user and display the ```secret key```
+Every time a valid user logs in,the user session is set with a cookie called `admin`
+When you notice the cookie value when logged in as jack it is set to `0`
+Use BurpSuite to intercept the request change the value of the admin cookie from `0` to `1`
+This should log you in as a admin user and display the `secret key`
 
-###### The Scenario
+##### The Scenario
 
 ![image](https://user-images.githubusercontent.com/61360833/118371737-9358f000-b5cb-11eb-900c-1b955f4d0078.png)
 
 
-###### The cookies
+##### The cookies
 
 ![image](https://user-images.githubusercontent.com/61360833/118371826-f6e31d80-b5cb-11eb-808b-a76cc29d2947.png)
 
@@ -147,13 +151,11 @@ This should log you in as a admin user and display the ```secret key```
 ![image](https://user-images.githubusercontent.com/61360833/118371880-28f47f80-b5cc-11eb-99e8-5cbf34400be0.png)
 
 
-
-
 ## A6:Security Misconfiguration
 
 The user is provided with a button which say secret key on clicking the button it provides us with some information.
-With this information we can conclude that we need to have a header called ```X-Host:``` and its value should be ``` admin.localhost:8000```.
-In order to add this header we can capture the requet of the button in ```BurpSuite``` and add the header to the request and forward it .
+With this information we can conclude that we need to have a header called `X-Host:` and its value should be ` admin.localhost:8000`.
+In order to add this header we can capture the requet of the button in `BurpSuite` and add the header to the request and forward it .
 This should give you the secret key.
 
 ## A7:Cross Site Scripting
