@@ -43,9 +43,7 @@ To setup the project on your local machine:
 3. Change directory to the the Django Project directory `cd pygoat`<br>
 4. Apply the migrations `python3 manage.py migrate`.<br>
 5. Finally, run the development server `python3 manage.py runserver`.<br>
-
-
-The project will be available at 127.0.0.1:8000.
+6. The project will be available at <http://127.0.0.1:8000> 
 
 ### Docker Container
 1. Install [Docker](https://www.docker.com)
