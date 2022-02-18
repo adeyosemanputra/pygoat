@@ -1,6 +1,6 @@
 # Developer's Guide
 
-PyGoat is an intentionally vulnerable web application written using the Python-Django Framework.
+PyGoat is an intentionally vulnerable web application written using the Python-Django Framework. Developers are welcome to contribute to the project. 
 
 ## Project Structure
 
@@ -41,7 +41,26 @@ The `introduction` folder has a few more folders and files
 * `urls.py` - List of URLS and how to route them
 * `views.py` - Main Backend Code that runs the Web App
 
-## Adding/Changing backend working
+## Understanding how the templates and CSS work
+
+All templates are located in `pygoat/introduction/templates` and main CSS used for the project is located in `pygoat/introduction/static/introduction/style4.css`
+
+There are 3 folders in templates 
+- introduction - Contains `base.html` and `home.html`
+- Lab - contains 12 folders. All folders except AUTH contain templates that will be displayed for the 10 labs
+- registration - contains templates for registration, login and logout
+
+`base.html` - Contains Base layout for the entire website. This is extended by most other templates and the base layout, CSS and formatting will be dictated by this template. CSS that is included for this template is automatically applied to the all other templates that extend this one.
+
+The following image shows a few parts that `base.html` defines in the website.
+
+![front_1](https://user-images.githubusercontent.com/70275323/154678332-ada4935f-a970-4ca3-a8be-f4babda8cb3b.png)
+
+The different lab folders inside `Lab` contain templates related to labs
+
+![image](https://user-images.githubusercontent.com/70275323/154682348-d51c521f-e885-4b81-958d-38c2f73ba9be.png)
+
+## Understanding how `views.py` works (Working of Backend)
 
 Navigate to `views.py` located in the introduction folder of the Django Project. This file will be your main concern when it comes to backend development
 
@@ -107,6 +126,36 @@ os=request.POST.get('os')
 
 The function usually ends with rendering a particular template along with giving it a few values. Lets see how this works.
 
+Lets take the snippet
 
+```python3
+output = "Something went wrong"
+return render(request,'Lab/CMD/cmd_lab.html',{"output":output})
+```
 
+And lets take the snippet from `'Lab/CMD/cmd_lab.html'` that will display the `output` variable
 
+```html
+<div class="container">
+    {% if output %}
+    <h6><b>Output</b></h6><br>
+    <b>
+        <pre>{{output}}</pre>
+    </b>
+    {% endif %}
+</div>
+```
+
+Lets see what these two snippets acheive
+
+The python3 code from views.py renders this template and a variable 'output' with value output ( which in this case is "Something went wrong")is made available in the HTML template
+
+The `output` variable can be accessed from the HTML template by using tags provided in the the [Django Template Language](https://docs.djangoproject.com/en/4.0/ref/templates/language/) (the link contains vital info. It's recommended to check it out)
+
+What this achieves in this case, is - 
+- Checking if output variable exists
+- If it exists, displays value of output variable in preformatted way
+
+## Understanding routing with `urls.py`
+
+There are 2 `urls.py` files in the project. 
