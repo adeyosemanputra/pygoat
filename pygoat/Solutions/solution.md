@@ -62,6 +62,7 @@ In order to exploit the lack of rate limiting , we can try to Brute-force the 3 
 * The correct otp will have a small response length .
 * Using this otp you will be able to login into admins account.
 
+#### Brute forcing using BurpSuite
 
 After sending OTP to admins EmailID, start up, Start up `BurpSuite`, turn intercept on and send any randon OTP in send OTP box
 
@@ -277,10 +278,14 @@ The user on accessing the lab is provided with a feature to convert yaml files i
 * The app uses```pyyaml 5.1 ``` Which is vulnerable to code execution.
 * You can google the library with the version to get the poc and vulnerability details
 * Create An yaml file with this payload:
-``` !!python/object/apply:subprocess.Popen ```
-```- ls ```
+
+```
+!!python/object/apply:subprocess.check_output
+- ls
+```
 
 * On Uploading this file the user should be able to see the output of the command executed.
+
 
 ## A10:Insufficient Logging & Monitoring
 
@@ -295,3 +300,11 @@ The user on accessing the lab is given with a login page which says the log have
 ``` INFO "GET /a10_lab?username=Hacker&password=Hacker HTTP/1.1" 301 0 ```
 * Now use the credentials to log in .
 
+#### Solving using WebBrowser
+ Route used is <http://127.0.0.1:8000/debug>
+![a10_1](https://user-images.githubusercontent.com/70275323/154619101-d1c4d744-098b-4500-b705-a21841f8b0e4.png)
+
+The Sensitive info is `INFO "GET /a10_lab?username=Hacker&password=Hacker HTTP/1.1" 301 0`
+
+And this info can be used to log in with credentials `Hacker:Hacker`
+![a10_2](https://user-images.githubusercontent.com/70275323/154619295-7d390db2-b047-4fae-8ff5-d34dcb9dad7f.png)
