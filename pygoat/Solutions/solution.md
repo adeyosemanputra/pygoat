@@ -62,6 +62,35 @@ In order to exploit the lack of rate limiting , we can try to Brute-force the 3 
 * The correct otp will have a small response length .
 * Using this otp you will be able to login into admins account.
 
+
+After sending OTP to admins EmailID, start up, Start up `BurpSuite`, turn intercept on and send any randon OTP in send OTP box
+
+![bau_6](https://user-images.githubusercontent.com/70275323/154610459-92ccc2be-236d-4cb2-acc7-af9bd68b49a6.png)
+
+Once request is intercepted by burpsuite, click on `actions` and then `send to intruder`
+
+![bau_1](https://user-images.githubusercontent.com/70275323/154610104-a831f913-4374-49cf-8f2b-dcbaae1e0533.png)
+
+Your intruder screen should look something like this. Parameters enclosed by the `§` symbol will be brute forced. 
+
+![bau_2](https://user-images.githubusercontent.com/70275323/154610112-39cc5fec-d407-4190-bd3f-9f4ee33f6c69.png)
+
+Select payload type as Numbers, enter range as 100-999 and step as 1. Then start attack. 
+
+![bau_3](https://user-images.githubusercontent.com/70275323/154610117-7505d2fc-f1a0-418e-b87a-b676e3ecd791.png)
+
+When attack is going on, the correct OTP will have a different response length. In this case its smaller.
+
+We see that OTP value 136 gives us a different lenght. 
+
+![bau_4](https://user-images.githubusercontent.com/70275323/154610121-29a2abc5-b3b8-49e2-9028-a5850cbaf9d9.png)
+
+It can also be found out by ordering by length
+
+![bau_5](https://user-images.githubusercontent.com/70275323/154610124-2d8d267a-a198-47af-9baa-5b632617e186.png)
+
+
+
 ## A3:Senstive Data Exposure
 
 The user has to find a way to trigger server error , so that the server throws some sensitive data in its error .
@@ -79,7 +108,6 @@ Try entering a ```random route``` to trigger the error and go through the settin
 #####  Finding the flag :
 
 ![image](https://user-images.githubusercontent.com/61360833/118371534-a919e580-b5ca-11eb-8f7d-02d0c9322a94.png)
-
 
 
 ## A4:XML External Entities
