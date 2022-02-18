@@ -141,6 +141,8 @@ Sending data to the server in the form of XML is not actually vulnerable, the vu
 * Forward the request and turn off intercept.
 * Go to the see comments option and click view comments this should show you the requested files in your payload if the vulnerability exists.
 
+#### Solving with BurpSuite
+
 Enter a random Input
 
 ![xee_1](https://user-images.githubusercontent.com/70275323/154611625-18372ba9-e9b8-49d0-8615-8483812e5ccd.png)
@@ -202,17 +204,35 @@ In inspect section, change value of admin cookie to 1 and refresh the page.
 ![ba_3](https://user-images.githubusercontent.com/70275323/154613762-16b4d637-0bfc-4196-8fdd-70458bd46994.png)
 
 
-
-
-
-
-
 ## A6:Security Misconfiguration
 
-The user is provided with a button which say secret key on clicking the button it provides us with some information.
+The user is provided with a button which, on clicking, says that `"Only admin.localhost:8000 can access, Your X-Host is None"`
+
 With this information we can conclude that we need to have a header called `X-Host:` and its value should be ` admin.localhost:8000`.
+
 In order to add this header we can capture the requet of the button in `BurpSuite` and add the header to the request and forward it .
+
 This should give you the secret key.
+
+#### Solving with BurpSuite
+
+When request is initially intercepted in BurpSuite, the interceptor tab at the right of the screen should look like this 
+
+![sec_1](https://user-images.githubusercontent.com/70275323/154617589-adc11cdb-5a18-49e3-a445-b68442cbc4e0.png)
+
+Click the small `+` button to add a header
+
+![sec_2](https://user-images.githubusercontent.com/70275323/154617594-1c54e141-c39e-4002-8438-18d9b79a74aa.png)
+
+After header `X-host: admin.localhost:8000` has been added the interceptor tab and request data tab should show the new header
+
+![sec_3](https://user-images.githubusercontent.com/70275323/154617597-b3098967-183b-4b49-b163-cb1a06fde967.png)
+![sec_4](https://user-images.githubusercontent.com/70275323/154617598-b5331bd6-cf6b-4d2c-8c7b-e94fe1a3b9b7.png)
+
+Now, click forward and turn off intercept to see Secret Key
+
+![sec_5](https://user-images.githubusercontent.com/70275323/154617602-8838dd71-45f4-4756-bbb2-fef2985c1a04.png)
+
 
 ## A7:Cross Site Scripting
 
@@ -225,15 +245,19 @@ This should give you the secret key.
 `<script >alert(“xss”) </script >`
 * Now when a search query is performed with the above payload you can see that the browser is able to render the script tag and execute the javascript , thus alerting “xss” with a pop up.
 
+#### Solving XSS in Browser
+
 Entering input with `h4` and `font color` tags to check for XSS
 
 ![xss_1](https://user-images.githubusercontent.com/70275323/154513165-672255a5-8c67-4bc3-924d-1848de072b3a.png)
+
+Results page contains the word `TEXT` in Heading as well as Green color hence XSS Vulnerability is confirmed.
+
 ![xss_2](https://user-images.githubusercontent.com/70275323/154513170-53ec9273-f310-45fd-b30a-b09794604f3a.png)
 
 Now you can go ahead and enter `<script >alert(“xss”) </script >` once XSS is confirmed.
 
 To see results on screen, make sure your browser has JavaScript enabled. 
-
 
 
 ## A8:Insecure Deserialization
@@ -270,6 +294,4 @@ The user on accessing the lab is given with a login page which says the log have
 * On looking at the log we can see a get request ot the server that has a username and password to it 
 ``` INFO "GET /a10_lab?username=Hacker&password=Hacker HTTP/1.1" 301 0 ```
 * Now use the credentials to log in .
-
-
 
