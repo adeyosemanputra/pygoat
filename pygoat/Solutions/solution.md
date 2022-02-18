@@ -138,8 +138,25 @@ Sending data to the server in the form of XML is not actually vulnerable, the vu
 ```
 
 * Incase if the server is runnning linux then use file path `file:///etc/passwd` and if its running windows, use `C:\windows\system32\drivers\etc\hosts`. This will dump sensitive data about all users.
-* Forward the request and turn of intercept.
+* Forward the request and turn off intercept.
 * Go to the see comments option and click view comments this should show you the requested files in your payload if the vulnerability exists.
+
+Enter a random Input
+
+![xee_1](https://user-images.githubusercontent.com/70275323/154611625-18372ba9-e9b8-49d0-8615-8483812e5ccd.png)
+
+The request is then intercepted in BurpSuite
+
+![xee_2](https://user-images.githubusercontent.com/70275323/154611629-6a27aecb-1986-480c-a562-5f5871ee9fc7.png)
+
+Change the XML to the Malicious Payload
+
+![xee_3](https://user-images.githubusercontent.com/70275323/154611636-7ae40776-091b-41d0-89d0-89ebbd364375.png)
+
+After forwarding and turning off the Intercept, return to browser and click on button to see your comments. Sensitive password data has been leaked.
+
+![xee_4](https://user-images.githubusercontent.com/70275323/154611640-dfbb7d37-95d7-4e52-9f06-56b978cd9209.png)
+
 
 ## A5:Broken Access Control
 
