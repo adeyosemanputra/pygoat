@@ -175,24 +175,36 @@ When you notice the cookie value when logged in as jack it is set to `0`
 Use BurpSuite to intercept the request change the value of the admin cookie from `0` to `1`
 This should log you in as a admin user and display the `secret key`
 
-##### The Scenario
+#### Solving Using BurpSuite
 
-![image](https://user-images.githubusercontent.com/61360833/118371737-9358f000-b5cb-11eb-900c-1b955f4d0078.png)
+We can log in as `jack:jacktheripper` and admin cookie is set to 0. This does not give us the secret key
+
+![bac_1](https://user-images.githubusercontent.com/70275323/154612894-cb5e0dfa-f6d4-426a-8b3e-e92d300951fd.png)
+
+To change admin cookie in request, we open up burpsuite and after logging in, refresh the page and change value of admin cookie to 1
+
+![bac_2](https://user-images.githubusercontent.com/70275323/154612900-a2903776-ac60-4f40-9654-760869dc4eb7.png)
+
+This results as being logged in as Admin
+
+![bac_3](https://user-images.githubusercontent.com/70275323/154612904-917c1501-1a8a-49db-90d0-7879235e7eee.png)
+
+#### Solving using Browser 
+
+Once again, we log in as `jack:jacktheripper`
+
+![ba_1](https://user-images.githubusercontent.com/70275323/154613752-e2fc76a1-669b-46b2-a622-62c13c513d5d.png)
+
+In inspect section, change value of admin cookie to 1 and refresh the page. 
+
+![ba_2](https://user-images.githubusercontent.com/70275323/154613760-6abaa18a-8f27-4c39-bb89-7c0dd320b5f6.png)
+
+![ba_3](https://user-images.githubusercontent.com/70275323/154613762-16b4d637-0bfc-4196-8fdd-70458bd46994.png)
 
 
-##### The cookies
-
-![image](https://user-images.githubusercontent.com/61360833/118371826-f6e31d80-b5cb-11eb-808b-a76cc29d2947.png)
 
 
-###### Changing the cookie value
 
-![image](https://user-images.githubusercontent.com/61360833/118371851-0ebaa180-b5cc-11eb-9499-e1592cf30fc7.png)
-
-
-###### Reloading the page
-
-![image](https://user-images.githubusercontent.com/61360833/118371880-28f47f80-b5cc-11eb-99e8-5cbf34400be0.png)
 
 
 ## A6:Security Misconfiguration
