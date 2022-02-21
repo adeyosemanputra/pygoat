@@ -26,6 +26,7 @@ Table of Contents
       * [Docker Container](#docker-container)
       * [Installation Video](#installation-video)
    * [Solutions](#solutions)
+   * [For Developers](/docs/dev_guide.md)
 
 ## Installation
 
@@ -55,14 +56,14 @@ To setup the project on your local machine:
 [![](http://img.youtube.com/vi/rfzQiMeiwso/0.jpg)](http://www.youtube.com/watch?v=rfzQiMeiwso "Installation Pygoat")
 
 ## Solutions 
-<a href="/pygoat/Solutions/solution.md">Challenge solutions</a> •
+<a href="/pygoat/Solutions/solution.md">Solutions to all challenges</a> •
 </p>    
 
 ## Live Demo
 http://pygoat-web.herokuapp.com <br>
 http://pygoat.herokuapp.com <br>
 http://pygoat-dep.herokuapp.com <br>
-credential:<br>
+credentials:<br>
 username : user<br>
 password : user12345<br>
 or you could login with 0auth (google) <br>
