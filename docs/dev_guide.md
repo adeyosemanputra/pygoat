@@ -1,6 +1,6 @@
 # Developer's Guide
 
-PyGoat is an intentionally vulnerable web application written using the Python-Django Framework. Developers are welcome to contribute to the project. 
+PyGoat is an intentionally vulnerable web application written using the Python-Django Framework. We welcome Developers to contribute to the project. 
 
 ## Project Structure
 
@@ -202,6 +202,6 @@ Let's take an example from a code snippet from `pygoat/pygoat/urls.py`
 
 There are a few lines in urls.py that do not look like these. They're for special purposes like implementing django-allAuth and other features
 
-If theres any doubt or issue feel free to raise an Issue, or correct an existing issue and send PR.
+If theres any doubt or issue feel free to raise an Issue, or correct an existing issue and send PR. Feel free to join the Telegram PyGoat Devs channel
 
 Happy Coding!
