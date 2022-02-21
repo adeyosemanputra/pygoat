@@ -26,21 +26,25 @@ Table of Contents
       * [Docker Container](#docker-container)
       * [Installation Video](#installation-video)
    * [Solutions](#solutions)
+   * [For Developers](/docs/dev_guide.md)
 
 ## Installation
 
 ### From Sources
 To setup the project on your local machine:
 <br>
-    1. Click on Fork.<br>
-    2. Go to your fork and clone the project to your local machine.<br>
-    3. Install the requirements `pip install -r requirements.txt`.<br> 
-    4.Change directory to the root directory `cd pygoat`<br>
-    5. Apply the migrations `python3 manage.py migrate`.<br>
-    6. Finally, run the development server `python3 manage.py runserver`.<br>
-    
+1. Clone the repository using GitHub website or git in Terminal
+```
+  git clone https://github.com/adeyosemanputra/pygoat.git
+  ### To Download a specific branch
+  git clone -b <branch_name> https://github.com/adeyosemanputra/pygoat.git
+```
 
-The project will be available at 127.0.0.1:8000.
+2. Install the requirements `pip install -r requirements.txt`.<br> 
+3. Change directory to the the Django Project directory `cd pygoat`<br>
+4. Apply the migrations `python3 manage.py migrate`.<br>
+5. Finally, run the development server `python3 manage.py runserver`.<br>
+6. The project will be available at <http://127.0.0.1:8000> 
 
 ### Docker Container
 1. Install [Docker](https://www.docker.com)
@@ -52,14 +56,14 @@ The project will be available at 127.0.0.1:8000.
 [![](http://img.youtube.com/vi/rfzQiMeiwso/0.jpg)](http://www.youtube.com/watch?v=rfzQiMeiwso "Installation Pygoat")
 
 ## Solutions 
-<a href="/pygoat/Solutions/solution.md">Challenge solutions</a> •
+<a href="/pygoat/Solutions/solution.md">Solutions to all challenges</a> •
 </p>    
 
 ## Live Demo
 http://pygoat-web.herokuapp.com <br>
 http://pygoat.herokuapp.com <br>
 http://pygoat-dep.herokuapp.com <br>
-credential:<br>
+credentials:<br>
 username : user<br>
 password : user12345<br>
 or you could login with 0auth (google) <br>
