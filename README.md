@@ -64,14 +64,13 @@ First, Clone the repository using GitHub website or git in Terminal
 3. Run `docker run --rm -p 8000:8000 pygoat/pygoat` or `docker run pygoat/pygoat`
 4. Browse to <http://127.0.0.1:8000> 
 
-<!---
-### Installation Video
-[![](http://img.youtube.com/vi/rfzQiMeiwso/0.jpg)](http://www.youtube.com/watch?v=rfzQiMeiwso "Installation Pygoat")
--->
+### Installation video 
 
-### Installation video - From Source
+1. From Source using `installer.sh`
+ - [Installing PyGoat from Source](https://youtu.be/IkazbGlkoOE)
+2. Without using `installer.sh`
+ - [![](http://img.youtube.com/vi/rfzQiMeiwso/0.jpg)](http://www.youtube.com/watch?v=rfzQiMeiwso "Installation Pygoat")
 
-[Installing PyGoat from Source](https://youtu.be/IkazbGlkoOE)
 
 ## Solutions 
 <a href="/pygoat/Solutions/solution.md">Solutions to all challenges</a>
