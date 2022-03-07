@@ -69,10 +69,9 @@ First, Clone the repository using GitHub website or git in Terminal
 [![](http://img.youtube.com/vi/rfzQiMeiwso/0.jpg)](http://www.youtube.com/watch?v=rfzQiMeiwso "Installation Pygoat")
 -->
 
-### Installation from Source
+### Installation video - From Source
 
-[![Installing PyGoat from Source](![image](https://user-images.githubusercontent.com/70275323/157022794-a9509d23-9b98-40df-90ba-e6fe6edba577.png)
-)](https://youtu.be/IkazbGlkoOE)
+[Installing PyGoat from Source](https://youtu.be/IkazbGlkoOE)
 
 ## Solutions 
 <a href="/pygoat/Solutions/solution.md">Solutions to all challenges</a>
