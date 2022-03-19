@@ -1,6 +1,6 @@
 from django.db import models
 from django.core.validators import MaxValueValidator
-
+from django.conf import settings
 # Create your models here.
 
 class FAANG (models.Model):
@@ -31,3 +31,10 @@ class authLogin(models.Model):
 class otp(models.Model):
     email=models.CharField(max_length=200)
     otp=models.IntegerField(validators=[MaxValueValidator(300)])
+
+class tickits(models.Model):
+    user=models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
+    tickit=models.CharField(max_length=40, unique = True)
+
+    def __str__(self):
+        return self.tickit+ " " + self.user.username;

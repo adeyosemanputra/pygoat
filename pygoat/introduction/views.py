@@ -1,11 +1,13 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse
-from .models import  FAANG,info,login,comments,authLogin
+from .models import  FAANG,info,login,comments,authLogin, tickits
 from django.core import serializers
 from requests.structures import CaseInsensitiveDict
 import requests
 from django.contrib.auth import login,authenticate
 from django.contrib.auth.forms import UserCreationForm
+import random
+import string
 
 #*****************************************Lab Requirements****************************************************#
 
@@ -505,3 +507,58 @@ def debug(request):
     response = render(request,'Lab/A10/debug.log')
     response['Content-Type'] =  'text/plain'
     return response
+
+#*********************************************************A11*************************************************#
+
+def gentckt():
+    return (''.join(random.choices(string.ascii_uppercase + string.ascii_lowercase, k=10)))
+
+def insec_desgine(request):
+    if request.user.is_authenticated:
+        return render(request,"Lab/A11/a11.html")
+    else:
+        return redirect('login')
+
+def insec_desgine_lab(request):
+    if request.user.is_authenticated:
+        if request.method=="GET":
+            tkts = tickits.objects.filter(user = request.user)
+            Tickets = []
+            for tkt in tkts:
+                Tickets.append(tkt.tickit)
+            return render(request,"Lab/A11/a11_lab.html",{"tickets":Tickets})
+        elif request.method=="POST":
+            tkts = tickits.objects.filter(user = request.user)
+            Tickets = []
+            for tkt in tkts:
+                Tickets.append(tkt.tickit)
+            try :
+                count = request.POST.get("count")
+                if (int(count)+len(tkts)) <=5:
+                    for i in range(int(count)):
+                        ticket_code = gentckt()
+                        Tickets.append(ticket_code)
+                        T = tickits(user = request.user, tickit = ticket_code)
+                        T.save()
+                    
+                    return render(request,"Lab/A11/a11_lab.html",{"tickets":Tickets})
+                else:
+                    return render(request,"Lab/A11/a11_lab.html",{"error":"You can have atmost 5 tickits","tickets":Tickets})
+            except:
+                try :
+                    tickit = request.POST.get("ticket")
+                    all_tickets = tickits.objects.all()
+                    sold_tickets = len(all_tickets)
+                    if sold_tickets <60:
+                        return render(request,"Lab/A11/a11_lab.html", {"error": "Invalid tickit","tickets":Tickets,"error":f"Wait until all tickets are sold ({60-sold_tickets} tickets left)"})
+                    else:
+                        if tickit in Tickets:
+                            return render(request,"Lab/A11/a11_lab.html", {"error": "Congratulation,You figured out the flaw in Design.<br> A better authentication should be used in case for checking the uniqueness of a user.","tickets":Tickets})
+                        else:
+                            return render(request,"Lab/A11/a11_lab.html",{"tickets":Tickets,"error": "Invalid ticket"},)
+                except:
+                    return render(request,"Lab/A11/a11_lab.html",{"tickets":Tickets})
+        else:
+            pass
+    else:
+        return redirect('login')
