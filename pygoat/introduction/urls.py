@@ -43,4 +43,6 @@ urlpatterns = [
     path("a10",views.a10,name="A10"),
     path("a10_lab",views.a10_lab,name="A10 LAb"),
     path("debug",views.debug,name="debug"),
+    path("insecure-design",views.insec_desgine,name="insecure-design"),
+    path("insecure-design_lab",views.insec_desgine_lab,name="insecure-design_lab"),
 ]

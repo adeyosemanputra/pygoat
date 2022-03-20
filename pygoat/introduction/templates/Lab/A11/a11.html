@@ -1,0 +1,57 @@
+{% extends 'introduction/base.html' %} {% block content %} {% block title %}
+<title>Insecure Design</title>
+{% endblock %}
+<div class="content">
+  <h3>Insecure Design</h3>
+  <div class="box">
+    <h4>What is Insecure Design</h4>
+    <p class="bp">
+      Insecure design is a broad category representing different weaknesses,
+      expressed as “missing or ineffective control design.” Insecure design is
+      not the source for all other Top 10 risk categories. There is a difference
+      between insecure design and insecure implementation. We differentiate
+      between design flaws and implementation defects for a reason, they have
+      different root causes and remediation. A secure design can still have
+      implementation defects leading to vulnerabilities that may be exploited.
+      An insecure design cannot be fixed by a perfect implementation as by
+      definition, needed security controls were never created to defend against
+      specific attacks. One of the factors that contribute to insecure design is
+      the lack of business risk profiling inherent in the software or system
+      being developed, and thus the failure to determine what level of security
+      design is required.
+    </p>
+    <button class="coll btn btn-info">Lab Details</button>
+    <div class="lab">
+        <p class="bp">
+        This lab helps you to get an idea of how Insecure Design can result in major Security flaw.
+
+        In the next page,user can get 5 free tickets for a Movie. But he/she have to wait untill all the tickets are sold out.
+        For this particular situation, we can get advantage of the Insecure Design and somehow get all the tickets for the movie.
+
+        <ul><code>Hint</code></ul>
+        <ul> Logout and then think.</ul>
+        
+        <br>
+        <div align="right"> <button class="btn btn-info" type="button" onclick="window.location.href='/insecure-design_lab'">Access
+            Lab</button></div>
+    </div>
+  <div>
+    <br>
+    <h4>Mitigation</h4>
+    <p class="bp">
+    <ul>
+      <li>Establish and use a secure development lifecycle with AppSec professionals to help evaluate and design security and privacy-related controls</li>
+      <li>Establish and use a library of secure design patterns or paved road ready to use components</li>
+      <li>Use threat modeling for critical authentication, access control, business logic, and key flows</li>
+      <li>Integrate security language and controls into user stories</li>
+      <li>Integrate plausibility checks at each tier of your application (from frontend to backend)</li>
+      <li>Write unit and integration tests to validate that all critical flows are resistant to the threat model. Compile use-cases and misuse-cases for each tier of your application.s</li>
+      <li>Segregate tier layers on the system and network layers depending on the exposure and protection needs</li>
+      <li>Segregate tenants robustly by design throughout all tiers</li>
+      <li>Limit resource consumption by user or service</li>
+    </ul>
+    </p>
+  </div>
+</div>
+
+{% endblock %}
