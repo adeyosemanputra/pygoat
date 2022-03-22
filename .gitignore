@@ -2,3 +2,4 @@
 *.pyc
 env
 pygoat/db.sqlite3
+*.sqlite3
