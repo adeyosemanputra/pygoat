@@ -45,4 +45,6 @@ urlpatterns = [
     path("debug",views.debug,name="debug"),
     path("insecure-design",views.insec_desgine,name="insecure-design"),
     path("insecure-design_lab",views.insec_desgine_lab,name="insecure-design_lab"),
+    path("ssrf",views.ssrf,name="SSRF"),
+    path("ssrf_lab",views.ssrf_lab,name="SSRF LAB"),
 ]
