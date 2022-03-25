@@ -562,3 +562,70 @@ def insec_desgine_lab(request):
             pass
     else:
         return redirect('login')
+
+
+#-------------------------------------------------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------------------------------------------------
+
+
+@csrf_exempt
+def a1_broken_access(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    
+    return render(request,"Lab_2021/A1_BrokenAccessControl/broken_access.html")
+
+
+@csrf_exempt
+def a1_broken_access_lab_1(request):
+    if request.user.is_authenticated:
+        pass
+    else:
+        return redirect('login')
+    
+    name = request.POST.get('name')
+    password = request.POST.get('pass')
+    print(password)
+    if name:
+        if request.COOKIES.get('admin') == "1":
+            return render(
+                request, 
+                'Lab_2021/A1_BrokenAccessControl/broken_access_lab_1.html', 
+                {
+                    "data":"0NLY_F0R_4DM1N5",
+                    "username": "admin"
+                })
+        elif login.objects.filter(user='admin',password=password):
+            html = render(
+                request, 
+                'Lab_2021/A1_BrokenAccessControl/broken_access_lab_1.html', 
+                {
+                    "data":"0NLY_F0R_4DM1N5",
+                    "username": "admin"
+                })
+            html.set_cookie("admin", "1",max_age=200)
+            return html
+        elif login.objects.filter(name='jack',password='jacktheripper'): # Will implement hashing here
+            html = render(
+            request, 
+            'Lab_2021/A1_BrokenAccessControl/broken_access_lab_1.html', 
+            {
+                "not_admin":"No Secret key for this User",
+                "username": name
+            })
+            html.set_cookie("admin", "0",max_age=200)
+            return html
+        else:
+            return render(request, 'Lab_2021/A1_BrokenAccessControl/broken_access_lab_1.html', {"data": "User Not Found"})
+
+    else:
+        return render(request,'Lab_2021/A1_BrokenAccessControl/broken_access_lab_1.html',{"no_creds":True})
+
+@csrf_exempt
+def a1_broken_access_lab_2(request):
+    if request.user.is_authenticated:
+        pass
+    else:
+        return redirect('login')
+
+    return("Lab 2 working")

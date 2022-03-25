@@ -45,4 +45,8 @@ urlpatterns = [
     path("debug",views.debug,name="debug"),
     path("insecure-design",views.insec_desgine,name="insecure-design"),
     path("insecure-design_lab",views.insec_desgine_lab,name="insecure-design_lab"),
+
+    path("broken_access_control", views.a1_broken_access, name="broken_access"),
+    path("broken_access_lab_1", views.a1_broken_access_lab_1, name="broken_access_lab_1"),
+    path("broken_access_lab_1", views.a1_broken_access_lab_2, name="broken_access_lab_2"),
 ]
