@@ -8,7 +8,7 @@ from django.contrib.auth import login,authenticate
 from django.contrib.auth.forms import UserCreationForm
 import random
 import string
-
+import os
 #*****************************************Lab Requirements****************************************************#
 
 from .models import  FAANG,info,login,comments,otp
@@ -629,3 +629,31 @@ def a1_broken_access_lab_2(request):
         return redirect('login')
 
     return("Lab 2 working")
+
+##----------------------------------------------------------------------------------------------------------
+##----------------------------------------------------------------------------------------------------------
+
+#*********************************************************SSRF*************************************************#
+
+def ssrf(request):
+    if request.user.is_authenticated:
+        return render(request,"Lab/ssrf/ssrf.html")
+    else:
+        return redirect('login')
+
+def ssrf_lab(request):
+    if request.user.is_authenticated:
+        if request.method=="GET":
+            return render(request,"Lab/ssrf/ssrf_lab.html",{"blog":"Read Blog About SSRF"})
+        else:
+            file=request.POST["blog"]
+            try :
+                dirname = os.path.dirname(__file__)
+                filename = os.path.join(dirname, file)
+                file = open(filename,"r")
+                data = file.read()
+                return render(request,"Lab/ssrf/ssrf_lab.html",{"blog":data})
+            except:
+                return render(request, "Lab/ssrf/ssrf_lab.html", {"blog": "No blog found"})
+    else:
+        return redirect('login')
