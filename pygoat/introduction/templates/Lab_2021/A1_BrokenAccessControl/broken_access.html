@@ -58,16 +58,6 @@
                 onclick="window.location.href='/broken_access_lab_1'">Access Lab 1</button></div>
             
             <br>
-            <h4>Mitigation</h4>
-            <p class="bp">
-            <ul>
-                <li>Using proper Session management techniques</li>
-                <li>Using Tokens such as JWT to authorize the users.</li>
-                <li>Unless a resource is intended to be publicly accessible, deny access by default</li>
-                <li>Thoroughly audit and test access controls to ensure they are working as designed</li>
-
-            </ul>
-            </p>
         </div>
     </div>
 
@@ -109,8 +99,24 @@
                 onclick="window.location.href='/broken_access_lab_2'">Access Lab 2</button></div>
             
             <br>
+    </div>
+    
+    <div class="box">
+        <button class="coll btn btn-info">Mitigation</button>
+        <h4>Mitigation</h4>
+        <p class="bp">
+        <ul>
+            <li>Except for public resources, deny by default.</li>
+            <li>Implement access control mechanisms once and re-use them throughout the application, including minimizing Cross-Origin Resource Sharing (CORS) usage.</li>
+            <li>Model access controls should enforce record ownership rather than accepting that the user can create, read, update, or delete any record.</li>
+            <li>Unique application business limit requirements should be enforced by domain models</li>
+            <li>Disable web server directory listing and ensure file metadata (e.g., .git) and backup files are not present within web roots</li>
+            <li>Log access control failures, alert admins when appropriate (e.g., repeated failures)</li>
+            <li>Rate limit API and controller access to minimize the harm from automated attack tooling</li>
+            <li>Stateful session identifiers should be invalidated on the server after logout. Stateless JWT tokens should rather be short-lived so that the window of opportunity for an attacker is minimized. For longer lived JWTs it's highy recommended to follow the OAuth standards to revoke access.</li>
 
-
+        </ul>
+        </p>
     </div>
 </div>
 
