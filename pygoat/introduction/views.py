@@ -627,8 +627,40 @@ def a1_broken_access_lab_2(request):
         pass
     else:
         return redirect('login')
+    
+    name = request.POST.get('name')
+    password = request.POST.get('pass')
+    user_agent = request.META['HTTP_USER_AGENT']
 
-    return("Lab 2 working")
+    # print(name)
+    # print(password)
+    print(user_agent)
+    if name :  
+        if (user_agent == "pygoat_admin"):
+            return render(
+                request, 
+                'Lab_2021/A1_BrokenAccessControl/broken_access_lab_2.html', 
+                {
+                    "data":"0NLY_F0R_4DM1N5",
+                    "username": "admin",
+                    "status": "admin"
+                })
+        elif ( name=='jack' and password=='jacktheripper'): # Will implement hashing here
+            html = render(
+            request, 
+            'Lab_2021/A1_BrokenAccessControl/broken_access_lab_2.html', 
+            {
+                "not_admin":"No Secret key for this User",
+                "username": name,
+                "status": "not admin"
+            })
+            return html
+        else:
+            return render(request, 'Lab_2021/A1_BrokenAccessControl/broken_access_lab_2.html', {"data": "User Not Found"})
+
+    else:
+        return render(request,'Lab_2021/A1_BrokenAccessControl/broken_access_lab_2.html',{"no_creds":True})
+
 
 ##----------------------------------------------------------------------------------------------------------
 ##----------------------------------------------------------------------------------------------------------

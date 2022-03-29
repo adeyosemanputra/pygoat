@@ -8,7 +8,7 @@
 <div class="jumbotron">
     <h4 style="text-align:center"> Can you log in as an admin and get the secretkey?</h4>
     <div class="login">
-        <form method="post" action="/broken_access_lab_1">
+        <form method="post" action="/broken_access_lab_2">
 
             <input id="input" type="text" name="name" placeholder="User Name"><br>
             <input id="input" type="password" name="pass" placeholder="Password"><br>
@@ -24,11 +24,15 @@
     {% endif %}
 
     {% if data %}
-    <h2>Your Secret Key is <code>{{data}}</code></h2>
+    <h2>Your Secret Key is: <code>{{data}}</code></h2>
     {% endif %}
 
     {% if not_admin %}
     <h2><code>{{not_admin}}</code></h2>
+    {% endif %}
+
+    {% if status %}
+    <h2>Admin Status is: <code>{{status}}</code></h2>
     {% endif %}
 
     {% if no_creds %}
@@ -38,7 +42,7 @@
 </div>
 
 <br>
-<div align="right"> <button class="btn btn-info" type="button" onclick="window.location.href='/ba'">Back to Lab
+<div align="right"> <button class="btn btn-info" type="button" onclick="window.location.href='/broken_access_control'">Back to Lab
         Details</button></div>
 
 </p>
