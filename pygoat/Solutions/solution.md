@@ -308,3 +308,26 @@ The Sensitive info is `INFO "GET /a10_lab?username=Hacker&password=Hacker HTTP/1
 
 And this info can be used to log in with credentials `Hacker:Hacker`
 ![a10_2](https://user-images.githubusercontent.com/70275323/154619295-7d390db2-b047-4fae-8ff5-d34dcb9dad7f.png)
+
+
+# OWASP TOP 10 2021
+
+## SSRF
+This websites serves some vlog, user need to figuer it out how this process is going 
+
+* open dev tool and inspect the buttons
+![ssrf_pic1](./img/pic1.png)
+* Here we can see there is a hidden input tag which is taking file path of the blog as a parameter.
+* now, if the path is not filltered correctly we can put file path of any file and access that.We just have to change the value.
+* some example -- 
+
+![url.py](./img/pic2.png)
+![url_img](./img/pic3.png)
+
+#### Now about our main Objective, finding the .env file
+* normaly .env file is used to store all important credentials and configurations
+* Usally this hidden file is saved a base directory
+* So , this an trial and error method of searching 
+* example : .env , ../.env, ../../.env
+* solution :  ( ../.env) 
+![img4](./img/img4.png)
