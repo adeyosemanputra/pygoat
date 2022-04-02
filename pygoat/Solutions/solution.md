@@ -312,7 +312,15 @@ And this info can be used to log in with credentials `Hacker:Hacker`
 
 # OWASP TOP 10 2021
 
-## SSRF
+## A4 : Insecure Design
+This website is giving everyone free tickets ( upto 5 per person ). And the movie will be public when all the tickets will be sold.
+
+Now, the ticket generating system is quite secure itself, and one can't get more than 5 tickets for free.
+But there is a large design flaw. One can get all the tickets by creating multiple accounts. In this particular case, 5 tickets per page, and a total 60 required, so we need to create 12 accounts only and claim 5 tickets from each.
+
+If the sign up process is lame, then this process can be automated. Strong verification/kyc verification needs to be taken in such situations .
+
+## A10 : SSRF 
 This websites serves some vlog, user need to figuer it out how this process is going 
 
 * open dev tool and inspect the buttons
