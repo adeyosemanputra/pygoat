@@ -58,7 +58,7 @@ First, Clone the repository using GitHub website or git in Terminal
 4. Finally, run the development server `python3 manage.py runserver`.<br>
 5. The project will be available at <http://127.0.0.1:8000> 
 
-##### Method 3
+#### Method 3
 
 1. Install all app and python requirements using `setup.py` file - `pip3 install .`
 2. Change directory to the the Django Project directory `cd pygoat`<br>
