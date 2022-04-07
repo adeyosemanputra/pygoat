@@ -20,7 +20,7 @@ setup(
       classifiers=[  
             "Programming Language :: Python :: 3",
       ],
-      packages=find_packages(where="pygoat"),
+      packages=find_packages(exclude="tests"),
       python_requires=">=3.7, <4",
       install_requires=requirements,
 )
