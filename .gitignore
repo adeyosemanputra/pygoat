@@ -1,4 +1,4 @@
 .env/
 *.pyc
 env
-pygoat/db.sqlite3
+
