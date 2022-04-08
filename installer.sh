@@ -1,3 +1,4 @@
+#!/bin/bash
 apt-get -y -qq update
 
 apt-get -y -qq  install software-properties-common # installation of python3 and python3-pip

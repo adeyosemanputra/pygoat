@@ -1,3 +1,4 @@
+wheel
 asgiref
 Django
 pytz==2020.1
