@@ -1,4 +1,4 @@
-FROM python:3.8
+FROM python:latest
 
 # set work directory
 WORKDIR /app
@@ -18,4 +18,4 @@ COPY . /app/
 
 EXPOSE 8000
 
-CMD ["python3", "pygoat/manage.py" ,"runserver", "127.0.0.1:8000"]
+CMD ["python3", "pygoat/manage.py" ,"runserver"]
