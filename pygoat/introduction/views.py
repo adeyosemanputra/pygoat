@@ -586,6 +586,7 @@ def a1_broken_access_lab_1(request):
     name = request.POST.get('name')
     password = request.POST.get('pass')
     print(password)
+    print(name)
     if name:
         if request.COOKIES.get('admin') == "1":
             return render(
@@ -595,17 +596,7 @@ def a1_broken_access_lab_1(request):
                     "data":"0NLY_F0R_4DM1N5",
                     "username": "admin"
                 })
-        elif login.objects.filter(user='admin',password=password):
-            html = render(
-                request, 
-                'Lab_2021/A1_BrokenAccessControl/broken_access_lab_1.html', 
-                {
-                    "data":"0NLY_F0R_4DM1N5",
-                    "username": "admin"
-                })
-            html.set_cookie("admin", "1",max_age=200)
-            return html
-        elif login.objects.filter(name='jack',password='jacktheripper'): # Will implement hashing here
+        elif (name=='jack',password=='jacktheripper'): # Will implement hashing here
             html = render(
             request, 
             'Lab_2021/A1_BrokenAccessControl/broken_access_lab_1.html', 
