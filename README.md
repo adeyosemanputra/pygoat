@@ -25,6 +25,7 @@ Table of Contents
       * [From Sources](#from-sources)
       * [Docker Container](#docker-container)
       * [Installation Video](#installation-video)
+   * [Uninstallation](#uninstallation)
    * [Solutions](#solutions)
    * [For Developers](/docs/dev_guide.md)
 
@@ -79,6 +80,20 @@ First, Clone the repository using GitHub website or git in Terminal
 2. Without using `installer.sh`
  - [![](http://img.youtube.com/vi/rfzQiMeiwso/0.jpg)](http://www.youtube.com/watch?v=rfzQiMeiwso "Installation Pygoat")
 
+
+## Uninstallation
+
+### On Debian/Ubuntu based systems
+On Debian/Ubuntu based systems, you can uninstall **PyGoat** by running the `uninstaller.sh` script as such:
+```bash
+bash uninstaller.sh
+```
+
+### On Other Platforms:
+On other platforms(Windows/Linux), you can uninstall **PyGoat** by running the `uninstaller.py` script as such:
+```bash
+python uninstaller.py
+```
 
 ## Solutions 
 <a href="/pygoat/Solutions/solution.md">Solutions to all challenges</a>
