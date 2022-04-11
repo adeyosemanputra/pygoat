@@ -14,7 +14,7 @@ HIGHLIGHT_END='\e[0m'
 # Check if the script is being run as root!
 init(){
   if [[ $EUID -ne 0 ]]; then
-    echo "$RED[!] This script must be run as root!" 1>&2
+    echo -e "$RED[!] This script must be run as root!" 1>&2
     exit -1
   fi  
 }

@@ -1,6 +1,16 @@
 .env/
 *.pyc
 env
+
+bin/
+include/
+lib/
+dist/
+lib64
+pyvenv.cfg 
+
+pygoat.eff-info/
+
 pygoat/db.sqlite3
 *.sqlite3
 *db.sqlite3
