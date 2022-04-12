@@ -35,6 +35,32 @@
         {{ blog }}
     </div>
 </div>
+
+<button class="coll2 btn btn-info" style= "position : fixed ; right :200px; bottom : 7px">View Code</button>
+
+<div class="lab">
+   <code>
+    def ssrf_lab(request):
+    if request.user.is_authenticated:
+        if request.method=="GET":
+            return render(request,"Lab/ssrf/ssrf_lab.html",{"blog":"Read Blog About SSRF"})
+        else:
+            file=request.POST["blog"]
+            try :
+                dirname = os.path.dirname(__file__)
+                filename = os.path.join(dirname, file)
+                file = open(filename,"r")
+                data = file.read()
+                return render(request,"Lab/ssrf/ssrf_lab.html",{"blog":data})
+            except:
+                return render(request, "Lab/ssrf/ssrf_lab.html", {"blog": "No blog found"})
+    else:
+        return redirect('login')
+   </code>
+    
+</div>
+<div>
+
 <div style= "position : fixed ; right : 7px; bottom : 7px"> <button class="btn btn-info" type="button" onclick="window.location.href='/ssrf'">Back to Lab
     Details</button></div>
 
