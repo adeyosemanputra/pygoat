@@ -689,3 +689,9 @@ def ssrf_lab(request):
                 return render(request, "Lab/ssrf/ssrf_lab.html", {"blog": "No blog found"})
     else:
         return redirect('login')
+
+def ssrf_discussion(request):
+    if request.user.is_authenticated:
+        return render(request,"Lab/ssrf/ssrf_discussion.html")
+    else:
+        return redirect('login')

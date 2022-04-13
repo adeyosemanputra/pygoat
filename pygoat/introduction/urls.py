@@ -51,4 +51,5 @@ urlpatterns = [
     path("broken_access_lab_2", views.a1_broken_access_lab_2, name="broken_access_lab_2"),
     path("ssrf",views.ssrf,name="SSRF"),
     path("ssrf_lab",views.ssrf_lab,name="SSRF LAB"),
+    path("ssrf_discussion", views.ssrf_discussion, name="SSRF Discussion"),
 ]
