@@ -9,7 +9,7 @@ dist/
 lib64
 pyvenv.cfg 
 
-pygoat.eff-info/
+pygoat.egg-info/
 
 pygoat/db.sqlite3
 *.sqlite3
