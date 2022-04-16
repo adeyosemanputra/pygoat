@@ -4,16 +4,17 @@ FROM python:latest
 WORKDIR /app
 
 # set environment variables
-RUN apt -y update
-RUN apt -y install dnsutils libpq-dev python3-dev
+RUN apt-get update
+RUN apt-get -y install dnsutils
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
+COPY requirements.txt requirements.txt
+RUN pip install -r requirements.txt
 # copy project
 COPY . /app/
 
 # install pygoat
-RUN pip3 install /app
 EXPOSE 8000
 
 RUN python3 /app/pygoat/manage.py migrate
