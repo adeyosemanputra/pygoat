@@ -90,6 +90,7 @@ It can also be found out by ordering by length
 
 ![bau_5](https://user-images.githubusercontent.com/70275323/154610124-2d8d267a-a198-47af-9baa-5b632617e186.png)
 
+Lab 2
 
 
 ## A3:Senstive Data Exposure
@@ -339,3 +340,74 @@ This websites serves some vlog, user need to figuer it out how this process is g
 * example : .env , ../.env, ../../.env
 * solution :  ( ../.env) 
 ![img4](./img/img4.png)
+
+
+# Solutions to 2021 Challenges
+
+
+## 2021-A1:Broken Access Control
+
+**Lab 1**
+
+On accessing the lab the user is provided with a simple login in page which requires a username and password.
+
+The credentials for the user Jack is `jack:jacktheripper`
+
+Use the above info to log in.
+
+The main aim of this lab is to login with admin privileges to get the secret key.
+
+#### Exploiting the Broken Access
+
+Every time a valid user logs in,the user session is set with a cookie called `admin`
+When you notice the cookie value when logged in as jack it is set to `0`
+Use BurpSuite to intercept the request change the value of the admin cookie from `0` to `1`
+This should log you in as a admin user and display the `secret key`
+
+#### Solving Using BurpSuite
+
+We can log in as `jack:jacktheripper` and admin cookie is set to 0. This does not give us the secret key
+
+![bac_1](https://user-images.githubusercontent.com/70275323/154612894-cb5e0dfa-f6d4-426a-8b3e-e92d300951fd.png)
+
+To change admin cookie in request, we open up burpsuite and after logging in, refresh the page and change value of admin cookie to 1
+
+![bac_2](https://user-images.githubusercontent.com/70275323/154612900-a2903776-ac60-4f40-9654-760869dc4eb7.png)
+
+This results as being logged in as Admin
+
+![bac_3](https://user-images.githubusercontent.com/70275323/154612904-917c1501-1a8a-49db-90d0-7879235e7eee.png)
+
+#### Solving using Browser 
+
+Once again, we log in as `jack:jacktheripper`
+
+![ba_1](https://user-images.githubusercontent.com/70275323/154613752-e2fc76a1-669b-46b2-a622-62c13c513d5d.png)
+
+In inspect section, change value of admin cookie to 1 and refresh the page. 
+
+![ba_2](https://user-images.githubusercontent.com/70275323/154613760-6abaa18a-8f27-4c39-bb89-7c0dd320b5f6.png)
+
+![ba_3](https://user-images.githubusercontent.com/70275323/154613762-16b4d637-0bfc-4196-8fdd-70458bd46994.png)
+
+**Lab 2**
+
+#### Solving Using BurpSuite
+
+We log in with `jack:jacktheripper` with request capturing on in Burpsuite.
+
+![brokenaccess21](https://user-images.githubusercontent.com/70275323/163706569-dc3dc3e7-af3d-428d-8d80-58f431f541a0.png)
+![brokenaccess22](https://user-images.githubusercontent.com/70275323/163706575-b58db6b5-01e0-47b7-acdd-ccbb8139802b.png)
+
+We find a comment that leads us to finding critical info related to login
+
+![brokenaccess26](https://user-images.githubusercontent.com/70275323/163707600-6fd747a8-fbb3-4bc5-8d46-425fc118c057.png)
+
+Then Change the user Agent Field.
+
+![brokenaccess23](https://user-images.githubusercontent.com/70275323/163707610-438393d5-d4b2-4882-bb1b-31cbfebab82a.png)
+![brokenaccess24](https://user-images.githubusercontent.com/70275323/163707613-a97349ce-04e7-4f8a-be0e-f206e3f57831.png)
+
+This results as being logged in as Admin
+
+![brokenaccess25](https://user-images.githubusercontent.com/70275323/163707622-8cb3f1d7-2185-43b1-84c1-0c66591bc2f6.png)
