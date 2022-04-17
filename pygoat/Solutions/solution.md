@@ -392,6 +392,12 @@ In inspect section, change value of admin cookie to 1 and refresh the page.
 
 **Lab 2**
 
+#### Exploiting the Broken Access
+
+In this lab the broken access control is that an Admin field is Authenticated by the user agent field that can easily be changed
+Use BurpSuite to intercept the request change the value of the `user-agent` to `pygoat_admin`
+This should log you in as a admin user and display the `secret key`
+
 #### Solving Using BurpSuite
 
 We log in with `jack:jacktheripper` with request capturing on in Burpsuite.
