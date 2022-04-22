@@ -653,6 +653,58 @@ def a1_broken_access_lab_2(request):
         return render(request,'Lab_2021/A1_BrokenAccessControl/broken_access_lab_2.html',{"no_creds":True})
 
 
+
+@csrf_exempt
+def injection(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    
+    return render(request,"Lab_2021/A3_Injection/injection.html")
+
+
+@csrf_exempt
+def sql_injection_lab(request):
+    if request.user.is_authenticated:
+
+        name=request.POST.get('name')
+
+        password=request.POST.get('pass')
+
+        if name:
+
+            if login.objects.filter(user=name):
+
+                sql_query = "SELECT * FROM introduction_login WHERE user='"+name+"'AND password='"+password+"'"
+                print(sql_query)
+                try:
+                    val=login.objects.raw(sql_query)
+                except:
+                    return render(
+                        request, 
+                        'Lab/SQL/sql_lab.html',
+                        {
+                            "wrongpass":password,
+                            "sql_error":sql_query
+                        })
+
+                if val:
+                    user=val[0].user
+                    return render(request, 'Lab_2021/A3_Injection/sql_injection_lab.html',{"user1":user})
+                else:
+                    return render(
+                        request, 
+                        'Lab/SQL/sql_lab.html',
+                        {
+                            "wrongpass":password,
+                            "sql_error":sql_query
+                        })
+            else:
+                return render(request, 'Lab_2021/A3_Injection/sql_injection_lab.html',{"no": "User not found"})
+        else:
+            return render(request, 'Lab_2021/A3_Injection/sql_injection_lab.html')
+    else:
+        return redirect('login')
+
 ##----------------------------------------------------------------------------------------------------------
 ##----------------------------------------------------------------------------------------------------------
 
