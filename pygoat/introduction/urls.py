@@ -52,4 +52,5 @@ urlpatterns = [
     path("ssrf",views.ssrf,name="SSRF"),
     path("ssrf_lab",views.ssrf_lab,name="SSRF LAB"),
     path("injection",views.injection,name="injection"),
+    path("injection_sql_lab",views.injection_sql_lab,name="injection"),
 ]
