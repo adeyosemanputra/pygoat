@@ -70,6 +70,8 @@ span {
 }
 
 #sidebar {
+    height: 100vh;
+    overflow: scroll;
     min-width: 250px;
     max-width: 250px;
     background: #306998;
@@ -81,6 +83,8 @@ span {
     min-width: 80px;
     max-width: 80px;
     text-align: center;
+    height: 100vh;
+    overflow: scroll;
 }
 
 #sidebar.active .sidebar-header h3,
@@ -278,6 +282,8 @@ code {
         max-width: 80px;
         text-align: center;
         margin-left: -80px !important;
+        height: 100vh;
+        overflow: scroll;
     }
     .dropdown-toggle::after {
         top: auto;
@@ -319,4 +325,20 @@ code {
     #sidebarCollapse span {
         display: none;
     }
+}   
+
+
+code {
+    padding: 2px 4px;
+    font-size: 90%;
+    color: #033157;
+    border-radius: 4px;
+    background-color: #159c8100;
+}
+
+.code{
+    /* background-image: linear-gradient(to right, #000000, #30989a); */
+    background-color:  #8dc2ed;
+    padding:  30px;
+    margin-top: 30px;
 }
