@@ -686,11 +686,11 @@ def injection_sql_lab(request):
             sql_instance.save()
 
             print(sql_query)
-            user = sql_lab_table.objects.raw(sql_query)
-            print(user[0].id)
-            print(user[0].password)
+
             try:
-                return render(request, 'Lab_2021/A3_Injection/sql_lab.html',{"user1":user[0].id})
+                user = sql_lab_table.objects.raw(sql_query)
+                user = user[0].id
+                print(user)
 
             except:
                 return render(
@@ -701,11 +701,7 @@ def injection_sql_lab(request):
                         "sql_error":sql_query
                     })
 
-            if val:
-                print("VAL[0]")
-                print(val)
-
-                user=val[0].user
+            if user:
                 return render(request, 'Lab_2021/A3_Injection/sql_lab.html',{"user1":user})
             else:
                 return render(
