@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse
-from .models import  FAANG,info,login,comments,authLogin, tickits
+from .models import  FAANG,info,login,comments,authLogin, tickits, sql_lab_table
 from django.core import serializers
 from requests.structures import CaseInsensitiveDict
 import requests
@@ -563,6 +563,163 @@ def insec_desgine_lab(request):
     else:
         return redirect('login')
 
+
+#-------------------------------------------------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------------------------------------------------
+
+###################################################### 2021 A1: Broken Access
+
+@csrf_exempt
+def a1_broken_access(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    
+    return render(request,"Lab_2021/A1_BrokenAccessControl/broken_access.html")
+
+
+@csrf_exempt
+def a1_broken_access_lab_1(request):
+    if request.user.is_authenticated:
+        pass
+    else:
+        return redirect('login')
+    
+    name = request.POST.get('name')
+    password = request.POST.get('pass')
+    print(password)
+    print(name)
+    if name:
+        if request.COOKIES.get('admin') == "1":
+            return render(
+                request, 
+                'Lab_2021/A1_BrokenAccessControl/broken_access_lab_1.html', 
+                {
+                    "data":"0NLY_F0R_4DM1N5",
+                    "username": "admin"
+                })
+        elif (name=='jack',password=='jacktheripper'): # Will implement hashing here
+            html = render(
+            request, 
+            'Lab_2021/A1_BrokenAccessControl/broken_access_lab_1.html', 
+            {
+                "not_admin":"No Secret key for this User",
+                "username": name
+            })
+            html.set_cookie("admin", "0",max_age=200)
+            return html
+        else:
+            return render(request, 'Lab_2021/A1_BrokenAccessControl/broken_access_lab_1.html', {"data": "User Not Found"})
+
+    else:
+        return render(request,'Lab_2021/A1_BrokenAccessControl/broken_access_lab_1.html',{"no_creds":True})
+
+@csrf_exempt
+def a1_broken_access_lab_2(request):
+    if request.user.is_authenticated:
+        pass
+    else:
+        return redirect('login')
+    
+    name = request.POST.get('name')
+    password = request.POST.get('pass')
+    user_agent = request.META['HTTP_USER_AGENT']
+
+    # print(name)
+    # print(password)
+    print(user_agent)
+    if name :  
+        if (user_agent == "pygoat_admin"):
+            return render(
+                request, 
+                'Lab_2021/A1_BrokenAccessControl/broken_access_lab_2.html', 
+                {
+                    "data":"0NLY_F0R_4DM1N5",
+                    "username": "admin",
+                    "status": "admin"
+                })
+        elif ( name=='jack' and password=='jacktheripper'): # Will implement hashing here
+            html = render(
+            request, 
+            'Lab_2021/A1_BrokenAccessControl/broken_access_lab_2.html', 
+            {
+                "not_admin":"No Secret key for this User",
+                "username": name,
+                "status": "not admin"
+            })
+            return html
+        else:
+            return render(request, 'Lab_2021/A1_BrokenAccessControl/broken_access_lab_2.html', {"data": "User Not Found"})
+
+    else:
+        return render(request,'Lab_2021/A1_BrokenAccessControl/broken_access_lab_2.html',{"no_creds":True})
+
+
+###################################################### 2021 A3: Injection
+
+@csrf_exempt
+def injection(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    
+    return render(request,"Lab_2021/A3_Injection/injection.html")
+
+
+@csrf_exempt
+def injection_sql_lab(request):
+    if request.user.is_authenticated:
+
+        name=request.POST.get('name')
+        password=request.POST.get('pass')
+        print(name)
+        print(password)
+
+        if name:
+            sql_query = "SELECT * FROM introduction_sql_lab_table WHERE id='"+name+"'AND password='"+password+"'"
+
+            sql_instance = sql_lab_table(id="admin", password="65079b006e85a7e798abecb99e47c154")
+            sql_instance.save()
+            sql_instance = sql_lab_table(id="jack", password="jack")
+            sql_instance.save()
+            sql_instance = sql_lab_table(id="slinky", password="b4f945433ea4c369c12741f62a23ccc0")
+            sql_instance.save()
+            sql_instance = sql_lab_table(id="bloke", password="f8d1ce191319ea8f4d1d26e65e130dd5")
+            sql_instance.save()
+
+            print(sql_query)
+
+            try:
+                user = sql_lab_table.objects.raw(sql_query)
+                user = user[0].id
+                print(user)
+
+            except:
+                return render(
+                    request, 
+                    'Lab_2021/A3_Injection/sql_lab.html',
+                    {
+                        "wrongpass":password,
+                        "sql_error":sql_query
+                    })
+
+            if user:
+                return render(request, 'Lab_2021/A3_Injection/sql_lab.html',{"user1":user})
+            else:
+                return render(
+                    request, 
+                    'Lab_2021/A3_Injection/sql_lab.html',
+                    {
+                        "wrongpass":password,
+                        "sql_error":sql_query
+                    })
+        else:
+            return render(request, 'Lab_2021/A3_Injection/sql_lab.html')
+    else:
+        return redirect('login')
+
+
+##----------------------------------------------------------------------------------------------------------
+##----------------------------------------------------------------------------------------------------------
+
 #*********************************************************SSRF*************************************************#
 
 def ssrf(request):
@@ -585,5 +742,11 @@ def ssrf_lab(request):
                 return render(request,"Lab/ssrf/ssrf_lab.html",{"blog":data})
             except:
                 return render(request, "Lab/ssrf/ssrf_lab.html", {"blog": "No blog found"})
+    else:
+        return redirect('login')
+
+def ssrf_discussion(request):
+    if request.user.is_authenticated:
+        return render(request,"Lab/ssrf/ssrf_discussion.html")
     else:
         return redirect('login')

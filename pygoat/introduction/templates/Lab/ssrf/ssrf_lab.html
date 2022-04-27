@@ -35,7 +35,38 @@
         {{ blog }}
     </div>
 </div>
-<div align="right"> <button class="btn btn-info" type="button" onclick="window.location.href='/ssrf'">Back to Lab
+
+<button class="coll2 btn btn-info" style= "position : fixed ; right :330px; bottom : 7px">Hint</button>
+<div class="lab code">
+    Try to find a .env file
+</div>
+
+<button class="coll2 btn btn-info" style= "position : fixed ; right :200px; bottom : 7px">View Code</button>
+
+<div class="lab code">
+   <code>   
+    def ssrf_lab(request):</br>
+&emsp;if request.user.is_authenticated:</br>
+&emsp;&emsp;if request.method=="GET":</br>
+&emsp;&emsp;&emsp;return render(request,"Lab/ssrf/ssrf_lab.html",{"blog":"Read Blog About SSRF"})</br>
+&emsp;&emsp;else:</br>
+&emsp;&emsp;&emsp;file=request.POST["blog"]</br>
+&emsp;&emsp;&emsp;try :</br>
+&emsp;&emsp;&emsp;&emsp;dirname = os.path.dirname(__file__)</br>
+&emsp;&emsp;&emsp;&emsp;filename = os.path.join(dirname, file)</br>
+&emsp;&emsp;&emsp;&emsp;file = open(filename,"r")</br>
+&emsp;&emsp;&emsp;&emsp;data = file.read()</br>
+&emsp;&emsp;&emsp;&emsp;return render(request,"Lab/ssrf/ssrf_lab.html",{"blog":data})</br>
+&emsp;&emsp;&emsp;except:</br>
+&emsp;&emsp;&emsp;&emsp;return render(request, "Lab/ssrf/ssrf_lab.html", {"blog": "No blog found"})</br>
+&emsp;else:</br>    
+&emsp;&emsp;return redirect('login')</br>
+   </code>
+    
+</div>
+<div>
+
+<div style= "position : fixed ; right : 7px; bottom : 7px"> <button class="btn btn-info" type="button" onclick="window.location.href='/ssrf'">Back to Lab
     Details</button></div>
 
 {% endblock %}

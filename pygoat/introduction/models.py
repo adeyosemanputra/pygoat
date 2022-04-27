@@ -44,3 +44,7 @@ class tickits(models.Model):
 
     def __str__(self):
         return self.tickit+ " " + self.user.username; 
+
+class sql_lab_table(models.Model):
+    id = models.CharField(primary_key = True, max_length=200)
+    password = models.CharField(max_length=200)
