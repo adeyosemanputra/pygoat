@@ -33,6 +33,7 @@ def register(request):
     if request.method=="POST":
         form = UserCreationForm(request.POST)
         if form.is_valid():
+            print("hi")
             form.save()
         return redirect("login")
 
