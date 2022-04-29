@@ -66,6 +66,7 @@
     height: 30px;
     border-radius: 10px 10px 0px 0px;
     display: flex;
+    justify-content: space-between
 }
 
 .code form {
@@ -90,4 +91,11 @@
 }
 .yellow{
     background-color: yellow;
+}
+
+#ssrf-frame-3{
+    display: none;
+    margin-top: 20px;
+    flex-direction: column;
+    align-items: center;
 }
