@@ -14,11 +14,12 @@ RUN apt-get -y install python3-dev
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
+# Install dependencies
+COPY requirements.txt requirements.txt
+RUN pip install -r requirements.txt
+
 # copy project
 COPY . /app/
-
-# Install requirements
-RUN pip install -r /app/requirements.txt
 
 # install pygoat
 EXPOSE 8000
