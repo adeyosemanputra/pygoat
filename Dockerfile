@@ -4,13 +4,20 @@ FROM python:latest
 WORKDIR /app
 
 # set environment variables
-RUN apt-get update
+RUN apt-get -y update
 RUN apt-get -y install dnsutils
+# dependencies for psycopg2
+RUN apt-get -y install libpq-dev 
+RUN apt-get -y install python3-dev
+
+# Set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
+# Install dependencies
 COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
+
 # copy project
 COPY . /app/
 
