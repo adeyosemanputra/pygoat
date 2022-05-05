@@ -99,3 +99,43 @@
     flex-direction: column;
     align-items: center;
 }
+
+/* frame 4  */
+
+#ssrf-frame-4{
+    display: none;
+    margin-top: 20px;
+    flex-direction: column;
+    align-items: center;
+}
+
+textarea {
+    min-height: 250px;
+    overflow: scroll;
+    margin: 20px;
+    display: inline-block;
+    background: #f4f4f9;
+    outline: none;
+    font-family: Courier, sans-serif;
+    min-width: 500px;
+    height: 500px;
+    border-radius: 10px;
+    font-size: 13px;
+    padding: 10px;
+
+  }
+#textarea-container{
+    display: flex;
+    flex-direction: row;
+    margin : 10px;
+    flex-wrap: wrap
+}
+
+#textarea1{
+    display: flex;
+    flex-direction: column;
+}
+.problem-Statement-desc{
+    margin-left: 50px;
+    margin-right: 50px;
+}
