@@ -25,6 +25,7 @@ function frame2to3(){
     if( score >= 4 ){
         document.getElementById('ssrf-frame-2').style.display = 'none';
         document.getElementById('ssrf-bar-status1').classList.add('ssrf-bar-status')
+        alert('Congratulation! You have figure this out !!');
         document.getElementById('ssrf-frame-3').style.display = 'flex';
     }
 }
@@ -45,9 +46,10 @@ function frame3to4(){
             score--;
         }
     }
-    if( score >=1 ){
+    if( score >=4 ){
         document.getElementById('ssrf-frame-3').style.display = 'none';
         document.getElementById('ssrf-bar-status2').classList.add('ssrf-bar-status')
-        // document.getElementById('ssrf-frame-4').style.display = 'flex';
+        alert('Congratulation! you have detected defective codes in html');
+        document.getElementById('ssrf-frame-4').style.display = 'flex';
     }
 }

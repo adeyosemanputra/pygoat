@@ -56,8 +56,8 @@
         </div>
     
 
-    <div id="ssrf-frame-3">
-        <h5> Some incorrect codes in frontend side also ...</h5>
+        <div id="ssrf-frame-3">
+            <h5> Some incorrect codes in frontend side also ...</h5>
             <div class="code">
                 <div class="code-bar"> 
                     <div style="display :flex">
@@ -90,7 +90,65 @@
                 </form>
             </div>
         </div>
-    </div>
+        <div id="ssrf-frame-4">
+            <h2>Now Lets fix the code :)</h2>
+            <p class="problem-Statement-desc">
+                <strong>Problem Statement : </strong>
+                We need to share file content ( not the file itself )
+                Previous method had ssrf valuribility issue. Fix the code so that it can share file content securely.
+            </p>
+            <div id="textarea-container">
+                <div id="textarea1">
+                    <h6>views.py</h6>
+                    <textarea  id="python" placeholder="">
+def ssrf_lab(request):
+    if request.user.is_authenticated:
+        if request.method=="GET":
+            return render(request,"Lab/ssrf/ssrf_lab.html",{"blog":"Read Blog About SSRF"})
+        else:
+            file=request.POST["blog"]
+            try :
+                dirname = os.path.dirname(__file__)
+                filename = os.path.join(dirname, file)
+                file = open(filename,"r")
+                data = file.read()
+                return render(request,"Lab/ssrf/ssrf_lab.html",{"blog":data})
+            except:
+                return render(request, "Lab/ssrf/ssrf_lab.html", {"blog": "No blog found"})
+    else:
+        return redirect('login')
+                    </textarea>
+                </div>
+                <div id="textarea2">
+                    <h6>ssrf_lab.html</h6>
+                    <textarea id="html">
+<div style="display:flex;flex-direction:row;align-items:center;margin:15px">
+    <form method="post" action="/ssrf_lab">
+        {&#37; csrf_token &#37;}
+        <input type="hidden" name="blog" value="templates/Lab/ssrf/blogs/blog1.txt">
+        <button type="submit" class="btn btn-info"> Blog1 </button>
+    </form>
+    <form method="post" action="/ssrf_lab">
+        {&#37; csrf_token &#37;}
+        <input type="hidden" name="blog" value="templates/Lab/ssrf/blogs/blog2.txt">
+        <button type="submit" class="btn btn-info"> Blog2 </button>
+    </form>
+    <form method="post" action="/ssrf_lab">
+        {&#37; csrf_token &#37;}
+        <input type="hidden" name="blog" value="templates/Lab/ssrf/blogs/blog3.txt">
+        <button type="submit" class="btn btn-info"> Blog3 </button>
+    </form>
+    <form method="post" action="/ssrf_lab">
+        {&#37; csrf_token &#37;}
+        <input type="hidden" name="blog" value="templates/Lab/ssrf/blogs/blog4.txt">
+        <button type="submit" class="btn btn-info"> Blog4 </button>
+    </form>
+</div>
+                    </textarea> 
+                </div>
+            </div>
+            <button class="btn btn-info"> Submit </button>
+        </div>
     </div>
     
     <div style= "position : fixed ; right : 7px; bottom : 7px"> <button class="btn btn-info" type="button" onclick="window.location.href='/ssrf'">Back to Lab
