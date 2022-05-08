@@ -53,3 +53,12 @@ function frame3to4(){
         document.getElementById('ssrf-frame-4').style.display = 'flex';
     }
 }
+
+
+function checkcode(){
+    var python_code = document.getElementById('python').value
+    var varrible_index_first = text.search(/    [a-z]*=request.POST/g) +4;
+    var varrible_index_last = text.search(/=request.POST/g) +4;
+    var varrible_name = text.substring(varrible_index_first, varrible_index_last);
+    
+}
