@@ -87,7 +87,7 @@ First, Clone the repository using GitHub website or git in Terminal
 2. Without using `installer.sh`
  - [![](http://img.youtube.com/vi/rfzQiMeiwso/0.jpg)](http://www.youtube.com/watch?v=rfzQiMeiwso "Installation Pygoat")
 
-## Uninstalltion
+## Uninstallation
 
 ### On Debian/Ubuntu Based Systems
 - On Debian/Ubuntu based systems, you can use the `uninstaller.sh` script to uninstall `pygoat` along with all it's dependencies.
