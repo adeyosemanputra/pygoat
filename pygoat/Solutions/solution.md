@@ -3,7 +3,7 @@
 
 ## A1: Injection 
 ### Sql Injection
-The user on accesing the lab is given with a login page,which challenges the user to login as admin.
+The user on accessing the lab is given with a login page,which challenges the user to login as admin.
 The user now has to identify some mechanism to login as admin.
 To test for sql injection ,the user can begin with a `'` or `"` based on the error generated he can confirm that it is an sql injection.
 Search for common sql injections payloads in google and try using them to break the functionality of the backend code.
@@ -40,7 +40,7 @@ This should give you the output for both`ns lookup` as well as for the `ifconfig
 
 ## A2:Broken Authentication
 
-The main aim of this lab is to login as admin, and to acheive this, exploit the lack of `rate limiting` feature in the otp verification flow. You can see that the otp is only of 3 digit(for demo purposes) and neither does the application have any captcha nor any restriction on number of tries for the otp.
+The main aim of this lab is to login as admin, and to achieve this, exploit the lack of `rate limiting` feature in the otp verification flow. You can see that the otp is only of 3 digit(for demo purposes) and neither does the application have any captcha nor any restriction on number of tries for the otp.
 
 Now to send the otp to admins mail you need to figure out the admins mail id. Luckily the admin has left his email id for the developers in the page source. Admin's email id is `admin@pygoat.com` Enter this email in the send otp input box and hit send,you can see that the page says that otp is sent to the email id of the admin. 
 
@@ -139,7 +139,7 @@ Sending data to the server in the form of XML is not actually vulnerable, the vu
 </comm>
 ```
 
-* Incase if the server is runnning linux then use file path `file:///etc/passwd` and if its running windows, use `C:\windows\system32\drivers\etc\hosts`. This will dump sensitive data about all users.
+* Incase if the server is running linux then use file path `file:///etc/passwd` and if its running windows, use `C:\windows\system32\drivers\etc\hosts`. This will dump sensitive data about all users.
 * Forward the request and turn off intercept.
 * Go to the see comments option and click view comments this should show you the requested files in your payload if the vulnerability exists.
 
