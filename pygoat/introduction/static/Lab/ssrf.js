@@ -53,3 +53,32 @@ function frame3to4(){
         document.getElementById('ssrf-frame-4').style.display = 'flex';
     }
 }
+
+
+function checkcode(){
+    var python_code = document.getElementById('python').value
+    var html_code = document.getElementById('html').value
+
+    var formdata = new FormData();
+    formdata.append('python_code', python_code);
+    formdata.append('html_code', html_code);
+    var requestOptions = {
+        method: 'POST',
+        body: formdata,
+        redirect: 'follow'
+      };
+      
+    fetch("api/ssrf", requestOptions)
+    .then(response => response.text())
+    .then((result) => {
+        console.log(result);
+        alert(result);
+        // if(result['message'] == 'passed'){
+        //     alert('Congratulation! you have wrote secure code,\n Test case passed and other files are not exposed')
+        // }
+        // else{
+        //     alert('Sorry, Try again,\n Test case failed or other files are exposed')
+        // }
+    })
+    .catch(error => console.log('error', error));
+}

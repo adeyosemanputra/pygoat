@@ -1,6 +1,7 @@
 from django.urls import path,include
 
 from .import views
+from . import apis
 
 urlpatterns = [
     path('accounts/', include('allauth.urls')),
@@ -54,4 +55,5 @@ urlpatterns = [
     path("ssrf_lab",views.ssrf_lab,name="SSRF LAB"),
     path("injection",views.injection,name="injection"),
     path("injection_sql_lab",views.injection_sql_lab,name="injection"),
+    path("api/ssrf",apis.ssrf_code_checker,name="api/ssrf"),
 ]
