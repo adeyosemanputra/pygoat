@@ -139,3 +139,10 @@ textarea {
     margin-left: 50px;
     margin-right: 50px;
 }
+
+#ssrf-frame-5{
+    display: none;
+    margin-top: 20px;
+    flex-direction: column;
+    align-items: center;
+}

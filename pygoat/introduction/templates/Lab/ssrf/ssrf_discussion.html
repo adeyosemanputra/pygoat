@@ -116,8 +116,7 @@ def ssrf_lab(request):
             except:
                 return render(request, "Lab/ssrf/ssrf_lab.html", {"blog": "No blog found"})
     else:
-        return redirect('login')
-                    </textarea>
+        return redirect('login')</textarea>
                 </div>
                 <div id="textarea2">
                     <h6>ssrf_lab.html</h6>
@@ -143,11 +142,13 @@ def ssrf_lab(request):
         <input type="hidden" name="blog" value="templates/Lab/ssrf/blogs/blog4.txt">
         <button type="submit" class="btn btn-info"> Blog4 </button>
     </form>
-</div>
-                    </textarea> 
+</div></textarea> 
                 </div>
             </div>
             <button class="btn btn-info" onclick=checkcode()> Submit </button>
+        </div>
+        <div id="ssrf-frame-5">
+            <h2>Congratulation you have secured the code.</h2>
         </div>
     </div>
     
