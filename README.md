@@ -70,8 +70,13 @@ First, Clone the repository using GitHub website or git in Terminal
 ### Docker Container
 1. Install [Docker](https://www.docker.com)
 2. Run `docker pull pygoat/pygoat` or `docker pull pygoat/pygoat:latest`
-3. Run `docker run --rm -p 8000:8000 pygoat/pygoat` or `docker run pygoat/pygoat`
+3. Run `docker run --rm -p 8000:8000 pygoat/pygoat:latest`
 4. Browse to <http://127.0.0.1:8000> 
+5. Remove existing image using `docker image rm pygoat/pygoat` and pull again incase of any error
+
+### From Docker-Compose 
+1. Install [Docker](https://www.docker.com)
+2. Run `docker-compose up` or `docker-compose up -d`
 
 ### Build Docker Image and Run
 1. Clone the repository  &ensp; `git clone https://github.com/adeyosemanputra/pygoat.git` 
