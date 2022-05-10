@@ -72,13 +72,8 @@ function checkcode(){
     .then(response => response.text())
     .then((result) => {
         console.log(result);
-        alert(result);
-        // if(result['message'] == 'passed'){
-        //     alert('Congratulation! you have wrote secure code,\n Test case passed and other files are not exposed')
-        // }
-        // else{
-        //     alert('Sorry, Try again,\n Test case failed or other files are exposed')
-        // }
+        var obj = JSON.parse(result);
+        alert(obj.message);
     })
     .catch(error => console.log('error', error));
 }
