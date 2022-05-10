@@ -2,6 +2,12 @@ import os
 # import re
 def ssrf_code_converter(code):
     list_input = code.split("\n")
+    del_l = []
+    for i in range(len(list_input)):
+        if list_input[i].strip() == '':
+            del_l.append(list_input[i])
+    for l in del_l:
+        list_input.remove(l)
     list_output = ['import os','def ssrf_lab(file):','    try:']
     extracted_code = []
     i = 7
@@ -12,7 +18,6 @@ def ssrf_code_converter(code):
     for i in range(len(extracted_code)):
         if extracted_code[i].strip()[:6] == 'return':
             space = extracted_code[i].split('return')[0]
-            print(space)
             k = extracted_code[i].split('{')[1].split('}')[0]
             extracted_code[i] = space + "return {"+k+"}"
     
@@ -24,7 +29,7 @@ def ssrf_code_converter(code):
     f = open(filename,"w")
     f.write(output_Code)
     f.close()
-    return output_Code
+    return 1
 
 # ssrf_code_converter(input_code)
 def ssrf_html_input_extractor(code):

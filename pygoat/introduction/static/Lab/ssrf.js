@@ -74,6 +74,11 @@ function checkcode(){
         console.log(result);
         var obj = JSON.parse(result);
         alert(obj.message);
+        if (obj.passed == 1 ){
+            document.getElementById('ssrf-frame-4').style.display = 'none';
+            document.getElementById('ssrf-bar-status3').classList.add('ssrf-bar-status')
+            document.getElementById('ssrf-frame-5').style.display = 'flex';
+        }
     })
     .catch(error => console.log('error', error));
 }
