@@ -87,7 +87,8 @@ span {
     overflow: scroll;
 }
 
-#sidebar.active .sidebar-header h3,
+#sidebar.active .sidebar-header div h3,
+#sidebar.active .sidebar-header div img,
 #sidebar.active .CTAs {
     display: none;
 }

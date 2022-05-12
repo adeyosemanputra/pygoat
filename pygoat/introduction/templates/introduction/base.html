@@ -18,7 +18,7 @@
     <!-- Our Custom CSS -->
     <link rel="stylesheet" href="{% static 'introduction/style4.css'%}">
     <link rel="stylesheet" href="{% static 'Lab/ssrf.css'%}">
-
+    <link rel="icon" href="{% static 'Lab/icons/pygoat-mini.png' %}">
     <!-- Font Awesome JS -->
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js"
         integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ"
@@ -37,7 +37,11 @@
         <!-- Sidebar  -->
         <nav id="sidebar" style= "height : 100vh; overflow : scroll">
             <div class="sidebar-header">
-                <h3>PyGoat</h3>
+                
+                <div id="pygoat" style="display:flex; flex-direction:row;align-items: center"> 
+                    <img src="{% static 'Lab/icons/pygoat-mini.svg' %}" alt="logo" width="100px" height="100px"> 
+                    <h3> PyGoat</h3>
+                </div>
                 <strong>PG</strong>
             </div>
 
