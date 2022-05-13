@@ -4,10 +4,13 @@ FROM python:3.7.5-buster
 # set up the psycopg2
 RUN apt-get update && apt-get install -y libpq-dev \
      gcc \
-     postgresql-client
-     
+     postgresql-client \
+     libpq-dev \
+     python3-dev
+
 RUN pip install psycopg2==2.8.3
 RUN apt-get autoremove -y gcc
+
 # set work directory
 RUN mkdir /opt/app
 WORKDIR /opt/app
