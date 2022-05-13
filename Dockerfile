@@ -15,6 +15,7 @@ ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
 # Install dependencies
+RUN python -m pip install --upgrade pip
 COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
 
@@ -25,4 +26,5 @@ COPY . /app/
 EXPOSE 8000
 
 RUN python3 /app/pygoat/manage.py migrate
-CMD ["python3", "pygoat/manage.py" ,"runserver", "0.0.0.0:8000"]
+WORKDIR /app/pygoat/
+CMD ["gunicorn", "--bind" ,"0.0.0.0:8000", "--workers","6", "pygoat.wsgi"]
