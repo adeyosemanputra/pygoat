@@ -144,19 +144,19 @@ def main():
         remove_pygoat()
         choice2 = input(f"Remove {os.getcwd()}? (y/N) ")
         if (choice2.upper() == 'Y' or choice2.upper() == 'YES'):
-            rmtree(os.getcwd(), ignore_errors=True)
-            print(colorama.Back.RED +
-                  colorama.Style.BRIGHT +
-                  f"[+] {os.getcwd()} has been removed" +
-                  colorama.Style.RESET_ALL)
+            try:
+                rmtree(os.getcwd(), ignore_errors=True)
+                print(colorama.Back.RED +
+                      colorama.Style.BRIGHT +
+                      f"[+] {os.getcwd()} has been removed" +
+                      colorama.Style.RESET_ALL)
+            except FileNotFoundError:
+                pass
     else:
-        try:
-            print(colorama.Back.CYAN +
-                  colorama.Style.BRIGHT +
-                  f"[+] {os.getcwd()} has been kept intact" +
-                  colorama.Style.RESET_ALL)
-        except FileNotFoundError:
-            pass
+        print(colorama.Back.CYAN +
+              colorama.Style.BRIGHT +
+              f"[+] {os.getcwd()} has been kept intact" +
+              colorama.Style.RESET_ALL)
 
     # Restore output streams to their original values
     colorama.deinit()
