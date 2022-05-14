@@ -5,7 +5,7 @@ import ctypes
 import platform
 import colorama
 import subprocess
-from shutil import rmtree
+from shutil import rmtree, which
 
 
 # Platform indepent way to check if user is admin
@@ -37,6 +37,15 @@ def uninstall_pip_packages():
           colorama.Style.RESET_ALL)
 
     try:
+        # It is important to upgrade pip first to avoid environment errors
+        if (platform.system != 'Windows'):
+            pip_v = "pip3" if (which('pip3') != None) else "pip"
+            subprocess.run([pip_v,
+                            "install",
+                            "--upgrade",
+                            "pip"],
+                           stdout = subprocess.DEVNULL,
+                           stderr = subprocess.DEVNULL)
         subprocess.check_call([sys.executable,
                                "-m",
                                "pip",
