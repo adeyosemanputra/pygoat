@@ -39,13 +39,13 @@ def uninstall_pip_packages():
     try:
         # It is important to upgrade pip first to avoid environment errors
         if (platform.system != 'Windows'):
-            pip_v = "pip3" if (which('pip3') != None) else "pip"
+            pip_v = "pip3" if (which('pip3') is not None) else "pip"
             subprocess.run([pip_v,
                             "install",
                             "--upgrade",
                             "pip"],
-                           stdout = subprocess.DEVNULL,
-                           stderr = subprocess.DEVNULL)
+                           stdout=subprocess.DEVNULL,
+                           stderr=subprocess.DEVNULL)
         subprocess.check_call([sys.executable,
                                "-m",
                                "pip",
@@ -166,6 +166,11 @@ def main():
               colorama.Style.BRIGHT +
               f"[+] {os.getcwd()} has been kept intact" +
               colorama.Style.RESET_ALL)
+
+    print(colorama.Back.RED +
+          colorama.Style.BRIGHT +
+          "Uninstallations Done!" +
+          colorama.Style.RESET_ALL)
 
     # Restore output streams to their original values
     colorama.deinit()
