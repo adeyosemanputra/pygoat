@@ -150,10 +150,13 @@ def main():
                   f"[+] {os.getcwd()} has been removed" +
                   colorama.Style.RESET_ALL)
     else:
-        print(colorama.Back.CYAN +
-              colorama.Style.BRIGHT +
-              f"[+] {os.getcwd()} has been kept intact" +
-              colorama.Style.RESET_ALL)
+        try:
+            print(colorama.Back.CYAN +
+                  colorama.Style.BRIGHT +
+                  f"[+] {os.getcwd()} has been kept intact" +
+                  colorama.Style.RESET_ALL)
+        except FileNotFoundError:
+            pass
 
     # Restore output streams to their original values
     colorama.deinit()
