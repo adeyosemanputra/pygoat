@@ -10,3 +10,4 @@ django-heroku
 whitenoise
 django-allauth
 Django==4.0.4
+colorama
