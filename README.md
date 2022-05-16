@@ -88,7 +88,7 @@ First, Clone the repository using GitHub website or git in Terminal
 ### Installation video 
 
 1. From Source using `installer.sh`
- - [Installing PyGoat from Source](https://youtu.be/IkazbGlkoOE)
+ - [Installing PyGoat from Source](https://www.youtube.com/watch?v=7bYBJXG3FRQ)
 2. Without using `installer.sh`
  - [![](http://img.youtube.com/vi/rfzQiMeiwso/0.jpg)](http://www.youtube.com/watch?v=rfzQiMeiwso "Installation Pygoat")
 

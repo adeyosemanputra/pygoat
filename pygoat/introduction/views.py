@@ -597,7 +597,7 @@ def a1_broken_access_lab_1(request):
                     "data":"0NLY_F0R_4DM1N5",
                     "username": "admin"
                 })
-        elif (name=='jack',password=='jacktheripper'): # Will implement hashing here
+        elif (name=='jack' and password=='jacktheripper'): # Will implement hashing here
             html = render(
             request, 
             'Lab_2021/A1_BrokenAccessControl/broken_access_lab_1.html', 

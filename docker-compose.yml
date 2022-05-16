@@ -12,7 +12,7 @@ services:
   web:
     build: .
     image: pygoat/pygoat
-    command: python pygoat/manage.py runserver 0.0.0.0:8000
+    command: gunicorn --bind 0.0.0.0:8000 --workers 6 pygoat.wsgi
     ports:
       - "8000:8000"
     volumes:
