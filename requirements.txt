@@ -11,3 +11,4 @@ whitenoise
 django-allauth
 Django==4.0.4
 colorama
+flake8==3.9.0
