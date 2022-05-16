@@ -31,10 +31,7 @@ def is_user_admin():
 # Uninstall Pip packages in a platform independent way
 def uninstall_pip_packages():
     """Remove pip packages installed by pygoat"""
-    print(colorama.Back.CYAN +
-          colorama.Style.BRIGHT +
-          "[+] Uninstalling Pip packages!" +
-          colorama.Style.RESET_ALL)
+    print(colorama.Back.CYAN + colorama.Style.BRIGHT + "[+] Uninstalling Pip packages!" + colorama.Style.RESET_ALL)
 
     try:
         # It is important to upgrade pip first to avoid environment errors
@@ -53,19 +50,13 @@ def uninstall_pip_packages():
                                "-yr",
                                "requirements.txt"])
     except subprocess.CalledProcessError:
-        print(colorama.Fore.RED +
-              colorama.Style.BRIGHT +
-              "[!] Failed to uninstall pip packages" +
-              colorama.Style.RESET_ALL)
+        print(colorama.Fore.RED + colorama.Style.BRIGHT + "[!] Failed to uninstall pip packages" + colorama.Style.RESET_ALL)
 
 
 # Uninstall PIP
 def uninstall_pip():
     """Remove Pip"""
-    print(colorama.Back.RED +
-          colorama.Style.BRIGHT +
-          "[+] Uninstalling Pip!" +
-          colorama.Style.RESET_ALL)
+    print(colorama.Back.RED + colorama.Style.BRIGHT + "[+] Uninstalling Pip!" + colorama.Style.RESET_ALL)
     try:
         subprocess.check_call([sys.executable,
                                "-m",
@@ -74,20 +65,14 @@ def uninstall_pip():
                                "-y",
                                "pip"])
     except subprocess.CalledProcessError:
-        print(colorama.Fore.RED +
-              colorama.Style.BRIGHT +
-              "[!] Failed to uninstall pip" +
-              colorama.Style.RESET_ALL)
+        print(colorama.Fore.RED + colorama.Style.BRIGHT + "[!] Failed to uninstall pip" + colorama.Style.RESET_ALL)
 
 
 # Remove pygoat
 def remove_pygoat():
     """Remove pygoat files"""
     cwd = os.getcwd()
-    print(colorama.Back.RED +
-          colorama.Style.BRIGHT +
-          f"All files in {cwd} will be deleted!" +
-          colorama.Style.RESET_ALL)
+    print(colorama.Back.RED + colorama.Style.BRIGHT + f"All files in {cwd} will be deleted!" + colorama.Style.RESET_ALL)
 
     for item in os.listdir(cwd):
         if platform.system() == 'Windows':
@@ -97,25 +82,14 @@ def remove_pygoat():
 
         if(os.path.isfile(filename)):
             try:
-                print("[!] Deleted: " +
-                      colorama.Fore.RED +
-                      colorama.Style.BRIGHT +
-                      filename +
-                      colorama.Style.RESET_ALL)
+                print("[!] Deleted: " + colorama.Fore.RED + colorama.Style.BRIGHT + filename + colorama.Style.RESET_ALL)
                 os.remove(filename)
             except os.Error:
-                print(colorama.Fore.RED +
-                      colorama.Style.BRIGHT +
-                      f"[!] Failed To remove: {filename}" +
-                      colorama.Style.RESET_ALL)
+                print(colorama.Fore.RED + colorama.Style.BRIGHT + f"[!] Failed To remove: {filename}" + colorama.Style.RESET_ALL)
                 pass
 
         if(os.path.isdir(filename)):
-            print("[!] Deleted: " +
-                  colorama.Fore.RED +
-                  colorama.Style.BRIGHT +
-                  filename +
-                  colorama.Style.RESET_ALL)
+            print("[!] Deleted: " + colorama.Fore.RED + colorama.Style.BRIGHT + filename + colorama.Style.RESET_ALL)
             rmtree(filename, ignore_errors=True)
 
 
@@ -125,10 +99,7 @@ def main():
     # Check if program is being run as admin
     # However, you need admin privileges only if you are not in a venv
     if(not is_user_admin() and sys.prefix == sys.base_prefix):
-        print(colorama.Fore.RED +
-              colorama.Style.BRIGHT +
-              "[!] This script must be run as root!" +
-              colorama.Style.RESET_ALL)
+        print(colorama.Fore.RED + colorama.Style.BRIGHT + "[!] This script must be run as root!" + colorama.Style.RESET_ALL)
         sys.exit(-1)
 
     # Remove pip packages
@@ -139,10 +110,7 @@ def main():
     if (choice.upper() == 'Y' or choice.upper() == 'YES'):
         uninstall_pip()
     else:
-        print(colorama.Back.CYAN +
-              colorama.Style.BRIGHT +
-              "[+] Pip has been kept intact" +
-              colorama.Style.RESET_ALL)
+        print(colorama.Back.CYAN + colorama.Style.BRIGHT + "[+] Pip has been kept intact" + colorama.Style.RESET_ALL)
 
     # Remove pygoat files
     choice = input(
@@ -155,22 +123,13 @@ def main():
         if (choice2.upper() == 'Y' or choice2.upper() == 'YES'):
             try:
                 rmtree(os.getcwd(), ignore_errors=True)
-                print(colorama.Back.RED +
-                      colorama.Style.BRIGHT +
-                      f"[+] {os.getcwd()} has been removed" +
-                      colorama.Style.RESET_ALL)
+                print(colorama.Back.RED + colorama.Style.BRIGHT + f"[+] {os.getcwd()} has been removed" + colorama.Style.RESET_ALL)
             except FileNotFoundError:
                 pass
     else:
-        print(colorama.Back.CYAN +
-              colorama.Style.BRIGHT +
-              f"[+] {os.getcwd()} has been kept intact" +
-              colorama.Style.RESET_ALL)
+        print(colorama.Back.CYAN + colorama.Style.BRIGHT + f"[+] {os.getcwd()} has been kept intact" + colorama.Style.RESET_ALL)
 
-    print(colorama.Back.RED +
-          colorama.Style.BRIGHT +
-          "Uninstallations Done!" +
-          colorama.Style.RESET_ALL)
+    print(colorama.Back.RED + colorama.Style.BRIGHT + "Uninstallations Done!" + colorama.Style.RESET_ALL)
 
     # Restore output streams to their original values
     colorama.deinit()
