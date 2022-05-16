@@ -33,7 +33,7 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Lint with Hadolint
       run: |
-        apt install -y docker docker.io docker-registry
+        wget https://github.com/hadolint/hadolint/releases/download/v2.10.0/hadolint-Linux-x86_64 -O hadolint && chmod +x hadolint
         # Check for linting errors using hadolint
-        docker run --rm -i hadolint/hadolint < Dockerfile
+        ./hadolint Dockerfile
         
