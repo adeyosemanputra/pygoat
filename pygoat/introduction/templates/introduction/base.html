@@ -18,7 +18,8 @@
       crossorigin="anonymous"
     />
     <!-- Our Custom CSS -->
-    <link rel="stylesheet" href="{% static 'introduction/style4.css'%}" />
+    <link rel="stylesheet" href="{% static 'css/style4.css'%}" />
+    <link rel="stylesheet" href="{% static 'css/home.css'%}" />
     <link rel="stylesheet" href="{% static 'Lab/ssrf.css'%}" />
     <link rel="icon" href="{% static 'Lab/icons/pygoat-mini.png' %}" />
     <!-- Font Awesome JS -->
@@ -34,8 +35,8 @@
       integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY"
       crossorigin="anonymous"
     ></script>
-    <script defer src="{% static 'Lab/xss.js' %}"></script>
-    <script defer src="{% static 'Lab/ssrf.js' %}"></script>
+    <script defer src="{% static 'Lab/xss.js' %}"> </script>
+    <script defer src="{% static 'Lab/ssrf.js' %}"> </script>
   </head>
 
   <body>
@@ -58,8 +59,8 @@
           <strong>PG</strong>
         </div>
 
-        <ul class="list-unstyled components">
-          <li class="active">
+        <ul class="list-unstyled components" style="margin-bottom: 0px;">
+          <li >
             <a
               href="#homeSubmenu"
               data-toggle="collapse"
@@ -168,6 +169,47 @@
                 </a>
               </li>
             </ul>
+
+            <a
+              href="#sans25"
+              data-toggle="collapse"
+              aria-expanded="false"
+              class="dropdown-toggle"
+              id="mitre25"
+              style="padding: 13% 0 0 0"
+            >
+              <i class="fas fa-flag"></i>
+              SANS 25 Vulns
+            </a>
+            <ul class="collapse list-unstyled" id="sans25">
+                <li>
+                  <a href="#sqlSubmenu" class="sidebar-list-items">
+                    <i class="fas fa-bug"></i>
+                    A1: Injection
+                  </a>
+                </li>
+            </ul>
+
+            <a
+              href="#Mitre25"
+              data-toggle="collapse"
+              aria-expanded="false"
+              class="dropdown-toggle"
+              id="mitre25"
+              style="padding: 13% 0 0 0"
+            >
+              <i class="fas fa-flag"></i>
+              Mitre top 25 Vulns
+            </a>
+            <ul class="collapse list-unstyled" id="Mitre25">
+                <li>
+                  <a href="#sqlSubmenu" class="sidebar-list-items">
+                    <i class="fas fa-bug"></i>
+                    A1: Injection
+                  </a>
+                </li>
+            </ul>
+
             <a
               href="#OWASP10_2017"
               data-toggle="collapse"

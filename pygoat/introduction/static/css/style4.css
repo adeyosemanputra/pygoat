@@ -128,7 +128,7 @@ span {
   margin-right: 0;
   display: block;
   font-size: 1.8em;
-  margin-bottom: 5px;
+  /* margin-bottom: 5px; */
 }
 
 #sidebar.active ul ul a {
@@ -243,7 +243,8 @@ a.article:hover {
   margin-top: 2rem;
   border-radius: 10px;
   padding: 2rem;
-  background-color: #f8ede3;
+  background-color: #f8ede345;
+  color: aliceblue;
 }
 .bp {
   font-size: 1em;
@@ -445,6 +446,14 @@ h2 {
   width: 95%;
   padding-left: 5%;
 }
+#Mitre25 {
+  width: 95%;
+  padding-left: 5%;
+}
+#sans25 {
+  width: 95%;
+  padding-left: 5%;
+}
 
 #help {
   width: 90%;
@@ -457,3 +466,15 @@ h2 {
   text-align: center;
   padding: 13% 0% 0% 0%;
 }
+#mitre25 {
+  width: 90%;
+  margin-top: 15px;
+  background: #283036;
+  left: 5%;
+  height: 110px;
+  padding: 17px;
+  border-radius: 10px;
+  text-align: center;
+  padding: 13% 0% 0% 0%;
+}
+

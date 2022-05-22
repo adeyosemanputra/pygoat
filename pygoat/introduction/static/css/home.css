@@ -1,0 +1,12 @@
+
+#home-section1 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+#home-section1-img{
+    opacity: .25;
+    width: 400px;
+}

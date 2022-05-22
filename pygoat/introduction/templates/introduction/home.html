@@ -1,7 +1,33 @@
-{% extends "introduction/base.html" %}
-{% block content %}
-<h2>Welcome To PyGoat</h2>
-<p>Pygoat is a vulnerable web application developed in python to teach developers and Web app pentesters about Owasp top 10 and how to avoid them.</p>
+{% extends "introduction/base.html" %} {% block content %}
+{% load static %}
+<div class="container">
+  <div id="home-section1 ">
+    <div>
+      <h2>Welcome To PyGoat</h2>
+      <p>
+        Pygoat is a vulnerable web application developed in python to teach
+        developers and Web app pentesters about Owasp top 10 and how to avoid
+        them.
+      </p>
+      <p>
+        The purpose is to give both developers and testers a platform for
+        learning how to test applications and how to code securely. PyGoat is
+        written in python and used Django web framework as a platform. It has
+        both traditional web application vulnerabilities (i.e. XSS, SQLi) as
+        well. PyGoat also has an area where you can see the source code to
+        determine where the mistake was made that caused the vulnerability and
+        allows you to make changes to secure it.
+      </p>
+    </div>
+    {% comment %} <div>
+        <img src="{% static 'Lab/icons/pygoat-small.png' %}"
+             alt="home-section1"
+             class="img-responsive"
+             id="home-section1-img">
+    </div> {% endcomment %}
+  </div>
+</div>
 
+{% comment %}
 <div class="line"></div>
-{% endblock content %}
+{% endcomment %} {% endblock content %}
