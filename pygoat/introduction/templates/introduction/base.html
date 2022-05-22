@@ -1,278 +1,448 @@
-<!Doctype html>
+<!DOCTYPE html>
 {% load static %}
 
 <html lang="en">
-
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     {% block title %}
     <title>OWASP Pygoat</title>
     {% endblock %}
 
-
     <!-- Bootstrap CSS CDN -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
-        integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
+      integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4"
+      crossorigin="anonymous"
+    />
     <!-- Our Custom CSS -->
-    <link rel="stylesheet" href="{% static 'introduction/style4.css'%}">
-    <link rel="stylesheet" href="{% static 'Lab/ssrf.css'%}">
-
+    <link id="pagestyle" rel="stylesheet" href="{% static 'css/dark-theme.css'%}" />
+    <link rel="stylesheet" href="{% static 'css/home.css'%}" />
+    <link rel="stylesheet" href="{% static 'Lab/ssrf.css'%}" />
+    <link rel="icon" href="{% static 'Lab/icons/pygoat-mini.png' %}" />
     <!-- Font Awesome JS -->
-    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js"
-        integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ"
-        crossorigin="anonymous"></script>
-    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js"
-        integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY"
-        crossorigin="anonymous"></script>
-    <script defer src="{% static 'Lab/xss.js' %}"></script>
-    <script defer src="{% static 'Lab/ssrf.js' %}"></script>
+    <script
+      defer
+      src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js"
+      integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      defer
+      src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js"
+      integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY"
+      crossorigin="anonymous"
+    ></script>
+    <script defer src="{% static 'Lab/xss.js' %}"> </script>
+    <script defer src="{% static 'Lab/ssrf.js' %}"> </script>
+  </head>
 
-</head>
-
-<body>
-
+  <body>
     <div class="wrapper">
-        <!-- Sidebar  -->
-        <nav id="sidebar" style= "height : 100vh; overflow : scroll">
-            <div class="sidebar-header">
-                <h3>PyGoat</h3>
-                <strong>PG</strong>
-            </div>
+      <!-- Sidebar  -->
+      <nav id="sidebar" style="overflow: scroll" class="sidebarClass">
+        <div class="sidebar-header">
+          <div
+            id="pygoat"
+            style="display: flex; flex-direction: row; align-items: center"
+          >
+            <img
+              src="{% static 'Lab/icons/pygoat-mini.svg' %}"
+              alt="logo"
+              width="100px"
+              height="100px"
+            />
+            <h3>PyGoat</h3>
+          </div>
+          <strong>PG</strong>
+        </div>
 
-            <ul class="list-unstyled components">
-                <li class="active">
-                    <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                        <i class="fas fa-home"></i>
-                        Home
+        <ul class="list-unstyled components" style="margin-bottom: 0px;">
+          <li >
+            <a
+              href="#homeSubmenu"
+              data-toggle="collapse"
+              aria-expanded="false"
+              class="dropdown-toggle"
+              id="sidebar-home"
+              style="padding: 13% 0 0 0"
+            >
+              <i class="fas fa-flag"></i>
+              Home
+            </a>
+            <ul class="collapse list-unstyled" id="homeSubmenu">
+              <li>
+                <a href="/" class="sidebar-list-items">Introduction</a>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <a
+              href="#OWASP10_2021"
+              data-toggle="collapse"
+              aria-expanded="false"
+              class="dropdown-toggle"
+              id="owasp10_2021"
+              style="padding: 13% 0 0 0"
+            >
+              <i class="fas fa-flag"></i>
+              OWASP TOP 10 2021
+            </a>
+            <ul class="collapse list-unstyled" id="OWASP10_2021">
+              <li>
+                <a href="/broken_access_control" class="sidebar-list-items">
+                  <i class="fas fa-bug"></i>
+                  A1: Broken Access Control
+                </a>
+              </li>
+              <li>
+                <a href="/data_exp" class="sidebar-list-items">
+                  <i class="fas fa-bug"></i>
+                  A2: Cryptographic Failures
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#sqlSubmenu2"
+                  data-toggle="collapse"
+                  aria-expanded="false"
+                  class="dropdown-toggle sidebar-list-items"
+                >
+                  <i class="fas fa-bug"></i>
+                  A3: Injection
+                </a>
+                <ul class="collapse list-unstyled" id="sqlSubmenu2">
+                  <li>
+                    <a href="/injection" class="sidebar-list-items"
+                      >SQl Injection
                     </a>
-                    <ul class="collapse list-unstyled" id="homeSubmenu">
-                        <li>
-                            <a href="/" class="sidebar-list-items">Introduction</a>
-                        </li>
-                    </ul>
-                </li>
+                  </li>
+                  <li>
+                    <a href="/cmd" class="sidebar-list-items"
+                      >Command Injection</a
+                    >
+                  </li>
+                </ul>
+              </li>
+              <li>
+                <a href="/insecure-design" class="sidebar-list-items">
+                  <i class="fas fa-bug"></i>
+                  A4: Insecure Design
+                </a>
+              </li>
+              <li>
+                <a href="/sec_mis" class="sidebar-list-items">
+                  <i class="fas fa-bug"></i>
+                  A5: Security Misconfiguration
+                </a>
+              </li>
+              <li>
+                <a href="/a9" class="sidebar-list-items">
+                  <i class="fas fa-bug"></i>
+                  A6: Vulnerable and Outdated Components
+                </a>
+              </li>
+              <li>
+                <a href="/bau" class="sidebar-list-items">
+                  <i class="fas fa-bug"></i>
+                  A7: Identification and Authentication Failures
+                </a>
+              </li>
+              <li>
+                <a href="/insec_des" class="sidebar-list-items">
+                  <i class="fas fa-bug"></i>
+                  A8: Software and Data Integrity Failures
+                </a>
+              </li>
+              <li>
+                <a href="/a10" class="sidebar-list-items">
+                  <i class="fas fa-bug"></i>
+                  A9: Security Logging and Monitoring Failures
+                </a>
+              </li>
+              <li>
+                <a href="/ssrf" class="sidebar-list-items">
+                  <i class="fas fa-bug"></i>
+                  A10: Server-Side Request Forgery
+                </a>
+              </li>
+            </ul>
+
+            <a
+              href="#sans25"
+              data-toggle="collapse"
+              aria-expanded="false"
+              class="dropdown-toggle"
+              id="mitre25"
+              style="padding: 13% 0 0 0"
+            >
+              <i class="fas fa-flag"></i>
+              SANS 25 Vulns
+            </a>
+            <ul class="collapse list-unstyled" id="sans25">
                 <li>
-
-                    <a href="#sqlSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                        <i class="fas fa-bug"></i>
-                        A1: Injection
-                    </a>
-                    <ul class="collapse list-unstyled" id="sqlSubmenu">
-                        <li>
-                            <a href="/sql" class="sidebar-list-items">SQl Injection </a>
-                        </li>
-                        <li>
-                            <a href="/cmd" class="sidebar-list-items">Command Injection</a>
-                        </li>
-                    </ul>
-                    <a href="/bau">
-                        <i class="fas fa-bug"></i>
-                        A2: Broken Authentication
-                    </a>
-                    <a href="/data_exp">
-                        <i class="fas fa-bug"></i>
-                        A3: Sensitive Data Exposure
-                    </a>
-                    <a href="/xxe">
-                        <i class="fas fa-bug"></i>
-                        A4: XML External Entities (XXE)
-                    </a>
-                    <a href="/ba">
-                        <i class="fas fa-bug"></i>
-                        A5: Broken Access Control
-                    </a>
-                    <a href="/sec_mis">
-                        <i class="fas fa-bug"></i>
-                        A6: Security Misconfiguration
-                    </a>
-                    <a href="/xss">
-                        <i class="fas fa-bug"></i>
-                        A7: Cross Site Scripting
-                    </a>
-
-                    <a href="/insec_des">
-                        <i class="fas fa-bug"></i>
-                        A8: Insecure Deserialization
-                    </a>
-                    <a href="/a9">
-                        <i class="fas fa-bug"></i>
-                        A9: Using Components with Known Vulnerabilities
-                    </a>
-                    <a href="/a10">
-                        <i class="fas fa-bug"></i>
-                        A10: Insufficient Logging & Monitoring
-                    </a>
-                    <a href="#OWASP10_2021" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                        <i class="fas fa-flag"></i>
-                        OWASP TOP 10 2021
-                    </a>
-                    <ul class="collapse list-unstyled" id="OWASP10_2021">
-                        <li>
-                            <a href="/broken_access_control" class="sidebar-list-items">
-                                <i class="fas fa-bug"></i>
-                                A1: Broken Access Control
-                            </a>
-                        </li>
-                        <li>
-                            <a href="/data_exp" class="sidebar-list-items">
-                                <i class="fas fa-bug"></i>
-                                A2: Cryptographic Failures 
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#sqlSubmenu2" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle sidebar-list-items">
-                                <i class="fas fa-bug"></i>
-                                A3: Injection
-                            </a>
-                            <ul class="collapse list-unstyled" id="sqlSubmenu2">
-                                <li>
-                                    <a href="/injection" class="sidebar-list-items">SQl Injection </a>
-                                </li>
-                                <li>
-                                    <a href="/cmd" class="sidebar-list-items">Command Injection</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a href="/insecure-design" class="sidebar-list-items">
-                                <i class="fas fa-bug"></i>
-                                A4: Insecure Design
-                            </a>
-                        </li>
-                        <li>
-                            <a href="/sec_mis" class="sidebar-list-items">
-                                <i class="fas fa-bug"></i>
-                                A5: Security Misconfiguration
-                            </a>
-                        </li>
-                        <li>
-                            <a href="/a9" class="sidebar-list-items">
-                                <i class="fas fa-bug"></i>
-                                A6: Vulnerable and Outdated Components 
-                            </a>
-                        </li>
-                        <li>
-                            <a href="/bau" class="sidebar-list-items">
-                                <i class="fas fa-bug"></i>
-                                A7: Identification and Authentication Failures
-                            </a>
-                        </li>
-                        <li>
-                            <a href="/insec_des" class="sidebar-list-items">
-                                <i class="fas fa-bug"></i>
-                                A8: Software and Data Integrity Failures
-                            </a>
-                        </li>
-                        <li>
-                            <a href="/a10" class="sidebar-list-items">
-                                <i class="fas fa-bug"></i>
-                                A9: Security Logging and Monitoring Failures
-                            </a>
-                        </li>
-                        <li>
-                            <a href="/ssrf" class="sidebar-list-items">
-                                <i class="fas fa-bug"></i>
-                                A10: Server-Side Request Forgery
-                            </a>
-                        </li>
-                    </ul>
-                    <a href="/auth">
-                        <i class="fas fa-bug"></i>
-                        Authentication
-                    </a>
-                    <a href="#challengeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                        <i class="fas fa-flag"></i>
-                        Challenges
-                    </a>
-                    <ul class="collapse list-unstyled" id="challengeSubmenu">
-                        <li>
-                            <a href="#" class="sidebar-list-items">Page 1</a>
-                        </li>
-                        <li>
-                            <a href="#" class="sidebar-list-items">Page 2</a>
-                        </li>
-                        <li>
-                            <a href="#" class="sidebar-list-items">Page 3</a>
-                        </li>
-                    </ul>
-                </li>
-
-                <li>
-                    <a href="#">
-                        <i class="fas fa-question"></i>
-                        Help
-                    </a>
+                  <a href="#sqlSubmenu" class="sidebar-list-items">
+                    <i class="fas fa-bug"></i>
+                    A1: Injection
+                  </a>
                 </li>
             </ul>
 
-        </nav>
+            <a
+              href="#Mitre25"
+              data-toggle="collapse"
+              aria-expanded="false"
+              class="dropdown-toggle"
+              id="mitre25"
+              style="padding: 13% 0 0 0"
+            >
+              <i class="fas fa-flag"></i>
+              Mitre top 25 Vulns
+            </a>
+            <ul class="collapse list-unstyled" id="Mitre25">
+                <li>
+                  <a href="#sqlSubmenu" class="sidebar-list-items">
+                    <i class="fas fa-bug"></i>
+                    A1: Injection
+                  </a>
+                </li>
+            </ul>
 
-        <!-- Page Content  -->
-        <div id="content" style= "height : 100vh; overflow : scroll">
+            <a
+              href="#OWASP10_2017"
+              data-toggle="collapse"
+              aria-expanded="false"
+              class="dropdown-toggle"
+              id="owasp10_2017"
+              style="padding: 13% 0 0 0"
+            >
+              <i class="fas fa-flag"></i>
+              OWASP TOP 10 2017
+            </a>
+            <ul class="collapse list-unstyled" id="OWASP10_2017">
+              <li>
+                <a href="#sqlSubmenu" class="sidebar-list-items">
+                  <i class="fas fa-bug"></i>
+                  A1: Injection
+                </a>
+              </li>
+              <ul class="collapse list-unstyled" id="sqlSubmenu">
+                <li>
+                  <a href="/sql" class="sidebar-list-items">SQl Injection </a>
+                </li>
+                <li>
+                  <a href="/cmd" class="sidebar-list-items"
+                    >Command Injection</a
+                  >
+                </li>
+              </ul>
+              <li>
+                <a href="/bau" class="sidebar-list-items">
+                  <i class="fas fa-bug"></i>
+                  A2: Broken Authentication
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/data_exp"
+                  data-toggle="collapse"
+                  aria-expanded="false"
+                  class="dropdown-toggle sidebar-list-items"
+                >
+                  <i class="fas fa-bug"></i>
+                  A3: Sensitive Data Exposure
+                </a>
+              </li>
+              <li>
+                <a href="/xxe" class="sidebar-list-items">
+                  <i class="fas fa-bug"></i>
+                  A4: XML External Entities (XXE)
+                </a>
+              </li>
+              <li>
+                <a href="/ba" class="sidebar-list-items">
+                  <i class="fas fa-bug"></i>
+                  A5: Broken Access Control
+                </a>
+              </li>
+              <li>
+                <a href="/sec_mis" class="sidebar-list-items">
+                  <i class="fas fa-bug"></i>
+                  A6: Security Misconfiguration
+                </a>
+              </li>
+              <li>
+                <a href="/xss" class="sidebar-list-items">
+                  <i class="fas fa-bug"></i>
+                  A7: Cross Site Scripting
+                </a>
+              </li>
+              <li>
+                <a href="/insec_des" class="sidebar-list-items">
+                  <i class="fas fa-bug"></i>
+                  A8: Insecure Deserialization
+                </a>
+              </li>
+              <li>
+                <a href="/a9" class="sidebar-list-items">
+                  <i class="fas fa-bug"></i>
+                  A9: Using Components with Known Vulnerabilities
+                </a>
+              </li>
+              <li>
+                <a href="/a10" class="sidebar-list-items">
+                  <i class="fas fa-bug"></i>
+                  A10: Insufficient Logging & Monitoring
+                </a>
+              </li>
+            </ul>
+            {% comment %}
+            <a href="/auth">
+              <i class="fas fa-bug"></i>
+              Authentication
+            </a>
+            {% endcomment %}
 
-            <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                <div class="container-fluid">
+            <a
+              href="#challengeSubmenu"
+              data-toggle="collapse"
+              aria-expanded="false"
+              class="dropdown-toggle"
+              id="challengeMenu"
+              style="padding: 13% 0 0 0"
+            >
+              <i class="fas fa-flag"></i>
+              Challenges
+            </a>
+            <ul class="collapse list-unstyled" id="challengeSubmenu">
+              <li>
+                <a href="#" class="sidebar-list-items">Page 1</a>
+              </li>
+              <li>
+                <a href="#" class="sidebar-list-items">Page 2</a>
+              </li>
+              <li>
+                <a href="#" class="sidebar-list-items">Page 3</a>
+              </li>
+            </ul>
+            <a
+              href="#"
+              data-toggle="collapse"
+              aria-expanded="false"
+              class="dropdown-toggle"
+              id="help"
+              style="padding: 13% 0 0 0"
+            >
+              <i class="fas fa-question"></i>
+              Help
+            </a>
+          </li>
+        </ul>
+      </nav>
 
-                    <button type="button" id="sidebarCollapse" class="btn btn-info">
-                        <i class="fas fa-align-left"></i>
-                        <span>Toggle Sidebar</span>
-                    </button>
-                    <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse"
-                        data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                        <i class="fas fa-align-justify"></i>
-                    </button>
+      <!-- Page Content  -->
+      <div id="content" style="height: 100vh">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+          <div class="container-fluid">
+            <button type="button" id="sidebarCollapse" class="btn btn-info">
+              <i class="fas fa-align-left"></i>
+              <span>Toggle Sidebar</span>
+            </button>
+            <button
+              class="btn btn-dark d-inline-block d-lg-none ml-auto"
+              type="button"
+              data-toggle="collapse"
+              data-target="#navbarSupportedContent"
+              aria-controls="navbarSupportedContent"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <i class="fas fa-align-justify"></i>
+            </button>
 
-                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul class="nav navbar-nav ml-auto">
-                            {% if user.is_authenticated %}
-                            <li class="nav-item">
-                                <a class="nav-link" href='{% url "logout" %}?next=/'>Logout</a>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="nav navbar-nav ml-auto">
+                <li class="nav-item">
+                  <button class="nav-link dark" href='{% url "logout" %}?next=/' id="stylesheet-toggle" onclick="swapStyleSheet()"
+                    >Theme</button
+                  >
+                </li>
 
-                            </li>
 
-                            {% else %}
+                {% if user.is_authenticated %}
+                <li class="nav-item">
+                  <a class="nav-link" href='{% url "logout" %}?next=/'
+                    >Logout</a
+                  >
+                </li>
 
-                            <li class="nav-item">
-                                <a class="nav-link" href="/login">Login</a>
-                            </li>
-                            {% endif %}
+                {% else %}
 
-                            <!-- <li class="nav-item">
+                <li class="nav-item">
+                  <a class="nav-link" href="/login">Login</a>
+                </li>
+                {% endif %}
+
+                <!-- <li class="nav-item">
                                     <a class="nav-link" href="#">Profile</a>
                                 </li> -->
-                        </ul>
-                    </div>
-                </div>
-            </nav>
+              </ul>
+            </div>
+          </div>
+        </nav>
 
-            {% block content %}
-            {% endblock %}
-        </div>
+        {% block content %} {% endblock %}
+      </div>
     </div>
 
     <!-- jQuery CDN - Slim version (=without AJAX) -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"
+    ></script>
     <!-- Popper.JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"
-        integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ"
-        crossorigin="anonymous"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"
+      integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ"
+      crossorigin="anonymous"
+    ></script>
     <!-- Bootstrap JS -->
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"
-        integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm"
-        crossorigin="anonymous"></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"
+      integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm"
+      crossorigin="anonymous"
+    ></script>
 
     <script type="text/javascript">
-        $(document).ready(function () {
-            $('#sidebarCollapse').on('click', function () {
-                $('#sidebar').toggleClass('active');
-            });
+      $(document).ready(function () {
+        $(".sidebar-header").on("click", function () {
+          $("#sidebar").toggleClass("active");
         });
-    </script>
-</body>
+      });
 
+      function swapStyleSheet() {
+        var elem = document.getElementById('stylesheet-toggle');
+        if(elem.classList.contains('dark')){
+            elem.classList.remove('dark');
+            elem.classList.add('light');
+            document.getElementById("pagestyle").setAttribute("href", "static/css/light.css");
+        } else {
+            elem.classList.remove('light');
+            elem.classList.add('dark');
+            document.getElementById("pagestyle").setAttribute("href", "static/css/dark-theme.css");
+        } 
+      }
+      
+      {% comment %} function initate() {
+          var style1 = document.getElementById("stylesheet-dark");
+      
+          style1.onclick = swapStyleSheet("static/css/dark.css");
+      }
+      
+      window.onload = initate; {% endcomment %}
+    </script>
+  </body>
 </html>
