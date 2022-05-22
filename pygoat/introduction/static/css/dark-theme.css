@@ -477,3 +477,10 @@ h2 {
   text-align: center;
   padding: 13% 0% 0% 0%;
 }
+
+#stylesheet-toggle{
+  background: #f0f8ff8a;
+  border: 0px;
+  border-radius: 2px;
+  margin-right: 5px;
+}

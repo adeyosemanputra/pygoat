@@ -18,7 +18,7 @@
       crossorigin="anonymous"
     />
     <!-- Our Custom CSS -->
-    <link rel="stylesheet" href="{% static 'css/style4.css'%}" />
+    <link id="pagestyle" rel="stylesheet" href="{% static 'css/dark-theme.css'%}" />
     <link rel="stylesheet" href="{% static 'css/home.css'%}" />
     <link rel="stylesheet" href="{% static 'Lab/ssrf.css'%}" />
     <link rel="icon" href="{% static 'Lab/icons/pygoat-mini.png' %}" />
@@ -364,6 +364,13 @@
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
               <ul class="nav navbar-nav ml-auto">
+                <li class="nav-item">
+                  <button class="nav-link dark" href='{% url "logout" %}?next=/' id="stylesheet-toggle" onclick="swapStyleSheet()"
+                    >Theme</button
+                  >
+                </li>
+
+
                 {% if user.is_authenticated %}
                 <li class="nav-item">
                   <a class="nav-link" href='{% url "logout" %}?next=/'
@@ -415,6 +422,27 @@
           $("#sidebar").toggleClass("active");
         });
       });
+
+      function swapStyleSheet() {
+        var elem = document.getElementById('stylesheet-toggle');
+        if(elem.classList.contains('dark')){
+            elem.classList.remove('dark');
+            elem.classList.add('light');
+            document.getElementById("pagestyle").setAttribute("href", "static/css/light.css");
+        } else {
+            elem.classList.remove('light');
+            elem.classList.add('dark');
+            document.getElementById("pagestyle").setAttribute("href", "static/css/dark-theme.css");
+        } 
+      }
+      
+      {% comment %} function initate() {
+          var style1 = document.getElementById("stylesheet-dark");
+      
+          style1.onclick = swapStyleSheet("static/css/dark.css");
+      }
+      
+      window.onload = initate; {% endcomment %}
     </script>
   </body>
 </html>

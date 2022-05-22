@@ -5,7 +5,8 @@
 @import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
 body {
   font-family: "Poppins", sans-serif;
-  background: #000000;
+  /* background: #000000; */
+  background: #fff;
 }
 
 body::-webkit-scrollbar {
@@ -34,7 +35,7 @@ a:focus {
 
 .navbar {
   padding: 15px 10px;
-  background-image: linear-gradient(45deg, hsl(0, 0%, 25.9%), #80a9c9);
+  background-image: linear-gradient(45deg, hsl(0deg 0% 95%), #80a9c9);
   border: 0px solid;
   border-radius: 0px 10px 0px 0px;
   margin-bottom: 40px;
@@ -71,12 +72,14 @@ span {
 ----------------------------------------------------- */
 .sidebar-list-items {
   background-color: #79a9cf40;
+  color : #0b446e;
 }
 .wrapper {
   display: flex;
   align-items: stretch;
   margin: 10px;
   background-color: #424242;
+  background-color: #f1f1f1;
   height: 97vh;
   border-radius: 20px;
 }
@@ -87,6 +90,7 @@ span {
   min-width: 315px;
   max-width: 315px;
   background: #373c40;
+  background: #c5cfd7;
   color: #fff;
   transition: all 0.3s;
   border-radius: 20px 0px 20px 0px;
@@ -146,7 +150,8 @@ span {
 
 #sidebar .sidebar-header {
   padding: 20px;
-  background: #283036;
+  /* background: #283036; */
+  background: #4e93c7
 }
 
 #sidebar .sidebar-header strong {
@@ -244,7 +249,7 @@ a.article:hover {
   border-radius: 10px;
   padding: 2rem;
   background-color: #f8ede345;
-  color: aliceblue;
+  color: #20303e
 }
 .bp {
   font-size: 1em;
@@ -376,6 +381,7 @@ h2 {
 #owasp10_2021 {
   width: 90%;
   background: #283036;
+  background: #4e93c7;
   margin-top: 15px;
   left: 5%;
   height: 110px;
@@ -388,6 +394,7 @@ h2 {
   width: 90%;
   margin-top: 15px;
   background: #283036;
+  background: #4e93c7;
   left: 5%;
   height: 110px;
   padding: 17px;
@@ -413,6 +420,7 @@ h2 {
   width: 90%;
   margin-top: 15px;
   background: #283036;
+  background: #4e93c7;
   left: 5%;
   height: 110px;
   padding: 17px;
@@ -435,6 +443,7 @@ h2 {
   width: 90%;
   margin-top: 15px;
   background: #283036;
+  background: #4e93c7;
   left: 5%;
   height: 110px;
   padding: 17px;
@@ -459,6 +468,7 @@ h2 {
   width: 90%;
   margin-top: 15px;
   background: #283036;
+  background: #4e93c7;
   left: 5%;
   height: 110px;
   padding: 17px;
@@ -470,6 +480,7 @@ h2 {
   width: 90%;
   margin-top: 15px;
   background: #283036;
+  background: #4e93c7;
   left: 5%;
   height: 110px;
   padding: 17px;
@@ -478,3 +489,9 @@ h2 {
   padding: 13% 0% 0% 0%;
 }
 
+#stylesheet-toggle{
+    background: #f0f8ff8a;
+    border: 0px;
+    border-radius: 2px;
+    margin-right: 5px;
+}
