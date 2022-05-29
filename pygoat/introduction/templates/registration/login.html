@@ -13,13 +13,23 @@
         {{form|crispy}}
         </div>
         <div>
-        <p class="bp" align="center">Click <a href="/register">Here</a> to register | <a href="{% provider_login_url 'google'%}">Login with Google</a>
          </p>
         </div>
         <div class="text-center">
         <button type="submit" class="btn btn-info" style="margin-bottom:20px">Login</button>
         </div>
     </form>
+    <div style="display:flex;justify-content: center;align-items: center;margin: 10px;" align="center" id="o-auth">
+        Click 
+        <a href="/register">Here</a>
+         to register | 
+        <form method="post" action="/accounts/google/login/">
+             {% csrf_token %} 
+            <button type="submit" class="btn btn-primary" style="margin-left:7px; background: #2aa2b8;">
+                Login with Google
+            </button>
+        </form>
+    </div>
 
 </div>
 </div>
