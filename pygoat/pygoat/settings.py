@@ -144,12 +144,12 @@ django_heroku.settings(locals())
 
 #Authentication Backend
 
-AUTHENTICATION_BACKENDS = (
- 'django.contrib.auth.backends.ModelBackend',
- 'allauth.account.auth_backends.AuthenticationBackend',
- )
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend'
+]
 
-SITE_ID=2
+SITE_ID=3
 
 #Social Account Providers
 SOCIALACCOUNT_PROVIDERS = {
