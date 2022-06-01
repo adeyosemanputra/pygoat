@@ -41,6 +41,7 @@
 
   <body>
     <div class="wrapper">
+      <div class="pg active">PG</div>
       <!-- Sidebar  -->
       <nav id="sidebar" style="overflow: scroll" class="sidebarClass">
         <div class="sidebar-header">
@@ -297,12 +298,6 @@
                 </a>
               </li>
             </ul>
-            {% comment %}
-            <a href="/auth">
-              <i class="fas fa-bug"></i>
-              Authentication
-            </a>
-            {% endcomment %}
 
             <a
               href="#challengeSubmenu"
@@ -384,9 +379,6 @@
                 </li>
                 {% endif %}
 
-                <!-- <li class="nav-item">
-                                    <a class="nav-link" href="#">Profile</a>
-                                </li> -->
               </ul>
             </div>
           </div>
@@ -419,6 +411,14 @@
       $(document).ready(function () {
         $(".sidebar-header").on("click", function () {
           $("#sidebar").toggleClass("active");
+          $(".pg").toggleClass("active");
+        });
+      });
+
+      $(document).ready(function () {
+        $(".pg").on("click", function () {
+          $("#sidebar").toggleClass("active");
+          $(".pg").toggleClass("active");
         });
       });
 
@@ -427,21 +427,22 @@
         if(elem.classList.contains('dark')){
             elem.classList.remove('dark');
             elem.classList.add('light');
+            localStorage.setItem('theme','light');
             document.getElementById("pagestyle").setAttribute("href", "/static/css/light.css");
         } else {
             elem.classList.remove('light');
             elem.classList.add('dark');
+            localStorage.setItem('theme','dark');
             document.getElementById("pagestyle").setAttribute("href", "/static/css/dark-theme.css");
         } 
       }
-      
-      {% comment %} function initate() {
-          var style1 = document.getElementById("stylesheet-dark");
-      
-          style1.onclick = swapStyleSheet("static/css/dark.css");
+      var elem3 = document.getElementById('stylesheet-toggle');
+      if(localStorage.getItem('theme')=='light') {
+        elem3.classList.remove('dark');
+        elem3.classList.add('light');
+        document.getElementById("pagestyle").setAttribute("href", "/static/css/light.css");
       }
       
-      window.onload = initate; {% endcomment %}
     </script>
   </body>
 </html>
