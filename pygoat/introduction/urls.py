@@ -46,7 +46,6 @@ urlpatterns = [
     path("debug",views.debug,name="debug"),
     path("insecure-design",views.insec_desgine,name="insecure-design"),
     path("insecure-design_lab",views.insec_desgine_lab,name="insecure-design_lab"),
-
     path("broken_access_control", views.a1_broken_access, name="broken_access"),
     path("broken_access_lab_1", views.a1_broken_access_lab_1, name="broken_access_lab_1"),
     path("broken_access_lab_2", views.a1_broken_access_lab_2, name="broken_access_lab_2"),
@@ -56,4 +55,7 @@ urlpatterns = [
     path("injection",views.injection,name="injection"),
     path("injection_sql_lab",views.injection_sql_lab,name="injection"),
     path("api/ssrf",apis.ssrf_code_checker,name="api/ssrf"),
+    path("ssti", views.ssti, name="SSTI"),
+    path("ssti/lab", views.ssti_lab, name="SSTI Lab"),
+    path("ssti/blog/<str:blog_id>", views.ssti_view_blog, name="SSTI Blog"),
 ]

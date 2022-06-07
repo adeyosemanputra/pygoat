@@ -1,4 +1,6 @@
 import os
+import uuid
+from .models import *
 # import re
 def ssrf_code_converter(code):
     list_input = code.split("\n")
@@ -42,3 +44,9 @@ def ssrf_html_input_extractor(code):
                 if tokens[i][j][:7] == 'value="':
                     params.append(tokens[i][j][7:-2])
     return params
+
+def unique_id_generator():
+    id = str(uuid.uuid4()).split('-')[-1]
+
+def filter_blog(code):
+    return code
