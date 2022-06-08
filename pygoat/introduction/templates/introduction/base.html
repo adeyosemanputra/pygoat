@@ -21,6 +21,7 @@
     <link id="pagestyle" rel="stylesheet" href="{% static 'css/dark-theme.css'%}" />
     <link rel="stylesheet" href="{% static 'css/home.css'%}" />
     <link rel="stylesheet" href="{% static 'Lab/ssrf.css'%}" />
+    <link rel="stylesheet" href="{% static 'Lab/ssti.css'%}" />
     <link rel="icon" href="{% static 'Lab/icons/pygoat-mini.png' %}" />
     <!-- Font Awesome JS -->
     <script
@@ -123,6 +124,11 @@
                   <li>
                     <a href="/cmd" class="sidebar-list-items"
                       >Command Injection</a
+                    >
+                  </li>
+                  <li>
+                    <a href="/ssti" class="sidebar-list-items"
+                      >Template Injection</a
                     >
                   </li>
                 </ul>
