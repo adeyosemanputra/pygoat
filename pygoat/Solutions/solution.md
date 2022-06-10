@@ -427,4 +427,7 @@ This results as being logged in as Admin
     {{e.user.get_username}} : {{e.user.password}}
 {% endfor %}`
 
-add a post which includes this content 
+add a post which includes this content
+ 
+The result would look like this -->
+![Screenshot from 2022-06-10 21-04-29](https://user-images.githubusercontent.com/75058161/173106213-9e218e81-d4b2-4447-9570-4aa8de3dea88.png)
