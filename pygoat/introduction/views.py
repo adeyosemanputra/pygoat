@@ -1,5 +1,6 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
+from flask import render_template
 from .models import  FAANG,info,login,comments,authLogin, tickits, sql_lab_table,Blogs
 from django.core import serializers
 from requests.structures import CaseInsensitiveDict
