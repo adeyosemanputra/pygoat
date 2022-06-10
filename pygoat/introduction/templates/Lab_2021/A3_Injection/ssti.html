@@ -6,25 +6,29 @@
 <div class="content">
     <h3>Server-Side Template Injection</h3>
     <div class="box">
+        A Template is simply a reusable and dynamic HTML code, and a template engine helps us compile that template. 
+        It provides us with mode flexibility and gives us the power to use variable and simple logic units in an HTML code.
+
+        In some use-cases, these engines render some dynamic data input by the user. 
+        These engines can run some commands on server machines and access some environment variables and local variables. 
+        So if the user input is not verified properly, the user can give some malicious input and get the output when the page is
+        rendered.        
+        <br>
+        <br>
         Server-side template injection occurs when:
         <br>
         1. User-supplied data is not validated, filtered, or sanitized by the application and directly embedded into a server side template <br>
         2. Using malicious template directives, an attacker may be able to execute arbitrary code and take full control of the web server. <br>
         3. Hostile data is used within object-relational mapping (ORM) search parameters to extract additional, sensitive records. <br>
-        4. Hostile data is directly used or concatenated. The SQL or command contains the structure and malicious data in dynamic queries, commands, or stored procedures. <br><br>
         
-        Some of the more common injections are SQL, NoSQL, OS command, Object Relational Mapping (ORM), LDAP, and Expression Language (EL) or Object Graph Navigation Library (OGNL) injection. The concept is identical among all interpreters. Source code review is the best method of detecting if applications are vulnerable to injections. Automated testing of all parameters, headers, URL, cookies, JSON, SOAP, and XML data inputs is strongly encouraged. Organizations can include static (SAST), dynamic (DAST), and interactive (IAST) application security testing tools into the CI/CD pipeline to identify introduced injection flaws before production deployment.
+        
+        
     </div>
 
     <div class="box">
         <button class="coll btn btn-info">Lab Details</button>
         <div class="lab">
-            A SQL injection is a famous Injection attack that consists of insertion or “injection” of a SQL query via the input data
-            from the client to the application. A successful SQL injection exploit can read sensitive data from the
-            database, modify database data (Insert/Update/Delete), execute administration operations on the database
-            (such as shutdown the DBMS), recover the content of a given file present on the DBMS file system and in some
-            cases issue commands to the operating system. SQL injection attacks are a type of injection attack, in which
-            SQL commands are injected into data-plane input in order to affect the execution of predefined SQL commands.
+                This lab uses django's default template engine, and oviously the input is not filltered properly, try to get the admin password hash exploiting it.
             
                 <div align="right"> <button class="btn btn-info" type="button"
                     onclick="window.location.href='/ssti/lab'">Access Lab</button></div>

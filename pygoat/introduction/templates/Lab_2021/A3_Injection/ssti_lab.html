@@ -30,21 +30,31 @@
 <button class="coll2 btn btn-info" style= "position : fixed ; right :200px; bottom : 7px">View Code</button>
 <div class="lab code">
    <code>   
-    def ssrf_lab(request):</br>
+def ssti_lab(request):</br>
 &emsp;if request.user.is_authenticated:</br>
 &emsp;&emsp;if request.method=="GET":</br>
-&emsp;&emsp;&emsp;return render(request,"Lab/ssrf/ssrf_lab.html",{"blog":"Read Blog About SSRF"})</br>
-&emsp;&emsp;else:</br>
-&emsp;&emsp;&emsp;file=request.POST["blog"]</br>
-&emsp;&emsp;&emsp;try :</br>
-&emsp;&emsp;&emsp;&emsp;dirname = os.path.dirname(__file__)</br>
-&emsp;&emsp;&emsp;&emsp;filename = os.path.join(dirname, file)</br>
-&emsp;&emsp;&emsp;&emsp;file = open(filename,"r")</br>
-&emsp;&emsp;&emsp;&emsp;data = file.read()</br>
-&emsp;&emsp;&emsp;&emsp;return render(request,"Lab/ssrf/ssrf_lab.html",{"blog":data})</br>
-&emsp;&emsp;&emsp;except:</br>
-&emsp;&emsp;&emsp;&emsp;return render(request, "Lab/ssrf/ssrf_lab.html", {"blog": "No blog found"})</br>
-&emsp;else:</br>    
+&emsp;&emsp;&emsp;users_blogs = Blogs.objects.filter(author=request.user)</br>
+&emsp;&emsp;&emsp;return render(request,"Lab_2021/A3_Injection/ssti_lab.html", {"blogs":users_blogs})</br>
+&emsp;&emsp;elif request.method=="POST":</br>
+&emsp;&emsp;&emsp;blog = request.POST["blog"]</br>
+&emsp;&emsp;&emsp;id = str(uuid.uuid4()).split('-')[-1]</br>
+
+&emsp;&emsp;&emsp;blog = filter_blog(blog)</br>
+&emsp;&emsp;&emsp;prepend_code = "{&#37; extends 'introduction/base.html' &#37;}\</br>
+&emsp;&emsp;&emsp;&emsp;{&#37; block content &#37;}{&#37; block title &#37;}\</br>
+&emsp;&emsp;&emsp;&emsp;<title>SSTI-Blogs</title>\</br>
+&emsp;&emsp;&emsp;&emsp;{&#37; endblock &#37;}"</br>
+&emsp;&emsp;&emsp;</br>
+&emsp;&emsp;&emsp;blog = prepend_code + blog + "{&#37; endblock &#37;}"</br>
+&emsp;&emsp;&emsp;new_blog = Blogs.objects.create(author = request.user, blog_id = id)</br>
+&emsp;&emsp;&emsp;new_blog.save() </br>
+&emsp;&emsp;&emsp;dirname = os.path.dirname(__file__)</br>
+&emsp;&emsp;&emsp;filename = os.path.join(dirname, f"templates/Lab_2021/A3_Injection/Blogs/{id}.html")</br>
+&emsp;&emsp;&emsp;file = open(filename, "w+") </br>
+&emsp;&emsp;&emsp;file.write(blog)</br>
+&emsp;&emsp;&emsp;file.close()</br>
+&emsp;&emsp;&emsp;return redirect(f'blog/{id}')</br>
+&emsp;else:</br>
 &emsp;&emsp;return redirect('login')</br>
    </code>
     

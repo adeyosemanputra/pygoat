@@ -271,7 +271,7 @@ a.article:hover {
 
 /* Style the collapsible content. Note: hidden by default */
 .lab {
-  padding: 0 18px;
+  padding: 18px;
   display: none;
   overflow: hidden;
   background-color: #f1f1f199;
