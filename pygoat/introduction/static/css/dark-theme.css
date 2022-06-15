@@ -504,3 +504,7 @@ h2 {
   border-radius: 2px;
   margin-right: 5px;
 }
+
+.Mitigation li {
+  list-style-type: disc;
+}
