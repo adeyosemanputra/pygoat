@@ -794,3 +794,11 @@ def ssti_view_blog(request,blog_id):
             return render(request,f"Lab_2021/A3_Injection/Blogs/{blog_id}.html")
         elif request.method=="POST":
             return HttpResponseBadRequest()
+
+#-------------------------Cryptographic Failure -----------------------------------#
+
+def crypto_failure(request):
+    if request.user.is_authenticated:
+        return render(request,"Lab_2021/A2_Crypto_failur/crypto_failure.html")
+    else:
+        redirect('login')
