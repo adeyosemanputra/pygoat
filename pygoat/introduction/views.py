@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
 from flask import render_template
-from .models import  FAANG,info,login,comments,authLogin, tickits, sql_lab_table,Blogs
+from .models import  FAANG,info,login,comments,authLogin, tickits, sql_lab_table,Blogs,CF_user
 from django.core import serializers
 from requests.structures import CaseInsensitiveDict
 import requests
@@ -10,6 +10,7 @@ from django.contrib.auth.forms import UserCreationForm
 import random
 import string
 import os
+from hashlib import md5
 #*****************************************Lab Requirements****************************************************#
 
 from .models import  FAANG,info,login,comments,otp
@@ -799,6 +800,22 @@ def ssti_view_blog(request,blog_id):
 
 def crypto_failure(request):
     if request.user.is_authenticated:
-        return render(request,"Lab_2021/A2_Crypto_failur/crypto_failure.html")
+        return render(request,"Lab_2021/A2_Crypto_failur/crypto_failure.html",{"success":False,"failure":False})
     else:
         redirect('login')
+
+def crypto_failure_lab(request):
+    if request.user.is_authenticated:
+        if request.method=="GET":
+            return render(request,"Lab_2021/A2_Crypto_failur/crypto_failure_lab.html")
+        elif request.method=="POST":
+            username = request.POST["username"]
+            password = request.POST["password"]
+            try:
+                password = md5(password.encode()).hexdigest()
+                user = CF_user.objects.get(username=username,password=password)
+                return render(request,"Lab_2021/A2_Crypto_failur/crypto_failure_lab.html",{"user":user, "success":True,"failure":False})
+            except:
+                return render(request,"Lab_2021/A2_Crypto_failur/crypto_failure_lab.html",{"success":False, "failure":True})
+    else :
+        return redirect('login')
