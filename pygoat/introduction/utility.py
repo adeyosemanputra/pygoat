@@ -1,6 +1,7 @@
 import os
 import uuid
 from .models import *
+import hashlib
 # import re
 def ssrf_code_converter(code):
     list_input = code.split("\n")
@@ -50,3 +51,6 @@ def unique_id_generator():
 
 def filter_blog(code):
     return code
+
+def customHash(password):
+    return hashlib.sha256(password.encode()).hexdigest()[::-1]

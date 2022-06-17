@@ -60,4 +60,5 @@ urlpatterns = [
     path("ssti/blog/<str:blog_id>", views.ssti_view_blog, name="SSTI Blog"),
     path("cryptographic_failure",views.crypto_failure,name="cryptographic_failure"),
     path("cryptographic_failure/lab",views.crypto_failure_lab,name="cryptographic_failure_lab"),
+    path("cryptographic_failure/lab2",views.crypto_failure_lab2,name="cryptographic_failure_lab2"),
 ]

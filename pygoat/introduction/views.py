@@ -27,7 +27,7 @@ import yaml
 import json
 from dataclasses import dataclass
 import uuid
-from .utility import filter_blog
+from .utility import filter_blog, customHash
 #*****************************************Login and Registration****************************************************#
 
 
@@ -819,3 +819,17 @@ def crypto_failure_lab(request):
                 return render(request,"Lab_2021/A2_Crypto_failur/crypto_failure_lab.html",{"success":False, "failure":True})
     else :
         return redirect('login')
+
+def crypto_failure_lab2(request):
+    if request.user.is_authenticated:
+        if request.method == "GET":
+            return render(request,"Lab_2021/A2_Crypto_failur/crypto_failure_lab2.html")
+        elif request.method == "POST":
+            username = request.POST["username"]
+            password = request.POST["password"]
+            try:
+                password = customHash(password)
+                user = CF_user.objects.get(username=username,password2=password)
+                return render(request,"Lab_2021/A2_Crypto_failur/crypto_failure_lab2.html",{"user":user, "success":True,"failure":False})
+            except:
+                return render(request,"Lab_2021/A2_Crypto_failur/crypto_failure_lab2.html",{"success":False, "failure":True})
