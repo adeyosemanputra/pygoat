@@ -60,5 +60,6 @@ class CF_user(models.Model):
     id = models.AutoField(primary_key=True)
     username = models.CharField(max_length=200)
     password = models.CharField(max_length=200)
+    password2 = models.CharField(max_length=64)
     def __str__(self):
         return self.username
