@@ -11,6 +11,7 @@ import random
 import string
 import os
 from hashlib import md5
+import datetime
 #*****************************************Lab Requirements****************************************************#
 
 from .models import  FAANG,info,login,comments,otp
@@ -28,6 +29,7 @@ import json
 from dataclasses import dataclass
 import uuid
 from .utility import filter_blog, customHash
+# import jwt
 #*****************************************Login and Registration****************************************************#
 
 
@@ -833,3 +835,41 @@ def crypto_failure_lab2(request):
                 return render(request,"Lab_2021/A2_Crypto_failur/crypto_failure_lab2.html",{"user":user, "success":True,"failure":False})
             except:
                 return render(request,"Lab_2021/A2_Crypto_failur/crypto_failure_lab2.html",{"success":False, "failure":True})
+
+# based on CWE-319
+def crypto_failure_lab3(request):
+    if request.user.is_authenticated:
+        if request.method == "GET":
+            try :
+                cookie = request.COOKIES["cookie"]
+                print(cookie)
+                expire = cookie.split('|')[1]
+                expire = datetime.datetime.fromisoformat(expire)
+                now = datetime.datetime.now()
+                if now > expire :
+                    return render(request,"Lab_2021/A2_Crypto_failur/crypto_failure_lab3.html",{"success":False,"failure":False})
+                elif cookie.split('|')[0] == 'admin':
+                    return render(request,"Lab_2021/A2_Crypto_failur/crypto_failure_lab3.html",{"success":True,"failure":False,"admin":True})
+                else:
+                    return render(request,"Lab_2021/A2_Crypto_failur/crypto_failure_lab3.html",{"success":True,"failure":False,"admin":False})
+            except Exception as e:
+                print(e)
+                pass
+            return render(request,"Lab_2021/A2_Crypto_failur/crypto_failure_lab3.html")
+        if request.method == "POST":
+            username = request.POST["username"]
+            password = request.POST["password"]
+            try:
+                if username == "User" and password == "P@$$w0rd":
+                    expire = datetime.datetime.now() + datetime.timedelta(minutes=60)
+                    cookie = f"{username}|{expire}"
+                    response = render(request,"Lab_2021/A2_Crypto_failur/crypto_failure_lab3.html",{"success":True, "failure":False , "admin":False})
+                    response.set_cookie("cookie", cookie)
+                    response.status_code = 200
+                    return response
+                else:
+                    response = render(request,"Lab_2021/A2_Crypto_failur/crypto_failure_lab3.html",{"success":False, "failure":True})
+                    response.set_cookie("cookie", None)
+                    return response
+            except:
+                return render(request,"Lab_2021/A2_Crypto_failur/crypto_failure_lab2.html",{"success":False, "failure":True})  
