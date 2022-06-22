@@ -657,6 +657,27 @@ def a1_broken_access_lab_2(request):
     else:
         return render(request,'Lab_2021/A1_BrokenAccessControl/broken_access_lab_2.html',{"no_creds":True})
 
+def a1_broken_access_lab_3(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    if request.method == 'GET':
+        return render(request, 'Lab_2021/A1_BrokenAccessControl/broken_access_lab_3.html', {'loggedin':False})
+    elif request.method == 'POST':
+        username = request.POST["username"]
+        password = request.POST["password"]
+
+        if username == 'John' and password == 'reaper':
+            return render(request,'Lab_2021/A1_BrokenAccessControl/broken_access_lab_3.html', {'loggedin':True, 'admin': False})
+        elif username == 'admin' and password == 'admin_pass':
+            return render(request,'Lab_2021/A1_BrokenAccessControl/broken_access_lab_3.html', {'loggedin':True, 'admin': True})
+        return render(request, 'Lab_2021/A1_BrokenAccessControl/broken_access_lab_3.html', {'loggedin':False})
+
+def a1_broken_access_lab3_secret(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    # no checking applied here
+    return render(request, 'Lab_2021/A1_BrokenAccessControl/secret.html')
+
 
 ###################################################### 2021 A3: Injection
 
