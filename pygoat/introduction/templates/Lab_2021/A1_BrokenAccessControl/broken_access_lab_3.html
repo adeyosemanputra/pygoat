@@ -1,0 +1,42 @@
+{% extends "introduction/base.html" %}
+{% load static %}
+{% block content %}
+{% block title %}
+<title>Broken Access Control.</title>
+{% endblock %}
+
+
+<div class="container">
+
+{% if loggedin %}
+
+{% if admin %}<h2>Welcome Admin</h2>{% else %} <h2> Welcome John </h2>{% endif %}
+<div class="nav2">
+    {% if admin %}
+    <div>
+        <a href="broken_access_controle/secret"> SECRET </a>
+    </div>
+    {% endif %}
+</div>
+{% else %}
+    <div class="jumbotron">
+        <h4 style="text-align:center"> LOG IN </h4>
+        <div class="login" style="display: flex;justify-content: center;flex-direction: row;}">
+            <form method="post">
+                {% csrf_token %} 
+                <input id="input" type="text" name="username" placeholder="User Name"><br>
+                <input id="input" type="password" name="password" placeholder="Password"><br>
+                <button style="margin-top:20px" class="btn btn-info" type="submit"> Log in</button>
+            </form>
+        </div>
+    </div>
+{% endif %}
+
+</div>
+
+<br>
+<div align="right"> <button class="btn btn-info" type="button" onclick="window.location.href='/broken_access_control'">Back to Lab
+        Details</button></div>
+</p>
+
+{% endblock %}
