@@ -39,7 +39,7 @@ def sec_misconfig_lab3(request):</br>
     </br>
 &emsp;&emsp;cookie = jwt.encode(payload, SECRET_KEY, algorithm='HS256')</br>
 &emsp;&emsp;response = render(request,"Lab/sec_mis/sec_mis_lab3.html", {"admin":False} )</br>
-&emsp;&emsp;response.set_cookie(key = "auth_cookie", value = cookie, httponly=True)</br>
+&emsp;&emsp;response.set_cookie(key = "auth_cookie", value = cookie)</br>
 &emsp;&emsp;return response </br> 
    </code>
     
