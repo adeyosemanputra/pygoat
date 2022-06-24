@@ -163,3 +163,5 @@ SOCIALACCOUNT_PROVIDERS = {
         }
     }
 }
+
+SECRET_KEY = "PYGOAT"

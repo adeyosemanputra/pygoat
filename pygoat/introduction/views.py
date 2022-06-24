@@ -1,10 +1,8 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
-from flask import render_template
 from .models import  FAANG,info,login,comments,authLogin, tickits, sql_lab_table,Blogs,CF_user
 from django.core import serializers
 from requests.structures import CaseInsensitiveDict
-import requests
 from django.contrib.auth import login,authenticate
 from django.contrib.auth.forms import UserCreationForm
 import random
@@ -29,7 +27,7 @@ import json
 from dataclasses import dataclass
 import uuid
 from .utility import filter_blog, customHash
-# import jwt
+import jwt
 #*****************************************Login and Registration****************************************************#
 
 
@@ -893,4 +891,27 @@ def crypto_failure_lab3(request):
                     response.set_cookie("cookie", None)
                     return response
             except:
-                return render(request,"Lab_2021/A2_Crypto_failur/crypto_failure_lab2.html",{"success":False, "failure":True})  
+                return render(request,"Lab_2021/A2_Crypto_failur/crypto_failure_lab2.html",{"success":False, "failure":True})
+
+#-----------------------------------------------SECURITY MISCONFIGURATION -------------------
+from pygoat.settings import SECRET_KEY
+
+def sec_misconfig_lab3(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    try:
+        cookie = request.COOKIES["auth_cookie"]
+        payload = jwt.decode(cookie, SECRET_KEY, algorithms=['HS256'])
+        if payload['user'] == 'admin':
+            return render(request,"Lab/sec_mis/sec_mis_lab3.html", {"admin":True} )
+    except:
+        payload = {
+            'user':'not_admin',
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=60),
+            'iat': datetime.datetime.utcnow(),
+        }
+
+        cookie = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
+        response = render(request,"Lab/sec_mis/sec_mis_lab3.html", {"admin":False} )
+        response.set_cookie(key = "auth_cookie", value = cookie)
+        return response

@@ -37,6 +37,7 @@ urlpatterns = [
     path("otp", views.Otp, name="OTP Verification"),
     path("sec_mis", views.sec_mis, name="Security Misconfiguration"),
     path("sec_mis_lab", views.sec_mis_lab, name="Security Misconfiguration Lab"),
+    path("sec_mis_lab3", views.sec_misconfig_lab3, name="Security Misconfiguration Lab"),
     path("secret", views.secret, name="Secret key for A6"),
     path("a9",views.a9,name="A9"),
     path("a9_lab",views.a9_lab,name="A9 LAb"),
