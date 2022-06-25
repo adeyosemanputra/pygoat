@@ -28,6 +28,9 @@ from dataclasses import dataclass
 import uuid
 from .utility import filter_blog, customHash
 import jwt
+from PIL import Image,ImageMath
+import base64
+from io import BytesIO
 #*****************************************Login and Registration****************************************************#
 
 
@@ -479,6 +482,35 @@ def a9_lab(request):
 def get_version(request):
       return render(request,"Lab/A9/a9_lab.html",{"version":"pyyaml v5.1"})
 
+@csrf_exempt
+def a9_lab2(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    
+    if request.method == "GET":
+        return render (request,"Lab/A9/a9_lab2.html")
+    elif request.method == "POST":
+        try :
+            file=request.FILES["file"]
+            function_str = request.POST.get("function")
+            img  = Image.open(file)
+            img = img.convert("RGB")
+            r,g,b  = img.split()
+            # function_str = "convert(r+g, '1')"
+            output = ImageMath.eval(function_str,img = img, b=b, r=r, g=g)
+
+            # saving the image 
+            buffered = BytesIO()
+            output.save(buffered, format="JPEG")
+            img_str = base64.b64encode(buffered.getvalue()).decode("utf-8")
+            try :
+                return render(request,"Lab/A9/a9_lab2.html",{"img_str": img_str, "success": True})
+            except Exception as e:
+                print(e)
+                return render(request, "Lab/A9/a9_lab2.html", {"data": "Error", "error": True})
+        except Exception as e:
+            print(e)
+            return render(request, "Lab/A9/a9_lab2.html", {"data":"Please Upload a file", "error":True})
 
 
 #*********************************************************A10*************************************************#
