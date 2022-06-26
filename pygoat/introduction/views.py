@@ -503,8 +503,12 @@ def a9_lab2(request):
             buffered = BytesIO()
             output.save(buffered, format="JPEG")
             img_str = base64.b64encode(buffered.getvalue()).decode("utf-8")
+
+            bufferd_ref = BytesIO()
+            img.save(bufferd_ref, format="JPEG")
+            img_str_ref = base64.b64encode(bufferd_ref.getvalue()).decode("utf-8")
             try :
-                return render(request,"Lab/A9/a9_lab2.html",{"img_str": img_str, "success": True})
+                return render(request,"Lab/A9/a9_lab2.html",{"img_str": img_str,"img_str_ref":img_str_ref, "success": True})
             except Exception as e:
                 print(e)
                 return render(request, "Lab/A9/a9_lab2.html", {"data": "Error", "error": True})
