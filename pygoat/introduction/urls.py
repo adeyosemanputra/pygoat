@@ -41,6 +41,7 @@ urlpatterns = [
     path("secret", views.secret, name="Secret key for A6"),
     path("a9",views.a9,name="A9"),
     path("a9_lab",views.a9_lab,name="A9 LAb"),
+    path("a9_lab2",views.a9_lab2,name="A9 LAb 2"),
     path("get_version",views.get_version,name="Get Version"),
     path("a10",views.a10,name="A10"),
     path("a10_lab",views.a10_lab,name="A10 LAb"),
