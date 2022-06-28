@@ -63,3 +63,17 @@ class CF_user(models.Model):
     password2 = models.CharField(max_length=64)
     def __str__(self):
         return self.username
+
+class AF_admin(models.Model):
+    id = models.AutoField(primary_key=True)
+    username = models.CharField(max_length=200)
+    password = models.CharField(max_length=200)
+    session_id = models.CharField(max_length=200)
+    last_login = models.DateTimeField(blank= True, null = True)
+    logged_in = models.BooleanField(default=False)
+    is_locked = models.BooleanField(default=False)
+    failattempt = models.IntegerField(default=0)
+    lockout_cooldown = models.DateField(blank= True, null = True)
+
+    def __str__(self):
+        return self.username

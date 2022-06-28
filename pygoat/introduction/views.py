@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
-from .models import  FAANG,info,login,comments,authLogin, tickits, sql_lab_table,Blogs,CF_user
+from .models import  FAANG,info,login,comments,authLogin, tickits, sql_lab_table,Blogs,CF_user,AF_admin
 from django.core import serializers
 from requests.structures import CaseInsensitiveDict
 from django.contrib.auth import login,authenticate
@@ -31,6 +31,7 @@ import jwt
 from PIL import Image,ImageMath
 import base64
 from io import BytesIO
+from argon2 import PasswordHasher
 #*****************************************Login and Registration****************************************************#
 
 
@@ -967,7 +968,45 @@ def auth_failure(request):
     if request.method == "GET":
         return render(request,"Lab_2021/A7_auth_failure/a7.html")
 
+
+## used admin password --> 2022_in_pygoat@pygoat.com  ## not a easy password to be brute forced 
 @authentication_decorator
 def auth_failure_lab2(request):
     if request.method == "GET":
         return render(request,"Lab_2021/A7_auth_failure/lab2.html" )
+
+    elif request.method == "POST":
+        username = request.POST["username"]
+        password = request.POST["password"]
+        try:
+            user = AF_admin.objects.get(username=username)
+            print(type(user.lockout_cooldown))
+            if user.is_locked == True and user.lockout_cooldown > datetime.date.today():
+                return render(request,"Lab_2021/A7_auth_failure/lab2.html", {"is_locked":True})
+            
+            try:
+                ph = PasswordHasher()
+                ph.verify(user.password, password)
+                if user.is_locked == True and user.lockout_cooldown < datetime.date.today():
+                    user.is_locked = False
+                    user.last_login = datetime.datetime.now()
+                    user.failattempt = 0
+                    user.save()
+                return render(request,"Lab_2021/A7_auth_failure/lab2.html", {"user":user, "success":True,"failure":False})
+            except:
+                # fail attempt
+                print("wrong password")
+                fail_attempt = user.failattempt + 1
+                if fail_attempt == 5:
+                    user.is_active = False
+                    user.failattempt = 0
+                    user.is_locked = True
+                    user.lockout_cooldown = datetime.datetime.now() + datetime.timedelta(minutes=1440)
+                    user.save()
+                    return render(request,"Lab_2021/A7_auth_failure/lab2.html", {"user":user, "success":False,"failure":True, "is_locked":True})
+                user.failattempt = fail_attempt
+                user.save()
+                return render(request,"Lab_2021/A7_auth_failure/lab2.html",{"success":False, "failure":True})
+        except Exception as e:
+            print(e)
+            return render(request,"Lab_2021/A7_auth_failure/lab2.html",{"success":False, "failure":True})
