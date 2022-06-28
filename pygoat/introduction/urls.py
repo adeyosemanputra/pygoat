@@ -66,4 +66,6 @@ urlpatterns = [
     path("cryptographic_failure/lab",views.crypto_failure_lab,name="cryptographic_failure_lab"),
     path("cryptographic_failure/lab2",views.crypto_failure_lab2,name="cryptographic_failure_lab2"),
     path("cryptographic_failure/lab3",views.crypto_failure_lab3,name="cryptographic_failure_lab3"),
+    path("auth_failure",views.auth_failure,name="auth_failure"),
+    path("auth_failure/lab2/admin12983gfugef81e8yeryepanel",views.auth_failure_lab2,name="auth_failure_lab2"),
 ]

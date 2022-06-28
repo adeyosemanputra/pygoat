@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
-from .models import  FAANG,info,login,comments,authLogin, tickits, sql_lab_table,Blogs,CF_user
+from .models import  FAANG,info,login,comments,authLogin, tickits, sql_lab_table,Blogs,CF_user,AF_admin
 from django.core import serializers
 from requests.structures import CaseInsensitiveDict
 from django.contrib.auth import login,authenticate
@@ -31,6 +31,7 @@ import jwt
 from PIL import Image,ImageMath
 import base64
 from io import BytesIO
+from argon2 import PasswordHasher
 #*****************************************Login and Registration****************************************************#
 
 
@@ -50,6 +51,15 @@ def home(request):
         return render(request,'introduction/home.html',)
     else:
         return redirect('login')
+
+## authentication check decurator function 
+def authentication_decorator(func):
+    def function(*args, **kwargs):
+        if args[0].user.is_authenticated:
+            return func(*args, **kwargs)
+        else:
+            return redirect('login')
+    return function
 
 #*****************************************XSS****************************************************#
 
@@ -503,8 +513,12 @@ def a9_lab2(request):
             buffered = BytesIO()
             output.save(buffered, format="JPEG")
             img_str = base64.b64encode(buffered.getvalue()).decode("utf-8")
+
+            bufferd_ref = BytesIO()
+            img.save(bufferd_ref, format="JPEG")
+            img_str_ref = base64.b64encode(bufferd_ref.getvalue()).decode("utf-8")
             try :
-                return render(request,"Lab/A9/a9_lab2.html",{"img_str": img_str, "success": True})
+                return render(request,"Lab/A9/a9_lab2.html",{"img_str": img_str,"img_str_ref":img_str_ref, "success": True})
             except Exception as e:
                 print(e)
                 return render(request, "Lab/A9/a9_lab2.html", {"data": "Error", "error": True})
@@ -947,3 +961,52 @@ def sec_misconfig_lab3(request):
         response = render(request,"Lab/sec_mis/sec_mis_lab3.html", {"admin":False} )
         response.set_cookie(key = "auth_cookie", value = cookie)
         return response
+
+# - ------------------------Identification and Authentication Failures--------------------------------
+@authentication_decorator
+def auth_failure(request):    
+    if request.method == "GET":
+        return render(request,"Lab_2021/A7_auth_failure/a7.html")
+
+
+## used admin password --> 2022_in_pygoat@pygoat.com  ## not a easy password to be brute forced 
+@authentication_decorator
+def auth_failure_lab2(request):
+    if request.method == "GET":
+        return render(request,"Lab_2021/A7_auth_failure/lab2.html" )
+
+    elif request.method == "POST":
+        username = request.POST["username"]
+        password = request.POST["password"]
+        try:
+            user = AF_admin.objects.get(username=username)
+            print(type(user.lockout_cooldown))
+            if user.is_locked == True and user.lockout_cooldown > datetime.datetime.now():
+                return render(request,"Lab_2021/A7_auth_failure/lab2.html", {"is_locked":True})
+            
+            try:
+                ph = PasswordHasher()
+                ph.verify(user.password, password)
+                if user.is_locked == True and user.lockout_cooldown < datetime.datetime.now():
+                    user.is_locked = False
+                    user.last_login = datetime.datetime.now()
+                    user.failattempt = 0
+                    user.save()
+                return render(request,"Lab_2021/A7_auth_failure/lab2.html", {"user":user, "success":True,"failure":False})
+            except:
+                # fail attempt
+                print("wrong password")
+                fail_attempt = user.failattempt + 1
+                if fail_attempt == 5:
+                    user.is_active = False
+                    user.failattempt = 0
+                    user.is_locked = True
+                    user.lockout_cooldown = datetime.datetime.now() + datetime.timedelta(minutes=1440)
+                    user.save()
+                    return render(request,"Lab_2021/A7_auth_failure/lab2.html", {"user":user, "success":False,"failure":True, "is_locked":True})
+                user.failattempt = fail_attempt
+                user.save()
+                return render(request,"Lab_2021/A7_auth_failure/lab2.html",{"success":False, "failure":True})
+        except Exception as e:
+            print(e)
+            return render(request,"Lab_2021/A7_auth_failure/lab2.html",{"success":False, "failure":True})
