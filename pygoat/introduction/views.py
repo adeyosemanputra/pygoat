@@ -51,6 +51,15 @@ def home(request):
     else:
         return redirect('login')
 
+## authentication check decurator function 
+def authentication_decorator(func):
+    def function(*args, **kwargs):
+        if args[0].user.is_authenticated:
+            return func(*args, **kwargs)
+        else:
+            return redirect('login')
+    return function
+
 #*****************************************XSS****************************************************#
 
 
@@ -951,3 +960,14 @@ def sec_misconfig_lab3(request):
         response = render(request,"Lab/sec_mis/sec_mis_lab3.html", {"admin":False} )
         response.set_cookie(key = "auth_cookie", value = cookie)
         return response
+
+# - ------------------------Identification and Authentication Failures--------------------------------
+@authentication_decorator
+def auth_failure(request):    
+    if request.method == "GET":
+        return render(request,"Lab_2021/A7_auth_failure/a7.html")
+
+@authentication_decorator
+def auth_failure_lab2(request):
+    if request.method == "GET":
+        return render(request,"Lab_2021/A7_auth_failure/lab2.html" )
