@@ -73,7 +73,7 @@ class AF_admin(models.Model):
     logged_in = models.BooleanField(default=False)
     is_locked = models.BooleanField(default=False)
     failattempt = models.IntegerField(default=0)
-    lockout_cooldown = models.DateField(blank= True, null = True)
+    lockout_cooldown = models.DateTimeField(blank= True, null = True)
 
     def __str__(self):
         return self.username

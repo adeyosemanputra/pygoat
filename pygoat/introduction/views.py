@@ -981,13 +981,13 @@ def auth_failure_lab2(request):
         try:
             user = AF_admin.objects.get(username=username)
             print(type(user.lockout_cooldown))
-            if user.is_locked == True and user.lockout_cooldown > datetime.date.today():
+            if user.is_locked == True and user.lockout_cooldown > datetime.datetime.now():
                 return render(request,"Lab_2021/A7_auth_failure/lab2.html", {"is_locked":True})
             
             try:
                 ph = PasswordHasher()
                 ph.verify(user.password, password)
-                if user.is_locked == True and user.lockout_cooldown < datetime.date.today():
+                if user.is_locked == True and user.lockout_cooldown < datetime.datetime.now():
                     user.is_locked = False
                     user.last_login = datetime.datetime.now()
                     user.failattempt = 0
