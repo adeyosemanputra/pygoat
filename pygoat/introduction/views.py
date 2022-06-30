@@ -1,6 +1,7 @@
+import hashlib
 from django.shortcuts import render,redirect
 from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
-from .models import  FAANG,info,login,comments,authLogin, tickits, sql_lab_table,Blogs,CF_user,AF_admin
+from .models import  FAANG, AF_session_id,info,login,comments,authLogin, tickits, sql_lab_table,Blogs,CF_user,AF_admin
 from django.core import serializers
 from requests.structures import CaseInsensitiveDict
 from django.contrib.auth import login,authenticate
@@ -1010,3 +1011,49 @@ def auth_failure_lab2(request):
         except Exception as e:
             print(e)
             return render(request,"Lab_2021/A7_auth_failure/lab2.html",{"success":False, "failure":True})
+
+## Hardcoed user table for demonstration purpose only
+USER_A7_LAB3 = {
+    "User1":{"userid":"1", "username":"User1", "password": "491a2800b80719ea9e3c89ca5472a8bda1bdd1533d4574ea5bd85b70a8e93be0"},
+    "User2":{"userid":"2", "username":"User2", "password": "c577e95bf729b94c30a878d01155693a9cdddafbb2fe0d52143027474ecb91bc"},
+    "User3":{"userid":"3", "username":"User3", "password": "5a91a66f0c86b5435fe748706b99c17e6e54a17e03c2a3ef8d0dfa918db41cf6"},
+    "User4":{"userid":"4", "username":"User4", "password": "6046bc3337728a60967a151ee584e4fd7c53740a49485ebdc38cac42a255f266"}
+}
+
+# USER_A7_LAB3 = {
+#     "User1":{"userid":"1", "username":"User1", "password": "Hash1"},
+#     "User2":{"userid":"2", "username":"User2", "password": "Hash2"},
+#     "User3":{"userid":"3", "username":"User3", "password": "Hash3"},
+#     "User4":{"userid":"4", "username":"User4", "password": "Hash4"}
+# }
+
+@authentication_decorator
+@csrf_exempt
+def auth_failure_lab3(request):
+    if request.method == "GET":
+        try:
+            cookie = request.COOKIES["session_id"]
+            session = AF_session_id.objects.get(session_id=cookie)
+            if session :
+                return render(request,"Lab_2021/A7_auth_failure/lab3.html", {"username":session.user,"success":True})
+        except:
+            pass
+        return render(request, "Lab_2021/A7_auth_failure/lab3.html")
+    elif request.method == "POST":
+        token = str(uuid.uuid4())
+        try:
+            username = request.POST["username"]
+            password = request.POST["password"]
+            password = hashlib.sha256(password.encode()).hexdigest()
+        except:
+            response = render(request, "Lab_2021/A7_auth_failure/lab3.html")
+            response.set_cookie("session_id", None)
+            return response
+
+        if USER_A7_LAB3[username]['password'] == password:
+            session_data = AF_session_id.objects.create(session_id=token, user=USER_A7_LAB3[username]['username'])
+            session_data.save()
+            response = render(request, "Lab_2021/A7_auth_failure/lab3.html", {"success":True, "failure":False, "username":username})
+            response.set_cookie("session_id", token)
+            return response
+        
