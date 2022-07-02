@@ -1067,7 +1067,12 @@ def software_and_data_integrity_failure(request):
 
 @authentication_decorator
 def software_and_data_integrity_failure_lab2(request):
-    pass
+    if request.method == "GET":
+        try:
+            username = request.GET["username"]
+            return render(request,"Lab_2021/A8_software_and_data_integrity_failure/lab2.html", {"username":username,"success":True})
+        except:
+            return render(request,"Lab_2021/A8_software_and_data_integrity_failure/lab2.html")
 
 
 @authentication_decorator
