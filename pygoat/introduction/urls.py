@@ -69,4 +69,7 @@ urlpatterns = [
     path("auth_failure",views.auth_failure,name="auth_failure"),
     path("auth_failure/lab2/admin12983gfugef81e8yeryepanel",views.auth_failure_lab2,name="auth_failure_lab2"),
     path("auth_failure/lab3",views.auth_failure_lab3,name="auth_failure_lab2"),
+    path("2021/A8",views.software_and_data_integrity_failure,name="A8"),
+    path("2021/A8/lab2",views.software_and_data_integrity_failure_lab2,name="A8"),
+    path("2021/A8/lab3",views.software_and_data_integrity_failure_lab3,name="A8"),
 ]

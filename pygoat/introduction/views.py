@@ -970,7 +970,8 @@ def auth_failure(request):
         return render(request,"Lab_2021/A7_auth_failure/a7.html")
 
 
-## used admin password --> 2022_in_pygoat@pygoat.com  ## not a easy password to be brute forced 
+## used admin password --> 2022_in_pygoat@pygoat.com  
+# ## not a easy password to be brute forced 
 @authentication_decorator
 def auth_failure_lab2(request):
     if request.method == "GET":
@@ -1057,3 +1058,23 @@ def auth_failure_lab3(request):
             response.set_cookie("session_id", token)
             return response
         
+## ---------------------Software and Data Integrity Failures-------------------------------------------
+@authentication_decorator
+def software_and_data_integrity_failure(request):
+    if request.method == "GET":
+        return render(request,"Lab_2021/A8_software_and_data_integrity_failure/desc.html")
+
+
+@authentication_decorator
+def software_and_data_integrity_failure_lab2(request):
+    if request.method == "GET":
+        try:
+            username = request.GET["username"]
+            return render(request,"Lab_2021/A8_software_and_data_integrity_failure/lab2.html", {"username":username,"success":True})
+        except:
+            return render(request,"Lab_2021/A8_software_and_data_integrity_failure/lab2.html")
+
+
+@authentication_decorator
+def software_and_data_integrity_failure_lab3(request):
+    pass
