@@ -33,6 +33,7 @@ from PIL import Image,ImageMath
 import base64
 from io import BytesIO
 from argon2 import PasswordHasher
+import logging
 #*****************************************Login and Registration****************************************************#
 
 
@@ -557,6 +558,42 @@ def debug(request):
     response['Content-Type'] =  'text/plain'
     return response
 
+# Logging basic configuration
+logging.basicConfig(level=logging.DEBUG,filename='app.log')
+
+@authentication_decorator
+def a10_lab2(request):
+    now = datetime.datetime.now()
+    if request.method == "GET":
+        x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+
+        if x_forwarded_for:
+            ip = x_forwarded_for.split(',')[0]
+        else:
+            ip = request.META.get('REMOTE_ADDR')
+        logging.info(f"{now}:{ip}")
+        return render (request,"Lab/A10/a10_lab2.html")
+    else:
+        user=request.POST.get("name")
+        password=request.POST.get("pass")
+        x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+
+        if x_forwarded_for:
+            ip = x_forwarded_for.split(',')[0]
+        else:
+            ip = request.META.get('REMOTE_ADDR')
+
+        if login.objects.filter(user=user,password=password):
+            if ip != '127.0.0.1':
+                logging.warning(f"{now}:{ip}:{user}")
+            logging.info(f"{now}:{ip}:{user}")
+            return render(request,"Lab/A10/a10_lab2.html",{"name":user})
+        else:
+            logging.error(f"{now}:{ip}:{user}")
+            return render(request, "Lab/A10/a10_lab2.html", {"error": " Wrong username or Password"})
+        
+
+
 #*********************************************************A11*************************************************#
 
 def gentckt():
@@ -1077,4 +1114,11 @@ def software_and_data_integrity_failure_lab2(request):
 
 @authentication_decorator
 def software_and_data_integrity_failure_lab3(request):
+    pass
+
+## --------------------Security Logging and Monitoring Failures--------------------------------#
+
+
+@authentication_decorator
+def security_logging_and_monitoring_failure(request):
     pass

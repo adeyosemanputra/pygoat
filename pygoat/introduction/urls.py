@@ -45,6 +45,7 @@ urlpatterns = [
     path("get_version",views.get_version,name="Get Version"),
     path("a10",views.a10,name="A10"),
     path("a10_lab",views.a10_lab,name="A10 LAb"),
+    path("a10_lab_2",views.a10_lab2,name="A10 LAb 2"),
     path("debug",views.debug,name="debug"),
     path("insecure-design",views.insec_desgine,name="insecure-design"),
     path("insecure-design_lab",views.insec_desgine_lab,name="insecure-design_lab"),

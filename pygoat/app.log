@@ -1,0 +1,35 @@
+INFO:root:127.0.0.1
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/views.py changed, reloading.
+INFO:root:2022-07-04 07:21:23.272892:127.0.0.1
+ERROR:root:2022-07-04 07:21:50.906938:127.0.0.1:User1:Hash1
+ERROR:root:2022-07-04 07:22:19.053655:127.0.0.1:User1:hash
+ERROR:root:2022-07-04 07:21:50.906938:127.0.0.1:User1:Hash1
+ERROR:root:2022-07-04 07:22:53.384715:127.0.0.1:User1:hash ERROR:root:2022-07-04 07:21:50.906938:127.0.0.1:User1:Hash1
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/views.py changed, reloading.
+ERROR:root:2022-07-04 07:33:40.803427:127.0.0.1:User1
+ERROR:root:2022-07-04 07:33:56.077580:127.0.0.1:User1 \nuser2
+INFO:root:2022-07-04 07:45:55.218505:127.0.0.1
+INFO:root:2022-07-04 07:48:54.794168:127.0.0.1
+INFO:root:2022-07-04 07:49:48.437612:127.0.0.1
+INFO:root:2022-07-04 07:49:50.548011:127.0.0.1
+INFO:root:2022-07-04 07:50:15.676492:127.0.0.1
+INFO:root:2022-07-04 07:50:39.003232:127.0.0.1
+INFO:root:2022-07-04 07:50:48.264349:127.0.0.1
+INFO:root:2022-07-04 07:51:29.216251:127.0.0.1
+INFO:root:2022-07-04 07:51:34.019034:127.0.0.1
