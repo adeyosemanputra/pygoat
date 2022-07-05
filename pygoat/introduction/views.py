@@ -860,7 +860,6 @@ def ssrf_discussion(request):
         return redirect('login')
 
 
-@authentication_decorator
 def ssrf_target(request):
     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
 

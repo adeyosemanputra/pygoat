@@ -24,7 +24,16 @@
     <button class="coll btn btn-info">Lab 2 Details</button>
     <div class="lab">
         <p class="bp">
-        
+          This website sends a request to the given url and displays the page withing the page.
+          now there is a page at <a href="/ssrf_target">/ssrf_target</a> which only allowes request from localhost ( ie 127.0.0.1 )
+          <br>
+          now start the server using <code>python manage.py runserver 0:8000</code><br>
+          get your network ip using <code>ifconfig</code> or <code>ipcofig</code>(in windows) <br>
+          now go to http://[your ip]/ssrf_target
+          <br>
+          Now you can't access the page because it is not from localhost.
+          Try to get access to this page content now using the utility.
+        </p>
         <br>
         <div align="right"> <button class="btn btn-info" type="button" onclick="window.location.href='/ssrf_lab2'">Access
             Lab</button></div>
