@@ -34,6 +34,7 @@ import base64
 from io import BytesIO
 from argon2 import PasswordHasher
 import logging
+import requests
 #*****************************************Login and Registration****************************************************#
 
 
@@ -858,6 +859,33 @@ def ssrf_discussion(request):
     else:
         return redirect('login')
 
+
+@authentication_decorator
+def ssrf_target(request):
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+
+    if ip == '127.0.0.1':
+        return render(request,"Lab/ssrf/ssrf_target.html")
+    else:
+        return render(request,"Lab/ssrf/ssrf_target.html",{"access_denied":True})
+
+@authentication_decorator
+def ssrf_lab2(request):
+    if request.method == "GET":
+        return render(request, "Lab/ssrf/ssrf_lab2.html")
+
+    elif request.method == "POST":
+        url = request.POST["url"]
+        try:
+            response = requests.get(url)
+            return render(request, "Lab/ssrf/ssrf_lab2.html", {"response": response.content.decode()})
+        except:
+            return render(request, "Lab/ssrf/ssrf_lab2.html", {"error": "Invalid URL"})
 #--------------------------------------- Server-side template injection --------------------------------------#
 
 def ssti(request):
@@ -1116,9 +1144,3 @@ def software_and_data_integrity_failure_lab2(request):
 def software_and_data_integrity_failure_lab3(request):
     pass
 
-## --------------------Security Logging and Monitoring Failures--------------------------------#
-
-
-@authentication_decorator
-def security_logging_and_monitoring_failure(request):
-    pass

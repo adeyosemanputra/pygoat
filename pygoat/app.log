@@ -33,3 +33,74 @@ INFO:root:2022-07-04 07:50:39.003232:127.0.0.1
 INFO:root:2022-07-04 07:50:48.264349:127.0.0.1
 INFO:root:2022-07-04 07:51:29.216251:127.0.0.1
 INFO:root:2022-07-04 07:51:34.019034:127.0.0.1
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/urls.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/urls.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/urls.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/urls.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/views.py changed, reloading.
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "GET /ssrf_lab2 HTTP/1.1" 302 0
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "GET /login/ HTTP/1.1" 200 17092
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "GET /ssrf_target HTTP/1.1" 302 0
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "GET /login/ HTTP/1.1" 200 17092
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "GET /ssrf_target HTTP/1.1" 302 0
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "GET /login/ HTTP/1.1" 200 17092
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "GET /ssrf_target HTTP/1.1" 302 0
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "GET /login/ HTTP/1.1" 200 17092
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "GET /ssrf_target HTTP/1.1" 302 0
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "GET /login/ HTTP/1.1" 200 17092
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "GET /ssrf_target HTTP/1.1" 302 0
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "GET /login/ HTTP/1.1" 200 17092
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "GET /ssrf_target HTTP/1.1" 302 0
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "GET /login/ HTTP/1.1" 200 17092
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "GET /ssrf_lab2 HTTP/1.1" 302 0
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "GET /login/ HTTP/1.1" 200 17092
+WARNING:django.security.csrf:Forbidden (CSRF token from POST incorrect.): /ssrf_lab2
+WARNING:django.request:Not Found: /favicon.ico
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "GET /ssrf_lab2 HTTP/1.1" 302 0
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "GET /login/ HTTP/1.1" 200 17092
