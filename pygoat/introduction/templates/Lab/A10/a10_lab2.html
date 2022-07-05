@@ -1,0 +1,78 @@
+{% extends "introduction/base.html" %}
+{% load static %}
+{% block content %}
+{% block title %}
+<title>Insufficient Logging & Monitoring</title>
+{% endblock %}
+
+
+<div class="jumbotron">
+    <h4 style="text-align:center">Logs are strickty monitored</h4>
+    <div class="login">
+        <form method="post" >
+            {% csrf_token %}
+            <input id="input" type="text" name="name" placeholder="User Name"><br>
+            <input id="input" type="password" name="pass" placeholder="Password"><br>
+            <button style="margin-top:20px" class="btn btn-info" type="submit"> Log in</button>
+        </form>
+    </div>
+
+
+</div>
+
+<div class="container">
+    {% if name %}
+    <h2>Success! Logged in as
+        <pre>{{name}}</pre>
+    </h2>
+    {% else %}
+    <h2>
+        <pre>{{error}}</pre>
+    </h2>
+    {% endif %}
+
+</div>
+
+<br>
+<button class="coll2 btn btn-info" style= "position : fixed ; right :200px; bottom : 7px">View Code</button>
+<div class="lab code">
+   <code>   
+    logging.basicConfig(level=logging.DEBUG,filename='app.log')<br>
+    <br>
+    @authentication_decorator<br>
+    def a10_lab2(request):<br>
+    &emsp;now = datetime.datetime.now()<br>
+    &emsp;if request.method == "GET":<br>
+    &emsp;&emsp;x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')<br>
+    <br>
+    &emsp;&emsp;if x_forwarded_for:<br>
+    &emsp;&emsp;&emsp;ip = x_forwarded_for.split(',')[0]<br>
+    &emsp;&emsp;else:<br>
+    &emsp;&emsp;&emsp;ip = request.META.get('REMOTE_ADDR')<br>
+    &emsp;&emsp;logging.info(f"{now}:{ip}")<br>
+    &emsp;&emsp;return render (request,"Lab/A10/a10_lab2.html")<br>
+    &emsp;else:<br>
+    &emsp;&emsp;user=request.POST.get("name")<br>
+    &emsp;&emsp;password=request.POST.get("pass")<br>
+    &emsp;&emsp;x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')<br>
+    <br>
+    &emsp;&emsp;if x_forwarded_for:<br>
+    &emsp;&emsp;&emsp;ip = x_forwarded_for.split(',')[0]<br>
+    &emsp;&emsp;else:<br>
+    &emsp;&emsp;&emsp;ip = request.META.get('REMOTE_ADDR')<br>
+    <br>
+    &emsp;&emsp;if login.objects.filter(user=user,password=password):<br>
+    &emsp;&emsp;&emsp;if ip != '127.0.0.1':<br>
+    &emsp;&emsp;&emsp;&emsp;logging.warning(f"{now}:{ip}:{user}")<br>
+    &emsp;&emsp;&emsp;logging.info(f"{now}:{ip}:{user}")<br>
+    &emsp;&emsp;&emsp;return render(request,"Lab/A10/a10_lab2.html",{"name":user})<br>
+    &emsp;&emsp;else:<br>
+    &emsp;&emsp;&emsp;logging.error(f"{now}:{ip}:{user}")<br>
+    &emsp;&emsp;&emsp;return render(request, "Lab/A10/a10_lab2.html", {"error": " Wrong username or Password"})<br>
+   </code>
+</p>
+</div>
+<div style= "position : fixed ; right : 7px; bottom : 7px"> <button class="btn btn-info" type="button" onclick="window.location.href='/a10'">Back to Lab
+    Details</button></div>
+
+{% endblock %}

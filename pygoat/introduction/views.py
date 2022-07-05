@@ -33,6 +33,8 @@ from PIL import Image,ImageMath
 import base64
 from io import BytesIO
 from argon2 import PasswordHasher
+import logging
+import requests
 #*****************************************Login and Registration****************************************************#
 
 
@@ -557,6 +559,42 @@ def debug(request):
     response['Content-Type'] =  'text/plain'
     return response
 
+# Logging basic configuration
+logging.basicConfig(level=logging.DEBUG,filename='app.log')
+
+@authentication_decorator
+def a10_lab2(request):
+    now = datetime.datetime.now()
+    if request.method == "GET":
+        x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+
+        if x_forwarded_for:
+            ip = x_forwarded_for.split(',')[0]
+        else:
+            ip = request.META.get('REMOTE_ADDR')
+        logging.info(f"{now}:{ip}")
+        return render (request,"Lab/A10/a10_lab2.html")
+    else:
+        user=request.POST.get("name")
+        password=request.POST.get("pass")
+        x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+
+        if x_forwarded_for:
+            ip = x_forwarded_for.split(',')[0]
+        else:
+            ip = request.META.get('REMOTE_ADDR')
+
+        if login.objects.filter(user=user,password=password):
+            if ip != '127.0.0.1':
+                logging.warning(f"{now}:{ip}:{user}")
+            logging.info(f"{now}:{ip}:{user}")
+            return render(request,"Lab/A10/a10_lab2.html",{"name":user})
+        else:
+            logging.error(f"{now}:{ip}:{user}")
+            return render(request, "Lab/A10/a10_lab2.html", {"error": " Wrong username or Password"})
+        
+
+
 #*********************************************************A11*************************************************#
 
 def gentckt():
@@ -821,6 +859,32 @@ def ssrf_discussion(request):
     else:
         return redirect('login')
 
+
+def ssrf_target(request):
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+
+    if ip == '127.0.0.1':
+        return render(request,"Lab/ssrf/ssrf_target.html")
+    else:
+        return render(request,"Lab/ssrf/ssrf_target.html",{"access_denied":True})
+
+@authentication_decorator
+def ssrf_lab2(request):
+    if request.method == "GET":
+        return render(request, "Lab/ssrf/ssrf_lab2.html")
+
+    elif request.method == "POST":
+        url = request.POST["url"]
+        try:
+            response = requests.get(url)
+            return render(request, "Lab/ssrf/ssrf_lab2.html", {"response": response.content.decode()})
+        except:
+            return render(request, "Lab/ssrf/ssrf_lab2.html", {"error": "Invalid URL"})
 #--------------------------------------- Server-side template injection --------------------------------------#
 
 def ssti(request):
@@ -1078,3 +1142,4 @@ def software_and_data_integrity_failure_lab2(request):
 @authentication_decorator
 def software_and_data_integrity_failure_lab3(request):
     pass
+
