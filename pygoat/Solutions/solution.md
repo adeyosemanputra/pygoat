@@ -418,6 +418,35 @@ This results as being logged in as Admin
 
 ![brokenaccess25](https://user-images.githubusercontent.com/70275323/163707622-8cb3f1d7-2185-43b1-84c1-0c66591bc2f6.png)
 
+**Lab 3**
+#### We have an admin credential and a normal user credentails 
+- We can 1st login using admin credential, then we can see there is a page at /broken_access_controle/secret containing secret
+- ![image](https://user-images.githubusercontent.com/75058161/177593540-c299ac0a-35a7-41d1-b64e-5ef143a927bb.png)
+- ![image](https://user-images.githubusercontent.com/75058161/177593818-2adfa56e-05e7-4315-acc0-e90ed93aaefe.png)
+- Now if we logout from admin account and login to user account, we can't see the option for secret anymore. 
+- Unfortunately if we browse to /broken_access_controle/secret we can still access the page because no authentication check was implemented at that page.
+#### If real case senario hacker won't have admin credential, but he can still brute force with some existing text-list or common path dictionary
+- Some tools to bruteforce file path 
+  - [GoBuster](https://www.kali.org/tools/gobuster/)
+  - [Burpsuit](https://portswigger.net/burp)
+
+## 2021-A2:Cryptographic Failure
+
+**Lab 1**
+- Give material --> some user id and hash 
+- ##### [ step- 1 ] Identification of the hash
+   - the hash is 32 charecter long
+   - most probably the hash is from MD* family
+   - which is pretty weak hash ( weak in the sense , it have hash collision )
+   - we can use [hash_identifier](https://hashes.com/en/tools/hash_identifier) to identify the hash
+- ##### [ step - 2 ]  Search the hash in google
+   - Got the hash of admin password, ie : `admin1234`
+- ##### Using online Hash lookup service 
+   - Using online hash decoder we can serach for commmon hash password.
+- Final output 
+   - ![image](https://user-images.githubusercontent.com/75058161/177600545-bdbad8bc-f884-4ffe-b0f2-15ff555d95a4.png)
+
+
 
 **Server side Template Injection**
 
