@@ -430,6 +430,23 @@ This results as being logged in as Admin
   - [GoBuster](https://www.kali.org/tools/gobuster/)
   - [Burpsuit](https://portswigger.net/burp)
 
+## 2021-A2:Cryptographic Failure
+
+**Lab 1**
+- Give material --> some user id and hash 
+- ##### [ step- 1 ] Identification of the hash
+   - the hash is 32 charecter long
+   - most probably the hash is from MD* family
+   - which is pretty weak hash ( weak in the sense , it have hash collision )
+   - we can use [hash_identifier](https://hashes.com/en/tools/hash_identifier) to identify the hash
+- ##### [ step - 2 ]  Search the hash in google
+   - Got the hash of admin password, ie : `admin1234`
+- ##### Using online Hash lookup service 
+   - Using online hash decoder we can serach for commmon hash password.
+- Final output 
+   - ![image](https://user-images.githubusercontent.com/75058161/177600545-bdbad8bc-f884-4ffe-b0f2-15ff555d95a4.png)
+
+
 
 **Server side Template Injection**
 
