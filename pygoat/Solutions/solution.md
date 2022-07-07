@@ -445,8 +445,29 @@ This results as being logged in as Admin
    - Using online hash decoder we can serach for commmon hash password.
 - Final output 
    - ![image](https://user-images.githubusercontent.com/75058161/177600545-bdbad8bc-f884-4ffe-b0f2-15ff555d95a4.png)
-
-
+#
+**Lab 2**
+- Given material --> some user id and hash 
+- ##### [ step- 1 ] Identification of the hash
+   - the hash is 64 charecter long
+   - most probably the hash is SHA256
+   - we can use [hash_identifier](https://hashes.com/en/tools/hash_identifier) to identify the hash
+   - ![image](https://user-images.githubusercontent.com/75058161/177693254-6b3bf112-e1f6-4c71-972a-b04f54c4c90a.png)
+- ##### [ step - 2 ]  Search the hash in google
+   - Didn't got any result
+   - ![image](https://user-images.githubusercontent.com/75058161/177693323-a915bf6a-0df0-44b6-8573-ade92b6a64d8.png)
+- ##### Using online Hash lookup service 
+   - Using online hash decoder we can serach for commmon hash password.
+   - No result found [ in this case ]
+- ##### Using some password cracking tools [ Jhon the ripper ] or [ hashcat ]
+   - No result
+- ##### From the code we can see a custom function is used 
+   - After reversing the admin hash and searching in online dictionary 
+   - ![image](https://user-images.githubusercontent.com/75058161/177696721-7587bcc8-d483-47ac-a0cb-a3cab07ca868.png)
+   - So `password777` is passowrd for admin, this gives use the admin access
+- ##### Other solution ( bcause it quite difficult to guess custom hash function ) :
+   - Brute force the login page ( no delay implemented so it would be better idea) using burp, Zed etc. 
+#
 
 **Server side Template Injection**
 
