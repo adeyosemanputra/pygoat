@@ -468,6 +468,16 @@ This results as being logged in as Admin
 - ##### Other solution ( bcause it quite difficult to guess custom hash function ) :
    - Brute force the login page ( no delay implemented so it would be better idea) using burp, Zed etc. 
 #
+**Lab 3**
+- Given material --> Normal user credential 
+- admin user name --> unkown, password --> unkown
+- ##### Some ovservation
+   - ![image](https://user-images.githubusercontent.com/75058161/177697795-aa7071d9-b672-4527-af55-231f3612dad7.png)
+   - there is a cookie named `cookie` with a value `"User|2022-07-07 06:24:08.802299"` in the format "{username}|{timestamp}"
+   - We can chage the cookie value with `"Admin|2022-07-07 06:24:08.802299"` ( Admin/admin/some other common admin name )
+   - after some guessing we got "admin|2022-07-07 06:24:08.802299" is the admin cookie , which gives us admin access.
+   - ![image](https://user-images.githubusercontent.com/75058161/177698238-b564faa9-7a98-4333-8498-0069c41a85d1.png)
+#
 
 **Server side Template Injection**
 
