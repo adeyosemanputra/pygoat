@@ -478,6 +478,21 @@ This results as being logged in as Admin
    - after some guessing we got "admin|2022-07-07 06:24:08.802299" is the admin cookie , which gives us admin access.
    - ![image](https://user-images.githubusercontent.com/75058161/177698238-b564faa9-7a98-4333-8498-0069c41a85d1.png)
 #
+## 2021-A6:Using Components with Known Vulnerabilities
+
+**lab-2**
+- Given an utility to apply some math expression on an image
+- ![image](https://user-images.githubusercontent.com/75058161/178036849-aae96b02-9633-47e5-a605-0a07ffb17919.png)
+- From the lab descripting we found this module uses pillow 8 
+- After some OSINT and dorking 
+- ![image](https://user-images.githubusercontent.com/75058161/178037399-7ac55275-6af8-45d6-a0da-e679a2744cd8.png)
+- Let's try `exec(exit())`
+- ![image](https://user-images.githubusercontent.com/75058161/178037554-e8935a19-538d-41ae-9a1e-59d31e50c080.png)
+- ![image](https://user-images.githubusercontent.com/75058161/178037626-4925debd-5c96-4e10-83b8-267df7199488.png)
+- Successfully triggerd a server error.
+
+
+
 
 **Server side Template Injection**
 
