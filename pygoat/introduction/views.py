@@ -1005,16 +1005,18 @@ def crypto_failure_lab3(request):
                 return render(request,"Lab_2021/A2_Crypto_failur/crypto_failure_lab2.html",{"success":False, "failure":True})
 
 #-----------------------------------------------SECURITY MISCONFIGURATION -------------------
-from pygoat.settings import SECRET_KEY
+from pygoat.settings import SECRET_COOKIE_KEY
 
 def sec_misconfig_lab3(request):
     if not request.user.is_authenticated:
         return redirect('login')
     try:
         cookie = request.COOKIES["auth_cookie"]
-        payload = jwt.decode(cookie, SECRET_KEY, algorithms=['HS256'])
+        payload = jwt.decode(cookie, SECRET_COOKIE_KEY, algorithms=['HS256'])
         if payload['user'] == 'admin':
             return render(request,"Lab/sec_mis/sec_mis_lab3.html", {"admin":True} )
+        else:
+            return render(request,"Lab/sec_mis/sec_mis_lab3.html", {"admin":False} )
     except:
         payload = {
             'user':'not_admin',
@@ -1022,7 +1024,7 @@ def sec_misconfig_lab3(request):
             'iat': datetime.datetime.utcnow(),
         }
 
-        cookie = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
+        cookie = jwt.encode(payload, SECRET_COOKIE_KEY, algorithm='HS256')
         response = render(request,"Lab/sec_mis/sec_mis_lab3.html", {"admin":False} )
         response.set_cookie(key = "auth_cookie", value = cookie)
         return response

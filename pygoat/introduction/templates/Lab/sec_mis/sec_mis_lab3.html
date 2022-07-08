@@ -21,13 +21,13 @@
 
 <div class="lab code">
    <code>   
-    from pygoat.settings import SECRET_KEY</br></br>
+    from pygoat.settings import SECRET_COOKIE_KEY</br></br>
 def sec_misconfig_lab3(request):</br>
 &emsp;if not request.user.is_authenticated:</br>
 &emsp;&emsp;return redirect('login')</br>
 &emsp;try:</br>
 &emsp;&emsp;cookie = request.COOKIES["auth_cookie"]</br>
-&emsp;&emsp;payload = jwt.decode(cookie, SECRET_KEY, algorithms=['HS256'])</br>
+&emsp;&emsp;payload = jwt.decode(cookie, SECRET_COOKIE_KEY, algorithms=['HS256'])</br>
 &emsp;&emsp;if payload['user'] == 'admin':</br>
 &emsp;&emsp;&emsp;return render(request,"Lab/sec_mis/sec_mis_lab3.html", {"admin":True} )</br>
 &emsp;except:</br>
@@ -37,7 +37,7 @@ def sec_misconfig_lab3(request):</br>
 &emsp;&emsp;&emsp;'iat': datetime.datetime.utcnow(),</br>
 &emsp;&emsp;}</br>
     </br>
-&emsp;&emsp;cookie = jwt.encode(payload, SECRET_KEY, algorithm='HS256')</br>
+&emsp;&emsp;cookie = jwt.encode(payload, SECRET_COOKIE_KEY, algorithm='HS256')</br>
 &emsp;&emsp;response = render(request,"Lab/sec_mis/sec_mis_lab3.html", {"admin":False} )</br>
 &emsp;&emsp;response.set_cookie(key = "auth_cookie", value = cookie)</br>
 &emsp;&emsp;return response </br> 
