@@ -75,4 +75,5 @@ urlpatterns = [
     path("2021/A8",views.software_and_data_integrity_failure,name="A8"),
     path("2021/A8/lab2",views.software_and_data_integrity_failure_lab2,name="A8"),
     path("2021/A8/lab3",views.software_and_data_integrity_failure_lab3,name="A8"),
+    path("2021/discussion/A9",views.A9_discussion,name="A9 discussion"),
 ]

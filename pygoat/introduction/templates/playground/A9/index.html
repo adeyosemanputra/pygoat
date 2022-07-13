@@ -1,0 +1,51 @@
+{% extends 'introduction/base.html' %}
+{% block content %}
+
+{% block title %}
+<title>Insufficient Logging & Monitoring</title>
+{% endblock %}
+{% load static %}
+
+<div style="display: flex;flex-direction: column;align-items: center;">
+    <h3 style="font-size: 2rem;"> In this coding ground we will create a secure logging function </h3>
+    <button id="a9_b1" class="button2 button--winona button--border-thick button--round-l button--text-upper button--size-s button--text-thick" data-text="Lets go" onclick=event1()>
+        <span>Lets go</span>
+    </button>
+    <div id="a9_d1" style="display:none;flex-direction: column;align-items: center;">
+        <br>
+        <h3>Some points to remember while implementing logging & monnitoring </h3>
+        <ul style="list-style-type: circle;">
+            <li class="clist">Do not log too much or too little. For example, make sure to always log the timestamp and identifying information including the source IP and user-id.</li>
+            <li class="clist">Pay close attention to time syncing across nodes to ensure that timestamps are consistent.</li>
+            <li class="clist">Follow a common logging format and approach within the system and across systems of an organization.</li>
+            <li class="clist">Encode and validate any dangerous characters before logging to prevent log injection attacks.</li>
+            <li class="clist">Do not log sensitive information. For example, do not log password, session ID, credit cards, or social security numbers.</li>
+            <li class="clist">Protect log integrity. An attacker may attempt to tamper with the logs. Therefore, the permission of log files and log changes audit should be considered.</li>
+            <li class="clist">Forward logs from distributed systems to a central, secure logging service. This will sure log data cannot be lost if one node is compromised. This also allows for centralized monitoring.</li>
+            <li class="clist">For more information, visit <a href="https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html">OWASP Cheatsheet</a></li>
+        </ul>
+        <br>
+        <button id="a9_b2" style="display:block" class="button2 button--winona button--border-thick button--round-l button--text-upper button--size-s button--text-thick" data-text="Lets start coding" onclick=event2()>
+            <span>Lets start coding</span>
+        </button>
+
+    </div>
+    <div id="a9_d2" style="display:none;flex-direction: column;align-items: center;"> 
+        <br>
+        <div id="textarea-container">
+            <div id="textarea1">
+                <h6>views.py</h6>
+                <textarea  id="python" placeholder="">
+def save_log(request):
+    pass</textarea>
+            </div>
+        </div>
+        <button id="a9_b3" class="button2 button--winona button--border-thick button--round-l button--text-upper button--size-s button--text-thick" data-text="Evalute" onclick=event3()>
+            <span>Evalute</span>
+        </button>
+    </div>
+</div>
+
+<script src="{% static 'js/a9.js'%}"> </script>
+
+{% endblock %}
