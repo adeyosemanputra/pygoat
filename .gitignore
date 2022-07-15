@@ -4,3 +4,5 @@ env
 pygoat/db.sqlite3
 *.sqlite3
 *db.sqlite3
+app.log
+pygoat/app.log

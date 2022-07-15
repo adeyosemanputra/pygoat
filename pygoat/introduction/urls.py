@@ -2,6 +2,7 @@ from django.urls import path,include
 
 from .import views
 from . import apis
+from introduction.playground.A9.api import log_function_target
 
 urlpatterns = [
     path('accounts/', include('allauth.urls')),
@@ -76,4 +77,6 @@ urlpatterns = [
     path("2021/A8/lab2",views.software_and_data_integrity_failure_lab2,name="A8"),
     path("2021/A8/lab3",views.software_and_data_integrity_failure_lab3,name="A8"),
     path("2021/discussion/A9",views.A9_discussion,name="A9 discussion"),
+    path("2021/discussion/A9/api",apis.log_function_checker,name="A10 discussion"),
+    path("2021/discussion/A9/target",log_function_target,name="A9 discussion"),
 ]

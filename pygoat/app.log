@@ -189,3 +189,1327 @@ INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction
 INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/views.py changed, reloading.
 INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/views.py changed, reloading.
 WARNING:django.request:Not Found: /favicon.ico
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:root:2022-07-14 12:22:57.185086:127.0.0.1
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/main.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/main.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/main.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/main.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/main.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/urls.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/urls.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/urls.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/urls.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/urls.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/urls.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/urls.py changed, reloading.
+WARNING:django.security.csrf:Forbidden (CSRF token missing.): /2021/discussion/A9/target
+WARNING:django.security.csrf:Forbidden (CSRF token missing.): /2021/discussion/A9/target
+WARNING:django.security.csrf:Forbidden (CSRF token missing.): /2021/discussion/A9/target
+WARNING:django.security.csrf:Forbidden (CSRF token missing.): /2021/discussion/A9/target
+WARNING:django.security.csrf:Forbidden (CSRF token missing.): /2021/discussion/A9/target
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py changed, reloading.
+ERROR:django.request:Internal Server Error: /2021/discussion/A9/target
+Traceback (most recent call last):
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/utils/datastructures.py", line 84, in __getitem__
+    list_ = super().__getitem__(key)
+KeyError: 'username'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py", line 12, in log_function_target
+    username = request.POST['username']
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/utils/datastructures.py", line 86, in __getitem__
+    raise MultiValueDictKeyError(key)
+django.utils.datastructures.MultiValueDictKeyError: 'username'
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/urls.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/urls.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/urls.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/urls.py changed, reloading.
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "GET /2021/discussion/A9/target HTTP/1.1" 200 50
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "GET /2021/discussion/A9/target HTTP/1.1" 200 50
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "GET /2021/discussion/A9/target HTTP/1.1" 200 50
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "GET /2021/discussion/A9/target HTTP/1.1" 200 50
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+ERROR:django.request:Internal Server Error: /2021/discussion/A9/api
+Traceback (most recent call last):
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py", line 59, in log_function_checker
+    lines = f.readlines()
+io.UnsupportedOperation: not readable
+ERROR:django.request:Internal Server Error: /2021/discussion/A9/api
+Traceback (most recent call last):
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py", line 59, in log_function_checker
+    lines = f.readlines()
+io.UnsupportedOperation: not readable
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "GET /2021/discussion/A9/target HTTP/1.1" 200 50
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "GET /2021/discussion/A9/target HTTP/1.1" 200 50
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "GET /2021/discussion/A9/target HTTP/1.1" 200 50
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "GET /2021/discussion/A9/target HTTP/1.1" 200 50
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "GET /2021/discussion/A9/target HTTP/1.1" 200 50
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "GET /2021/discussion/A9/target HTTP/1.1" 200 50
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+ERROR:django.request:Internal Server Error: /2021/discussion/A9/api
+Traceback (most recent call last):
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py", line 59, in log_function_checker
+    lines = f.readlines()
+io.UnsupportedOperation: not readable
+ERROR:django.request:Internal Server Error: /2021/discussion/A9/api
+Traceback (most recent call last):
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py", line 59, in log_function_checker
+    lines = f.readlines()
+io.UnsupportedOperation: not readable
+ERROR:django.request:Internal Server Error: /2021/discussion/A9/api
+Traceback (most recent call last):
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py", line 59, in log_function_checker
+    lines = f.readlines()
+io.UnsupportedOperation: not readable
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "GET /2021/discussion/A9/target HTTP/1.1" 200 50
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+ERROR:django.request:Internal Server Error: /2021/discussion/A9/target
+Traceback (most recent call last):
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/utils/datastructures.py", line 84, in __getitem__
+    list_ = super().__getitem__(key)
+KeyError: 'username'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py", line 12, in log_function_target
+    username = request.POST['username']
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/utils/datastructures.py", line 86, in __getitem__
+    raise MultiValueDictKeyError(key)
+django.utils.datastructures.MultiValueDictKeyError: 'username'
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "POST /2021/discussion/A9/target HTTP/1.1" 500 77097
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "PATCH /2021/discussion/A9/target HTTP/1.1" 200 41
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "DELETE /2021/discussion/A9/target HTTP/1.1" 200 52
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "GET /2021/discussion/A9/target HTTP/1.1" 200 50
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+ERROR:django.request:Internal Server Error: /2021/discussion/A9/target
+Traceback (most recent call last):
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/utils/datastructures.py", line 84, in __getitem__
+    list_ = super().__getitem__(key)
+KeyError: 'username'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py", line 12, in log_function_target
+    username = request.POST['username']
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/utils/datastructures.py", line 86, in __getitem__
+    raise MultiValueDictKeyError(key)
+django.utils.datastructures.MultiValueDictKeyError: 'username'
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "POST /2021/discussion/A9/target HTTP/1.1" 500 77097
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "PATCH /2021/discussion/A9/target HTTP/1.1" 200 41
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "DELETE /2021/discussion/A9/target HTTP/1.1" 200 52
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "GET /2021/discussion/A9/target HTTP/1.1" 200 50
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+ERROR:django.request:Internal Server Error: /2021/discussion/A9/target
+Traceback (most recent call last):
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/utils/datastructures.py", line 84, in __getitem__
+    list_ = super().__getitem__(key)
+KeyError: 'username'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py", line 12, in log_function_target
+    username = request.POST['username']
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/utils/datastructures.py", line 86, in __getitem__
+    raise MultiValueDictKeyError(key)
+django.utils.datastructures.MultiValueDictKeyError: 'username'
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "POST /2021/discussion/A9/target HTTP/1.1" 500 77097
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "PATCH /2021/discussion/A9/target HTTP/1.1" 200 41
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "DELETE /2021/discussion/A9/target HTTP/1.1" 200 52
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "GET /2021/discussion/A9/target HTTP/1.1" 200 50
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+ERROR:django.request:Internal Server Error: /2021/discussion/A9/target
+Traceback (most recent call last):
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/utils/datastructures.py", line 84, in __getitem__
+    list_ = super().__getitem__(key)
+KeyError: 'username'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py", line 12, in log_function_target
+    username = request.POST['username']
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/utils/datastructures.py", line 86, in __getitem__
+    raise MultiValueDictKeyError(key)
+django.utils.datastructures.MultiValueDictKeyError: 'username'
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "POST /2021/discussion/A9/target HTTP/1.1" 500 77097
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "PATCH /2021/discussion/A9/target HTTP/1.1" 200 41
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "DELETE /2021/discussion/A9/target HTTP/1.1" 200 52
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "GET /2021/discussion/A9/target HTTP/1.1" 200 50
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+ERROR:django.request:Internal Server Error: /2021/discussion/A9/target
+Traceback (most recent call last):
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/utils/datastructures.py", line 84, in __getitem__
+    list_ = super().__getitem__(key)
+KeyError: 'username'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py", line 12, in log_function_target
+    username = request.POST['username']
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/utils/datastructures.py", line 86, in __getitem__
+    raise MultiValueDictKeyError(key)
+django.utils.datastructures.MultiValueDictKeyError: 'username'
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "POST /2021/discussion/A9/target HTTP/1.1" 500 77097
+ERROR:django.request:Internal Server Error: /2021/discussion/A9/api
+Traceback (most recent call last):
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py", line 67, in log_function_checker
+    requests.request("PATCH", url, payload=payload)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/requests/api.py", line 59, in request
+    return session.request(method=method, url=url, **kwargs)
+TypeError: Session.request() got an unexpected keyword argument 'payload'
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "GET /2021/discussion/A9/target HTTP/1.1" 200 50
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+ERROR:django.request:Internal Server Error: /2021/discussion/A9/target
+Traceback (most recent call last):
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/utils/datastructures.py", line 84, in __getitem__
+    list_ = super().__getitem__(key)
+KeyError: 'username'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py", line 12, in log_function_target
+    username = request.POST['username']
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/utils/datastructures.py", line 86, in __getitem__
+    raise MultiValueDictKeyError(key)
+django.utils.datastructures.MultiValueDictKeyError: 'username'
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "POST /2021/discussion/A9/target HTTP/1.1" 500 77097
+ERROR:django.request:Internal Server Error: /2021/discussion/A9/api
+Traceback (most recent call last):
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py", line 67, in log_function_checker
+    requests.request("PATCH", url, payload=payload)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/requests/api.py", line 59, in request
+    return session.request(method=method, url=url, **kwargs)
+TypeError: Session.request() got an unexpected keyword argument 'payload'
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "GET /2021/discussion/A9/target HTTP/1.1" 200 50
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+ERROR:django.request:Internal Server Error: /2021/discussion/A9/target
+Traceback (most recent call last):
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/utils/datastructures.py", line 84, in __getitem__
+    list_ = super().__getitem__(key)
+KeyError: 'username'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py", line 12, in log_function_target
+    username = request.POST['username']
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/utils/datastructures.py", line 86, in __getitem__
+    raise MultiValueDictKeyError(key)
+django.utils.datastructures.MultiValueDictKeyError: 'username'
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "POST /2021/discussion/A9/target HTTP/1.1" 500 77097
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "PATCH /2021/discussion/A9/target HTTP/1.1" 200 41
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "DELETE /2021/discussion/A9/target HTTP/1.1" 200 52
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/main.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/main.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/main.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py changed, reloading.
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "GET /2021/discussion/A9/target HTTP/1.1" 200 50
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+ERROR:django.request:Internal Server Error: /2021/discussion/A9/target
+Traceback (most recent call last):
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/utils/datastructures.py", line 84, in __getitem__
+    list_ = super().__getitem__(key)
+KeyError: 'username'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py", line 12, in log_function_target
+    password = request.POST['password']
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/utils/datastructures.py", line 86, in __getitem__
+    raise MultiValueDictKeyError(key)
+django.utils.datastructures.MultiValueDictKeyError: 'username'
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "POST /2021/discussion/A9/target HTTP/1.1" 500 77131
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "PATCH /2021/discussion/A9/target HTTP/1.1" 200 41
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "DELETE /2021/discussion/A9/target HTTP/1.1" 200 52
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py changed, reloading.
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "GET /2021/discussion/A9/target HTTP/1.1" 200 50
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+ERROR:django.request:Internal Server Error: /2021/discussion/A9/target
+Traceback (most recent call last):
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/utils/datastructures.py", line 84, in __getitem__
+    list_ = super().__getitem__(key)
+KeyError: 'username'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py", line 12, in log_function_target
+    username = request.POST['username']
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/utils/datastructures.py", line 86, in __getitem__
+    raise MultiValueDictKeyError(key)
+django.utils.datastructures.MultiValueDictKeyError: 'username'
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "POST /2021/discussion/A9/target HTTP/1.1" 500 77097
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "PATCH /2021/discussion/A9/target HTTP/1.1" 200 41
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "DELETE /2021/discussion/A9/target HTTP/1.1" 200 52
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "GET /2021/discussion/A9/target HTTP/1.1" 200 50
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+ERROR:django.request:Internal Server Error: /2021/discussion/A9/target
+Traceback (most recent call last):
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/utils/datastructures.py", line 84, in __getitem__
+    list_ = super().__getitem__(key)
+KeyError: 'username'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py", line 12, in log_function_target
+    username = request.POST['username']
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/utils/datastructures.py", line 86, in __getitem__
+    raise MultiValueDictKeyError(key)
+django.utils.datastructures.MultiValueDictKeyError: 'username'
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "POST /2021/discussion/A9/target HTTP/1.1" 500 77097
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "PATCH /2021/discussion/A9/target HTTP/1.1" 200 41
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "DELETE /2021/discussion/A9/target HTTP/1.1" 200 52
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "GET /2021/discussion/A9/target HTTP/1.1" 200 50
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+ERROR:django.request:Internal Server Error: /2021/discussion/A9/target
+Traceback (most recent call last):
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/utils/datastructures.py", line 84, in __getitem__
+    list_ = super().__getitem__(key)
+KeyError: 'username'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py", line 12, in log_function_target
+    username = request.POST['username']
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/utils/datastructures.py", line 86, in __getitem__
+    raise MultiValueDictKeyError(key)
+django.utils.datastructures.MultiValueDictKeyError: 'username'
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "POST /2021/discussion/A9/target HTTP/1.1" 500 77097
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "PATCH /2021/discussion/A9/target HTTP/1.1" 200 41
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "DELETE /2021/discussion/A9/target HTTP/1.1" 200 52
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "GET /2021/discussion/A9/target HTTP/1.1" 200 50
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+ERROR:django.request:Internal Server Error: /2021/discussion/A9/target
+Traceback (most recent call last):
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/utils/datastructures.py", line 84, in __getitem__
+    list_ = super().__getitem__(key)
+KeyError: 'username'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py", line 12, in log_function_target
+    username = request.POST['username']
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/utils/datastructures.py", line 86, in __getitem__
+    raise MultiValueDictKeyError(key)
+django.utils.datastructures.MultiValueDictKeyError: 'username'
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "POST /2021/discussion/A9/target HTTP/1.1" 500 77097
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "PATCH /2021/discussion/A9/target HTTP/1.1" 200 41
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "DELETE /2021/discussion/A9/target HTTP/1.1" 200 52
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "GET /2021/discussion/A9/target HTTP/1.1" 200 50
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+ERROR:django.request:Internal Server Error: /2021/discussion/A9/target
+Traceback (most recent call last):
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/utils/datastructures.py", line 84, in __getitem__
+    list_ = super().__getitem__(key)
+KeyError: 'username'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py", line 12, in log_function_target
+    username = request.POST['username']
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/utils/datastructures.py", line 86, in __getitem__
+    raise MultiValueDictKeyError(key)
+django.utils.datastructures.MultiValueDictKeyError: 'username'
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "POST /2021/discussion/A9/target HTTP/1.1" 500 77097
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "PATCH /2021/discussion/A9/target HTTP/1.1" 200 41
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "DELETE /2021/discussion/A9/target HTTP/1.1" 200 52
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "GET /2021/discussion/A9/target HTTP/1.1" 200 50
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+ERROR:django.request:Internal Server Error: /2021/discussion/A9/target
+Traceback (most recent call last):
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/utils/datastructures.py", line 84, in __getitem__
+    list_ = super().__getitem__(key)
+KeyError: 'username'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py", line 12, in log_function_target
+    username = request.POST['username']
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/utils/datastructures.py", line 86, in __getitem__
+    raise MultiValueDictKeyError(key)
+django.utils.datastructures.MultiValueDictKeyError: 'username'
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "POST /2021/discussion/A9/target HTTP/1.1" 500 77097
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "PATCH /2021/discussion/A9/target HTTP/1.1" 200 41
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "DELETE /2021/discussion/A9/target HTTP/1.1" 200 52
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "GET /2021/discussion/A9/target HTTP/1.1" 200 50
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+ERROR:django.request:Internal Server Error: /2021/discussion/A9/target
+Traceback (most recent call last):
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/utils/datastructures.py", line 84, in __getitem__
+    list_ = super().__getitem__(key)
+KeyError: 'username'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py", line 12, in log_function_target
+    username = request.POST['username']
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/utils/datastructures.py", line 86, in __getitem__
+    raise MultiValueDictKeyError(key)
+django.utils.datastructures.MultiValueDictKeyError: 'username'
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "POST /2021/discussion/A9/target HTTP/1.1" 500 77097
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "PATCH /2021/discussion/A9/target HTTP/1.1" 200 41
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "DELETE /2021/discussion/A9/target HTTP/1.1" 200 52
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "GET /2021/discussion/A9/target HTTP/1.1" 200 50
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+ERROR:django.request:Internal Server Error: /2021/discussion/A9/target
+Traceback (most recent call last):
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/utils/datastructures.py", line 84, in __getitem__
+    list_ = super().__getitem__(key)
+KeyError: 'username'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py", line 12, in log_function_target
+    username = request.POST['username']
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/utils/datastructures.py", line 86, in __getitem__
+    raise MultiValueDictKeyError(key)
+django.utils.datastructures.MultiValueDictKeyError: 'username'
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "POST /2021/discussion/A9/target HTTP/1.1" 500 77097
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "PATCH /2021/discussion/A9/target HTTP/1.1" 200 41
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "DELETE /2021/discussion/A9/target HTTP/1.1" 200 52
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "GET /2021/discussion/A9/target HTTP/1.1" 200 50
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+ERROR:django.request:Internal Server Error: /2021/discussion/A9/target
+Traceback (most recent call last):
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/utils/datastructures.py", line 84, in __getitem__
+    list_ = super().__getitem__(key)
+KeyError: 'username'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py", line 12, in log_function_target
+    username = request.POST['username']
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/utils/datastructures.py", line 86, in __getitem__
+    raise MultiValueDictKeyError(key)
+django.utils.datastructures.MultiValueDictKeyError: 'username'
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "POST /2021/discussion/A9/target HTTP/1.1" 500 77097
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "PATCH /2021/discussion/A9/target HTTP/1.1" 200 41
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "DELETE /2021/discussion/A9/target HTTP/1.1" 200 52
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "GET /2021/discussion/A9/target HTTP/1.1" 200 50
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+ERROR:django.request:Internal Server Error: /2021/discussion/A9/target
+Traceback (most recent call last):
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/utils/datastructures.py", line 84, in __getitem__
+    list_ = super().__getitem__(key)
+KeyError: 'username'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py", line 12, in log_function_target
+    username = request.POST['username']
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/utils/datastructures.py", line 86, in __getitem__
+    raise MultiValueDictKeyError(key)
+django.utils.datastructures.MultiValueDictKeyError: 'username'
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "POST /2021/discussion/A9/target HTTP/1.1" 500 77097
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "PATCH /2021/discussion/A9/target HTTP/1.1" 200 41
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "DELETE /2021/discussion/A9/target HTTP/1.1" 200 52
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "GET /2021/discussion/A9/target HTTP/1.1" 200 50
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+ERROR:django.request:Internal Server Error: /2021/discussion/A9/target
+Traceback (most recent call last):
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/utils/datastructures.py", line 84, in __getitem__
+    list_ = super().__getitem__(key)
+KeyError: 'username'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py", line 12, in log_function_target
+    username = request.POST['username']
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/utils/datastructures.py", line 86, in __getitem__
+    raise MultiValueDictKeyError(key)
+django.utils.datastructures.MultiValueDictKeyError: 'username'
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "POST /2021/discussion/A9/target HTTP/1.1" 500 77097
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "PATCH /2021/discussion/A9/target HTTP/1.1" 200 41
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "DELETE /2021/discussion/A9/target HTTP/1.1" 200 52
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "GET /2021/discussion/A9/target HTTP/1.1" 200 50
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+ERROR:django.request:Internal Server Error: /2021/discussion/A9/target
+Traceback (most recent call last):
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/utils/datastructures.py", line 84, in __getitem__
+    list_ = super().__getitem__(key)
+KeyError: 'username'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py", line 12, in log_function_target
+    username = request.POST['username']
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/utils/datastructures.py", line 86, in __getitem__
+    raise MultiValueDictKeyError(key)
+django.utils.datastructures.MultiValueDictKeyError: 'username'
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "POST /2021/discussion/A9/target HTTP/1.1" 500 77097
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "PATCH /2021/discussion/A9/target HTTP/1.1" 200 41
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "DELETE /2021/discussion/A9/target HTTP/1.1" 200 52
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "GET /2021/discussion/A9/target HTTP/1.1" 200 50
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+ERROR:django.request:Internal Server Error: /2021/discussion/A9/target
+Traceback (most recent call last):
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/utils/datastructures.py", line 84, in __getitem__
+    list_ = super().__getitem__(key)
+KeyError: 'username'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py", line 12, in log_function_target
+    username = request.POST['username']
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/utils/datastructures.py", line 86, in __getitem__
+    raise MultiValueDictKeyError(key)
+django.utils.datastructures.MultiValueDictKeyError: 'username'
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "POST /2021/discussion/A9/target HTTP/1.1" 500 77097
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "PATCH /2021/discussion/A9/target HTTP/1.1" 200 41
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "DELETE /2021/discussion/A9/target HTTP/1.1" 200 52
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "GET /2021/discussion/A9/target HTTP/1.1" 200 50
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+ERROR:django.request:Internal Server Error: /2021/discussion/A9/target
+Traceback (most recent call last):
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/utils/datastructures.py", line 84, in __getitem__
+    list_ = super().__getitem__(key)
+KeyError: 'username'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py", line 12, in log_function_target
+    username = request.POST['username']
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/utils/datastructures.py", line 86, in __getitem__
+    raise MultiValueDictKeyError(key)
+django.utils.datastructures.MultiValueDictKeyError: 'username'
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "POST /2021/discussion/A9/target HTTP/1.1" 500 77097
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "PATCH /2021/discussion/A9/target HTTP/1.1" 200 41
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "DELETE /2021/discussion/A9/target HTTP/1.1" 200 52
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "GET /2021/discussion/A9/target HTTP/1.1" 200 50
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+ERROR:django.request:Internal Server Error: /2021/discussion/A9/target
+Traceback (most recent call last):
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/utils/datastructures.py", line 84, in __getitem__
+    list_ = super().__getitem__(key)
+KeyError: 'username'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py", line 12, in log_function_target
+    username = request.POST['username']
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/utils/datastructures.py", line 86, in __getitem__
+    raise MultiValueDictKeyError(key)
+django.utils.datastructures.MultiValueDictKeyError: 'username'
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "POST /2021/discussion/A9/target HTTP/1.1" 500 77097
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "PATCH /2021/discussion/A9/target HTTP/1.1" 200 41
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "DELETE /2021/discussion/A9/target HTTP/1.1" 200 52
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "GET /2021/discussion/A9/target HTTP/1.1" 200 50
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+ERROR:django.request:Internal Server Error: /2021/discussion/A9/target
+Traceback (most recent call last):
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/utils/datastructures.py", line 84, in __getitem__
+    list_ = super().__getitem__(key)
+KeyError: 'username'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py", line 12, in log_function_target
+    username = request.POST['username']
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/utils/datastructures.py", line 86, in __getitem__
+    raise MultiValueDictKeyError(key)
+django.utils.datastructures.MultiValueDictKeyError: 'username'
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "POST /2021/discussion/A9/target HTTP/1.1" 500 77097
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "PATCH /2021/discussion/A9/target HTTP/1.1" 200 41
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "DELETE /2021/discussion/A9/target HTTP/1.1" 200 52
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "GET /2021/discussion/A9/target HTTP/1.1" 200 50
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+ERROR:django.request:Internal Server Error: /2021/discussion/A9/target
+Traceback (most recent call last):
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/utils/datastructures.py", line 84, in __getitem__
+    list_ = super().__getitem__(key)
+KeyError: 'username'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py", line 12, in log_function_target
+    username = request.POST['username']
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/utils/datastructures.py", line 86, in __getitem__
+    raise MultiValueDictKeyError(key)
+django.utils.datastructures.MultiValueDictKeyError: 'username'
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "POST /2021/discussion/A9/target HTTP/1.1" 500 77097
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "PATCH /2021/discussion/A9/target HTTP/1.1" 200 41
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "DELETE /2021/discussion/A9/target HTTP/1.1" 200 52
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "GET /2021/discussion/A9/target HTTP/1.1" 200 50
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+ERROR:django.request:Internal Server Error: /2021/discussion/A9/target
+Traceback (most recent call last):
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/utils/datastructures.py", line 84, in __getitem__
+    list_ = super().__getitem__(key)
+KeyError: 'username'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py", line 12, in log_function_target
+    username = request.POST['username']
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/utils/datastructures.py", line 86, in __getitem__
+    raise MultiValueDictKeyError(key)
+django.utils.datastructures.MultiValueDictKeyError: 'username'
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "POST /2021/discussion/A9/target HTTP/1.1" 500 77097
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "PATCH /2021/discussion/A9/target HTTP/1.1" 200 41
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "DELETE /2021/discussion/A9/target HTTP/1.1" 200 52
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+ERROR:django.request:Internal Server Error: /2021/discussion/A9/api
+Traceback (most recent call last):
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py", line 59, in log_function_checker
+    log_code = request.POST.get['log_code']
+TypeError: 'method' object is not subscriptable
+ERROR:django.request:Internal Server Error: /2021/discussion/A9/api
+Traceback (most recent call last):
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py", line 59, in log_function_checker
+    log_code = request.POST.get['log_code']
+TypeError: 'method' object is not subscriptable
+WARNING:django.request:Not Found: /favicon.ico
+ERROR:django.request:Internal Server Error: /2021/discussion/A9/api
+Traceback (most recent call last):
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py", line 59, in log_function_checker
+    log_code = request.POST.get['log_code']
+TypeError: 'method' object is not subscriptable
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "GET /2021/discussion/A9/target HTTP/1.1" 200 50
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+ERROR:django.request:Internal Server Error: /2021/discussion/A9/target
+Traceback (most recent call last):
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/utils/datastructures.py", line 84, in __getitem__
+    list_ = super().__getitem__(key)
+KeyError: 'username'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py", line 12, in log_function_target
+    password = request.POST['password']
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/utils/datastructures.py", line 86, in __getitem__
+    raise MultiValueDictKeyError(key)
+django.utils.datastructures.MultiValueDictKeyError: 'username'
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "POST /2021/discussion/A9/target HTTP/1.1" 500 77131
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "PATCH /2021/discussion/A9/target HTTP/1.1" 200 41
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "DELETE /2021/discussion/A9/target HTTP/1.1" 200 52
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/main.py changed, reloading.
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "GET /2021/discussion/A9/target HTTP/1.1" 200 50
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+ERROR:django.request:Internal Server Error: /2021/discussion/A9/target
+Traceback (most recent call last):
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/utils/datastructures.py", line 84, in __getitem__
+    list_ = super().__getitem__(key)
+KeyError: 'username'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py", line 11, in log_function_target
+    username = request.POST['username']
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/utils/datastructures.py", line 86, in __getitem__
+    raise MultiValueDictKeyError(key)
+django.utils.datastructures.MultiValueDictKeyError: 'username'
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "POST /2021/discussion/A9/target HTTP/1.1" 500 77087
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "PATCH /2021/discussion/A9/target HTTP/1.1" 200 41
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "DELETE /2021/discussion/A9/target HTTP/1.1" 200 52
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py changed, reloading.
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "GET /2021/discussion/A9/target HTTP/1.1" 200 50
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+ERROR:django.request:Internal Server Error: /2021/discussion/A9/target
+Traceback (most recent call last):
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/utils/datastructures.py", line 84, in __getitem__
+    list_ = super().__getitem__(key)
+KeyError: 'username'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py", line 11, in log_function_target
+    username = request.POST['username']
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/utils/datastructures.py", line 86, in __getitem__
+    raise MultiValueDictKeyError(key)
+django.utils.datastructures.MultiValueDictKeyError: 'username'
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "POST /2021/discussion/A9/target HTTP/1.1" 500 77087
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "PATCH /2021/discussion/A9/target HTTP/1.1" 200 41
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "DELETE /2021/discussion/A9/target HTTP/1.1" 200 52
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py changed, reloading.
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "GET /2021/discussion/A9/target HTTP/1.1" 200 50
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+ERROR:django.request:Internal Server Error: /2021/discussion/A9/target
+Traceback (most recent call last):
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/utils/datastructures.py", line 84, in __getitem__
+    list_ = super().__getitem__(key)
+KeyError: 'username'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py", line 11, in log_function_target
+    username = request.POST['username']
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/utils/datastructures.py", line 86, in __getitem__
+    raise MultiValueDictKeyError(key)
+django.utils.datastructures.MultiValueDictKeyError: 'username'
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "POST /2021/discussion/A9/target HTTP/1.1" 500 77087
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "PATCH /2021/discussion/A9/target HTTP/1.1" 200 41
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "DELETE /2021/discussion/A9/target HTTP/1.1" 200 52
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/main.py changed, reloading.
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "GET /2021/discussion/A9/target HTTP/1.1" 200 50
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+ERROR:django.request:Internal Server Error: /2021/discussion/A9/target
+Traceback (most recent call last):
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/utils/datastructures.py", line 84, in __getitem__
+    list_ = super().__getitem__(key)
+KeyError: 'username'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py", line 11, in log_function_target
+    username = request.POST['username']
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/utils/datastructures.py", line 86, in __getitem__
+    raise MultiValueDictKeyError(key)
+django.utils.datastructures.MultiValueDictKeyError: 'username'
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "POST /2021/discussion/A9/target HTTP/1.1" 500 77087
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "PATCH /2021/discussion/A9/target HTTP/1.1" 200 41
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 127.0.0.1:8000
+DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "DELETE /2021/discussion/A9/target HTTP/1.1" 200 52
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/playground/A9/api.py changed, reloading.
+INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/apis.py changed, reloading.
