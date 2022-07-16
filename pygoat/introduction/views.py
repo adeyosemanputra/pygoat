@@ -530,6 +530,10 @@ def a9_lab2(request):
             return render(request, "Lab/A9/a9_lab2.html", {"data":"Please Upload a file", "error":True})
 
 
+@authentication_decorator
+def A9_discussion(request):
+    return render(request, "playground/A9/index.html")
+
 #*********************************************************A10*************************************************#
 
 def a10(request):
