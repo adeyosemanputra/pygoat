@@ -83,4 +83,21 @@ def log_function_checker(request):
     else:
         return JsonResponse({"message":"method not allowed"},status = 405)
 
-   
+#a7 codechecking api
+@csrf_exempt
+def A7_disscussion_api(request):
+    if request.method != 'POST':
+        return JsonResponse({"message":"method not allowed"},status = 405)
+
+    try:
+        code = request.POST.get('code')
+    except:
+        return JsonResponse({"message":"missing code"},status = 400)
+
+    search_snipet = "AF_session_id.objects.get(sesssion_id = cookie).delete()"
+    search_snipet2 = "AF_session_id.objects.get(sesssion_id=cookie).delete()"
+
+    if (search_snipet in code) or (search_snipet2 in code):
+        return JsonResponse({"message":"success"},status = 200)
+
+    return JsonResponse({"message":"failure"},status = 400)
