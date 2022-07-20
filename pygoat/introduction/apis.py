@@ -2,6 +2,7 @@ from django.http import JsonResponse
 from django.shortcuts import redirect
 from introduction.playground.ssrf import main
 from introduction.playground.A9.main import Log
+from introduction.playground.A6.utility import check_vuln
 from django.contrib.auth import login,authenticate
 from .utility import *
 from django.views.decorators.csrf import csrf_exempt
@@ -83,4 +84,50 @@ def log_function_checker(request):
     else:
         return JsonResponse({"message":"method not allowed"},status = 405)
 
-   
+#a7 codechecking api
+@csrf_exempt
+def A7_disscussion_api(request):
+    if request.method != 'POST':
+        return JsonResponse({"message":"method not allowed"},status = 405)
+
+    try:
+        code = request.POST.get('code')
+    except:
+        return JsonResponse({"message":"missing code"},status = 400)
+
+    search_snipet = "AF_session_id.objects.get(sesssion_id = cookie).delete()"
+    search_snipet2 = "AF_session_id.objects.get(sesssion_id=cookie).delete()"
+
+    if (search_snipet in code) or (search_snipet2 in code):
+        return JsonResponse({"message":"success"},status = 200)
+
+    return JsonResponse({"message":"failure"},status = 400)
+
+#a6 codechecking api
+@csrf_exempt
+def A6_disscussion_api(request):
+    test_bench = ["Pillow==8.0.0","PyJWT==2.4.0","requests==2.28.0","Django==4.0.4"]
+    
+    try:
+        result = check_vuln(test_bench)
+        print(len(result))
+        if result:
+            return JsonResponse({"message":"success","vulns":result},status = 200)
+        return JsonResponse({"message":"failure"},status = 400)
+    except Exception as e:
+        return JsonResponse({"message":"failure"},status = 400)
+
+@csrf_exempt
+def A6_disscussion_api_2(request):
+    if request.method != 'POST':
+        return JsonResponse({"message":"method not allowed"},status = 405)
+    try:
+        code = request.POST.get('code')
+        dirname = os.path.dirname(__file__)
+        filename = os.path.join(dirname, "playground/A6/utility.py")
+        f = open(filename,"w")
+        f.write(code)
+        f.close()
+    except:
+        return JsonResponse({"message":"missing code"},status = 400)
+    return JsonResponse({"message":"success"},status = 200)

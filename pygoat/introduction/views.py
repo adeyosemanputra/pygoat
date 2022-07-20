@@ -1127,6 +1127,11 @@ def auth_failure_lab3(request):
             response = render(request, "Lab_2021/A7_auth_failure/lab3.html", {"success":True, "failure":False, "username":username})
             response.set_cookie("session_id", token)
             return response
+
+#-- coding playground for lab2
+@authentication_decorator
+def A7_discussion(request):
+    return render(request,"playground/A7/index.html")
         
 ## ---------------------Software and Data Integrity Failures-------------------------------------------
 @authentication_decorator
@@ -1149,3 +1154,9 @@ def software_and_data_integrity_failure_lab2(request):
 def software_and_data_integrity_failure_lab3(request):
     pass
 
+## --------------------------A6_discussion-------------------------------------------------------
+
+@authentication_decorator
+def A6_discussion(request):
+    
+    return render(request,"playground/A6/index.html")

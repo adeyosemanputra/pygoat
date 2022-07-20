@@ -29,7 +29,7 @@ event3 = function(){
     redirect: 'follow'
     };
 
-    fetch("http://127.0.0.1:8000/2021/discussion/A9/api", requestOptions)
+    fetch("/2021/discussion/A9/api", requestOptions)
     .then(response => response.text())
     .then(result => {
         let data = JSON.parse(result);  // parse JSON string into object
