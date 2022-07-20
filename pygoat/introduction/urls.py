@@ -81,4 +81,7 @@ urlpatterns = [
     path("2021/discussion/A9/target",log_function_target,name="A9 discussion"),
     path("2021/discussion/A7",views.A7_discussion,name="A7 discussion"),
     path("2021/discussion/A7/api",apis.A7_disscussion_api,name="A7 discussion api"),
+    path("2021/discussion/A6",views.A6_discussion,name="A6 discussion"),
+    path("2021/discussion/A6/api",apis.A6_disscussion_api,name="A6 discussion api"),
+    path("2021/discussion/A6/api2",apis.A6_disscussion_api_2,name="A6 discussion api2"),
 ]

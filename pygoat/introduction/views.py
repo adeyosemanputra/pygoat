@@ -1154,3 +1154,9 @@ def software_and_data_integrity_failure_lab2(request):
 def software_and_data_integrity_failure_lab3(request):
     pass
 
+## --------------------------A6_discussion-------------------------------------------------------
+
+@authentication_decorator
+def A6_discussion(request):
+    
+    return render(request,"playground/A6/index.html")
