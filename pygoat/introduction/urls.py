@@ -1,7 +1,6 @@
 from django.urls import path,include
 
-from .import views
-from . import apis
+from .import views, apis, mitre
 from introduction.playground.A9.api import log_function_target
 
 urlpatterns = [
@@ -84,4 +83,7 @@ urlpatterns = [
     path("2021/discussion/A6",views.A6_discussion,name="A6 discussion"),
     path("2021/discussion/A6/api",apis.A6_disscussion_api,name="A6 discussion api"),
     path("2021/discussion/A6/api2",apis.A6_disscussion_api_2,name="A6 discussion api2"),
+    ##------------------- mitre endpoints --------------------------------------------------------------|
+    path("mitre/1",mitre.mitre_top1,name="mitre_top1"),
+    path("mitre/2",mitre.mitre_top2,name="mitre_top2"),
 ]
