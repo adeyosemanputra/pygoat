@@ -107,3 +107,20 @@ DEBUG:urllib3.connectionpool:http://127.0.0.1:8000 "GET /login/ HTTP/1.1" 200 17
 DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): 192.168.112.128:80
 DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): www.youtube.com:443
 DEBUG:urllib3.connectionpool:https://www.youtube.com:443 "GET /watch?v=ynImA_neDfQ HTTP/1.1" 200 None
+ERROR:django.request:Internal Server Error: /mitre/3
+Traceback (most recent call last):
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/views.py", line 62, in function
+    return func(*args, **kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/mitre.py", line 21, in mitre_top3
+    return render(request, 'mitre/mitre_top3.html')
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/template/loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/template/loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: mitre/mitre_top3.html
