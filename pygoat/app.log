@@ -124,3 +124,49 @@ Traceback (most recent call last):
   File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/template/loader.py", line 19, in get_template
     raise TemplateDoesNotExist(template_name, chain=chain)
 django.template.exceptions.TemplateDoesNotExist: mitre/mitre_top3.html
+ERROR:django.request:Internal Server Error: /mitre/25
+Traceback (most recent call last):
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/template/base.py", line 505, in parse
+    compile_func = self.tags[command]
+KeyError: 'endblock'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/views.py", line 62, in function
+    return func(*args, **kwargs)
+  File "/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/mitre.py", line 136, in mitre_top25
+    return render(request, 'mitre/mitre_top25.html')
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/template/loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/template/loader.py", line 15, in get_template
+    return engine.get_template(template_name)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/template/backends/django.py", line 34, in get_template
+    return Template(self.engine.get_template(template_name), self)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/template/engine.py", line 176, in get_template
+    template, origin = self.find_template(template_name)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/template/engine.py", line 158, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/template/loaders/base.py", line 28, in get_template
+    return Template(
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/template/base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/template/base.py", line 200, in compile_nodelist
+    return parser.parse()
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/template/base.py", line 513, in parse
+    raise self.error(token, e)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/template/base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/template/loader_tags.py", line 293, in do_extends
+    nodelist = parser.parse()
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/template/base.py", line 507, in parse
+    self.invalid_block_tag(token, command, parse_until)
+  File "/home/rupak/Desktop/GSoC/pygoat/env/lib/python3.10/site-packages/django/template/base.py", line 568, in invalid_block_tag
+    raise self.error(
+django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 28: 'endblock'. Did you forget to register or load this tag?
