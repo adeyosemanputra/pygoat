@@ -1,0 +1,48 @@
+{% extends "introduction/base.html" %} 
+{% load static %} 
+{% block content %} 
+{% block title %}
+<title>Uncontrolled Resource Consumption</title>
+{% endblock %}
+<div class="container">
+  <h2 style="font-size: 2.7rem">
+    CWE-400: <span> Uncontrolled Resource Consumption</span>
+  </h2>
+</div>
+<div class="box">
+  Because the programme does not effectively manage the allocation and upkeep of
+  a finite resource, an actor is able to affect how much is used, eventually
+  causing the finite resource to run out.
+  <br />
+  Memory, file system storage, database connection pool entries, and CPU all
+  have limited resources. An attacker could produce a denial of service that
+  exhausts all resources if they are able to force the allocation of these
+  scarce resources but the quantity or size of the resources is not regulated.
+  This would hinder legitimate users from using the software, and it might have
+  an effect on the environment. A memory depletion attack against a programme,
+  for instance, can cause both the application and its host operating system to
+  lag.
+  <br />
+  There are at least three distinct scenarios which can commonly lead to
+  resource exhaustion:
+  <ul>
+    <li>Lack of throttling for the number of allocated resources</li>
+    <li>
+      Losing all references to a resource before reaching the shutdown stage
+    </li>
+    <li>Not closing/returning a resource after processing</li>
+  </ul>
+  <br />
+  Resource exhaustion problems are often result due to an incorrect
+  implementation of the following situations:
+  <ul>
+    <li>Error conditions and other exceptional circumstances.</li>
+    <li>
+      Confusion over which part of the program is responsible for releasing the
+      resource.
+    </li>
+  </ul>
+</div>
+<br />
+
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends "introduction/base.html" %} 
+{% load static %} 
+{% block content %} 
+{% block title %}
+<title>
+  Improper Restriction of Operations within the Bounds of a Memory Buffer
+</title>
+{% endblock %}
+<div class="container">
+  <h2 style="font-size: 2.7rem">
+    CWE-119:
+    <span
+      >Improper Restriction of Operations within the Bounds of a Memory
+      Buffer</span
+    >
+  </h2>
+</div>
+<div class="box">
+  The software performs operations on a memory buffer, but it can read from or
+  write to a memory location that is outside of the intended boundary of the
+  buffer.
+  <br />
+  Direct memory addresses are permitted by some programming languages, which do
+  not always guarantee that they are valid for the memory buffer being accessed.
+  This may result in read or write operations being made on memory regions
+  connected to internal programme data, other variables, or data structures. As
+  a result, a hacker might be able to run arbitrary code, change the intended
+  control flow, view private data, or bring down the system.
+</div>
+
+{% endblock %}

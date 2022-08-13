@@ -1,0 +1,28 @@
+{% extends "introduction/base.html" %}
+{% load static %} 
+{% block content %} 
+{% block title %}
+<title>Improper Restriction of XML External Entity Reference</title>
+{% endblock %}
+<div class="container">
+  <h2 style="font-size: 2.7rem">
+    CWE-611: <span>Improper Restriction of XML External Entity Reference</span>
+  </h2>
+</div>
+<div class="box">
+  The software processes an XML document that can contain XML entities with URIs
+  that resolve to documents outside of the intended sphere of control, causing
+  the product to embed incorrect documents into its output.
+  <br />
+  A Document Type Creation (DTD), which among other things allows for the
+  definition of XML entities, is an optional component of XML documents. A
+  replacement string in the form of a URI can be used to define an entity. The
+  URI's contents can be accessed by the XML parser, which can then embed them
+  back into the XML document for further processing. An attacker can force the
+  processing application to access data from a local file by sending an XML file
+  that defines an external object along with a file:/ URI. A URI like
+  "file:/c:/winnt/win.ini" or "file:/etc/passwd" denotes the password file in
+  Unix-based systems, respectively, or the C:Winntwin.ini file in Windows.
+  <br />
+</div>
+{% endblock %}

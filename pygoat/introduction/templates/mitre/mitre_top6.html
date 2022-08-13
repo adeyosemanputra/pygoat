@@ -1,0 +1,58 @@
+{% extends "introduction/base.html" %} 
+{% load static %} 
+{% block content %} 
+{% block title %}
+<title>OS Command Injection</title>
+{% endblock %}
+<div class="container">
+  <h2 style="font-size: 2.7rem">CWE-78: <span>OS Command Injection</span></h2>
+</div>
+<div class="box">
+  The software builds all or a portion of an OS command using input that has
+  been modified externally by an upstream component, but it fails to remove or
+  removes them wrongly specific aspects that could change the intended OS
+  command when it is sent to a downstream component.
+
+  <br />
+  As a result, attackers might be able to run risky, unexpected commands on the
+  operating system. In contexts where the attacker does not have direct access
+  to the operating system, like web applications, this flaw can result in a
+  vulnerability. Alternatively, if the flaw exists in a privileged programme, it
+  might allow the attacker to specify commands that aren't typically available
+  or to call alternative commands with rights they don't have. If the
+  compromised process does not adhere to the concept of least privilege, the
+  issue is made worse since attacker-controlled commands may run with elevated
+  system privileges, increasing the potential for damage.<br>
+  <span style="font-size:1.7rem">There are at least two subtypes of OS command injection:</span>
+  <ul>
+    <li>
+      The application's goal is to run a single, self-contained, fixed
+      programme. It plans to employ inputs from outside sources as arguments for
+      that programme. As an illustration, the software may utilise
+      system("nslookup [HOSTNAME]") to launch nslookup and let the user enter a
+      HOSTNAME as an argument. Attackers are unable to stop nslookup from
+      running. Attackers could insert command separators into the parameters if
+      the application does not remove them from the HOSTNAME argument, enabling
+      them to run their own programme after nslookup has done running.
+    </li>
+    <li>
+      The programme accepts an input and utilises it to choose exactly which
+      programme to start and which instructions to issue. This complete command
+      is just forwarded to the operating system by the programme. To execute the
+      [COMMAND] that the user supplied, for instance, the application can use
+      the syntax "exec([COMMAND]]". An attacker can run any command or programme
+      they choose if they have control of the COMMAND. Using functions like
+      exec() and CreateProcess() to carry out the command may prevent the
+      attacker from combining numerous commands into one line.
+    </li>
+  </ul>
+  These versions exhibit distinct programmer faults, which is a weakness. In the
+  first version, it is obvious that the author intended for the command to be
+  run to include input from unreliable sources as one of its arguments. While
+  the programmer in the second variation does not intend for the command to be
+  accessible to any untrusted parties, it is likely that the programmer did not
+  consider other potential channels via which hostile attackers could supply
+  input.
+</div>
+
+{% endblock %}

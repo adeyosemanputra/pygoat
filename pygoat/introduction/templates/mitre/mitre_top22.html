@@ -1,0 +1,59 @@
+{% extends "introduction/base.html" %} 
+{% load static %} 
+{% block content %} 
+{% block title %}
+<title>
+  Concurrent Execution using Shared Resource with Improper Synchronization
+</title>
+{% endblock %}
+<div class="container">
+  <h2 style="font-size: 2.7rem">
+    CWE-362:
+    <span
+      >Concurrent Execution using Shared Resource with Improper Synchronization
+    </span>
+  </h2>
+</div>
+
+<div class="box">
+  There is a code sequence in the programme that can run concurrently with other
+  code and that needs temporary, exclusive access to a resource that is shared,
+  but there is a timing window in which the shared resource can be changed by
+  another code sequence that is running concurrently. This can have security
+  implications when the expected synchronization is in security-critical code,
+  such as recording whether a user is authenticated or modifying important state
+  information that should not be influenced by an outsider. A race condition
+  occurs within concurrent environments, and is effectively a property of a code
+  sequence. Depending on the context, a code sequence may be in the form of a
+  function call, a small number of instructions, a series of program
+  invocations, etc. A race condition violates these properties, which are
+  closely related:
+  <br />
+  <ul>
+    <li>
+      Exclusivity - the code sequence is given exclusive access to the shared
+      resource, i.e., no other code sequence can modify properties of the shared
+      resource before the original sequence has completed execution.
+    </li>
+    <li>
+      Atomicity - the code sequence is behaviorally atomic, i.e., no other
+      thread or process can concurrently execute the same sequence of
+      instructions (or a subset) against the same resource.
+    </li>
+  </ul>
+  When a "interfering code sequence" can still access the shared resource, going
+  against exclusivity, a race condition is present. Programmers could believe
+  that some code sequences run too quickly to be influenced by an intervening
+  code sequence; if this is incorrect, atomicity is broken. For instance,
+  although though the single "x++" line may appear to be atomic at the code
+  layer, it is actually non-atomic at the instruction layer since it first reads
+  the value of x (original value), then computes it (x+1), and finally writes it
+  (save the result to x).
+  <br />
+  It's possible that the intervening code sequence is "trusted" or "untrusted."
+  The software has a trusted interfering code sequence that the attacker cannot
+  change and can only be indirectly invoked. The attacker may directly write an
+  untrusted interfering code sequence, and in most cases, this code is not part
+  of the vulnerable application.
+</div>
+{% endblock %}

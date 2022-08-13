@@ -1,0 +1,92 @@
+{% extends "introduction/base.html" %} {% load static %} {% block content %} 
+{% block title %}
+<title>Improper Input validation</title>
+{% endblock %}
+<div class="content">
+  <h2 style="font-size: 2.7rem">
+    CWE-20: <span>Improper input validation</span>
+  </h2>
+</div>
+<div class="box">
+  <div>
+    A common method for ensuring that potentially risky inputs are safe before 
+    processing them within the code or communicating with other components is 
+    input validation. An attacker can construct input in a way that is not 
+    anticipated by the rest of the programme when software fails to properly 
+    validate input. This will result in the system's components getting undesired 
+    input, which could change how control is distributed or allow unauthorised 
+    code execution or resource control.
+    However, there are other methods for processing information than input validation. 
+    Other techniques attempt to transform potentially-dangerous input
+    into something safe, such as filtering (CWE-790) - which attempts to remove
+    dangerous inputs - or encoding/escaping (CWE-116), which attempts to ensure
+    that the input is not misinterpreted when it is included in output to
+    another component. Other techniques exist as well (see CWE-138 for more
+    examples.)
+  </div>
+
+  <span style="font-size:2rem"> Input validation can be applied to: </span>
+  <ul>
+    <li>raw data - strings, numbers, parameters, file contents, etc.</li>
+    <li>metadata - information about the raw data, such as headers or size</li>
+  </ul> <br>
+  <div>
+    Data can be simple or structured. Structured data can be composed of many nested layers, 
+    composed of combinations of metadata and raw data, with other simple or structured data.
+
+    Many properties of raw data or metadata may need to be validated upon entry into the code, such as:
+  </div>
+  <ul>
+   <li>specified quantities such as size, length, frequency, price, rate, number of operations, time, etc.</li>
+   <li>implied or derived quantities, such as the actual size of a file instead of a specified size</li>
+   <li>indexes, offsets, or positions into more complex data structures</li>
+   <li>symbolic keys or other elements into hash tables, associative arrays, etc.</li>
+   <li>well-formedness, i.e. syntactic correctness - compliance with expected syntax</li>
+   <li>lexical token correctness - compliance with rules for what is treated as a token</li>
+   <li>specified or derived type - the actual type of the input (or what the input appears to be)</li>
+   <li>consistency - between individual data elements, between raw data and metadata, between references, etc.</li>
+   <li>conformance to domain-specific rules, e.g. business logic</li>
+   <li>equivalence - ensuring that equivalent inputs are treated the same </li>
+   <li>authenticity, ownership, or other attestations about the input, e.g. a cryptographic signature to prove the source of the data</li>
+  </ul>
+
+  <br><br>
+  <div>
+    It is frequently necessary for the code itself to calculate or deduce the implied or derived attributes of the data. 
+    Inadequate input validation may be attributed to errors in determining properties.
+
+    Be aware that "input validation" can mean a lot of different things to various persons or 
+    classification schemes. When referring or mapping to this CWE entry, exercise caution. For instance, 
+    some flaws might unintentionally allow an attacker to supply an input when they shouldn't be allowed to at all, 
+    yet this is commonly referred to as input validation.
+  </div>
+
+</div>
+<div class="box"> 
+  <button class="coll btn btn-info">Lab 1 Details</button>
+  <div class="lab">
+        <br>
+          This lab uses django's default template engine, and oviously the input is not validated properly, try to get the admin password hash exploiting it.
+      
+          <div align="right"> <button class="btn btn-info" type="button"
+              onclick="window.location.href='/ssti/lab'">Access Lab</button></div>
+          </p>
+  </div> 
+  <button class="coll btn btn-info">Lab 2 Details</button>
+  <div class="lab">
+    <br>
+          This section have active log monitoring section , and some part for user input is also saved in log, can u find some exploit ?
+      
+          <div align="right"> <button class="btn btn-info" type="button"
+              onclick="window.location.href='/a10_lab_2'">Access Lab</button></div>
+          </p>
+  </div>
+  <button class="coll btn btn-info">Lab 3 Details</button>
+  <div class="lab">
+          This lab has a login pages, and the input is not validated properly, Can you login as Admin ?
+        <div align="right"> <button class="btn btn-info" type="button"
+                        onclick="window.location.href='/injection_sql_lab'">Access Lab</button></div> 
+  </div>
+</div>
+
+{% endblock %}

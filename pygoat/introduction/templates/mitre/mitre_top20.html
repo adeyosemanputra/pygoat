@@ -1,0 +1,12 @@
+{% extends "introduction/base.html" %}
+{% load static %}
+{% block content %}
+{% block title %}
+<title> Incorrect Default Permissions </title>
+{% endblock %}
+    <div class="container">
+        <h2 style="font-size:2.7rem">CWE-276: <span>Incorrect Default Permissions</span></h2>
+    </div>
+    <div class="box">During installation, installed file permissions are set to allow anyone to modify those files.</div>
+
+{% endblock %}

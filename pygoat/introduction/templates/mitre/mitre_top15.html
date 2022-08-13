@@ -1,0 +1,47 @@
+{% extends "introduction/base.html" %} 
+{% load static %} 
+{% block content %} 
+{% block title %}
+<title>Use of Hard-coded Credentials</title>
+{% endblock %}
+<div class="container">
+  <h2 style="font-size: 2.7rem">
+    CWE-798: <span>Use of Hard-coded Credentials</span>
+  </h2>
+</div>
+<div class="box">
+  For its own internal data encryption, outbound communication with external
+  components, and inbound authentication, the software has hard-coded
+  credentials, such as a password or cryptographic key.
+  <br />
+  Hard-coded credentials typically create a significant hole that allows an
+  attacker to bypass the authentication that has been configured by the software
+  administrator. This hole might be difficult for the system administrator to
+  detect. Even if detected, it can be difficult to fix, so the administrator may
+  be forced into disabling the product entirely. There are two main variations:
+  <br />
+  Inbound: the software contains an authentication mechanism that checks the
+  input credentials against a hard-coded set of credentials. Outbound: the
+  software connects to another system or component, and it contains hard-coded
+  credentials for connecting to that component.
+  <br />
+  The Inbound option creates a default administrator account and assigns it a
+  straightforward password that is hard-coded into the software. System
+  administrators typically cannot change or disable this hard-coded password
+  without manually altering the programme or otherwise patching the software. It
+  is the same for every installation of the product. Anyone with knowledge of
+  the password can access the product if it is ever discovered or published
+  online, which happens frequently. Finally, since every installation of the
+  software uses the same password, even when used by different businesses, this
+  makes it possible for large-scale attacks like worms to occur.
+  <br />
+  Front-end systems that use a back-end service for authentication fall under
+  the Outbound variation. A predefined password that is simple to figure out may
+  be needed by the back-end service. These back-end credentials may be
+  hard-coded by the programmer into the front-end application. The password
+  might be recoverable by any user of that programme. Since it is typically
+  fairly easy to extract a password from a binary, client-side systems with
+  hard-coded passwords represent an even greater threat.
+</div>
+
+{% endblock %}

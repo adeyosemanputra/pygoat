@@ -1,0 +1,13 @@
+{% extends "introduction/base.html" %}
+{% load static %}
+{% block content %}
+{% block title %}
+<title> Missing Authentication for Critical Function </title>
+{% endblock %}
+    <div class="container">
+        <h2 style="font-size:2.7rem">CWE-306: <span>Missing Authentication for Critical Function</span></h2>
+    </div>
+    <div class="box">
+        The software does not perform any authentication for functionality that requires a provable user identity or consumes a significant amount of resources.
+    </div>
+{% endblock %}
