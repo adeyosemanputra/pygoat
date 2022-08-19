@@ -84,3 +84,13 @@ class AF_session_id(models.Model):
     user = models.CharField(max_length=200)
     def __str__(self):
         return self.user
+
+class CSRF_user_tbl(models.Model):
+    id = models.AutoField(primary_key=True)
+    username = models.CharField(max_length=200)
+    password = models.CharField(max_length=200)
+    balance = models.IntegerField(default=0)
+    is_loggedin = models.BooleanField(default=False)
+    
+    def __str__(self):
+        return self.username
