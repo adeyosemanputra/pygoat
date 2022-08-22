@@ -109,4 +109,7 @@ urlpatterns = [
     path("mitre/23",mitre.mitre_top23,name="mitre_top23"),
     path("mitre/24",mitre.mitre_top24,name="mitre_top24"),
     path("mitre/25",mitre.mitre_top25,name="mitre_top25"),
+    path("mitre/9/lab/login",mitre.csrf_lab_login,name="csrf_lab_login"),
+    path("mitre/9/lab/transaction",mitre.csrf_transfer_monei,name="csrf_lab_login_api"),
+    path("mitre/9/lab/api/<str:recipent>/<int:amount>",mitre.csrf_transfer_monei_api,name="csrf_lab_login_api"),
 ]
