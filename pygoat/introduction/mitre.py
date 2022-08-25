@@ -196,3 +196,9 @@ def csrf_transfer_monei_api(request,recipent,amount):
         return redirect('/mitre/9/lab/transaction') 
     else:
         return redirect ('/mitre/9/lab/transaction')
+
+
+@authentication_decorator
+@csrf_exempt
+def mitre_lab_25_api(request):
+    pass
