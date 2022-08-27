@@ -6,8 +6,15 @@ import jwt
 import datetime
 from .models import CSRF_user_tbl
 from django.views.decorators.csrf import csrf_exempt
+# import os
 
 ## Mitre top1 | CWE:787
+
+# target zone
+FLAG = "NOT_SUPPOSED_TO_BE_ACCESSED"
+
+# target zone end
+
 
 @authentication_decorator
 def mitre_top1(request):
@@ -198,7 +205,17 @@ def csrf_transfer_monei_api(request,recipent,amount):
         return redirect ('/mitre/9/lab/transaction')
 
 
-@authentication_decorator
+# @authentication_decorator
 @csrf_exempt
 def mitre_lab_25_api(request):
-    pass
+    if request.method == "POST":
+        expression = request.POST.get('expression')
+        result = eval(expression)
+        return JsonResponse({'result': result})
+    else:
+        return redirect('/mitre/25/lab/')
+
+
+@authentication_decorator
+def mitre_lab_25(request):
+    return render(request, 'mitre/mitre_lab_25.html')
