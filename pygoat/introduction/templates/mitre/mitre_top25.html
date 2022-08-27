@@ -1,7 +1,7 @@
 {% extends "introduction/base.html" %} 
 {% load static %} 
-{% block content %} 
-{% block title %}
+{% block content %}
+{%block title %}
 <title>Code Injection</title>
 {% endblock %}
 <div class="container">
@@ -25,6 +25,17 @@
   execution, whereas injection problems just require that the data be parsed.
   The most traditional examples of this category are SQL injection and format
   string vulnerabilities.
-</div>
-
+  <br><br>
+  <button class="coll btn btn-info">Lab Details</button>
+  <div class="lab">
+    <p class="bp">
+    This lab have a calculator with can compute simple arithmetic operations.
+    Try to exploit that</p> 
+    <div align="right">
+      <button class="btn btn-info" type="button" onclick="window.location.href='/mitre/25/lab'">
+        Access Lab
+      </button>
+    </div>
+  </div>
+</div><br>
 {% endblock %}
