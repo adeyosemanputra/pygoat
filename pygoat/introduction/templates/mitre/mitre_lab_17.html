@@ -1,0 +1,51 @@
+{% extends "introduction/base.html" %}
+{% load static %}
+{% block content %}
+{% block title %}
+<title> Code Injection </title>
+{% endblock %}
+<div class="jumbotron">
+    <h4 style="text-align:center"> PORT SCANNING SERVICE </h4>
+    <div class="login" style="display: flex;justify-content: center;flex-direction: column;">
+        <div>
+            <input type="textarea" id="input" style="width: 400px;height: 50px;">
+            <button id="btn" style="width: 100px;height: 50px;" onclick="apicall()"> SCAN </button>
+        </div><br>
+        <div id="output" style="width: 40%; border: 2px solid #777; border-radius: 5px; padding: 7px;">
+            output<br>
+        </div>
+    </div>
+    <div style= "position : fixed ; right : 7px; bottom : 7px"> <button class="btn btn-info" type="button" onclick="window.location.href='/mitre/17'">Back to Lab
+        Details</button></div>
+    
+    <script>
+        var ports = [];
+        function apicall(){
+            var input = document.getElementById("input").value;
+            var output = document.getElementById("output");
+            var headers = new Headers();
+            var formdata = new FormData();
+            formdata.append("ip", input);
+            var requestOption = {
+                method: "POST",
+                body: formdata,
+                redirect: "follow",
+                headers: headers
+            };
+            output.innerHTML = "";
+            fetch("/mitre/17/lab/api",requestOption)
+                .then(response => response.text())
+                .then(result => {
+                    var data = JSON.parse(result);
+                    ports = data.ports;
+                    for (p in data.ports){
+                        output.innerHTML += "<span>" + ports[p] + "</span><br>";}
+                })
+                .catch(
+                    error => {console.log("error", error);
+                    output.innerHTML = "error";}
+                    );
+        }
+
+    </script>
+{% endblock %}
