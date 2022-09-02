@@ -3,17 +3,46 @@
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 
-trigger:
-- master
+#trigger:
+#- master
 
-pool:
-  vmImage: ubuntu-latest
+#pool:
+#  vmImage: ubuntu-latest
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+#steps:
+#- script: echo Hello, world!
+#  displayName: 'Run a one-line script'
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+#- script: |
+#    echo Add other tasks to build, test, and deploy your project.
+#    echo See https://aka.ms/yaml
+#  displayName: 'Run a multi-line script'
+
+jobs:
+- job: Job_1
+  displayName: Agent job 1
+  pool:
+    vmImage: windows-2019
+  steps:
+  - checkout: self
+    clean: true
+    fetchTags: false
+  
+- script:
+  wget https://sca-downloads.s3.amazonaws.com/cli/latest/ScaResolver-linux64.tag.gz
+  tar -xzvf ScaResolver-linux64.tag.gz
+  rm -rf ScaResolver-linux64.tag.gz
+  displayName: 'SCA Resolver' 
+
+- task: CmdLine@2
+  env:
+	SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+  displayName: Sca Resolver package resolution
+  inputs:
+    script: "./ScaResolver offline -s . -r .cxsca-results.json -n project-name --log-level Debug --maven-parameters='-s $(System.DefaultWorkingDirectory)/devops/ci/settings.xml' "
+  
+  - task: Checkmarx AST@2
+    displayName: Checkmarx AST
+    inputs:
+      CheckmarxService: 7fb34e3e-07bd-418f-af9b-a9d80a49e637
+      tenantName: beta_nova8
