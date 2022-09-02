@@ -5,13 +5,17 @@ steps:
    rm -rf ScaResolver-linux64.tar.gz
   displayName: 'Sca Resolver'
 
-- script: |
-   sudo apt install maven npm
-  displayName: 'Sca Resolver package management step'
 
-- task: checkmarx.checkmarx-ast-azure-plugin.cx-scan-task.Checkmarx AST@2
-  displayName: 'Checkmarx AST'
+- task: CmdLine@2
+  env:
+   SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+  displayName: Sca Resolver package resolution
   inputs:
-    CheckmarxService: Checkmarx_AST
-    tenantName: 'beta_nova8'
-    additionalParams: '--sca-resolver ./ScaResolver'
+    script: "./ScaResolver offline -s . -r .cxsca-results.json -n project-name --log-level Debug --maven-parameters='-s $(System.DefaultWorkingDirectory)/devops/ci/settings.xml' "
+  
+- task: Checkmarx AST@2
+  displayName: Checkmarx AST
+  inputs:
+    CheckmarxService: 7fb34e3e-07bd-418f-af9b-a9d80a49e637
+    tenantName: beta_nova8
+
