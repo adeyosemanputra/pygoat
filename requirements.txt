@@ -22,7 +22,7 @@ itsdangerous==2.1.2
 Jinja2==3.1.2
 MarkupSafe==2.1.1
 mccabe==0.6.1
-oauthlib==3.2.0
+oauthlib==3.2.1
 php-wsgi==0.0.12
 Pillow==8.0.0
 psycopg2==2.9.3
