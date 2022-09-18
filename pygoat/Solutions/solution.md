@@ -494,7 +494,7 @@ This results as being logged in as Admin
 
 
 
-**Server side Template Injection**
+## 2021-A3:Server side Template Injection
 
 `{% load log %}
 {% get_admin_log 5 as log %}
@@ -506,3 +506,13 @@ add a post which includes this content
  
 The result would look like this -->
 ![Screenshot from 2022-06-10 21-04-29](https://user-images.githubusercontent.com/75058161/173106213-9e218e81-d4b2-4447-9570-4aa8de3dea88.png)
+
+## 2021-A8: Software and Data Integrity failure
+This data is a demonstration that how an XSS attack can deceive users to download any malicious file. The lab consists of a page to download a file, and a direct link to that page is also given (from a hacker). Let's download both files and compare the hash before opening that.
+![image](https://user-images.githubusercontent.com/75058161/190912308-1d26fb2e-2c6c-4c67-bf2a-9bb0f4abbfd0.png)
+So as we can see the hashes don't match. So as a user we should always cross-check signatures for verification of Data Integrity. 
+
+More more information about the attack itself you can look into the url --> ```http://127.0.0.1:8000/2021/A8/lab2?username=user+%3Cscript%3Edocument.getElementById%28%22download_link%22%29.setAttribute%28%22href%22%2C%22%2Fstatic%2Ffake.txt%22%29%3B%3C%2Fscript%3Euser+%3Cscript%3Edocument.getElementById%28%22download_link%22%29.setAttribute%28%22href%22%2C%22%2Fstatic%2Ffake.txt%22%29%3B%3C%2Fscript%3E``` 
+It have a file url and XXS attack to replace the actual file url.
+
+
