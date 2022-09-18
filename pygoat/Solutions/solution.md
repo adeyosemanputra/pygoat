@@ -512,7 +512,17 @@ This data is a demonstration that how an XSS attack can deceive users to downloa
 ![image](https://user-images.githubusercontent.com/75058161/190912308-1d26fb2e-2c6c-4c67-bf2a-9bb0f4abbfd0.png)
 So as we can see the hashes don't match. So as a user we should always cross-check signatures for verification of Data Integrity. 
 
-More more information about the attack itself you can look into the url --> ```http://127.0.0.1:8000/2021/A8/lab2?username=user+%3Cscript%3Edocument.getElementById%28%22download_link%22%29.setAttribute%28%22href%22%2C%22%2Fstatic%2Ffake.txt%22%29%3B%3C%2Fscript%3Euser+%3Cscript%3Edocument.getElementById%28%22download_link%22%29.setAttribute%28%22href%22%2C%22%2Fstatic%2Ffake.txt%22%29%3B%3C%2Fscript%3E``` 
+More more information about the attack itself you can look into the url --> 
+```http://127.0.0.1:8000/2021/A8/lab2?username=user+%3Cscript%3Edocument.getElementById%28%22download_link%22%29.setAttribute%28%22href%22%2C%22%2Fstatic%2Ffake.txt%22%29%3B%3C%2Fscript%3Euser+%3Cscript%3Edocument.getElementById%28%22download_link%22%29.setAttribute%28%22href%22%2C%22%2Fstatic%2Ffake.txt%22%29%3B%3C%2Fscript%3E``` 
 It have a file url and XXS attack to replace the actual file url.
+
+## 2021-A9: Insufficient Logging & Monitoring
+This lab have active logging and have a login page ( we don't have credential )
+So every fake entry is logged so the user name is printed in the file itself..
+```ERROR:root:2022-07-04 07:21:50.906938:127.0.0.1:User1:Hash1```
+this is a sample hash ..
+So we can Enter user name anything and password = ```pass\nERROR:root:2022-07-04 07:21:50.906938:127.0.0.1:User1:Hash1```
+It will create one fake log and also it can cause log overflow also by passing lots of data in injection.
+
 
 
