@@ -20,9 +20,9 @@
         </div>
     </form>
     <div style="display:flex;justify-content: center;align-items: center;margin: 10px;" align="center" id="o-auth">
-        Click 
-        <a href="/register">Here</a>
-         to register | 
+        
+        <a href="/register" class="btn btn-primary" style="margin-left:7px; background: #2aa2b8;">Register</a>
+
         <form method="post" action="/accounts/google/login/">
              {% csrf_token %} 
             <button type="submit" class="btn btn-primary" style="margin-left:7px; background: #2aa2b8;">
