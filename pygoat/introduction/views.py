@@ -6,6 +6,7 @@ from django.core import serializers
 from requests.structures import CaseInsensitiveDict
 from django.contrib.auth import login,authenticate
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib import messages
 import random
 import string
 import os
@@ -42,9 +43,11 @@ def register(request):
     if request.method=="POST":
         form = UserCreationForm(request.POST)
         if form.is_valid():
-            form.save()
+            user=form.save()
+            messages.success(request,"Registration successful")
+            return redirect("login")
+        messages.error(request,"Invalid Registration")
         return redirect("login")
-
     else:
         form=UserCreationForm()
         return render(request,"registration/register.html",{"form":form,})
@@ -73,10 +76,45 @@ def xss(request):
     else:
         return redirect('login')
 
-def xss_lab(request):
+@csrf_exempt
+def xss_p_lab(request):
+    if request.user.is_authenticated:
+        if request.method=='POST':
+            com=request.POST.get('comment')
+            new_comment = comments.objects.create(comment=com)
+            new_comment.save()
+            return redirect('xss_p_lab')
+        elif request.method=='GET':
+            c=comments.objects.all()
+            if c:
+                cList = {"comments":[x.comment for x in c]}
+                return render(request, "Lab/XSS/xss_p_lab.html", cList)
+            else:
+                return render(request,"Lab/XSS/xss_p_lab.html")
+    else:
+        return redirect('login')
+
+
+def xss_r_lab(request):
+    companies=FAANG.objects.all()
+    if not companies:
+        ap=FAANG.objects.create(company="Apple")
+        az=FAANG.objects.create(company="Amazon")
+        g=FAANG.objects.create(company="Google")
+        n=FAANG.objects.create(company="Netflix")
+        fa=FAANG.objects.create(company="Facebook")
+
+        i_ap=info.objects.create(ceo="Steve Jobs", faang=ap, about="Took a class in caligraphy and invented fonts")
+        i_az=info.objects.create(ceo="Jeff Bezos",faang=az, about="There is always a webs service for you :)")
+        i_g=info.objects.create(ceo="Larry Pages", faang=g, about="Google is your best friend and your worst enemy...")
+        i_n=info.objects.create(ceo="Reed Hastings", faang=n, about="Stranger things is the new goonies")
+        i_fa=info.objects.create(ceo="Mark Zuckeberg", faang=fa, about="Is the metaverse the new matrix?")
+
+        [x.save for x in [ap,az,g,n,fa]]
+        [x.save for x in [i_ap,i_az,i_g,i_n,i_fa]]
     if request.user.is_authenticated:
         q=request.GET.get('q','')
-        f=FAANG.objects.filter(company=q)
+        f=FAANG.objects.all().filter(company=q)
         if f:
             args={"company":f[0].company,"ceo":f[0].info_set.all()[0].ceo,"about":f[0].info_set.all()[0].about}
             return render(request,'Lab/XSS/xss_lab.html',args)
@@ -105,6 +143,7 @@ def sql_lab(request):
 
             if login.objects.filter(user=name):
 
+                print("hello world sql")
                 sql_query = "SELECT * FROM introduction_login WHERE user='"+name+"'AND password='"+password+"'"
                 print(sql_query)
                 try:
@@ -463,7 +502,6 @@ def secret(request):
         return render(request,"Lab/sec_mis/sec_mis_lab.html", {"secret": "S3CR37K3Y"})
     else:
         return render(request,"Lab/sec_mis/sec_mis_lab.html", {"no_secret": "Only admin.localhost:8000 can access, Your X-Host is " + XHost})
-
 
 #**********************************************************A9*************************************************#
 

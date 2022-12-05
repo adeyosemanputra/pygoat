@@ -5,10 +5,12 @@ from introduction.playground.A9.api import log_function_target
 
 urlpatterns = [
     path('accounts/', include('allauth.urls')),
+    path("register/", views.register, name="register"),
     path('', views.home, name='homepage'),
     path('xss', views.xss,name="xss"),
-    path('xssL',views.xss_lab,name='xss_lab'),
-    path('xssL1',views.xss_lab,name='xss_lab'),
+    path('pxss', views.xss_p_lab,name="xss_p_lab"),
+    path('xssL',views.xss_lab,name='xss_r_lab'),
+    path('xssL1',views.xss_lab,name='xss_r_lab'),
     path("sql",views.sql,name='sql'),
     path("sql_lab",views.sql_lab,name="sql_lab"),
     path("sql_lab1",views.sql_lab,name="sql_lab"),
@@ -30,6 +32,7 @@ urlpatterns = [
     path("robots.txt",views.robots,name="robots.txt"),
     path("500error",views.error,name="500error"),
     path("cmd",views.cmd,name="Command Injection"),
+    path("project", views.ba, name="HELLO WORLD"),
     path("cmd_lab",views.cmd_lab,name="Command Injection Lab"),
     path("bau", views.bau, name="Broken Authe"),
     path("bau_lab", views.bau_lab, name="LAB"),
