@@ -7,3 +7,8 @@ venv
 *db.sqlite3
 */app.log
 pygoat/app.log
+pygoat/.DS_Store
+pygoat/introduction/.DS_Store
+test.html
+http_server.py
+.DS_Store
