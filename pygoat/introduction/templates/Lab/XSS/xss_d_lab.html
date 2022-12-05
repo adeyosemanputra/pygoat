@@ -1,0 +1,66 @@
+{% extends "introduction/base.html" %}
+{% block content %}
+{% block title %}
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>INJECTION: XSS DOM LAB</title>
+{% endblock %}
+
+<div class="container">
+    <div class="row row-content align-items-center">
+        <div class="col col-sm order-sm-first col-md">
+        <script>
+            lang=location.hash;
+            if(lang==''){
+                lang="English";
+                location.hash="#English";
+            }
+            else{
+                lang=location.hash.replace('#','');
+            }
+            title=document.getElementById("title");
+            morning=document.getElementById("morning");
+            lang=decodeURIComponent(lang);
+            document.write('<h2>'+lang+'</h2>');
+            if(lang=='English'){
+                document.write('<h3>Good Morning</h3>');
+            }
+            else if(lang=='Italiano'){
+                document.write('<h3>Buon Giorno</h3>');
+            }
+            else if(lang=='Deutsch'){
+                document.write('<h3>Guten Morgen</h3>');
+            }
+            else if(lang=='中国人'){
+                document.write('<h3>早上好</h3>');
+            }
+            else if(lang=='Navajo'){
+                document.write('<h3>\'Yá\'át\'ééh abíní!</h3>');
+            }
+        </script>
+            <p id="info">Change the language on the dropdown to see how to say goodmorning in different languages</p>
+            <button id="selectLang" class="btn" style="outline: none;">
+                <select name="language" id="language" style="border:none;">
+                    <option value="en">English</option>
+                    <option value="dh">Deutsch</option>
+                    <option value="ch">中国人<option>
+                    <option value="it">Italiano</option>
+                    <option value="nj" selected>Navajo</option>
+                </select>
+            </button>
+        </div>
+    </div>
+</div><br>
+<br>
+<script>
+    const element = document.getElementById("selectLang");
+    element.addEventListener("click", function(){
+        var language = document.getElementById("language");
+        var value = language.value;
+        var text = language.options[language.selectedIndex].text;
+        location.hash='#'+text;
+        location.reload();
+    });
+</script>
+{% endblock content %}
+
+<h2 id="title" style="color:purple">English:</h2>
