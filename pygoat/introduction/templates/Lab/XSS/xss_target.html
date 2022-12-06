@@ -1,0 +1,20 @@
+{% extends "introduction/base.html" %}
+{% block content %}
+{% block title %}
+<title>XSS LAB</title>
+{% endblock %}
+
+<div style="display:flex;flex-direction:column;align-items:center">
+    {% if access_denied %}
+        <h1>Access Denied</h1>
+    {% else %}
+        <div>
+            <p>
+                Username: FRODO
+                PASSWORD: "Aiya Eärendil elenion ancalima!"
+            </p>
+        </div>
+    {% endif %}
+</div>
+
+{% endblock %}

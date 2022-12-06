@@ -94,3 +94,14 @@ class CSRF_user_tbl(models.Model):
     
     def __str__(self):
         return self.username
+
+class zodiac(models.Model):
+    id = models.AutoField(primary_key=True)
+    symbol=models.CharField(max_length=200)
+    count=models.IntegerField(validators=[MaxValueValidator(300)])
+
+    def __str__(self):
+        return self.symbol +": "+str(self.count)
+    
+    def add(self):
+        self.count+=1

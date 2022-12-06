@@ -1,12 +1,17 @@
 import hashlib
 from django.shortcuts import render,redirect
 from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
-from .models import  FAANG, AF_session_id,info,login,comments,authLogin, tickits, sql_lab_table,Blogs,CF_user,AF_admin
+from .models import  FAANG, AF_session_id,info,login,comments,authLogin, tickits, sql_lab_table,Blogs,CF_user,AF_admin, zodiac
 from django.core import serializers
 from requests.structures import CaseInsensitiveDict
 from django.contrib.auth import login,authenticate
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib import messages
+
+
+from bs4 import BeautifulSoup
+import urllib.parse
 import random
 import string
 import os
@@ -75,6 +80,18 @@ def xss(request):
         return render(request,"Lab/XSS/xss.html")
     else:
         return redirect('login')
+
+def xss_target(request):
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    if ip == '127.0.0.1':
+        return render(request,"Lab/XSS/xss_target.html")
+    else:
+        return render(request,"Lab/XSS/xss_target.html",{"access_denied":True})
+
 
 @csrf_exempt
 def xss_p_lab(request):
@@ -906,7 +923,6 @@ def ssrf_discussion(request):
     else:
         return redirect('login')
 
-
 def ssrf_target(request):
     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
 
@@ -932,6 +948,94 @@ def ssrf_lab2(request):
             return render(request, "Lab/ssrf/ssrf_lab2.html", {"response": response.content.decode()})
         except:
             return render(request, "Lab/ssrf/ssrf_lab2.html", {"error": "Invalid URL"})
+
+# def ssrf_blind_lab(request):
+#     if request.user.is_authenticated:
+#         if request.method=="GET":
+#             try:
+#                 origin=request.headers['Referer']
+#                 http = urllib3.PoolManager()
+#                 page = http.request('GET', origin).data
+#                 soup = BeautifulSoup(page, features="html.parser")
+#                 for link in soup.findAll('a'):
+#                     print(link.get('href'))
+#             except Exception as e:
+#                 print(e)
+#             return render(request,"Lab/ssrf/ssrf_blind_lab.html")
+#         else:
+#             return render(request,"Lab/ssrf/ssrf_blind_lab.html")
+#     else:
+#         return redirect('login')
+
+def ssrf_blind_lab(request):
+    if request.user.is_authenticated:
+        if request.method=="GET":
+            q=request.GET.get('q', '')
+            params=urllib.parse.parse_qs(q)
+            param=q
+            for k,v in params.items():
+                param=v[0]
+            if q:
+                requests.get(q)
+            if param == "Aries":
+                info="They dive headfirst into all challenges"
+            elif param=="Taurus":
+                info="They like relaxing and are bucolic"
+            elif param=="Gemini":
+                info="They would like to clone themselves because they are busy"
+            elif param=="Cancer":
+                info="They like the water"
+            elif param=="Leo":
+                info="They are the life of the party"
+            elif param=="Virgo":
+                info="They know the sciences very well"
+            elif param=="Libra":
+                info="Justice !!!!!"
+            elif param=="Scorpio":
+                info="Mystery......"
+            elif param=="Saggitarius":
+                info="Aventures here I come !!"
+            elif q=="Capricorn":
+                info="Time, time, time, I'm running out of time!"
+            elif param=="Aquarius":
+                info="Healer of the tribe"
+            elif param=="Pisces":
+                info="Reading minds is nothing to me"
+            else:
+                return render(request,"Lab/ssrf/ssrf_blind_lab.html", {"info": "you have to select a zodiac symbol"})
+            #SEND DATA TO ANALYTICS
+            return render(request,"Lab/ssrf/ssrf_blind_lab.html", {"info": info})
+        else:
+            return render(request,"Lab/ssrf/ssrf_blind_lab.html", {"info": "you have to select a zodiac symbol"})
+    else:
+        return redirect('login')
+
+@csrf_exempt
+def ssrf_analytics(request):
+    symbols=zodiac.objects.all()
+    if not symbols:
+        Y = ["Aries", "Taurus", "Gemini", "Cancer", "Leo", "Virgo", "Libra", "Scorpio", "Saggitarius", "Capricorn", "Aquarius", "Pisces"]
+        [zodiac.objects.create(symbol=y, count=0) for y in Y]
+    
+    if request.method=="GET":
+        q=request.GET.get('q', '')
+        zod = zodiac.objects.all().filter(symbol=q)[0]
+        zod.add()
+        print(zod)
+        zod.save()
+        return JsonResponse({"count": zod.count})
+    else:
+        return JsonResponse({})
+
+def ssrf_blind_analytics(request):
+    symbols=zodiac.objects.all()
+    if request.user.is_authenticated:
+        if request.method=="GET":
+            return render(request,"Lab/ssrf/ssrf_blind_analytics.html", {"symbols":symbols})
+        else:
+            return render(request,"Lab/ssrf/ssrf_blind_lab.html")
+    else:
+        return redirect('login')
 #--------------------------------------- Server-side template injection --------------------------------------#
 
 def ssti(request):
