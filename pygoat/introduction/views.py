@@ -1,16 +1,13 @@
 import hashlib
 from django.shortcuts import render,redirect
 from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
-from .models import  FAANG, AF_session_id,info,login,comments,authLogin, tickits, sql_lab_table,Blogs,CF_user,AF_admin, zodiac
+from .models import  FAANG, AF_session_id,info,login,comments,authLogin, tickits, sql_lab_table,Blogs,CF_user,AF_admin, zodiac, Bank, ATM
 from django.core import serializers
 from requests.structures import CaseInsensitiveDict
 from django.contrib.auth import login,authenticate
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib import messages
 
-
-from bs4 import BeautifulSoup
 import urllib.parse
 import random
 import string
@@ -664,13 +661,13 @@ def a10_lab2(request):
 def gentckt():
     return (''.join(random.choices(string.ascii_uppercase + string.ascii_lowercase, k=10)))
 
-def insec_desgine(request):
+def insec_design(request):
     if request.user.is_authenticated:
         return render(request,"Lab/A11/a11.html")
     else:
         return redirect('login')
 
-def insec_desgine_lab(request):
+def insec_design_lab(request):
     if request.user.is_authenticated:
         if request.method=="GET":
             tkts = tickits.objects.filter(user = request.user)
@@ -714,6 +711,40 @@ def insec_desgine_lab(request):
     else:
         return redirect('login')
 
+def insec_design_lab2(request):
+    if request.user.is_authenticated:
+        if request.method=="GET":
+            b = Bank.objects.all()
+            Total = ATM.objects.all()
+            if not b or not Total:
+                bank = Bank.objects.create(user=request.user,balance=100)
+                Total = ATM.objects.create(user=request.user,total=0)
+            else:
+                bank=Bank.objects.all().filter(user=request.user)[0]
+                Total=ATM.objects.all().filter(user=request.user)[0]
+            return render(request,"Lab/A11/a11_lab2.html",{"balance":bank.balance, "Total":Total.total})
+        elif request.method=="POST":
+            if request.POST.get("howMuch"):
+                howMuch = int(request.POST.get("howMuch"))
+                bank=Bank.objects.all().filter(user=request.user)[0]
+                Total=ATM.objects.all().filter(user=request.user)[0]
+                res=Total.withdraw(howMuch)
+                if res:
+                    bank.updateBalance(howMuch)
+                    bank.save()
+                return redirect("insecure-design_lab2")
+            elif request.POST.get("reset"):
+                bank=Bank.objects.all().filter(user=request.user)[0]
+                Total=ATM.objects.all().filter(user=request.user)[0]
+                bank.reset(100)
+                Total.reset()
+                bank.save()
+                Total.save()
+                return redirect("insecure-design_lab2")
+            else:
+                return redirect("insecure-design_lab2")
+    else:
+        return redirect('login')
 
 #-------------------------------------------------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------------------------------------------------

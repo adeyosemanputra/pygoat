@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.validators import MaxValueValidator
 from django.conf import settings
+import time
 # Create your models here.
 
 class FAANG (models.Model):
@@ -105,3 +106,39 @@ class zodiac(models.Model):
     
     def add(self):
         self.count+=1
+
+class Bank(models.Model):
+    id = models.AutoField(primary_key=True)
+    user=models.CharField(max_length=200)
+    balance=models.IntegerField(validators=[MaxValueValidator(300)])
+    
+    def updateBalance(self, money):
+        time.sleep(5)
+        self.balance = self.balance-money
+    
+    def getBalance(self):
+        return self.balance
+    
+    def reset(self, num):
+        self.balance=num
+
+    def __str__(self):
+        return self.user + ":"+str(self.balance)
+
+class ATM(models.Model):
+    id = models.AutoField(primary_key=True)
+    user=models.CharField(max_length=200)
+    total=models.IntegerField(validators=[MaxValueValidator(300)])
+
+    def reset(self):
+        self.total=0
+    
+    def withdraw(self, num):
+        account=Bank.objects.all().filter(user=self.user)[0]
+        if account.balance>=num:
+            self.total=self.total+num
+            self.save()
+            return True
+        else:
+            return False
+
