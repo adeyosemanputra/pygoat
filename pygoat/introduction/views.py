@@ -14,7 +14,6 @@ import string
 import os
 from hashlib import md5
 import datetime
-import socket
 #*****************************************Lab Requirements****************************************************#
 
 from .models import  FAANG,info,login,comments,otp
@@ -39,7 +38,7 @@ from io import BytesIO
 from argon2 import PasswordHasher
 import logging
 import requests
-from socketIO_client import SocketIO
+import socket
 #*****************************************Login and Registration****************************************************#
 
 
@@ -1013,7 +1012,9 @@ def ssrf_blind_lab(request):
                     params=urllib.parse.unquote(q)
                     host=urllib.parse.urlparse(q).netloc.split(":")
                     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                    s.connect((host[0], host[1]))
+                    s.connect((host[0], int(host[1])))
+                    if params.find("http://"+host[0]+":"+host[1])>-1:
+                        params=params[len("http://"+host[0]+":"+host[1]):]
                     s.sendall(("GET "+params).encode())
                     s.close()
                 except:
