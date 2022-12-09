@@ -14,6 +14,7 @@ import string
 import os
 from hashlib import md5
 import datetime
+import socket
 #*****************************************Lab Requirements****************************************************#
 
 from .models import  FAANG,info,login,comments,otp
@@ -1009,7 +1010,12 @@ def ssrf_blind_lab(request):
                 param=v[0]
             if q:
                 try:
-                    socketIO = SocketIO(q)
+                    params=urllib.parse.unquote(q)
+                    host=urllib.parse.urlparse(q).netloc.split(":")
+                    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                    s.connect((host[0], host[1]))
+                    s.sendall(("GET "+params).encode())
+                    s.close()
                 except:
                     render(request,"Lab/ssrf/ssrf_blind_lab.html")
             if param == "Aries":
