@@ -38,6 +38,7 @@ from io import BytesIO
 from argon2 import PasswordHasher
 import logging
 import requests
+from socketIO_client import SocketIO
 #*****************************************Login and Registration****************************************************#
 
 
@@ -1007,7 +1008,10 @@ def ssrf_blind_lab(request):
             for k,v in params.items():
                 param=v[0]
             if q:
-                requests.get(q)
+                try:
+                    socketIO = SocketIO(q)
+                except:
+                    render(request,"Lab/ssrf/ssrf_blind_lab.html")
             if param == "Aries":
                 info="They dive headfirst into all challenges"
             elif param=="Taurus":
