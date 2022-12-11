@@ -1,0 +1,29 @@
+{% extends 'introduction/base.html' %} {% block content %} {% block title %}
+<title>SSRF</title>
+{% endblock %}
+<div class="content">
+    <h4>LAB EXPERT</h4>
+    <div>
+        <p class="bp">
+        This lab is the enhanced version of the fist lab for blind SSRF.
+        This should illustrate the danger of SSRF when an application
+        is not monolithic and uses a multi-service achitecture like those
+        employed in cloud applications.</p>
+        
+        <p>In order to illustrate this, pygoat must be run together with 
+            additional services.</p>
+
+        <p>First, run this project from a fedora, or centos OS. Then in this OS
+            install Redis (version 5) and run it.</p>
+        
+        <p> There is a way to get a reverse shell by using the same SSRF vulnerability
+            from lab1 to get a reverse shell into the server running pygoat.</p>
+        <p>
+            You can use the the installation script provided in this project
+            named install_redis.sh, to install and run redis.
+        </p>
+        <div align="right"> <button class="btn btn-info" type="button" onclick="window.location.href='/ssrf_blind_lab'">AccessLab</button></div>
+    </div>
+</div>
+
+{% endblock %}

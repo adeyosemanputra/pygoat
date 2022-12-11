@@ -11,7 +11,7 @@
             tries to inject malicious script into a trusted site. The malicious script is usually a piece of javascript
             code, which helps the attacker to perform malicious activities, like redirecting the victim to an attacker
             site, stealing cookies etc. Some times XSS vulnerability can be chained with other vulnerabilities to create
-            great impact .
+            great impact. From 2021 XSS is considered a form of injection, which is part of OWASP top 10.
             Talking about XSS, we have 3 different types: </p>
         <ul>
             <li>Reflected XSS</li>
@@ -22,7 +22,8 @@
         <h4>Persistent XSS</h4>
         <p class="bp">Stored XSS generally occurs when user input is stored on the target server, such as in a database,
             in a message forum, visitor log, comment field, etc. And then a victim is able to retrieve the stored data
-            from the web application without that data being made safe to render in the browser.Blog comments sessions
+            from the web application without that data being made safe to render in the browser. The main difference between persistent and reflected, is that in a persistent xss attack, the input get stored in a database or cache
+            and hence persists after the user session is expired. This makes persistent XSS attacks more impactful than DOM and reflected XSS attacks. Blog comments sessions
             are places which can be vulnerable to stored xss , once a vulnerable xss payload is posted then every user
             that visits the blog comment session would have the impact of the vulnerability.</p>
 
@@ -32,15 +33,19 @@
                     This lab will help you to understand the Persistent Type of XSS.
     
                 <p class="bp"> The lab consists of a photo where users can add comments to it.
-                <b>Cool Photo !!</b>The user can post a comment 
+                The user can post a comment 
                 about the photo and also the user can view comments by other users.</p>
-                <p class="bp">If an attacker posts a comment with a malicious comment and this is not sanitized, a user can then click on the view
-                    posts and have the malicious code injected into their browser and executed.
+                <p class="bp">If an attacker posts a comment with a malicious comment and this is not sanitized, this input can get stored in a database
+                    and then all the users that access this website will have their browser infected because the input is loaded from the database
+                    and is not limited to a particular user session. This is why persistent XSS is the worst of the three types.
                 </p>
+
     
-                <p class="bp"> What can go wrong Here? Yes, this html page reflects the search query back to the page when
-                    the user enters something which is not part of the FAANG.</p>
-                <h4>Exploiting the Reflection of the search query </h4>
+                <p class="bp"> What can go wrong Here? Verify that the comments are stored, by disconnecting the page and re-entering and verifying that all the
+                    comments are still there.
+                    Now, what would you like to store that would give you value for when all other users connect, maybe a script ...
+                </p>
+                <h4>Exploiting the Storing of User Provided Input </h4>
                 <ul>
                     <li>Instead of giving a search term try giving a html tag, <code>&lt;h4 &gt;Hello &lt;/h4>.</code></li>
                     <li>Now you can see that the word Hello has been parsed as a Heading in the page.</li>
@@ -49,7 +54,7 @@
                     <li>This can be acheived by using a script tag and malicious javascript code.</li>
                     <li>For now let's just use a basic javascript code to alert a text to prove that xss is possible .</li>
     
-                    <div class="container"> <code> &lt;script &gt;alert(“xss”) &lt;/script &gt;</code></div>
+                    <div class="container"> <code> &lt;script &gt;alert(“This Picture is Cool”) &lt;/script &gt;</code></div>
     
     
                     <li>Now when a search query is performed with the above payload you can see that the browser is able to
@@ -122,36 +127,41 @@
 
         <h4>DOM XSS</h4>
         <p class="bp">This type of XSS is possible when javascript takes in an user controllable code and passes it to a
-            sink ,for code execution . Examples of sinks are window.location , innerhtml , document.write .When the
+            sink ,for code execution. To be more specific, this vulnerability can happen when there is a path
+            from a user controllable source to a sink. Sources can be input fields or url parameters that are then 
+            processed by javascript with functions such as location.href, location.hash, document.URL, document.referrer
+            Examples of sinks are window.location , innerhtml , document.write .When the
             attacker tries to inject malicious code into a sink , then this type of XSS is called the DOM Xss</p>
+
+            <p class="bp">An important consideration is that for a DOM XSS it needs to be paired with additional techniques
+                such as passing the infected url to a target victim via e-mail, where the victim would load the url of
+                known website but its content would be determined by the attacker using the DOM XSS vulnerability.
+            </p>
 
         <button class="coll btn btn-info">Lab Details</button>
         <div class="lab">
             <p class="bp">
                 This lab will help you to understand the DOM based XSS.
 
-            <p class="bp"> The lab consists of a Search page called<b>FAANG IT</b>.Which helps you to get some
-                information about <i>Facebook, Apple ,Amazon ,Netflix, Google.</i> The user can input one of the
-                companies into the search bar and see the information related to it. </p>
-            <p class="bp">If a user searches for something else , he can see a message saying that the search term is
-                not part of the Company.</p>
+            <p class="bp"> The lab consists of a single page that displays "Good Morning" in different languages.
+                The language paramter is passed from a user selectable input, but it is also located
+                in the url hash which is interesting.
+            </p>
+            <p class="bp">When a user selects a language like Navajo, he can see good morning in Navajo</p>
 
-            <p class="bp"> What can go wrong Here? Yes, this html page reflects the search query back to the page when
-                the user enters something which is not part of the FAANG.</p>
-            <h4>Exploiting the Reflection of the search query </h4>
+            <p class="bp"> What can go wrong Here? Yes, this html page dynamically changes its content based on 
+                a source input
+            </p>
+            <h4>Exploiting the DOM based XSS</h4>
             <ul>
                 <li>Instead of giving a search term try giving a html tag, <code>&lt;h4 &gt;Hello &lt;/h4>.</code></li>
                 <li>Now you can see that the word Hello has been parsed as a Heading in the page.</li>
-                <li>This shows that the page is able to render the user given html tags.</li>
-                <li>In order to get an xss , the user needs to execute javascript code in the browser.</li>
-                <li>This can be acheived by using a script tag and malicious javascript code.</li>
-                <li>For now let's just use a basic javascript code to alert a text to prove that xss is possible .</li>
-
+                <li>This shows that the page is able to render the user given html from the hash.</li>
+                <li>Try to get the cookie using alert inside a script.</li>
+                <li>Also additionally, try to see if you can change the content of the website
+                    to something that could then be sent to a victim to attack.
+                </li>
                 <div class="container"> <code> &lt;script &gt;alert(“xss”) &lt;/script &gt;</code></div>
-
-
-                <li>Now when a search query is performed with the above payload you can see that the browser is able to
-                    render the script tag and execute the javascript , thus alerting “xss” with a pop up.</li>
 
 
             </ul>
@@ -168,7 +178,24 @@
             </p>
         </div><br>
         <br>
-        <h4>Mitigation</h4><br>
+        <h4>Mitigation Persistent</h4><br>
+        <p class="bp"> First let's analyse what part of the code has resulted in this vulnerability.
+            <br><b>#code in views.py</b><br></bt>
+            <code>com=request.POST.get('comment')<br>
+                new_comment = comments.objects.create(comment=com)</code><br>
+            <br><b>#code in html template</b><br>
+            <code>'{{comment|safe}}'</code>
+        </p>
+
+        <p class="bp"> In the above code the content from the post request is taken and automatically gets stored into the 
+            database.
+        </p>
+        <p class="bp">The content received from the database is considered to be safe which resulted in the template rendering
+            the database input without escaping the input. This can be seen by using the keyword <b>'safe'</b> in the html
+            template.</p>
+
+        <br>
+        <h4>Mitigation Reflected</h4><br>
         <p class="bp"> First let's analyse what part of the code has resulted in this vulnerability.
 
 
@@ -187,6 +214,20 @@
 
         <br>
         <p class="bp">
+                    <h4>Mitigation Dom</h4><br>
+        <p class="bp"> First let's analyse what part of the code has resulted in this vulnerability.
+            <br><b>#code in xss_d_lab.html</b><br></bt>
+            <code>lang=location.hash;<br>
+                lang=decodeURIComponent(lang);<br>
+                document.write('&lth2'+lang+'</h2>');</code><br>
+        </p>
+
+        <p class="bp"> In the above code the content from the location hash
+            is used to as an input into document.write, effectively changing the whole
+            html page.
+        </p>
+
+        <br>
         <h4>What happens without the safe keyword?</h4><br>
 
 

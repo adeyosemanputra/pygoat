@@ -113,7 +113,7 @@ class Bank(models.Model):
     balance=models.IntegerField(validators=[MaxValueValidator(300)])
     
     def updateBalance(self, money):
-        time.sleep(5)
+        time.sleep(1)
         self.balance = self.balance-money
     
     def getBalance(self):

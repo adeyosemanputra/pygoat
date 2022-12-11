@@ -65,6 +65,7 @@ urlpatterns = [
     path("ssrf_lab",views.ssrf_lab,name="SSRF LAB"),
     path("ssrf_lab2",views.ssrf_lab2,name="SSRF LAB"),
     path("ssrf_blind_lab",views.ssrf_blind_lab,name="ssrf_blind_lab"),
+    path("ssrf_blind_lab_extra", views.ssrf_blind_lab_extra, name="SSRF"),
     path("ssrf_analytics",views.ssrf_analytics,name="SSRF LAB"),
     path("ssrf_blind_analytics",views.ssrf_blind_analytics,name="SSRF LAB"),
     path("ssrf_target",views.ssrf_target,name="SSRF LAB"),

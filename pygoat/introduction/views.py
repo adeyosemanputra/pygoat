@@ -1078,6 +1078,13 @@ def ssrf_blind_analytics(request):
             return render(request,"Lab/ssrf/ssrf_blind_lab.html")
     else:
         return redirect('login')
+
+def ssrf_blind_lab_extra(request):
+    if request.user.is_authenticated:
+            return render(request,"Lab/ssrf/ssrf_blind_lab_extra.html",)
+    else:
+        return redirect('SSRF')
+
 #--------------------------------------- Server-side template injection --------------------------------------#
 
 def ssti(request):
