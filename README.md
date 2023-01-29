@@ -101,15 +101,6 @@ $ python3 uninstaller.py
 ## Solutions 
 <a href="/pygoat/Solutions/solution.md">Solutions to all challenges</a>
 
-## Live Demo
-http://pygoat-web.herokuapp.com <br>
-http://pygoat.herokuapp.com <br>
-http://pygoat-dep.herokuapp.com <br>
-credentials:<br>
-username : user<br>
-password : user12345<br>
-or you could login with 0auth (google) <br>
-
 ## Contributors ✨
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
