@@ -1,0 +1,24 @@
+{% extends "introduction/base.html" %}
+{% block content %}
+{% block title %}
+<title>SSRF LAB</title>
+{% endblock %}
+
+<div style="display:flex;flex-direction:column;align-items:center">
+    <div>
+        <h1 style="color:orangered">Analytics for zodiac</h1>
+    </div>
+    <div>
+        {% for symbol in symbols %}
+        <li class="ssti-li" style="color: #626262;">
+            <h3>{{symbol.symbol}}</h3>
+            <h4>{{symbol.count}}</h4>
+        </li>
+        {% endfor %}
+    </div>
+</div>
+
+<div style= "position : fixed ; right : 7px; bottom : 7px"> <button class="btn btn-info" type="button" onclick="window.location.href='/ssrf_blind_lab'">Back to Lab
+    Details</button></div>
+
+{% endblock %}

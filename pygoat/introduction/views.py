@@ -1,11 +1,14 @@
 import hashlib
 from django.shortcuts import render,redirect
 from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
-from .models import  FAANG, AF_session_id,info,login,comments,authLogin, tickits, sql_lab_table,Blogs,CF_user,AF_admin
+from .models import  FAANG, AF_session_id,info,login,comments,authLogin, tickits, sql_lab_table,Blogs,CF_user,AF_admin, zodiac, Bank, ATM
 from django.core import serializers
 from requests.structures import CaseInsensitiveDict
 from django.contrib.auth import login,authenticate
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib import messages
+
+import urllib.parse
 import random
 import string
 import os
@@ -35,6 +38,7 @@ from io import BytesIO
 from argon2 import PasswordHasher
 import logging
 import requests
+import socket
 #*****************************************Login and Registration****************************************************#
 
 
@@ -42,9 +46,11 @@ def register(request):
     if request.method=="POST":
         form = UserCreationForm(request.POST)
         if form.is_valid():
-            form.save()
+            user=form.save()
+            messages.success(request,"Registration successful")
+            return redirect("login")
+        messages.error(request,"Invalid Registration")
         return redirect("login")
-
     else:
         form=UserCreationForm()
         return render(request,"registration/register.html",{"form":form,})
@@ -73,15 +79,67 @@ def xss(request):
     else:
         return redirect('login')
 
-def xss_lab(request):
+def xss_target(request):
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    if ip == '127.0.0.1':
+        return render(request,"Lab/XSS/xss_target.html")
+    else:
+        return render(request,"Lab/XSS/xss_target.html",{"access_denied":True})
+
+
+@csrf_exempt
+def xss_p_lab(request):
+    if request.user.is_authenticated:
+        if request.method=='POST':
+            com=request.POST.get('comment')
+            new_comment = comments.objects.create(comment=com)
+            new_comment.save()
+            return redirect('xss_p_lab')
+        elif request.method=='GET':
+            c=comments.objects.all()
+            if c:
+                cList = {"comments":[x.comment for x in c]}
+                return render(request, "Lab/XSS/xss_p_lab.html", cList)
+            else:
+                return render(request,"Lab/XSS/xss_p_lab.html")
+    else:
+        return redirect('login')
+
+def xss_d_lab(request):
+    if request.user.is_authenticated:
+        return render(request,"Lab/XSS/xss_d_lab.html")
+    else:
+        return redirect('login')
+
+def xss_r_lab(request):
+    companies=FAANG.objects.all()
+    if not companies:
+        ap=FAANG.objects.create(company="Apple")
+        az=FAANG.objects.create(company="Amazon")
+        g=FAANG.objects.create(company="Google")
+        n=FAANG.objects.create(company="Netflix")
+        fa=FAANG.objects.create(company="Facebook")
+
+        i_ap=info.objects.create(ceo="Steve Jobs", faang=ap, about="Took a class in caligraphy and invented fonts")
+        i_az=info.objects.create(ceo="Jeff Bezos",faang=az, about="There is always a webs service for you :)")
+        i_g=info.objects.create(ceo="Larry Pages", faang=g, about="Google is your best friend and your worst enemy...")
+        i_n=info.objects.create(ceo="Reed Hastings", faang=n, about="Stranger things is the new goonies")
+        i_fa=info.objects.create(ceo="Mark Zuckeberg", faang=fa, about="Is the metaverse the new matrix?")
+
+        [x.save for x in [ap,az,g,n,fa]]
+        [x.save for x in [i_ap,i_az,i_g,i_n,i_fa]]
     if request.user.is_authenticated:
         q=request.GET.get('q','')
-        f=FAANG.objects.filter(company=q)
+        f=FAANG.objects.all().filter(company=q)
         if f:
             args={"company":f[0].company,"ceo":f[0].info_set.all()[0].ceo,"about":f[0].info_set.all()[0].about}
-            return render(request,'Lab/XSS/xss_lab.html',args)
+            return render(request,'Lab/XSS/xss_r_lab.html',args)
         else:
-            return render(request,'Lab/XSS/xss_lab.html', {'query': q})
+            return render(request,'Lab/XSS/xss_r_lab.html', {'query': q})
     else:
         return redirect('login')
 
@@ -105,6 +163,7 @@ def sql_lab(request):
 
             if login.objects.filter(user=name):
 
+                print("hello world sql")
                 sql_query = "SELECT * FROM introduction_login WHERE user='"+name+"'AND password='"+password+"'"
                 print(sql_query)
                 try:
@@ -464,7 +523,6 @@ def secret(request):
     else:
         return render(request,"Lab/sec_mis/sec_mis_lab.html", {"no_secret": "Only admin.localhost:8000 can access, Your X-Host is " + XHost})
 
-
 #**********************************************************A9*************************************************#
 
 def a9(request):
@@ -604,13 +662,13 @@ def a10_lab2(request):
 def gentckt():
     return (''.join(random.choices(string.ascii_uppercase + string.ascii_lowercase, k=10)))
 
-def insec_desgine(request):
+def insec_design(request):
     if request.user.is_authenticated:
         return render(request,"Lab/A11/a11.html")
     else:
         return redirect('login')
 
-def insec_desgine_lab(request):
+def insec_design_lab(request):
     if request.user.is_authenticated:
         if request.method=="GET":
             tkts = tickits.objects.filter(user = request.user)
@@ -654,6 +712,40 @@ def insec_desgine_lab(request):
     else:
         return redirect('login')
 
+def insec_design_lab2(request):
+    if request.user.is_authenticated:
+        if request.method=="GET":
+            b = Bank.objects.all()
+            Total = ATM.objects.all()
+            if not b or not Total:
+                bank = Bank.objects.create(user=request.user,balance=100)
+                Total = ATM.objects.create(user=request.user,total=0)
+            else:
+                bank=Bank.objects.all().filter(user=request.user)[0]
+                Total=ATM.objects.all().filter(user=request.user)[0]
+            return render(request,"Lab/A11/a11_lab2.html",{"balance":bank.balance, "Total":Total.total})
+        elif request.method=="POST":
+            if request.POST.get("howMuch"):
+                howMuch = int(request.POST.get("howMuch"))
+                bank=Bank.objects.all().filter(user=request.user)[0]
+                Total=ATM.objects.all().filter(user=request.user)[0]
+                res=Total.withdraw(howMuch)
+                if res:
+                    bank.updateBalance(howMuch)
+                    bank.save()
+                return redirect("insecure-design_lab2")
+            elif request.POST.get("reset"):
+                bank=Bank.objects.all().filter(user=request.user)[0]
+                Total=ATM.objects.all().filter(user=request.user)[0]
+                bank.reset(100)
+                Total.reset()
+                bank.save()
+                Total.save()
+                return redirect("insecure-design_lab2")
+            else:
+                return redirect("insecure-design_lab2")
+    else:
+        return redirect('login')
 
 #-------------------------------------------------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------------------------------------------------
@@ -863,7 +955,6 @@ def ssrf_discussion(request):
     else:
         return redirect('login')
 
-
 def ssrf_target(request):
     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
 
@@ -889,6 +980,111 @@ def ssrf_lab2(request):
             return render(request, "Lab/ssrf/ssrf_lab2.html", {"response": response.content.decode()})
         except:
             return render(request, "Lab/ssrf/ssrf_lab2.html", {"error": "Invalid URL"})
+
+# def ssrf_blind_lab(request):
+#     if request.user.is_authenticated:
+#         if request.method=="GET":
+#             try:
+#                 origin=request.headers['Referer']
+#                 http = urllib3.PoolManager()
+#                 page = http.request('GET', origin).data
+#                 soup = BeautifulSoup(page, features="html.parser")
+#                 for link in soup.findAll('a'):
+#                     print(link.get('href'))
+#             except Exception as e:
+#                 print(e)
+#             return render(request,"Lab/ssrf/ssrf_blind_lab.html")
+#         else:
+#             return render(request,"Lab/ssrf/ssrf_blind_lab.html")
+#     else:
+#         return redirect('login')
+
+def ssrf_blind_lab(request):
+    if request.user.is_authenticated:
+        if request.method=="GET":
+            q=request.GET.get('q', '')
+            params=urllib.parse.parse_qs(q)
+            param=q
+            for k,v in params.items():
+                param=v[0]
+            if q:
+                try:
+                    params=urllib.parse.unquote(q)
+                    host=urllib.parse.urlparse(q).netloc.split(":")
+                    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                    s.connect((host[0], int(host[1])))
+                    if params.find("http://"+host[0]+":"+host[1])>-1:
+                        params=params[len("http://"+host[0]+":"+host[1]):]
+                    s.sendall(("GET "+params).encode())
+                    s.close()
+                except:
+                    render(request,"Lab/ssrf/ssrf_blind_lab.html")
+            if param == "Aries":
+                info="They dive headfirst into all challenges"
+            elif param=="Taurus":
+                info="They like relaxing and are bucolic"
+            elif param=="Gemini":
+                info="They would like to clone themselves because they are busy"
+            elif param=="Cancer":
+                info="They like the water"
+            elif param=="Leo":
+                info="They are the life of the party"
+            elif param=="Virgo":
+                info="They know the sciences very well"
+            elif param=="Libra":
+                info="Justice !!!!!"
+            elif param=="Scorpio":
+                info="Mystery......"
+            elif param=="Saggitarius":
+                info="Aventures here I come !!"
+            elif q=="Capricorn":
+                info="Time, time, time, I'm running out of time!"
+            elif param=="Aquarius":
+                info="Healer of the tribe"
+            elif param=="Pisces":
+                info="Reading minds is nothing to me"
+            else:
+                return render(request,"Lab/ssrf/ssrf_blind_lab.html", {"info": "you have to select a zodiac symbol"})
+            #SEND DATA TO ANALYTICS
+            return render(request,"Lab/ssrf/ssrf_blind_lab.html", {"info": info})
+        else:
+            return render(request,"Lab/ssrf/ssrf_blind_lab.html", {"info": "you have to select a zodiac symbol"})
+    else:
+        return redirect('login')
+
+@csrf_exempt
+def ssrf_analytics(request):
+    symbols=zodiac.objects.all()
+    if not symbols:
+        Y = ["Aries", "Taurus", "Gemini", "Cancer", "Leo", "Virgo", "Libra", "Scorpio", "Saggitarius", "Capricorn", "Aquarius", "Pisces"]
+        [zodiac.objects.create(symbol=y, count=0) for y in Y]
+    
+    if request.method=="GET":
+        q=request.GET.get('q', '')
+        zod = zodiac.objects.all().filter(symbol=q)[0]
+        zod.add()
+        print(zod)
+        zod.save()
+        return JsonResponse({"count": zod.count})
+    else:
+        return JsonResponse({})
+
+def ssrf_blind_analytics(request):
+    symbols=zodiac.objects.all()
+    if request.user.is_authenticated:
+        if request.method=="GET":
+            return render(request,"Lab/ssrf/ssrf_blind_analytics.html", {"symbols":symbols})
+        else:
+            return render(request,"Lab/ssrf/ssrf_blind_lab.html")
+    else:
+        return redirect('login')
+
+def ssrf_blind_lab_extra(request):
+    if request.user.is_authenticated:
+            return render(request,"Lab/ssrf/ssrf_blind_lab_extra.html",)
+    else:
+        return redirect('SSRF')
+
 #--------------------------------------- Server-side template injection --------------------------------------#
 
 def ssti(request):

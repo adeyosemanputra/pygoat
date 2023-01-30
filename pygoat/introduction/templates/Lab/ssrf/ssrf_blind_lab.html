@@ -1,0 +1,64 @@
+{% extends "introduction/base.html" %}
+{% block content %}
+{% block title %}
+<title>SSRF LAB</title>
+{% endblock %}
+
+<div style="display:flex;flex-direction:column;align-items:center">
+    <div>
+        <h1 style="color:orangered">Zodiac information</h1>
+        <h3>Find out the characteristics of each Zodiac symbol</h2>
+    </div>
+    <button id="zodiac" class="btn" style="outline: none;">
+        <select name="symbol" id="symbol" style="border:none;">
+            <option value="Aries">Aries</option>
+            <option value="Taurus">Taurus</option>
+            <option value="Gemini">Gemini<option>
+            <option value="Cancer">Cancer</option>
+            <option value="Leo">Leo</option>
+            <option value="Virgo">Virgo</option>
+            <option value="Libra">Libra</option>
+            <option value="Scorpio">Scorpio</option>
+            <option value="Saggitarius">Saggitarius</option>
+            <option value="Capricorn">Capricorn</option>
+            <option value="Aquarius">Aquarius</option>
+            <option value="Pisces">Pisces</option>
+        </select>
+    </button>
+    <div class="display">
+        {{info}}<br>
+   </div>
+</div>
+<script>
+    symbol=window.location.href.split('q=')[2];
+    zodiac=document.getElementById("symbol");
+    zodiac.value=symbol;
+</script>
+<script>
+    const element = document.getElementById("zodiac");
+    element.addEventListener("change", function(){
+        var symbol = document.getElementById("symbol");
+        var text = symbol.options[symbol.selectedIndex].text;
+        url=window.location.href.split('?')[0];
+        // window.location.replace(url);
+        // window.location = url;
+        path=window.location.href.split('//')[1];
+        path=url+"?q=http://"+path.split('/')[0]+"/ssrf_analytics?q="+text;
+        window.location.replace(path);
+        window.location = path;
+        console.log(path);
+    });
+</script>
+
+
+<div class="d-flex flex-row" >
+    <div class="row-content">
+        <div class="col"> <button class="btn btn-info" type="button" onclick="window.location.href='/ssrf'">Back to Lab
+            Details</button></div>
+        <br>
+        <div class="col"> <button class="btn btn-info" type="button" onclick="window.location.href='/ssrf_blind_analytics'">Site Analytics</button></div>        
+    </div>
+</div>
+
+        
+{% endblock %}

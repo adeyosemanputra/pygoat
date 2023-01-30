@@ -39,7 +39,7 @@ First, Clone the repository using GitHub website or git in Terminal
 2. Change directory to the the Django Project directory `cd pygoat`<br>
 3. Apply the migrations `python3 manage.py migrate`.<br>
 4. Finally, run the development server `python3 manage.py runserver`.<br>
-5. The project will be available at <http://127.0.0.1:8000> 
+5. The project will be available at <http://127.0.0.1:8000>
 
 #### Method 2
 
@@ -55,7 +55,14 @@ First, Clone the repository using GitHub website or git in Terminal
 2. Change directory to the the Django Project directory `cd pygoat`<br>
 3. Apply the migrations `python3 manage.py migrate`.<br>
 4. Finally, run the development server `python3 manage.py runserver`.<br>
-5. The project will be available at <http://127.0.0.1:8000> 
+5. The project will be available at <http://127.0.0.1:8000>
+
+#### Method 4
+1. Install all app and python requirements using installer file - `bash installer.sh`
+2. Change directory to the the Django Project directory `cd pygoat`<br>
+3. Apply the migrations `python3 manage.py migrate`.<br>
+4. Finally, run the development server `python3 manage.py runserver 0.0.0.0:8000`.<br>
+5. The project will be available at <http://<server_IP>:8000> 
 
 ### Docker Container
 1. Install [Docker](https://www.docker.com)

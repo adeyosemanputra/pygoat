@@ -10,6 +10,16 @@
 
         As modern web applications provide end-users with convenient features, fetching a URL becomes a common scenario. As a result, the incidence of SSRF is increasing. Also, the severity of SSRF is becoming higher due to cloud services and the complexity of architectures.
     </p>
+    Similar to XSS, there can be 3 different types: </p>
+    <ul>
+        <li>Non Blind</li>
+        <li>Blind</li>
+    </ul>
+    <h4>Non Blind</h4>
+    <p class="bp">The results is redirected automatically to the front-end. This allows an 
+      attacker to try an exfiltrate data from sources such as databases that he would 
+      otherwise not have access to.
+    </p>
     <button class="coll btn btn-info">Lab 1 Details</button>
     <div class="lab">
         <p class="bp">
@@ -37,6 +47,28 @@
         <br>
         <div align="right"> <button class="btn btn-info" type="button" onclick="window.location.href='/ssrf_lab2'">Access
             Lab</button></div>
+    </div>
+    <h4>Blind</h4>
+    <p class="bp">None of the information is returned to the attacker, but he
+      can use the knowledge that the server is contacting another service
+      to then try to to create a chain of calls that can result in a reverse
+      shell or exfiltration of data.
+    </p>
+    <button class="coll btn btn-info">Lab Details</button>
+    <div class="lab">
+        <p class="bp">
+        In this lab, a horoscopus is presented, but looking at the URL
+        it can be seen that another service is being contacted. Check 
+        the site analytics and try to understand what might be happening
+        in the background. Then see if you can cause the server to 
+        redirect to your own service.
+        
+        <br>
+        <div align="right"> <button class="btn btn-info" type="button" onclick="window.location.href='/ssrf_blind_lab'">Access
+            Lab</button></div>
+        <br>
+        <div align="right"> <button class="btn btn-info" type="button" onclick="window.location.href='/ssrf_blind_lab_extra'">Access
+          Lab Expert</button></div>
     </div>
   <div>
     <br>

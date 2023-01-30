@@ -1,0 +1,100 @@
+1670838636682	geckodriver	INFO	Listening on 127.0.0.1:55013
+1670838636682	geckodriver	INFO	Listening on 127.0.0.1:55018
+1670838636682	geckodriver	INFO	Listening on 127.0.0.1:55019
+1670838636685	geckodriver	INFO	Listening on 127.0.0.1:55012
+1670838636687	geckodriver	INFO	Listening on 127.0.0.1:55015
+1670838637228	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "--marionette" "--remote-debugging-port" "55017" "--remote-allow-hosts" "localhost" "-foreground" "-no-remote" "-profile" "/var/folders/v_/dp6wwf8x3_z304zypv5tmdcm0000gn/T/rust_mozprofilenLp2cs"
+1670838637228	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "--marionette" "--remote-debugging-port" "55020" "--remote-allow-hosts" "localhost" "-foreground" "-no-remote" "-profile" "/var/folders/v_/dp6wwf8x3_z304zypv5tmdcm0000gn/T/rust_mozprofile7tWsjo"
+1670838637228	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "--marionette" "--remote-debugging-port" "55016" "--remote-allow-hosts" "localhost" "-foreground" "-no-remote" "-profile" "/var/folders/v_/dp6wwf8x3_z304zypv5tmdcm0000gn/T/rust_mozprofilevfEzSD"
+1670838637228	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "--marionette" "--remote-debugging-port" "55014" "--remote-allow-hosts" "localhost" "-foreground" "-no-remote" "-profile" "/var/folders/v_/dp6wwf8x3_z304zypv5tmdcm0000gn/T/rust_mozprofileiLXXWm"
+1670838637229	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "--marionette" "--remote-debugging-port" "55021" "--remote-allow-hosts" "localhost" "-foreground" "-no-remote" "-profile" "/var/folders/v_/dp6wwf8x3_z304zypv5tmdcm0000gn/T/rust_mozprofileh8lvT8"
+1670838637793	Marionette	INFO	Marionette enabled
+1670838637793	Marionette	INFO	Marionette enabled
+1670838637793	Marionette	INFO	Marionette enabled
+1670838637794	Marionette	INFO	Marionette enabled
+1670838637808	Marionette	INFO	Marionette enabled
+1670838637827	Marionette	INFO	Listening on port 55044
+1670838637827	Marionette	INFO	Listening on port 55042
+1670838637827	Marionette	INFO	Listening on port 55043
+1670838637827	Marionette	INFO	Listening on port 55045
+1670838637827	Marionette	INFO	Listening on port 55046
+Read port: 55042
+Read port: 55043
+Read port: 55046
+Read port: 55045
+Read port: 55044
+2022-12-12 04:50:37.905 plugin-container[21866:663697] nil host used in call to allowsSpecificHTTPSCertificateForHost
+2022-12-12 04:50:37.906 plugin-container[21866:663697] nil host used in call to allowsAnyHTTPSCertificateForHost:
+2022-12-12 04:50:37.906 plugin-container[21863:663712] nil host used in call to allowsSpecificHTTPSCertificateForHost
+2022-12-12 04:50:37.908 plugin-container[21863:663712] nil host used in call to allowsAnyHTTPSCertificateForHost:
+2022-12-12 04:50:37.906 plugin-container[21865:663714] nil host used in call to allowsSpecificHTTPSCertificateForHost
+2022-12-12 04:50:37.908 plugin-container[21865:663714] nil host used in call to allowsAnyHTTPSCertificateForHost:
+2022-12-12 04:50:37.908 plugin-container[21862:663716] nil host used in call to allowsSpecificHTTPSCertificateForHost
+2022-12-12 04:50:37.911 plugin-container[21862:663716] nil host used in call to allowsAnyHTTPSCertificateForHost:
+2022-12-12 04:50:37.914 plugin-container[21864:663710] nil host used in call to allowsSpecificHTTPSCertificateForHost
+2022-12-12 04:50:37.914 plugin-container[21864:663710] nil host used in call to allowsAnyHTTPSCertificateForHost:
+2022-12-12 04:50:37.921 plugin-container[21862:663716] nil host used in call to allowsSpecificHTTPSCertificateForHost
+2022-12-12 04:50:37.921 plugin-container[21862:663716] nil host used in call to allowsAnyHTTPSCertificateForHost:
+2022-12-12 04:50:37.921 plugin-container[21866:663697] nil host used in call to allowsSpecificHTTPSCertificateForHost
+2022-12-12 04:50:37.921 plugin-container[21866:663697] nil host used in call to allowsAnyHTTPSCertificateForHost:
+2022-12-12 04:50:37.921 plugin-container[21865:663714] nil host used in call to allowsSpecificHTTPSCertificateForHost
+2022-12-12 04:50:37.921 plugin-container[21865:663714] nil host used in call to allowsAnyHTTPSCertificateForHost:
+2022-12-12 04:50:37.921 plugin-container[21862:663877] nil host used in call to allowsSpecificHTTPSCertificateForHost
+2022-12-12 04:50:37.921 plugin-container[21862:663877] nil host used in call to allowsAnyHTTPSCertificateForHost:
+2022-12-12 04:50:37.921 plugin-container[21866:663711] nil host used in call to allowsSpecificHTTPSCertificateForHost
+2022-12-12 04:50:37.921 plugin-container[21866:663711] nil host used in call to allowsAnyHTTPSCertificateForHost:
+2022-12-12 04:50:37.923 plugin-container[21863:663712] nil host used in call to allowsSpecificHTTPSCertificateForHost
+2022-12-12 04:50:37.923 plugin-container[21863:663712] nil host used in call to allowsAnyHTTPSCertificateForHost:
+2022-12-12 04:50:37.923 plugin-container[21865:663879] nil host used in call to allowsSpecificHTTPSCertificateForHost
+2022-12-12 04:50:37.923 plugin-container[21865:663879] nil host used in call to allowsAnyHTTPSCertificateForHost:
+2022-12-12 04:50:37.924 plugin-container[21863:663695] nil host used in call to allowsSpecificHTTPSCertificateForHost
+2022-12-12 04:50:37.924 plugin-container[21863:663695] nil host used in call to allowsAnyHTTPSCertificateForHost:
+2022-12-12 04:50:37.924 plugin-container[21864:663710] nil host used in call to allowsSpecificHTTPSCertificateForHost
+2022-12-12 04:50:37.924 plugin-container[21864:663710] nil host used in call to allowsAnyHTTPSCertificateForHost:
+2022-12-12 04:50:37.924 plugin-container[21864:663698] nil host used in call to allowsSpecificHTTPSCertificateForHost
+2022-12-12 04:50:37.924 plugin-container[21864:663698] nil host used in call to allowsAnyHTTPSCertificateForHost:
+WebDriver BiDi listening on ws://127.0.0.1:55021
+WebDriver BiDi listening on ws://127.0.0.1:55016
+WebDriver BiDi listening on ws://127.0.0.1:55014
+WebDriver BiDi listening on ws://127.0.0.1:55017
+WebDriver BiDi listening on ws://127.0.0.1:55020
+1670838638006	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+1670838638006	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+1670838638006	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+1670838638006	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+1670838638006	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+UNSUPPORTED (log once): POSSIBLE ISSUE: unit 1 GLD_TEXTURE_INDEX_2D is unloadable and bound to sampler type (Float) - using zero texture because texture unloadable
+UNSUPPORTED (log once): POSSIBLE ISSUE: unit 1 GLD_TEXTURE_INDEX_2D is unloadable and bound to sampler type (Float) - using zero texture because texture unloadable
+UNSUPPORTED (log once): POSSIBLE ISSUE: unit 1 GLD_TEXTURE_INDEX_2D is unloadable and bound to sampler type (Float) - using zero texture because texture unloadable
+UNSUPPORTED (log once): POSSIBLE ISSUE: unit 1 GLD_TEXTURE_INDEX_2D is unloadable and bound to sampler type (Float) - using zero texture because texture unloadable
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /var/folders/v_/dp6wwf8x3_z304zypv5tmdcm0000gn/T/rust_mozprofile7tWsjo/search.json.mozlz4", (void 0)))
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /var/folders/v_/dp6wwf8x3_z304zypv5tmdcm0000gn/T/rust_mozprofileiLXXWm/search.json.mozlz4", (void 0)))
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /var/folders/v_/dp6wwf8x3_z304zypv5tmdcm0000gn/T/rust_mozprofileh8lvT8/search.json.mozlz4", (void 0)))
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /var/folders/v_/dp6wwf8x3_z304zypv5tmdcm0000gn/T/rust_mozprofilenLp2cs/search.json.mozlz4", (void 0)))
+UNSUPPORTED (log once): POSSIBLE ISSUE: unit 1 GLD_TEXTURE_INDEX_2D is unloadable and bound to sampler type (Float) - using zero texture because texture unloadable
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /var/folders/v_/dp6wwf8x3_z304zypv5tmdcm0000gn/T/rust_mozprofilevfEzSD/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:55021/devtools/browser/11ce10ad-3dd6-40ec-9bd9-772a2105ac50
+DevTools listening on ws://127.0.0.1:55014/devtools/browser/b39c8a98-5b6c-4a0a-8b94-ca0499ba639b
+DevTools listening on ws://127.0.0.1:55017/devtools/browser/c05a3900-8638-4cb0-96c4-085ee291b473
+DevTools listening on ws://127.0.0.1:55020/devtools/browser/484192f2-3ba4-47c8-90f2-74936025257b
+DevTools listening on ws://127.0.0.1:55016/devtools/browser/33b8642b-c22b-4a5f-94b1-54813c37740f
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://192.168.64.9:8000."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://192.168.64.9:8000."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://192.168.64.9:8000."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://192.168.64.9:8000."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://192.168.64.9:8000."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://192.168.64.9:8000."
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://192.168.64.9:8000."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://192.168.64.9:8000."
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://192.168.64.9:8000."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://192.168.64.9:8000."
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 58: Error: Can't find profile directory.
