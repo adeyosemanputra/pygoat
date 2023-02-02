@@ -187,3 +187,4 @@ INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction
 INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/mitre.py changed, reloading.
 INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/mitre.py changed, reloading.
 INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/mitre.py changed, reloading.
+WARNING:django.request:Not Found: /favicon.ico
