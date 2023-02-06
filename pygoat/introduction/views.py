@@ -20,6 +20,7 @@ from xml.sax.handler import feature_external_ges
 from xml.sax import make_parser
 from django.views.decorators.csrf import csrf_exempt
 from django.template import loader
+from django.template.loader import render_to_string
 import subprocess
 import pickle
 import base64
