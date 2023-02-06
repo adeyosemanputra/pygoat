@@ -19,7 +19,7 @@ from xml.dom.pulldom import parseString, START_ELEMENT
 from xml.sax.handler import feature_external_ges
 from xml.sax import make_parser
 from django.views.decorators.csrf import csrf_exempt
-from django.template.loader import render_to_string
+from django.template import loader
 import subprocess
 import pickle
 import base64
@@ -82,6 +82,23 @@ def xss_lab(request):
             return render(request,'Lab/XSS/xss_lab.html',args)
         else:
             return render(request,'Lab/XSS/xss_lab.html', {'query': q})
+    else:
+        return redirect('login')
+        
+
+def xss_lab2(request):
+    if request.user.is_authenticated:
+        
+        username = request.POST.get('username', '')
+        if username:
+            username = username.strip()
+            username = username.replace("<script>", "").replace("</script>", "")
+        else:
+            username = "Guest"
+        context = {
+        'username': username
+                }
+        return render(request, 'Lab/XSS/xss_lab_2.html', context)
     else:
         return redirect('login')
 

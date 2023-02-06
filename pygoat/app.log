@@ -188,3 +188,388 @@ INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction
 INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/mitre.py changed, reloading.
 INFO:django.utils.autoreload:/home/rupak/Desktop/GSoC/pygoat/pygoat/introduction/mitre.py changed, reloading.
 WARNING:django.request:Not Found: /favicon.ico
+INFO:django.utils.autoreload:/home/toxin/Project/gsoc/pygoat/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/toxin/Project/gsoc/pygoat/pygoat/introduction/views.py changed, reloading.
+ERROR:django.request:Internal Server Error: /xss_challenge/
+Traceback (most recent call last):
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/introduction/views.py", line 97, in xss_challenge
+    template = loader.get_template('xss_challenge.html')
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/template/loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: xss_challenge.html
+WARNING:django.request:Not Found: /favicon.ico
+ERROR:django.request:Internal Server Error: /xss_challenge/
+Traceback (most recent call last):
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/introduction/views.py", line 97, in xss_challenge
+    template = loader.get_template('xss_challenge.html')
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/template/loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: xss_challenge.html
+ERROR:django.request:Internal Server Error: /xss_challenge/
+Traceback (most recent call last):
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/introduction/views.py", line 97, in xss_challenge
+    template = loader.get_template('xss_challenge.html')
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/template/loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: xss_challenge.html
+ERROR:django.request:Internal Server Error: /xss_challenge/
+Traceback (most recent call last):
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/introduction/views.py", line 97, in xss_challenge
+    template = loader.get_template('xss_challenge.html')
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/template/loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: xss_challenge.html
+ERROR:django.request:Internal Server Error: /xss_challenge/
+Traceback (most recent call last):
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/introduction/views.py", line 97, in xss_challenge
+    template = loader.get_template('xss_challenge.html')
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/template/loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: xss_challenge.html
+ERROR:django.request:Internal Server Error: /xss_challenge/
+Traceback (most recent call last):
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/introduction/views.py", line 97, in xss_challenge
+    template = loader.get_template('xss_challenge.html')
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/template/loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: xss_challenge.html
+ERROR:django.request:Internal Server Error: /xss_challenge/
+Traceback (most recent call last):
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/introduction/views.py", line 97, in xss_challenge
+    template = loader.get_template('xss_challenge.html')
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/template/loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: xss_challenge.html
+INFO:django.utils.autoreload:/home/toxin/Project/gsoc/pygoat/pygoat/introduction/urls.py changed, reloading.
+ERROR:django.request:Internal Server Error: /xss_challenge/
+Traceback (most recent call last):
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/introduction/views.py", line 97, in xss_challenge
+    template = loader.get_template('xss_challenge.html')
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/template/loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: xss_challenge.html
+INFO:django.utils.autoreload:/home/toxin/Project/gsoc/pygoat/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/toxin/Project/gsoc/pygoat/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/toxin/Project/gsoc/pygoat/pygoat/introduction/views.py changed, reloading.
+ERROR:django.request:Internal Server Error: /xss_challenge/
+Traceback (most recent call last):
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/introduction/views.py", line 98, in xss_challenge
+    return render(request, 'Lab/XSS/xss_challenge.html', context)
+UnboundLocalError: local variable 'context' referenced before assignment
+ERROR:django.request:Internal Server Error: /xss_challenge/
+Traceback (most recent call last):
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/introduction/views.py", line 98, in xss_challenge
+    return render(request, 'Lab/XSS/xss_challenge.html', context)
+UnboundLocalError: local variable 'context' referenced before assignment
+ERROR:django.request:Internal Server Error: /xss_challenge/
+Traceback (most recent call last):
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/introduction/views.py", line 98, in xss_challenge
+    return render(request, 'Lab/XSS/xss_challenge.html', context)
+UnboundLocalError: local variable 'context' referenced before assignment
+INFO:django.utils.autoreload:/home/toxin/Project/gsoc/pygoat/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/toxin/Project/gsoc/pygoat/pygoat/introduction/views.py changed, reloading.
+WARNING:django.request:Not Found: /xss_challenge/xss_challenge
+WARNING:django.request:Not Found: /xss_challenge/xss_challenge
+WARNING:django.request:Not Found: /xss_challenge/xss_challenge
+WARNING:django.request:Not Found: /xss_challenge/xss_challenge
+INFO:django.utils.autoreload:/home/toxin/Project/gsoc/pygoat/pygoat/introduction/urls.py changed, reloading.
+INFO:django.utils.autoreload:/home/toxin/Project/gsoc/pygoat/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/toxin/Project/gsoc/pygoat/pygoat/introduction/views.py changed, reloading.
+WARNING:django.request:Not Found: /xss_challenge/
+WARNING:django.request:Not Found: /xss_challenge/
+WARNING:django.request:Not Found: /xss_challenge/
+INFO:django.utils.autoreload:/home/toxin/Project/gsoc/pygoat/pygoat/introduction/views.py changed, reloading.
+WARNING:django.request:Not Found: /xss_challenge/
+WARNING:django.request:Not Found: /xss_challenge/
+WARNING:django.request:Not Found: /xss_challenge/
+WARNING:django.request:Not Found: /xss_challenge/
+WARNING:django.request:Not Found: /xss_challenge/
+INFO:django.utils.autoreload:/home/toxin/Project/gsoc/pygoat/pygoat/introduction/views.py changed, reloading.
+WARNING:django.request:Not Found: /xss_challenge/
+WARNING:django.request:Not Found: /xss_challenge/
+WARNING:django.request:Not Found: /xss_challenge/
+WARNING:django.request:Not Found: /xss_challenge/
+WARNING:django.request:Not Found: /xss_challenge/
+WARNING:django.request:Not Found: /xss_challenge/
+WARNING:django.request:Not Found: /xss_challenge/
+WARNING:django.request:Not Found: /xss_challenge/
+WARNING:django.request:Not Found: /xss/
+WARNING:django.request:Not Found: /xss_challenge/
+INFO:django.utils.autoreload:/home/toxin/Project/gsoc/pygoat/pygoat/introduction/views.py changed, reloading.
+WARNING:django.request:Not Found: /xss_challenge/
+WARNING:django.request:Not Found: /xss_challenge/
+WARNING:django.request:Not Found: /xss_challenge/
+WARNING:django.request:Not Found: /xss_challenge/
+WARNING:django.request:Not Found: /xss_challenge/
+WARNING:django.request:Not Found: /xss_challenge/
+INFO:django.utils.autoreload:/home/toxin/Project/gsoc/pygoat/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/toxin/Project/gsoc/pygoat/pygoat/introduction/views.py changed, reloading.
+ERROR:django.request:Internal Server Error: /xss_challenge
+Traceback (most recent call last):
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/introduction/views.py", line 97, in xss_challenge
+    return render(request, 'Lab/XSS/xss_challenge.html', context)
+UnboundLocalError: local variable 'context' referenced before assignment
+ERROR:django.request:Internal Server Error: /xss_challenge
+Traceback (most recent call last):
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/introduction/views.py", line 97, in xss_challenge
+    return render(request, 'Lab/XSS/xss_challenge.html', context)
+UnboundLocalError: local variable 'context' referenced before assignment
+INFO:django.utils.autoreload:/home/toxin/Project/gsoc/pygoat/pygoat/introduction/views.py changed, reloading.
+WARNING:django.request:Not Found: /xss_challenge/
+INFO:django.utils.autoreload:/home/toxin/Project/gsoc/pygoat/pygoat/introduction/views.py changed, reloading.
+WARNING:django.request:Not Found: /xss_challenge/
+INFO:django.utils.autoreload:/home/toxin/Project/gsoc/pygoat/pygoat/introduction/urls.py changed, reloading.
+WARNING:django.request:Not Found: /xss_challenge/xss.js
+WARNING:django.request:Not Found: /xss_challenge/xss.js
+WARNING:django.request:Not Found: /xss_challenge/xss.js
+WARNING:django.request:Not Found: /xss_challenge/Lab/XSS/xss.js
+WARNING:django.request:Not Found: /xss_challenge/xss.js
+WARNING:django.request:Not Found: /xss_challenge/xss.js
+WARNING:django.request:Not Found: /xss_challenge/xss.js
+WARNING:django.request:Not Found: /xss_challenge/xss.js
+ERROR:django.request:Internal Server Error: /xss_challenge/
+Traceback (most recent call last):
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/template/base.py", line 505, in parse
+    compile_func = self.tags[command]
+KeyError: 'static'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/introduction/views.py", line 99, in xss_challenge
+    return render(request, 'Lab/XSS/xss_challenge.html', context)
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/template/loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/template/loader.py", line 15, in get_template
+    return engine.get_template(template_name)
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/template/backends/django.py", line 34, in get_template
+    return Template(self.engine.get_template(template_name), self)
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/template/engine.py", line 176, in get_template
+    template, origin = self.find_template(template_name)
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/template/engine.py", line 158, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/template/loaders/base.py", line 28, in get_template
+    return Template(
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/template/base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/template/base.py", line 200, in compile_nodelist
+    return parser.parse()
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/template/base.py", line 513, in parse
+    raise self.error(token, e)
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/template/base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/template/loader_tags.py", line 293, in do_extends
+    nodelist = parser.parse()
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/template/base.py", line 513, in parse
+    raise self.error(token, e)
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/template/base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/template/loader_tags.py", line 232, in do_block
+    nodelist = parser.parse(("endblock",))
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/template/base.py", line 507, in parse
+    self.invalid_block_tag(token, command, parse_until)
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/template/base.py", line 558, in invalid_block_tag
+    raise self.error(
+django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 7: 'static', expected 'endblock'. Did you forget to register or load this tag?
+ERROR:django.request:Internal Server Error: /xss_challenge/
+Traceback (most recent call last):
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/template/base.py", line 505, in parse
+    compile_func = self.tags[command]
+KeyError: 'static'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/introduction/views.py", line 99, in xss_challenge
+    return render(request, 'Lab/XSS/xss_challenge.html', context)
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/template/loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/template/loader.py", line 15, in get_template
+    return engine.get_template(template_name)
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/template/backends/django.py", line 34, in get_template
+    return Template(self.engine.get_template(template_name), self)
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/template/engine.py", line 176, in get_template
+    template, origin = self.find_template(template_name)
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/template/engine.py", line 158, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/template/loaders/base.py", line 28, in get_template
+    return Template(
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/template/base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/template/base.py", line 200, in compile_nodelist
+    return parser.parse()
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/template/base.py", line 513, in parse
+    raise self.error(token, e)
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/template/base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/template/loader_tags.py", line 293, in do_extends
+    nodelist = parser.parse()
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/template/base.py", line 513, in parse
+    raise self.error(token, e)
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/template/base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/template/loader_tags.py", line 232, in do_block
+    nodelist = parser.parse(("endblock",))
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/template/base.py", line 507, in parse
+    self.invalid_block_tag(token, command, parse_until)
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/template/base.py", line 558, in invalid_block_tag
+    raise self.error(
+django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 7: 'static', expected 'endblock'. Did you forget to register or load this tag?
+WARNING:django.request:Not Found: /a6
+ERROR:django.request:Internal Server Error: /xss_challenge
+Traceback (most recent call last):
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/utils/deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/middleware/common.py", line 54, in process_request
+    path = self.get_full_path_with_slash(request)
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/middleware/common.py", line 88, in get_full_path_with_slash
+    raise RuntimeError(
+RuntimeError: You called this URL via POST, but the URL doesn't end in a slash and you have APPEND_SLASH set. Django can't redirect to the slash URL while maintaining POST data. Change your form to point to 127.0.0.1:8000/xss_challenge/ (note the trailing slash), or set APPEND_SLASH=False in your Django settings.
+ERROR:django.request:Internal Server Error: /xss_challenge
+Traceback (most recent call last):
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/utils/deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/middleware/common.py", line 54, in process_request
+    path = self.get_full_path_with_slash(request)
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/middleware/common.py", line 88, in get_full_path_with_slash
+    raise RuntimeError(
+RuntimeError: You called this URL via POST, but the URL doesn't end in a slash and you have APPEND_SLASH set. Django can't redirect to the slash URL while maintaining POST data. Change your form to point to 127.0.0.1:8000/xss_challenge/ (note the trailing slash), or set APPEND_SLASH=False in your Django settings.
+INFO:django.utils.autoreload:/home/toxin/Project/gsoc/pygoat/pygoat/introduction/urls.py changed, reloading.
+WARNING:django.security.csrf:Forbidden (CSRF token missing.): /xss_challenge
+INFO:django.utils.autoreload:/home/toxin/Project/gsoc/pygoat/pygoat/introduction/views.py changed, reloading.
+WARNING:django.security.csrf:Forbidden (CSRF token missing.): /xss_challenge
+INFO:django.utils.autoreload:/home/toxin/Project/gsoc/pygoat/pygoat/pygoat/settings.py changed, reloading.
+WARNING:django.security.csrf:Forbidden (CSRF token missing.): /xss_challenge
+WARNING:django.security.csrf:Forbidden (CSRF token missing.): /xss_challenge
+WARNING:django.security.csrf:Forbidden (CSRF token missing.): /xss_challenge
+INFO:django.utils.autoreload:/home/toxin/Project/gsoc/pygoat/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/toxin/Project/gsoc/pygoat/pygoat/introduction/views.py changed, reloading.
+WARNING:django.security.csrf:Forbidden (CSRF token missing.): /xss_challenge
+WARNING:django.security.csrf:Forbidden (CSRF token missing.): /xss_challenge
+WARNING:django.security.csrf:Forbidden (CSRF token missing.): /xss_challenge
+WARNING:django.security.csrf:Forbidden (CSRF token missing.): /xss_challenge
+WARNING:django.security.csrf:Forbidden (CSRF token missing.): /xss_challenge
+INFO:django.utils.autoreload:/home/toxin/Project/gsoc/pygoat/pygoat/introduction/views.py changed, reloading.
+WARNING:django.security.csrf:Forbidden (CSRF token missing.): /xss_challenge
+INFO:django.utils.autoreload:/home/toxin/Project/gsoc/pygoat/pygoat/pygoat/settings.py changed, reloading.
+WARNING:django.security.csrf:Forbidden (CSRF token missing.): /xss_challenge
+INFO:django.utils.autoreload:/home/toxin/Project/gsoc/pygoat/pygoat/pygoat/settings.py changed, reloading.
+WARNING:django.security.csrf:Forbidden (CSRF token missing.): /xss_challenge
+ERROR:django.request:Internal Server Error: /xss_challenge
+Traceback (most recent call last):
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/core/handlers/base.py", line 204, in _get_response
+    self.check_response(response, callback)
+  File "/home/toxin/Project/gsoc/pygoat/pygoat/lib/python3.10/site-packages/django/core/handlers/base.py", line 332, in check_response
+    raise ValueError(
+ValueError: The view introduction.views.xss_challenge didn't return an HttpResponse object. It returned None instead.
+WARNING:django.request:Not Found: /favicon.ico
+INFO:django.utils.autoreload:/home/toxin/Project/gsoc/pygoat/pygoat/introduction/views.py changed, reloading.
+WARNING:django.security.csrf:Forbidden (CSRF token missing.): /xss_challenge
+WARNING:django.security.csrf:Forbidden (CSRF token missing.): /xss_challenge
+WARNING:django.security.csrf:Forbidden (CSRF token missing.): /xss_challenge
+WARNING:django.security.csrf:Forbidden (CSRF token missing.): /xss_challenge
+WARNING:django.request:Not Found: /xss_challenge/
+WARNING:django.request:Not Found: /xss_challenge/
+WARNING:django.request:Not Found: /xss_challenge/
+WARNING:django.request:Not Found: /favicon.ico
+INFO:django.utils.autoreload:/home/toxin/Project/gsoc/pygoat/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/toxin/Project/gsoc/pygoat/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/toxin/Project/gsoc/pygoat/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/toxin/Project/gsoc/pygoat/pygoat/introduction/views.py changed, reloading.
+WARNING:django.request:Not Found: /x
+WARNING:django.request:Not Found: /x
+WARNING:django.request:Not Found: /x
+WARNING:django.request:Not Found: /x
+INFO:django.utils.autoreload:/home/toxin/Project/gsoc/pygoat/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/toxin/Project/gsoc/pygoat/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/toxin/Project/gsoc/pygoat/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/toxin/Project/gsoc/pygoat/pygoat/introduction/urls.py changed, reloading.
+INFO:django.utils.autoreload:/home/toxin/Project/gsoc/pygoat/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/toxin/Project/gsoc/pygoat/pygoat/introduction/urls.py changed, reloading.
+INFO:django.utils.autoreload:/home/toxin/Project/gsoc/pygoat/pygoat/introduction/urls.py changed, reloading.
+WARNING:django.request:Not Found: /xss_challenge
+WARNING:django.request:Not Found: /xss_challenge
+WARNING:django.request:Not Found: /xss_challenge
+WARNING:django.request:Not Found: /xss_challenge
+WARNING:django.request:Not Found: /xss_lab2
+WARNING:django.request:Not Found: /favicon.ico
+WARNING:django.request:Not Found: /xss_lab2
+WARNING:django.request:Not Found: /xss_lab2
+WARNING:django.request:Not Found: /xss_lab2
+WARNING:django.request:Not Found: /xss_challenge
+WARNING:django.request:Not Found: /xss_lab2
+WARNING:django.request:Not Found: /x
+WARNING:django.request:Not Found: /x
+WARNING:django.request:Not Found: /x
+WARNING:django.request:Not Found: /x
+WARNING:django.request:Not Found: /x
