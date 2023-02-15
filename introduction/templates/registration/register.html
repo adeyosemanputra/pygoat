@@ -1,14 +1,17 @@
 {% extends "introduction/base.html" %}
-{% block content %}
-{% load crispy_forms_tags %}
+{% block content %} 
 
-<div class="jumbotron">
-    <div class="contaniner">
-        <form method="post">
-            {% csrf_token %}
-            {{form|crispy}}
-            <button type="submit" class="btn btn-info btn-info">Register</button>
-        </form>
-    </div>
+{% load crispy_forms_tags %}         
+
+<!--Register--> 
+<div class="container py-5">
+	<h1>Register</h1>
+	<form method="POST">
+		{% csrf_token %}
+		{{ register_form|crispy }}                    
+		<button class="btn btn-primary" type="submit">Register</button>
+	</form>
+	<p class="text-center">If you already have an account, <a href="/login">login</a> instead.</p>
 </div>
+
 {% endblock %}
