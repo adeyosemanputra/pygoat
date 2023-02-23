@@ -11,6 +11,8 @@ import string
 import os
 from hashlib import md5
 import datetime
+from .forms import NewUserForm
+from django.contrib import messages
 #*****************************************Lab Requirements****************************************************#
 
 from .models import  FAANG,info,login,comments,otp
@@ -38,17 +40,28 @@ import logging
 import requests
 #*****************************************Login and Registration****************************************************#
 
-
 def register(request):
-    if request.method=="POST":
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            form.save()
-        return redirect("login")
+	if request.method == "POST":
+		form = NewUserForm(request.POST)
+		if form.is_valid():
+			user = form.save()
+			login(request, user)
+			messages.success(request, "Registration successful." )
+			return redirect('/')
+		messages.error(request, "Unsuccessful registration. Invalid information.")
+	form = NewUserForm()
+	return render (request=request, template_name="registration/register.html", context={"register_form":form})
 
-    else:
-        form=UserCreationForm()
-        return render(request,"registration/register.html",{"form":form,})
+# def register(request):
+#     if request.method=="POST":
+#         form = UserCreationForm(request.POST)
+#         if form.is_valid():
+#             form.save()
+#         return redirect("login")
+
+#     else:
+#         form=UserCreationForm()
+#         return render(request,"registration/register.html",{"form":form,})
 
 def home(request):
     if request.user.is_authenticated:

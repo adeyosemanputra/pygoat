@@ -573,3 +573,45 @@ WARNING:django.request:Not Found: /x
 WARNING:django.request:Not Found: /x
 WARNING:django.request:Not Found: /x
 WARNING:django.request:Not Found: /x
+WARNING:django.request:Not Found: /favicon.ico
+INFO:django.utils.autoreload:/home/toxin/Project/gsoc/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/toxin/Project/gsoc/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/toxin/Project/gsoc/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/toxin/Project/gsoc/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/toxin/Project/gsoc/pygoat/introduction/views.py changed, reloading.
+ERROR:django.request:Internal Server Error: /register
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/lib/python3/dist-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/toxin/Project/gsoc/pygoat/introduction/views.py", line 67, in register
+    return render(request, 'registration/register.html', {'form': form})
+UnboundLocalError: local variable 'form' referenced before assignment
+INFO:django.utils.autoreload:/home/toxin/Project/gsoc/pygoat/introduction/views.py changed, reloading.
+ERROR:django.request:Internal Server Error: /register
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/lib/python3/dist-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/toxin/Project/gsoc/pygoat/introduction/views.py", line 62, in register
+    form.save()
+AttributeError: 'RegistrationForm' object has no attribute 'save'
+INFO:django.utils.autoreload:/home/toxin/Project/gsoc/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/toxin/Project/gsoc/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/toxin/Project/gsoc/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/toxin/Project/gsoc/pygoat/introduction/views.py changed, reloading.
+WARNING:django.request:Not Found: /favicon.ico
+WARNING:django.request:Not Found: /introduction/home.html
+WARNING:django.request:Not Found: /introduction/home.html/
+WARNING:django.request:Not Found: /introduction/home.html/
+WARNING:django.request:Not Found: /introduction/home.html
+WARNING:django.request:Not Found: /introduction/homepage
+WARNING:django.request:Not Found: /introduction/
+INFO:django.utils.autoreload:/home/toxin/Project/gsoc/pygoat/introduction/views.py changed, reloading.
+WARNING:django.request:Not Found: /introduction/
+WARNING:django.request:Not Found: /introduction/home.html
+INFO:django.utils.autoreload:/home/toxin/Project/gsoc/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/toxin/Project/gsoc/pygoat/introduction/forms.py changed, reloading.
+WARNING:django.security.csrf:Forbidden (CSRF token missing or incorrect.): /admin/auth/user/
