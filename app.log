@@ -615,3 +615,203 @@ WARNING:django.request:Not Found: /introduction/home.html
 INFO:django.utils.autoreload:/home/toxin/Project/gsoc/pygoat/introduction/views.py changed, reloading.
 INFO:django.utils.autoreload:/home/toxin/Project/gsoc/pygoat/introduction/forms.py changed, reloading.
 WARNING:django.security.csrf:Forbidden (CSRF token missing or incorrect.): /admin/auth/user/
+ERROR:django.request:Internal Server Error: /login/
+Traceback (most recent call last):
+  File "/home/sankalpa/Desktop/gsoc/myenv/lib/python3.10/site-packages/django/template/backends/django.py", line 61, in render
+    return self.template.render(context)
+  File "/home/sankalpa/Desktop/gsoc/myenv/lib/python3.10/site-packages/django/template/base.py", line 175, in render
+    return self._render(context)
+  File "/home/sankalpa/Desktop/gsoc/myenv/lib/python3.10/site-packages/django/template/base.py", line 167, in _render
+    return self.nodelist.render(context)
+  File "/home/sankalpa/Desktop/gsoc/myenv/lib/python3.10/site-packages/django/template/base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "/home/sankalpa/Desktop/gsoc/myenv/lib/python3.10/site-packages/django/template/base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "/home/sankalpa/Desktop/gsoc/myenv/lib/python3.10/site-packages/django/template/base.py", line 966, in render_annotated
+    return self.render(context)
+  File "/home/sankalpa/Desktop/gsoc/myenv/lib/python3.10/site-packages/django/template/loader_tags.py", line 157, in render
+    return compiled_parent._render(context)
+  File "/home/sankalpa/Desktop/gsoc/myenv/lib/python3.10/site-packages/django/template/base.py", line 167, in _render
+    return self.nodelist.render(context)
+  File "/home/sankalpa/Desktop/gsoc/myenv/lib/python3.10/site-packages/django/template/base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "/home/sankalpa/Desktop/gsoc/myenv/lib/python3.10/site-packages/django/template/base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "/home/sankalpa/Desktop/gsoc/myenv/lib/python3.10/site-packages/django/template/base.py", line 966, in render_annotated
+    return self.render(context)
+  File "/home/sankalpa/Desktop/gsoc/myenv/lib/python3.10/site-packages/django/template/loader_tags.py", line 63, in render
+    result = block.nodelist.render(context)
+  File "/home/sankalpa/Desktop/gsoc/myenv/lib/python3.10/site-packages/django/template/base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "/home/sankalpa/Desktop/gsoc/myenv/lib/python3.10/site-packages/django/template/base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "/home/sankalpa/Desktop/gsoc/myenv/lib/python3.10/site-packages/django/template/base.py", line 966, in render_annotated
+    return self.render(context)
+  File "/home/sankalpa/Desktop/gsoc/myenv/lib/python3.10/site-packages/django/template/base.py", line 1064, in render
+    output = self.filter_expression.resolve(context)
+  File "/home/sankalpa/Desktop/gsoc/myenv/lib/python3.10/site-packages/django/template/base.py", line 742, in resolve
+    new_obj = func(obj, *arg_vals)
+  File "/home/sankalpa/Desktop/gsoc/myenv/lib/python3.10/site-packages/crispy_forms/templatetags/crispy_forms_filters.py", line 58, in as_crispy_form
+    template = uni_form_template(template_pack)
+  File "/home/sankalpa/Desktop/gsoc/myenv/lib/python3.10/site-packages/crispy_forms/templatetags/crispy_forms_filters.py", line 21, in uni_form_template
+    return get_template("%s/uni_form.html" % template_pack)
+  File "/home/sankalpa/Desktop/gsoc/myenv/lib/python3.10/site-packages/django/template/loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: bootstrap4/uni_form.html
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/sankalpa/Desktop/gsoc/myenv/lib/python3.10/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/home/sankalpa/Desktop/gsoc/myenv/lib/python3.10/site-packages/django/core/handlers/base.py", line 220, in _get_response
+    response = response.render()
+  File "/home/sankalpa/Desktop/gsoc/myenv/lib/python3.10/site-packages/django/template/response.py", line 114, in render
+    self.content = self.rendered_content
+  File "/home/sankalpa/Desktop/gsoc/myenv/lib/python3.10/site-packages/django/template/response.py", line 92, in rendered_content
+    return template.render(context, self._request)
+  File "/home/sankalpa/Desktop/gsoc/myenv/lib/python3.10/site-packages/django/template/backends/django.py", line 63, in render
+    reraise(exc, self.backend)
+  File "/home/sankalpa/Desktop/gsoc/myenv/lib/python3.10/site-packages/django/template/backends/django.py", line 84, in reraise
+    raise new from exc
+django.template.exceptions.TemplateDoesNotExist: bootstrap4/uni_form.html
+WARNING:django.request:Not Found: /favicon.ico
+WARNING:django.request:Not Found: /cryptographic_failure/lab3/Admin/admin
+WARNING:django.request:Not Found: /cryptographic_failure/lab3/Admin/
+WARNING:django.request:Not Found: /cryptographic_failure/lab3/admin
+WARNING:django.request:Not Found: /x
+WARNING:django.request:Not Found: /x
+WARNING:django.request:Not Found: /x
+WARNING:django.request:Not Found: /x
+WARNING:django.request:Not Found: /x
+WARNING:django.request:Not Found: /x
+INFO:django.utils.autoreload:/home/sankalpa/Desktop/gsoc/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/sankalpa/Desktop/gsoc/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/sankalpa/Desktop/gsoc/pygoat/introduction/urls.py changed, reloading.
+ERROR:django.request:Internal Server Error: /xssL3
+Traceback (most recent call last):
+  File "/home/sankalpa/Desktop/gsoc/myenv/lib/python3.10/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/home/sankalpa/Desktop/gsoc/myenv/lib/python3.10/site-packages/django/core/handlers/base.py", line 204, in _get_response
+    self.check_response(response, callback)
+  File "/home/sankalpa/Desktop/gsoc/myenv/lib/python3.10/site-packages/django/core/handlers/base.py", line 332, in check_response
+    raise ValueError(
+ValueError: The view introduction.views.xss_lab3 didn't return an HttpResponse object. It returned None instead.
+ERROR:django.request:Internal Server Error: /xssL3
+Traceback (most recent call last):
+  File "/home/sankalpa/Desktop/gsoc/myenv/lib/python3.10/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/home/sankalpa/Desktop/gsoc/myenv/lib/python3.10/site-packages/django/core/handlers/base.py", line 204, in _get_response
+    self.check_response(response, callback)
+  File "/home/sankalpa/Desktop/gsoc/myenv/lib/python3.10/site-packages/django/core/handlers/base.py", line 332, in check_response
+    raise ValueError(
+ValueError: The view introduction.views.xss_lab3 didn't return an HttpResponse object. It returned None instead.
+INFO:django.utils.autoreload:/home/sankalpa/Desktop/gsoc/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/sankalpa/Desktop/gsoc/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/sankalpa/Desktop/gsoc/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/sankalpa/Desktop/gsoc/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/sankalpa/Desktop/gsoc/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/sankalpa/Desktop/gsoc/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/sankalpa/Desktop/gsoc/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/sankalpa/Desktop/gsoc/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/sankalpa/Desktop/gsoc/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/sankalpa/Desktop/gsoc/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/sankalpa/Desktop/gsoc/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/sankalpa/Desktop/gsoc/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/sankalpa/Desktop/gsoc/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/sankalpa/Desktop/gsoc/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/sankalpa/Desktop/gsoc/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/sankalpa/Desktop/gsoc/pygoat/introduction/views.py changed, reloading.
+ERROR:django.request:Internal Server Error: /xssL3
+Traceback (most recent call last):
+  File "/home/sankalpa/Desktop/gsoc/myenv/lib/python3.10/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/home/sankalpa/Desktop/gsoc/myenv/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/sankalpa/Desktop/gsoc/pygoat/introduction/views.py", line 124, in xss_lab3
+    result = re.sub(pattern, '', username)
+  File "/usr/lib/python3.10/re.py", line 209, in sub
+    return _compile(pattern, flags).sub(repl, string, count)
+TypeError: expected string or bytes-like object
+ERROR:django.request:Internal Server Error: /xssL3
+Traceback (most recent call last):
+  File "/home/sankalpa/Desktop/gsoc/myenv/lib/python3.10/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/home/sankalpa/Desktop/gsoc/myenv/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/sankalpa/Desktop/gsoc/pygoat/introduction/views.py", line 124, in xss_lab3
+    result = re.sub(pattern, '', username)
+  File "/usr/lib/python3.10/re.py", line 209, in sub
+    return _compile(pattern, flags).sub(repl, string, count)
+TypeError: expected string or bytes-like object
+INFO:django.utils.autoreload:/home/sankalpa/Desktop/gsoc/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/sankalpa/Desktop/gsoc/pygoat/introduction/views.py changed, reloading.
+ERROR:django.request:Internal Server Error: /xssL3
+Traceback (most recent call last):
+  File "/home/sankalpa/Desktop/gsoc/myenv/lib/python3.10/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/home/sankalpa/Desktop/gsoc/myenv/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/sankalpa/Desktop/gsoc/pygoat/introduction/views.py", line 124, in xss_lab3
+    result = re.sub(pattern, '', username)
+  File "/usr/lib/python3.10/re.py", line 209, in sub
+    return _compile(pattern, flags).sub(repl, string, count)
+TypeError: expected string or bytes-like object
+INFO:django.utils.autoreload:/home/sankalpa/Desktop/gsoc/pygoat/introduction/views.py changed, reloading.
+ERROR:django.request:Internal Server Error: /xssL3
+Traceback (most recent call last):
+  File "/home/sankalpa/Desktop/gsoc/myenv/lib/python3.10/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/home/sankalpa/Desktop/gsoc/myenv/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/sankalpa/Desktop/gsoc/pygoat/introduction/views.py", line 125, in xss_lab3
+    result = re.sub(pattern, '', username)
+  File "/usr/lib/python3.10/re.py", line 209, in sub
+    return _compile(pattern, flags).sub(repl, string, count)
+TypeError: expected string or bytes-like object
+INFO:django.utils.autoreload:/home/sankalpa/Desktop/gsoc/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/sankalpa/Desktop/gsoc/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/sankalpa/Desktop/gsoc/pygoat/introduction/views.py changed, reloading.
+ERROR:django.request:Internal Server Error: /xssL3
+Traceback (most recent call last):
+  File "/home/sankalpa/Desktop/gsoc/myenv/lib/python3.10/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/home/sankalpa/Desktop/gsoc/myenv/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/sankalpa/Desktop/gsoc/pygoat/introduction/views.py", line 125, in xss_lab3
+    result = re.sub(pattern, '', username)
+  File "/usr/lib/python3.10/re.py", line 209, in sub
+    return _compile(pattern, flags).sub(repl, string, count)
+TypeError: expected string or bytes-like object
+ERROR:django.request:Internal Server Error: /xssL3
+Traceback (most recent call last):
+  File "/home/sankalpa/Desktop/gsoc/myenv/lib/python3.10/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/home/sankalpa/Desktop/gsoc/myenv/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/sankalpa/Desktop/gsoc/pygoat/introduction/views.py", line 125, in xss_lab3
+    result = re.sub(pattern, '', username)
+  File "/usr/lib/python3.10/re.py", line 209, in sub
+    return _compile(pattern, flags).sub(repl, string, count)
+TypeError: expected string or bytes-like object
+ERROR:django.request:Internal Server Error: /xssL3
+Traceback (most recent call last):
+  File "/home/sankalpa/Desktop/gsoc/myenv/lib/python3.10/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/home/sankalpa/Desktop/gsoc/myenv/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/sankalpa/Desktop/gsoc/pygoat/introduction/views.py", line 125, in xss_lab3
+    result = re.sub(pattern, '', username)
+  File "/usr/lib/python3.10/re.py", line 209, in sub
+    return _compile(pattern, flags).sub(repl, string, count)
+TypeError: expected string or bytes-like object
+INFO:django.utils.autoreload:/home/sankalpa/Desktop/gsoc/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/sankalpa/Desktop/gsoc/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/sankalpa/Desktop/gsoc/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/sankalpa/Desktop/gsoc/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/sankalpa/Desktop/gsoc/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/sankalpa/Desktop/gsoc/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/sankalpa/Desktop/gsoc/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/sankalpa/Desktop/gsoc/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/sankalpa/Desktop/gsoc/pygoat/introduction/views.py changed, reloading.
+INFO:django.utils.autoreload:/home/sankalpa/Desktop/gsoc/pygoat/introduction/views.py changed, reloading.

@@ -38,6 +38,7 @@ from io import BytesIO
 from argon2 import PasswordHasher
 import logging
 import requests
+import re
 #*****************************************Login and Registration****************************************************#
 
 def register(request):
@@ -114,6 +115,21 @@ def xss_lab2(request):
                 }
         return render(request, 'Lab/XSS/xss_lab_2.html', context)
     else:
+        return redirect('login')
+    
+def xss_lab3(request):
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            username = request.POST.get('username')
+            print(type(username))
+            pattern = r'\w'
+            result = re.sub(pattern, '', username)
+            context = {'code':result}
+            return render(request, 'Lab/XSS/xss_lab_3.html',context)
+        else:
+            return render(request, 'Lab/XSS/xss_lab_3.html')
+            
+    else:        
         return redirect('login')
 
 #***********************************SQL****************************************************************#
