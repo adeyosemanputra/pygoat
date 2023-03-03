@@ -9,6 +9,7 @@ urlpatterns = [
     path('xss', views.xss,name="xss"),
     path('xssL',views.xss_lab,name='xss_lab'),
     path('xssL2', views.xss_lab2, name='xss_lab2'),
+    path('xssL3', views.xss_lab3, name='xss_lab3'),
     path('xssL1',views.xss_lab,name='xss_lab'),
     path("sql",views.sql,name='sql'),
     path("sql_lab",views.sql_lab,name="sql_lab"),

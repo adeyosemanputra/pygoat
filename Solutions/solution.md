@@ -259,7 +259,12 @@ Results page contains the word `TEXT` in Heading as well as Green color hence XS
 
 Now you can go ahead and enter `<script >alert(“xss”) </script >` once XSS is confirmed.
 
-To see results on screen, make sure your browser has JavaScript enabled. 
+To see results on screen, make sure your browser has JavaScript enabled.
+
+**Lab 3**
+- ##### [ step- 1 ] Checking user input is being reflected or not
+   - Though alphanumeric characters are being escaped we can still write js code with these 6 character `![]()+`
+   - check [jsfuck](http://www.jsfuck.com/)
 
 
 ## A8:Insecure Deserialization
