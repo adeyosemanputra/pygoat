@@ -1,0 +1,32 @@
+{% extends "introduction/base.html" %}
+{% block content %}
+{% block title %}
+<title>Command Injection</title>
+{% endblock %}
+<div class="jumbotron">
+    <div class="container">
+        <h3 align="center">Evaluate any expression!</h3>
+        <form method="post" action="/cmd_lab2">
+            <input type="text" name="val" placeholder="eg. 7*7"><br><br>
+            <center><button class="btn btn-info" type="submit">GO</button></center>
+        </form>
+    </div>
+</div>
+<div class="container">
+    {% if output %}
+    <h6><b>Output</b></h6><br>
+    <b>
+        <pre>{{output}}</pre>
+    </b>
+    {% endif %}
+</div>
+
+
+<br>
+<div align="right"> <button class="btn btn-info" type="button" onclick="window.location.href='/cmd'">Back to lab
+        details</button></div>
+
+</p>
+
+
+{% endblock %}
