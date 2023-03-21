@@ -249,7 +249,6 @@ a.article:hover {
 }
 .bp {
   font-size: 1em;
-  font-height: 1.2em;
   color: rgb(255, 255, 255);
 }
 .coll {
@@ -275,7 +274,7 @@ a.article:hover {
   padding: 18px;
   display: none;
   overflow: hidden;
-  background-color: #f1f1f199;
+  background-color: #444c53;
   border-radius: 1rem;
 }
 .display {
@@ -297,6 +296,10 @@ code {
 }
 .pg{
   display: none;
+}
+
+ul, li {
+  color:#ffffff
 }
 /* ---------------------------------------------------
     MEDIAQUERIES
@@ -373,7 +376,7 @@ code {
 code {
   padding: 2px 4px;
   font-size: 90%;
-  color: #033157;
+  color: #94edfa;
   border-radius: 4px;
   background-color: #159c8100;
 }
@@ -512,4 +515,16 @@ h2 {
 
 .requiredField {
   color: #26282B
+}
+
+.jumbotron {
+  color:#26282B
+}
+
+.container li {
+  color: #6c757d!important
+}
+
+pre {
+  color: #ffffff
 }
