@@ -21,7 +21,7 @@ On Successful injection
 ![image](https://user-images.githubusercontent.com/61360833/118371252-5986ea00-b5c9-11eb-9efb-6beedd558f56.png)
 
 
-### Command Injection
+### Command Injection Lab 1
 The user on accessing the lab is provided with a feature to perform a name server lookup on the given domain. The user has to give a domain name and the server would perform a ns lookup and return back to the client. If the user is running the lab, based on the OS he can select Windows or Linux.
 
 The user can cause the server to execute commands ,because of the lack of input validation.
@@ -37,6 +37,15 @@ This should give you the output for both`ns lookup` as well as for the `ifconfig
 ![cmd_inj_1](https://user-images.githubusercontent.com/70275323/154504352-4833e37c-dcd2-4097-8f33-2c6a4c36cb76.png)
 
 ![cmd_inj_2](https://user-images.githubusercontent.com/70275323/154504361-4baa73cb-f73b-44a8-8769-0af2e7b53c24.png)
+
+### Command Injection Lab 2
+We are given an input form where we can calculate basic arithmetic expressions. Our task is to exploit this functionality and achieve code execution. 
+
+This lab is using `eval()` function in backend which is used to evaluate expression in python. If the expression is a legal python statement, then it will be executed. 
+
+If we submit the expression `1 + 1`, we get the output as `2`. Similarly, on submitting the expression `7 * 7`, we get the output as `49`.
+
+Now, if we submit `os.system("id")`, we get nothing in the output. But if we check the terminal, we will see that the command gets executed and the result is printed on the terminal screen. You can also verify this by submitting `os.system("sleep 30")`, and you will notice that the request completes after 30 seconds.
 
 ## A2:Broken Authentication
 
