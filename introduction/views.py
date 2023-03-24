@@ -38,6 +38,7 @@ from io import BytesIO
 from argon2 import PasswordHasher
 import logging
 import requests
+import re
 #*****************************************Login and Registration****************************************************#
 
 def register(request):
@@ -114,6 +115,21 @@ def xss_lab2(request):
                 }
         return render(request, 'Lab/XSS/xss_lab_2.html', context)
     else:
+        return redirect('login')
+    
+def xss_lab3(request):
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            username = request.POST.get('username')
+            print(type(username))
+            pattern = r'\w'
+            result = re.sub(pattern, '', username)
+            context = {'code':result}
+            return render(request, 'Lab/XSS/xss_lab_3.html',context)
+        else:
+            return render(request, 'Lab/XSS/xss_lab_3.html')
+            
+    else:        
         return redirect('login')
 
 #***********************************SQL****************************************************************#
@@ -421,6 +437,25 @@ def cmd_lab(request):
             return render(request,'Lab/CMD/cmd_lab.html',{"output":output})
         else:
             return render(request, 'Lab/CMD/cmd_lab.html')
+    else:
+        return redirect('login')
+
+@csrf_exempt
+def cmd_lab2(request):
+    if request.user.is_authenticated:
+        if (request.method=="POST"):
+            val=request.POST.get('val')
+            
+            print(val)
+            try:
+                output = eval(val)
+            except:
+                output = "Something went wrong"
+                return render(request,'Lab/CMD/cmd_lab2.html',{"output":output})
+            print("Output = ", output)
+            return render(request,'Lab/CMD/cmd_lab2.html',{"output":output})
+        else:
+            return render(request, 'Lab/CMD/cmd_lab2.html')
     else:
         return redirect('login')
 
