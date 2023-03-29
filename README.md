@@ -99,7 +99,7 @@ $ python3 uninstaller.py
 ```
 
 ## Solutions 
-<a href="/pygoat/Solutions/solution.md">Solutions to all challenges</a>
+<a href="/Solutions/solution.md">Solutions to all challenges</a>
 
 ## Contributors ✨
 
