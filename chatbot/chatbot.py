@@ -29,8 +29,8 @@ chatbot = ChatBot(
     logic_adapters=[
         {
             "import_path": "chatterbot.logic.BestMatch",
-            "default_response": "I'm sorry, I'm not sure I understand.",
-            "maximum_similarity_threshold": 0.90,
+            "default_response": "I'm sorry, I'm not sure",
+            "maximum_similarity_threshold": 0.80,
         }
     ],
 )
