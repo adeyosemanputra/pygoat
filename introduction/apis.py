@@ -17,8 +17,6 @@ import requests
 def ssrf_code_checker(request):
     if request.user.is_authenticated:
         if request.method == 'POST':
-            python_code = request.POST['python_code']
-            html_code = request.POST['html_code']
             
             return JsonResponse({'message':'Test bench passed but the code is not secure'}, status = 200,safe = False)
         else:
