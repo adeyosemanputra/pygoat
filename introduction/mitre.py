@@ -210,6 +210,11 @@ def csrf_transfer_monei_api(request,recipent,amount):
 # @authentication_decorator
 @csrf_exempt
 def mitre_lab_25_api(request):
+    if request.method == "POST":
+        expression = request.POST.get('expression')
+        result = eval(expression)
+        return JsonResponse({'result': result})
+    else:
         return redirect('/mitre/25/lab/')
 
 

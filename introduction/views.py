@@ -156,7 +156,9 @@ def sql_lab(request):
                 print(sql_query)
                 try:
                     print("\nin try\n")
-                    val=""
+                    val=login.objects.raw(sql_query)
+                    val=login.objects.raw(sql_query)
+                    val=login.objects.raw(sql_query)
                 except:
                     print("\nin except\n")
                     return render(
