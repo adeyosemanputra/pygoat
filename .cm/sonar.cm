@@ -1,6 +1,6 @@
 manifest:
   version: 1.0
-
+automations:
   # Add labels
     if:
       - {{ sonar.vulnerabilities.count > 0}}
