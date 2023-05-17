@@ -2,6 +2,7 @@ manifest:
   version: 1.0
 automations:
   # Add labels
+  vulnerabilities:
     if:
       - {{ sonar.vulnerabilities.count > 0}}
     run:
@@ -9,6 +10,7 @@ automations:
         args:
           label: "{{ sonar.vulnerabilities.count }} vulnerabilities found"
           color: {{ fecdca if (sonar.vulnerabilities.rating == 'E') else (f0f593 if (sonar.vulnerabilities.rating >= 'C' ) else d1fadf) }}
+  security_hotspots:
     if:
       - {{ sonar.security_hotspots.count > 0}}
     run:
@@ -16,6 +18,7 @@ automations:
         args:
           label: "{{ sonar.security_hotspots.count }} Security Hotspots found"
           color: {{ fecdca if (sonar.security_hotspots.rating == 'E') else (f0f593 if (sonar.security_hotspots.rating >= 'C' ) else d1fadf) }}  # Add labels
+  code_smells:
     if:
       - {{ sonar.code_smells.count > 0}}
     run:
@@ -23,6 +26,7 @@ automations:
         args:
           label: "{{ sonar.code_smells.count }} code smells found"
           color: {{ fecdca if (sonar.code_smells.rating == 'E') else (f0f593 if (sonar.code_smells.rating >= 'C' ) else d1fadf) }}
+  bugs:
     if:
       - {{ sonar.bugs.count > 0}}
     run:
@@ -30,7 +34,7 @@ automations:
         args:
           label: "{{ sonar.bugs.count }} bugs found"
           color: {{ fecdca if (sonar.bugs.rating == 'E') else (f0f593 if (sonar.bugs.rating >= 'C' ) else d1fadf) }}
-
+  Assign:
     # Auto assign Security member
     if:
       - {{ sonar.code_smells.rating > 'B' }}
