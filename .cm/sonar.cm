@@ -9,7 +9,7 @@ automations:
       - action: add-label@v1
         args:
           label: "{{ sonar.vulnerabilities.count }} vulnerabilities found"
-          color: {{ fecdca if (sonar.vulnerabilities.rating == 'E') else (f0f593 if (sonar.vulnerabilities.rating >= 'C' ) else d1fadf) }}
+          color: {{ fecdca if (sonar.vulnerabilities.rating == 'E') else (f0f593 if (sonar.vulnerabilities.rating == 'C' ) else d1fadf) }}
   security_hotspots:
     if:
       - {{ sonar.security_hotspots.count > 0}}
@@ -17,7 +17,7 @@ automations:
       - action: add-label@v1
         args:
           label: "{{ sonar.security_hotspots.count }} Security Hotspots found"
-          color: {{ fecdca if (sonar.security_hotspots.rating == 'E') else (f0f593 if (sonar.security_hotspots.rating >= 'C' ) else d1fadf) }}  # Add labels
+          color: {{ fecdca if (sonar.security_hotspots.rating == 'E') else (f0f593 if (sonar.security_hotspots.rating == 'C' ) else d1fadf) }}  # Add labels
   code_smells:
     if:
       - {{ sonar.code_smells.count > 0}}
@@ -25,7 +25,7 @@ automations:
       - action: add-label@v1
         args:
           label: "{{ sonar.code_smells.count }} code smells found"
-          color: {{ fecdca if (sonar.code_smells.rating == 'E') else (f0f593 if (sonar.code_smells.rating >= 'C' ) else d1fadf) }}
+          color: {{ fecdca if (sonar.code_smells.rating == 'E') else (f0f593 if (sonar.code_smells.rating == 'C' ) else d1fadf) }}
   bugs:
     if:
       - {{ sonar.bugs.count > 0}}
@@ -33,16 +33,23 @@ automations:
       - action: add-label@v1
         args:
           label: "{{ sonar.bugs.count }} bugs found"
-          color: {{ fecdca if (sonar.bugs.rating == 'E') else (f0f593 if (sonar.bugs.rating >= 'C' ) else d1fadf) }}
+          color: {{ fecdca if (sonar.bugs.rating == 'E') else (f0f593 if (sonar.bugs.rating == 'C' ) else d1fadf) }}
   Assign:
     # Auto assign Security member
     if:
-      - {{ sonar.code_smells.rating > 'B' }}
-      - {{ sonar.vulnerabilities.rating > 'B'}}
-      - {{ sonar.security_hotspots.rating > 'B'}}
+      - {{ sonar.code_smells.rating != 'B' }}
+      - {{ sonar.vulnerabilities.rating != 'B'}}
+      - {{ sonar.security_hotspots.rating != 'B'}}
     run:
       - action: add-reviewers@v1
         args:
           team_reviewers: [app-sec]
 
 sonar: {{ pr | sonarParser }}
+
+colors:
+  A: 'd1fadf'
+  B: 'e1f5a8'
+  C: 'f0f593'
+  D: 'f5c778'
+  E: 'fecdca'
