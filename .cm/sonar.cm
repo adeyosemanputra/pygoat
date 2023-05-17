@@ -37,9 +37,9 @@ automations:
   Assign:
     # Auto assign Security member
     if:
-      - {{ sonar.code_smells.rating != 'B' }}
-      - {{ sonar.vulnerabilities.rating != 'B'}}
-      - {{ sonar.security_hotspots.rating != 'B'}}
+      - {{ sonar.code_smells.rating != 'A' }}
+      - {{ sonar.vulnerabilities.rating != 'A'}}
+      - {{ sonar.security_hotspots.rating != 'A'}}
     run:
       - action: add-reviewers@v1
         args:
