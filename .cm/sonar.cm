@@ -8,7 +8,7 @@ automations:
     run:
       - action: add-label@v1
         args:
-          label: "{{ sonar.vulnerabilities.count }} vulnerabilities found"
+          label: "{{ sonar.vulnerabilities.count }} vulnerabilities"
           color: {{ 'fecdca' if (sonar.vulnerabilities.rating == 'E') else ('f0f593' if (sonar.vulnerabilities.rating == 'C' ) else 'd1fadf') }}
   security_hotspots:
     if:
@@ -16,7 +16,7 @@ automations:
     run:
       - action: add-label@v1
         args:
-          label: "{{ sonar.security_hotspots.count }} Security Hotspots found"
+          label: "{{ sonar.security_hotspots.count }} Security Hotspots"
           color: {{ 'fecdca' if (sonar.security_hotspots.rating == 'E') else ('f0f593' if (sonar.security_hotspots.rating == 'C' ) else 'd1fadf') }}  # Add labels
   code_smells:
     if:
@@ -24,7 +24,7 @@ automations:
     run:
       - action: add-label@v1
         args:
-          label: "{{ sonar.code_smells.count }} code smells found"
+          label: "{{ sonar.code_smells.count }} code smells"
           color: {{ 'fecdca' if (sonar.code_smells.rating == 'E') else ('f0f593' if (sonar.code_smells.rating == 'C' ) else 'd1fadf') }}
   bugs:
     if:
@@ -32,7 +32,7 @@ automations:
     run:
       - action: add-label@v1
         args:
-          label: "{{ sonar.bugs.count }} bugs found"
+          label: "{{ sonar.bugs.count }} bugs"
           color: {{ 'fecdca' if (sonar.bugs.rating == 'E') else ('f0f593' if (sonar.bugs.rating == 'C' ) else 'd1fadf') }}
   Assign:
     # Auto assign Security member
