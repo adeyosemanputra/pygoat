@@ -41,7 +41,7 @@ automations:
     run:
       - action: add-reviewers@v1
         args:
-          reviewers: [linear-b/app-sec]
+          reviewers: [Dudu-linb]
 
 sonar: {{ pr | sonarParser }}
 
