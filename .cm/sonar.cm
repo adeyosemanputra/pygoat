@@ -45,7 +45,7 @@ automations:
     run: 
       - action: add-label@v1
         args:
-          label: '💯 Sonar'
+          label: '💯 Safe'
   Assign:
     # Auto assign Security member
     if:
