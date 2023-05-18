@@ -46,7 +46,6 @@ automations:
       - action: add-label@v1
         args:
           label: '💯 Sonar'
-          color: 'd4333f'
   Assign:
     # Auto assign Security member
     if:
