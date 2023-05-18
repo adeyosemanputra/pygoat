@@ -57,9 +57,9 @@ automations:
 
   jitttt:
     if:
-      - {{jit.metrics.HIGH > 0}}
+      - {{ jit.metrics.HIGH > 0}}
     run:
-      - action:add-label@v1
+      - action: add-label@v1
         args:
           label: '{{ jit.metrics.HIGH }} high vulns by Jit'
           color: 'fecdca'
