@@ -55,11 +55,23 @@ automations:
         args:
           reviewers: [Dudu-linb]
 
-sonar: {{ pr | sonarParser }}
+  jitttt:
+    if:
+      - {{jit.metrics.HIGH > 0}}
+    run:
+      - action:add-label@v1
+        args:
+          label: '{{ jit.metrics.HIGH }} high vulns by Jit'
+          color: 'fecdca'
 
+
+sonar: {{ pr | sonarParser }}
+jit: {{pr | extractJitFindings }}
 colors:
   A: 'd1fadf'
   B: 'e1f5a8'
   C: 'f0f593'
   D: 'f5c778'
   E: 'fecdca'
+
+  metrics
