@@ -55,13 +55,13 @@ automations:
         args:
           reviewers: [Dudu-linb]
 
-#  jitttt:
-#    if:
-#      - {{ jit.metrics.HIGH > 0}}
-#    run:
-#      - action: add-label@v1
-#        args:
-#          label: '{{ jit.metrics.HIGH }} high vulns by Jit'
+  jitttt:
+    if:
+      - {{ jit.metrics.HIGH > 0}}
+    run:
+      - action: add-label@v1
+        args:
+          label: '{{ jit.metrics.HIGH }} high vulns by Jit'
 
 
 sonar: {{ pr | sonarParser }}
