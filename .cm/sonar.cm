@@ -41,7 +41,7 @@ automations:
       - {{ sonar.code_smells.count == 0 }}
       - {{ sonar.vulnerabilities.count == 0 }}
       - {{ sonar.security_hotspots.count == 0 }}
-      - {{ sonar.duplications == null or sonar.duplications == 0.0 }}
+      - {{ sonar.duplications == null or sonar.duplications == 0 }}
     run: 
       - action: add-label@v1
         args:
@@ -65,7 +65,7 @@ automations:
 
 
 sonar: {{ pr | sonarParser }}
-#jit: {{ pr | extractJitFindings }}
+jit: {{ pr | extractJitFindings }}
 
 colors:
   A: 'd1fadf'
