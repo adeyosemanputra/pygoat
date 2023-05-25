@@ -13,7 +13,7 @@ jobs:
       - name: Run AppScan CodeSweep
         uses: HCL-TECH-SOFTWARE/appscan-codesweep-action@v2
         with:
-          asoc_key: ${{secrets.ASOC_KEY}}
-          asoc_secret: ${{secrets.ASOC_SECRET}}
+          asoc_key: "84ee6a2f-8ba7-cbf4-0c6e-dd5f9bc8b2f2"
+          asoc_secret: "JjhyPfw7QmAU3IRSrKKSfRXaKS0cvrX0phnYZc10uEPz"
     env: 
       GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
