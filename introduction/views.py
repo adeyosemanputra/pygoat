@@ -947,7 +947,7 @@ def ssrf_target(request):
 def ssrf_lab2(request):
     if request.method == "GET":
         return render(request, "Lab/ssrf/ssrf_lab2.html")
-
+#ola a testar
     elif request.method == "POST":
         url = request.POST["url"]
         try:
