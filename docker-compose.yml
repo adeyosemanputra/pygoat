@@ -11,6 +11,11 @@ services:
       - POSTGRES_PASSWORD=postgres
     security_opt:
       - no-new-privileges:true
+    deploy:
+      resources:
+        limits:
+          cpus: "4.0"
+          memory: 200M
 #    security_opt:    - no-new-privileges:true
   web:
     build: .
