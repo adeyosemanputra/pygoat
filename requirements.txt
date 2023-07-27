@@ -2,12 +2,12 @@ argon2==0.1.10
 argon2-cffi==21.3.0
 argon2-cffi-bindings==21.2.0
 asgiref==3.6.0
-certifi==2022.12.7
+certifi==2023.7.22 #ID=1fa1e776-346c-434a-81de-c9fcd4b7385a 2022.12.7
 cffi==1.15.1
 charset-normalizer==3.0.1
 cryptography==41.0.2 #ID=e3e38a1e-4a23-4d21-9ff5-03d0589517f5 39.0.1
 defusedxml==0.7.1
-dj-database-url==0.5.0
+dj-database-url==2.0.0 #ID=1fa1e776-346c-434a-81de-c9fcd4b7385a 0.5.0
 Django==4.2.3 #ID=e3e38a1e-4a23-4d21-9ff5-03d0589517f5 #4.1.7
 django-allauth==0.52.0
 django-crispy-forms==2.0
@@ -16,7 +16,7 @@ idna==3.4
 mccabe==0.6.1
 oauthlib==3.2.2
 Pillow==9.4.0
-psycopg2==2.9.3
+psycopg2==2.9.6 #ID=1fa1e776-346c-434a-81de-c9fcd4b7385a 2.9.3
 pycodestyle==2.7.0
 pycparser==2.21
 pyflakes==2.3.1
@@ -24,7 +24,7 @@ PyJWT==2.4.0
 python3-openid==3.2.0
 pytz==2020.1
 PyYAML==6.0.1 #ID=e3e38a1e-4a23-4d21-9ff5-03d0589517f5 5.1
-requests==2.28.2
+requests==2.31.0 #ID=1fa1e776-346c-434a-81de-c9fcd4b7385a 2.28.2
 requests-oauthlib==1.3.1
 sqlparse==0.4.4 #ID=e3e38a1e-4a23-4d21-9ff5-03d0589517f5 0.3.3
 urllib3==1.26.9
