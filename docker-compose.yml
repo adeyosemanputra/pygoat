@@ -11,6 +11,7 @@ services:
       - POSTGRES_PASSWORD=postgres
     security_opt:
       - no-new-privileges:true
+#    security_opt:    - no-new-privileges:true
   web:
     build: .
     image: pygoat/pygoat
