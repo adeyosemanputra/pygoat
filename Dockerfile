@@ -1,4 +1,5 @@
-FROM python:3.12.0b4-buster
+#ID=e3e38a1e-4a23-4d21-9ff5-03d0589517f5 python:3.11.0b1-buster 
+FROM python:3.12.0b4-buster 
 
 # set work directory
 WORKDIR /app
