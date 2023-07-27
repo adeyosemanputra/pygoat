@@ -9,6 +9,8 @@ services:
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+    security_opt:
+      - seccomp:unconfined
   web:
     build: .
     image: pygoat/pygoat
