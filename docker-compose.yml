@@ -10,7 +10,7 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
     security_opt:
-      - seccomp:unconfined
+      - no-new-privileges:true
   web:
     build: .
     image: pygoat/pygoat
