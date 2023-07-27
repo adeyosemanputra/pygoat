@@ -209,8 +209,8 @@ def csrf_transfer_monei_api(request,recipent,amount):
 
 # @authentication_decorator
 @csrf_exempt
-def mitre_lab_25_api(request):
-    if request.method == "POST":
+def mtre_lab_2i5_api(request):
+    if request.method == "GET": # GET em vez de POST (amaro)
         expression = request.POST.get('expression')
         result = eval(expression)
         return JsonResponse({'result': result})
