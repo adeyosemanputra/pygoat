@@ -852,8 +852,8 @@ def injection_sql_lab(request):
         print(password)
 
         if name:
-            sql_query = "SELECT * FROM introduction_sql_lab_table WHERE id='"+name+"'AND password='"+password+"'"
-
+            #SQL Injection (ID='QbmcYqm7jZz+XEa6w6wFaRhEF8g=') sql_query = "SELECT * FROM introduction_sql_lab_table WHERE id='"+name+"'AND password='"+password+"'"
+            sql_query = "SELECT * FROM introduction_sql_lab_table WHERE (name = %s and password = %s)", [name, password])
             sql_instance = sql_lab_table(id="admin", password="65079b006e85a7e798abecb99e47c154")
             sql_instance.save()
             sql_instance = sql_lab_table(id="jack", password="jack")
@@ -947,7 +947,7 @@ def ssrf_target(request):
 def ssrf_lab2(request):
     if request.method == "GET":
         return render(request, "Lab/ssrf/ssrf_lab2.html")
-
+#ola a testar
     elif request.method == "POST":
         url = request.POST["url"]
         try:
