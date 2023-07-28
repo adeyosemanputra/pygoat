@@ -234,7 +234,7 @@ def command_out(command):
 @csrf_exempt
 def mitre_lab_17_api(request):
     if request.method == "GET": #request.method == "POST":
-        ip = request.args.get('ip') # ip = request.POST.get('ip')
+        ip = request.POST.get('ip') 
         command = "nmap " + ip 
         res, err = command_out(command)
         res = res.decode()
