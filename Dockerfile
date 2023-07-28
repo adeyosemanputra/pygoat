@@ -11,13 +11,6 @@ RUN apt-get update && apt-get install --no-install-recommends -y dnsutils=1:9.11
 \ && apt-get clean 
 \ && rm -rf /var/lib/apt/lists/*
 
-# IAC 3714275d-9459-4407-a036-3b947c3d7e17
-# e932bde2-5e9c-41c7-bfa9-df20780023a5
-FROM nginx:1.25.1
-USER MyUser 
-HEALTHCHECK --interval=30s --timeout=3s \
-  CMD curl -f http://localhost/ || exit 1
-EXPOSE 80
 
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
