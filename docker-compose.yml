@@ -30,6 +30,9 @@ services:
     depends_on:
       - migration
       - db
+    networks:
+      - frontend
+      - backend
   migration:
     image: pygoat/pygoat
     command: python pygoat/manage.py migrate --noinput
