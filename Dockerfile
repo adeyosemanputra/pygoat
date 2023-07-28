@@ -11,6 +11,9 @@ RUN apt-get update && apt-get install --no-install-recommends -y dnsutils=1:9.11
 
 # IAC 3714275d-9459-4407-a036-3b947c3d7e17
 FROM nginx:1.13
+ENV ADMIN_USER="ng"
+RUN echo $ADMIN_USER > ./ng
+RUN unset ADMIN_USER
 HEALTHCHECK --interval=30s --timeout=3s \
   CMD curl -f http://localhost/ || exit 1
 EXPOSE 80
