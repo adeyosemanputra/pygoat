@@ -9,14 +9,14 @@ services:
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-    security_opt: #
+    security_opt: # IAC
       - no-new-privileges:true
-    deploy: #
+    deploy: # IAC
       resources:
         limits:
           cpus: "4.0"
           memory: 200M
-    networks: #
+    networks: # IAC
       - mynetwork
 #    security_opt:    - no-new-privileges:true
   web:
