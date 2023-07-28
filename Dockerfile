@@ -20,7 +20,7 @@ ENV PYTHONUNBUFFERED 1
 # Install dependencies
 RUN python -m pip install --no-cache-dir pip==22.0.4
 COPY requirements.txt requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt pip==22.0.4
+RUN pip install --no-cache-dir -r requirements.txt #pip==22.0.4
 
 
 # copy project
