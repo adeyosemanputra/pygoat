@@ -212,7 +212,7 @@ def csrf_transfer_monei_api(request,recipent,amount):
 def mtre_lab_25_api(request):
     if request.method == "GET":  # GET em vez de POST (amaro)
         expression = request.POST.get('expression') 
-        result = eval(expression) 
+        result = eval(r"[0-9A-Za-z]+$", expression) # antes estava => result = eval(expression)
         return JsonResponse({'result': result})
     else:
         return redirect('/mitre/25/lab/')
