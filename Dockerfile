@@ -18,10 +18,9 @@ ENV PYTHONUNBUFFERED 1
 
 
 # Install dependencies
-RUN python -m pip install --no-cache-dir pip==22.0.4
+RUN python -m pip install --no-cache-dir --upgrade pip
 COPY requirements.txt requirements.txt
-#ID=c5f5cafe-45a6-4bf3-ae3f-0d83e4b8d5a2
-RUN pip install -r requirements.txt 
+RUN pip install --no-cache-dir -r requirements.txt
 
 
 # copy project
