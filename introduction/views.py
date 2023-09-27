@@ -485,6 +485,7 @@ def Otp(request):
     if request.method=="GET":
         email=request.GET.get('email')
         otpN=randint(100,999)
+        otpN=randint(100,999)
         if email and otpN:
             if email=="admin@pygoat.com":
                 otp.objects.filter(id=2).update(otp=otpN)
