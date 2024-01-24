@@ -1,4 +1,6 @@
 import os
+
+
 def ssrf_lab(file):
     try:
         dirname = os.path.dirname(__file__)

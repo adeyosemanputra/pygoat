@@ -1,13 +1,16 @@
-from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
-from django.shortcuts import render, redirect
-from .views import authentication_decorator
-from hashlib import md5
-import jwt
 import datetime
 import re
 import subprocess
-from .models import CSRF_user_tbl
+from hashlib import md5
+
+import jwt
+from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
+from django.shortcuts import redirect, render
 from django.views.decorators.csrf import csrf_exempt
+
+from .models import CSRF_user_tbl
+from .views import authentication_decorator
+
 # import os
 
 ## Mitre top1 | CWE:787

@@ -1,14 +1,19 @@
+import time
+
+import requests
+from django.contrib.auth import authenticate, login
 from django.http import JsonResponse
 from django.shortcuts import redirect
-from introduction.playground.ssrf import main
-from introduction.playground.A9.main import Log
-from introduction.playground.A6.utility import check_vuln
-from django.contrib.auth import login,authenticate
-from .utility import *
 from django.views.decorators.csrf import csrf_exempt
-import time
+
+from introduction.playground.A6.utility import check_vuln
+from introduction.playground.A9.main import Log
+from introduction.playground.ssrf import main
+
+from .utility import *
 from .views import authentication_decorator
-import requests
+
+
 # steps --> 
 # 1. covert input code to corrosponding code and write in file
 # 2. extract inputs form 2nd code 
