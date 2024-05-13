@@ -1,0 +1,20 @@
+name: "Publish Sonar JSON to Pixee"
+on:
+  check_run:
+    types: [completed]
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  share:
+    name: Upload Sonar Results to Pixeebot
+    runs-on: ubuntu-latest
+    if: ${{ github.event.check_run.name == 'SonarCloud Code Analysis' }}
+    steps:
+      - uses: pixee/upload-tool-results-action@v1.0.4
+        with:
+          tool: sonar
+          sonar-token: ${{ secrets.SONAR_TOKEN }}
+          sonar-component-key: ${{ secrets.SONAR_COMPONENT_KEY }}
