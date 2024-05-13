@@ -31,3 +31,6 @@ urllib3==1.26.9
 Werkzeug==2.1.2
 whitenoise==6.2.0
 zipp==3.8.0
+security==1.2.1 \
+    --hash=sha256:4ca5f8cfc6b836e2192a84bb5a28b72c17f3cd1abbfe3281f917394c6e6c9238
+    --hash=sha256:0a9dc7b457330e6d0f92bdae3603fecb85394beefad0fd3b5058758a58781ded

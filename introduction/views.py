@@ -38,6 +38,7 @@ from .utility import customHash, filter_blog
 import defusedxml.pulldom
 import defusedxml.sax
 import secrets
+from security import safe_command
 
 #*****************************************Lab Requirements****************************************************#
 
@@ -409,8 +410,7 @@ def cmd_lab(request):
             
             try:
                 # output=subprocess.check_output(command,shell=True,encoding="UTF-8")
-                process = subprocess.Popen(
-                    command,
+                process = safe_command.run(subprocess.Popen, command,
                     shell=False, stdout=subprocess.PIPE, 
                     stderr=subprocess.PIPE)
                 stdout, stderr = process.communicate()
