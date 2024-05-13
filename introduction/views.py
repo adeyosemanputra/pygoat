@@ -118,7 +118,7 @@ def xss_lab2(request):
         return render(request, 'Lab/XSS/xss_lab_2.html', context)
     else:
         return redirect('login')
-    
+
 def xss_lab3(request):
     if request.user.is_authenticated:
         if request.method == 'POST':
