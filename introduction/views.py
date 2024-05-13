@@ -1,11 +1,9 @@
 import base64
 import datetime
 import hashlib
-import json
 import logging
 import os
 import pickle
-import random
 import re
 import string
 import subprocess
@@ -13,31 +11,28 @@ import uuid
 from dataclasses import dataclass
 from hashlib import md5
 from io import BytesIO
-from random import randint
-from xml.dom.pulldom import START_ELEMENT, parseString
-from xml.sax import make_parser
+from xml.dom.pulldom import START_ELEMENT
 from xml.sax.handler import feature_external_ges
 
 import jwt
-import requests
 import yaml
 from argon2 import PasswordHasher
 from django.contrib import messages
-from django.contrib.auth import authenticate, login
-from django.contrib.auth.forms import UserCreationForm
-from django.core import serializers
-from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
+from django.contrib.auth import login
+from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import redirect, render
-from django.template import loader
 from django.template.loader import render_to_string
 from django.views.decorators.csrf import csrf_exempt
 from PIL import Image, ImageMath
-from requests.structures import CaseInsensitiveDict
 
 from .forms import NewUserForm
 from .models import (FAANG, AF_admin, AF_session_id, Blogs, CF_user, authLogin,
-                     comments, info, login, otp, sql_lab_table, tickits)
+                     comments, login, otp, sql_lab_table, tickits)
 from .utility import customHash, filter_blog
+import defusedxml.pulldom
+import defusedxml.sax
+import secrets
+from security import safe_requests, safe_command
 
 #*****************************************Lab Requirements****************************************************#
 
@@ -54,17 +49,6 @@ def register(request):
 		messages.error(request, "Unsuccessful registration. Invalid information.")
 	form = NewUserForm()
 	return render (request=request, template_name="registration/register.html", context={"register_form":form})
-
-# def register(request):
-#     if request.method=="POST":
-#         form = UserCreationForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#         return redirect("login")
-
-#     else:
-#         form=UserCreationForm()
-#         return render(request,"registration/register.html",{"form":form,})
 
 def home(request):
     if request.user.is_authenticated:
@@ -249,9 +233,9 @@ def xxe_see(request):
 @csrf_exempt
 def xxe_parse(request):
 
-    parser = make_parser()
+    parser = defusedxml.sax.make_parser()
     parser.setFeature(feature_external_ges, True)
-    doc = parseString(request.body.decode('utf-8'), parser=parser)
+    doc = defusedxml.pulldom.parseString(request.body.decode('utf-8'), parser=parser)
     for event, node in doc:
         if event == START_ELEMENT and node.tagName == 'text':
             doc.expandNode(node)
@@ -420,10 +404,8 @@ def cmd_lab(request):
             
             try:
                 # output=subprocess.check_output(command,shell=True,encoding="UTF-8")
-                process = subprocess.Popen(
-                    command,
-                    shell=True,
-                    stdout=subprocess.PIPE, 
+                process = safe_command.run(subprocess.Popen, command,
+                    shell=False, stdout=subprocess.PIPE, 
                     stderr=subprocess.PIPE)
                 stdout, stderr = process.communicate()
                 data = stdout.decode('utf-8')
@@ -486,7 +468,7 @@ def login_otp(request):
 def Otp(request):
     if request.method=="GET":
         email=request.GET.get('email')
-        otpN=randint(100,999)
+        otpN=secrets.SystemRandom().randint(100,999)
         if email and otpN:
             if email=="admin@pygoat.com":
                 otp.objects.filter(id=2).update(otp=otpN)
@@ -550,7 +532,7 @@ def a9_lab(request):
             try :
                 file=request.FILES["file"]
                 try :
-                    data = yaml.load(file,yaml.Loader)
+                    data = yaml.load(file,yaml.SafeLoader)
                     
                     return render(request,"Lab/A9/a9_lab.html",{"data":data})
                 except:
@@ -670,7 +652,7 @@ def a10_lab2(request):
 #*********************************************************A11*************************************************#
 
 def gentckt():
-    return (''.join(random.choices(string.ascii_uppercase + string.ascii_lowercase, k=10)))
+    return (''.join(secrets.SystemRandom().choices(string.ascii_uppercase + string.ascii_lowercase, k=10)))
 
 def insec_desgine(request):
     if request.user.is_authenticated:
@@ -953,7 +935,7 @@ def ssrf_lab2(request):
     elif request.method == "POST":
         url = request.POST["url"]
         try:
-            response = requests.get(url)
+            response = safe_requests.get(url, timeout=60)
             return render(request, "Lab/ssrf/ssrf_lab2.html", {"response": response.content.decode()})
         except:
             return render(request, "Lab/ssrf/ssrf_lab2.html", {"error": "Invalid URL"})
