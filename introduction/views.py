@@ -19,6 +19,8 @@ import yaml
 from argon2 import PasswordHasher
 from django.contrib import messages
 from django.contrib.auth import login
+from django.core.signals import request_finished
+from django.dispatch import receiver
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import redirect, render
 from django.template.loader import render_to_string
@@ -220,6 +222,7 @@ def xxe_lab(request):
         return redirect('login')
 
 @csrf_exempt
+@receiver(request_finished)
 def xxe_see(request):
     if request.user.is_authenticated:
 
