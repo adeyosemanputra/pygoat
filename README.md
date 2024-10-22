@@ -78,7 +78,7 @@ First, Clone the repository using GitHub website or git in Terminal
 2. Without using `installer.sh`
  - [![](http://img.youtube.com/vi/rfzQiMeiwso/0.jpg)](http://www.youtube.com/watch?v=rfzQiMeiwso "Installation Pygoat")
 3. Install with Mac M1 (using VirtualVenv)
-   - [![](http://img.youtube.com/vi/rfzQiMeiwso/0.jpg)](https://youtu.be/a5UV7mUw580 "Install with Mac M1 - using Virtualvenv")
+ - [![](http://img.youtube.com/vi/rfzQiMeiwso/0.jpg)](https://youtu.be/a5UV7mUw580 "Install with Mac M1 - using Virtualvenv")
 
 
 ## Uninstallation
