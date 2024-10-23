@@ -6,7 +6,7 @@
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 intentionally vulnerable web Application Security in django.
-our roadmap build intentionally vuln web Application in django. The Vulnerability can based on OWASP top ten 
+our roadmap to build a intentionally vuln web Application in django. The Vulnerability can based on OWASP top ten 
 <br>
 
 Table of Contents
