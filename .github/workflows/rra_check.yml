@@ -70,10 +70,10 @@ jobs:
         with:
           script: |
             const issueTitle = 'Action Required: Security Review or Update Needed';
-            const issueBody = `
+            const issueBody = '
               ${process.env.needs_review === 'true' ? '- A security review is required.\n' : ''}
               ${process.env.needs_update === 'true' ? '- The RRA file needs to be updated.\n'}
-            `;
+            ';
 
             const { data: existingIssues } = await github.issues.listForRepo({
               owner: context.repo.owner,
