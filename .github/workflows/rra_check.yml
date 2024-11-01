@@ -27,8 +27,10 @@ jobs:
       - name: Check rra.md last modified date
         id: check_date
         run: |
-          last_modified=$(git log -1 --format=%at -- rra.md)
           six_months_ago=$(date -d '6 months ago' +%s)
+          echo "Six months ago timestamp: $six_months_ago"
+          last_modified=$(git log -1 --format=%at -- rra.md)
+          echo "Last modified timestamp: $last_modified"
           if [ "$last_modified" -lt "$six_months_ago" ]; then
             echo "needs_update=true" >> $GITHUB_ENV
           else
@@ -44,18 +46,23 @@ jobs:
         run: |
           badge_text=""
           if [ "$needs_review" == "true" ]; then
-            badge_text+="![Review Needed](https://img.shields.io/badge/Security%20Review-Needed-red) "
+            badge_text+="![Security Review Needed](https://img.shields.io/badge/Security%20Review-Needed-red) "
           fi
           if [ "$needs_update" == "true" ]; then
-            badge_text+="![RRA Update Needed](https://img.shields.io/badge/Update-Needed-yellow) "
+            badge_text+="![Update Needed](https://img.shields.io/badge/Update-Needed-yellow) "
           fi
           
-          sed -i "/<!-- Badges -->/a $badge_text" README.md
-          git config --local user.name "github-actions[bot]"
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git add README.md
-          git commit -m "Add security review/update badge"
-          git push
+          # Insert badge_text only if it's not already in README.md
+          if ! grep -q "$badge_text" README.md; then
+            sed -i "/<!-- Badges -->/a $badge_text" README.md
+            git config --local user.name "github-actions[bot]"
+            git config --local user.email "github-actions[bot]@users.noreply.github.com"
+            git add README.md
+            git commit -m "Add security review/update badge" || echo "No changes to commit"
+            git push
+          else
+            echo "Badge already present in README.md, no changes made."
+          fi
 
       - name: Create Issue (if needed)
         if: env.needs_review == 'true' || env.needs_update == 'true'
