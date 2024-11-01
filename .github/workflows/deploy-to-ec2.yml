@@ -22,21 +22,24 @@ jobs:
           EC2_HOST: ${{ secrets.EC2_HOST }}
           EC2_USER: ${{ secrets.EC2_USER }}
         run: |
-          # Copy files to the EC2 instance
-          scp -o StrictHostKeyChecking=no -r . $EC2_USER@$EC2_HOST:~/app
-
-          # SSH into EC2 and set up the app
+          # SSH into EC2 and pull the latest code
           ssh -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST << 'EOF'
             cd ~/app
 
-            # Install Python dependencies
+            # Pull the latest changes from the main branch
+            git pull origin main
+
+            # Activate the virtual environment
+            source venv/bin/activate
+
+            # Install dependencies
             pip install -r requirements.txt
 
             # Apply database migrations
             python3 manage.py migrate
 
-            # Start or reload the Django app with PM2
-            pm2 start "python3 manage.py runserver 0.0.0.0:8000" --name "pygoat" || pm2 reload "pygoat"
+            # Start or reload the app with PM2
+            pm2 start "venv/bin/python3 manage.py runserver 0.0.0.0:8000" --name "pygoat" || pm2 reload "pygoat"
 
             # Save the PM2 process list for persistence
             pm2 save
