@@ -29,12 +29,15 @@ jobs:
           ssh -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST << 'EOF'
             cd ~/app
 
-            # Install dependencies (e.g., for Node.js or Python apps)
-            npm install  # Use `pip install -r requirements.txt` for Python if applicable
+            # Install Python dependencies
+            pip install -r requirements.txt
 
-            # Start or reload the app with PM2
-            pm2 start app.js --name "myapp" || pm2 reload "myapp"
+            # Apply database migrations
+            python3 manage.py migrate
 
-            # Save the PM2 process list
+            # Start or reload the Django app with PM2
+            pm2 start "python3 manage.py runserver 0.0.0.0:8000" --name "pygoat" || pm2 reload "pygoat"
+
+            # Save the PM2 process list for persistence
             pm2 save
           EOF
