@@ -44,7 +44,7 @@ jobs:
         run: |
           badge_text=""
           if [ "$needs_review" == "true" ]; then
-            badge_text+="![Security Review Needed](https://img.shields.io/badge/Security%20Review-Needed-red) "
+            badge_text+="![Review Needed](https://img.shields.io/badge/Security%20Review-Needed-red) "
           fi
           if [ "$needs_update" == "true" ]; then
             badge_text+="![RRA Update Needed](https://img.shields.io/badge/Update-Needed-yellow) "
