@@ -74,12 +74,14 @@ jobs:
               ${process.env.needs_review === 'true' ? '- A security review is required.\n' : ''}
               ${process.env.needs_update === 'true' ? '- The RRA file needs to be updated.\n'}
             `;
+
             const { data: existingIssues } = await github.issues.listForRepo({
               owner: context.repo.owner,
               repo: context.repo.repo,
               state: 'open',
               labels: 'rra-check',
             });
+
             if (existingIssues.length === 0) {
               await github.issues.create({
                 owner: context.repo.owner,
@@ -89,3 +91,4 @@ jobs:
                 labels: ['rra-check'],
               });
             }
+
