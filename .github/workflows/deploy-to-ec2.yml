@@ -1,0 +1,40 @@
+name: Deploy to EC2
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
+
+      - name: Deploy to EC2
+        env:
+          EC2_HOST: ${{ secrets.EC2_HOST }}
+          EC2_USER: ${{ secrets.EC2_USER }}
+        run: |
+          # Copy files to the EC2 instance
+          scp -o StrictHostKeyChecking=no -r . $EC2_USER@$EC2_HOST:~/app
+
+          # SSH into EC2 and set up the app
+          ssh -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST << 'EOF'
+            cd ~/app
+
+            # Install dependencies (e.g., for Node.js or Python apps)
+            npm install  # Use `pip install -r requirements.txt` for Python if applicable
+
+            # Start or reload the app with PM2
+            pm2 start app.js --name "myapp" || pm2 reload "myapp"
+
+            # Save the PM2 process list
+            pm2 save
+          EOF
