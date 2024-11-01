@@ -6,6 +6,7 @@ on:
       - rra.md
   schedule:
     - cron: '0 0 * * 0'  # Runs weekly to check if an update is needed
+  workflow_dispatch:
 
 jobs:
   check_rra:
