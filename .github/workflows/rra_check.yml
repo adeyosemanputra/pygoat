@@ -1,0 +1,83 @@
+name: RRA Check
+
+on:
+  push:
+    paths:
+      - rra.md
+  schedule:
+    - cron: '0 0 * * 0'  # Runs weekly to check if an update is needed
+
+jobs:
+  check_rra:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Check rra.md for 'yes' answers
+        id: check_yes
+        run: |
+          if grep -i -q 'yes' rra.md; then
+            echo "needs_review=true" >> $GITHUB_ENV
+          else
+            echo "needs_review=false" >> $GITHUB_ENV
+          fi
+
+      - name: Check rra.md last modified date
+        id: check_date
+        run: |
+          last_modified=$(git log -1 --format=%at -- rra.md)
+          six_months_ago=$(date -d '6 months ago' +%s)
+          if [ "$last_modified" -lt "$six_months_ago" ]; then
+            echo "needs_update=true" >> $GITHUB_ENV
+          else
+            echo "needs_update=false" >> $GITHUB_ENV
+          fi
+
+      - name: Determine Action
+        if: env.needs_review == 'true' || env.needs_update == 'true'
+        run: echo "Action Needed"
+
+      - name: Add badge to README (if needed)
+        if: env.needs_review == 'true' || env.needs_update == 'true'
+        run: |
+          badge_text=""
+          if [ "$needs_review" == "true" ]; then
+            badge_text+="![Security Review Needed](https://img.shields.io/badge/Security%20Review-Needed-red) "
+          fi
+          if [ "$needs_update" == "true" ]; then
+            badge_text+="![RRA Update Needed](https://img.shields.io/badge/Update-Needed-yellow) "
+          fi
+          
+          sed -i "/<!-- Badges -->/a $badge_text" README.md
+          git config --local user.name "github-actions[bot]"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git add README.md
+          git commit -m "Add security review/update badge"
+          git push
+
+      - name: Create Issue (if needed)
+        if: env.needs_review == 'true' || env.needs_update == 'true'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const issueTitle = 'Action Required: Security Review or Update Needed';
+            const issueBody = `
+              ${process.env.needs_review === 'true' ? '- A security review is required.\n' : ''}
+              ${process.env.needs_update === 'true' ? '- The RRA file needs to be updated.\n'}
+            `;
+            const { data: existingIssues } = await github.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'rra-check',
+            });
+            if (existingIssues.length === 0) {
+              await github.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: issueTitle,
+                body: issueBody,
+                labels: ['rra-check'],
+              });
+            }
