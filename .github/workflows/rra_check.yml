@@ -47,8 +47,10 @@ jobs:
         with:
           script: |
             console.log("Setting issueTitle")
+            echo("Setting issueTitle")
             const issueTitle = 'Action Required: Security Review or Update Needed';
             console.log("Setting issueBody")
+            echo("Setting issueBody")
             const issueBody = `
               ${process.env.needs_review === 'true' ? '- A security review is required.\n' : ''}
               ${process.env.needs_update === 'true' ? '- The RRA file needs to be updated.\n'}
