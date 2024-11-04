@@ -43,7 +43,7 @@ jobs:
 
       - name: Create Issue (if needed)
         if: env.needs_review == 'true' || env.needs_update == 'true'
-        uses: actions/github-script@v6
+        uses: actions/github-script@v7
         with:
           script: |
             console.log("Setting issueTitle");
@@ -62,7 +62,7 @@ jobs:
             console.log("needs_update:", process.env.needs_update);
             
             // List all open issues in the repository
-            const { data: existingIssues } = await github.issues.listForRepo({
+            const { data: existingIssues } = await github.rest.issues.listForRepo({
               owner: context.repo.owner,
               repo: context.repo.repo,
               state: 'open',
@@ -79,7 +79,7 @@ jobs:
 
             // Create a new issue if no existing 'rra-check' issues
             if (rraCheckIssues.length === 0) {
-              await github.issues.create({
+              await github.rest.issues.create({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 title: issueTitle,
