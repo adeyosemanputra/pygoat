@@ -47,14 +47,16 @@ jobs:
         with:
           script: |
             console.log("Setting issueTitle")
-            echo("Setting issueTitle")
             const issueTitle = 'Action Required: Security Review or Update Needed';
+            
             console.log("Setting issueBody")
-            echo("Setting issueBody")
-            const issueBody = "
-              ${process.env.needs_review === 'true' ? '- A security review is required.\n' : ''}
-              ${process.env.needs_update === 'true' ? '- The RRA file needs to be updated.\n'}
-            ";
+            let issueBody = '';
+            if (process.env.needs_review === 'true') {
+              issueBody += '- A security review is required.\n';
+            }
+            if (process.env.needs_update === 'true') {
+              issueBody += '- The RRA file needs to be updated.\n';
+            }
 
             console.log("needs_review:", process.env.needs_review);
             console.log("needs_update:", process.env.needs_update);
@@ -67,6 +69,8 @@ jobs:
             });
 
             console.log("Existing issues:" , existingIssues);
+            console.log("Issue Title:", issueTitle);
+            console.log("Issue Body:", issueBody);
 
             if (existingIssues.length === 0) {
               await github.issues.create({
