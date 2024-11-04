@@ -20,8 +20,10 @@ jobs:
         run: |
           if grep -i -q 'yes' rra.md; then
             echo "needs_review=true" >> $GITHUB_ENV
+            echo "Review needed"
           else
             echo "needs_review=false" >> $GITHUB_ENV
+            echo "No review needed"
           fi
 
       - name: Check rra.md last modified date
@@ -31,8 +33,10 @@ jobs:
           last_modified=$(git log -1 --format=%at -- rra.md)
           if [ "$last_modified" -lt "$six_months_ago" ]; then
             echo "needs_update=true" >> $GITHUB_ENV
+            echo "Update needed"
           else
             echo "needs_update=false" >> $GITHUB_ENV
+            echo "No update needed"
           fi
 
       - name: Determine Action
