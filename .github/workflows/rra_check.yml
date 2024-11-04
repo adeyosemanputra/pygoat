@@ -61,18 +61,24 @@ jobs:
             console.log("needs_review:", process.env.needs_review);
             console.log("needs_update:", process.env.needs_update);
             
+            // List all open issues in the repository
             const { data: existingIssues } = await github.issues.listForRepo({
               owner: context.repo.owner,
               repo: context.repo.repo,
               state: 'open',
-              labels: 'rra-check',
             });
 
-            console.log("Existing issues:", existingIssues);
+            // Filter for issues with the 'rra-check' label
+            const rraCheckIssues = existingIssues.filter(issue => 
+              issue.labels.some(label => label.name === 'rra-check')
+            );
+
+            console.log("Existing rra-check issues:", rraCheckIssues);
             console.log("Issue Title:", issueTitle);
             console.log("Issue Body:", issueBody);
 
-            if (existingIssues.length === 0) {
+            // Create a new issue if no existing 'rra-check' issues
+            if (rraCheckIssues.length === 0) {
               await github.issues.create({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
@@ -80,4 +86,6 @@ jobs:
                 body: issueBody,
                 labels: ['rra-check'],
               });
+            } else {
+              console.log("An issue already exists with the label 'rra-check'");
             }
