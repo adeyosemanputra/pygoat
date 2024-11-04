@@ -61,7 +61,7 @@ jobs:
             console.log("needs_review:", process.env.needs_review);
             console.log("needs_update:", process.env.needs_update);
             
-            const { data: existingIssues } = await github.issues.listForRepo({
+            const { data: existingIssues } = await context.github.issues.listForRepo({
               owner: context.repo.owner,
               repo: context.repo.repo,
               state: 'open',
@@ -73,7 +73,7 @@ jobs:
             console.log("Issue Body:", issueBody);
 
             if (existingIssues.length === 0) {
-              await github.issues.create({
+              await context.github.issues.create({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 title: issueTitle,
