@@ -18,7 +18,7 @@ Risk Impact Rating (if known): ?
 
 > Please answer the following questions regarding confidentiality.
 
-1. Would a breach of this service impact more than 10,000 users? No
+1. Would a breach of this service impact more than 10,000 users? Yes
 2. Does this service handle or store medical data? No
 3. Does this service handle or store financial data? No
 4. Does this service handle or store credentials? No
