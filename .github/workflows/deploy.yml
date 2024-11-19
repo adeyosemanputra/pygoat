@@ -18,6 +18,7 @@ jobs:
               run: |
                 echo "AWS_DEFAULT_REGION=us-west-2" >> "$GITHUB_ENV"
                 echo "AWS_SG_NAME=PyGoatSG" >> "$GITHUB_ENV"
+                echo "REPO_LOCATION=https://github.com/chad-butler-git/pygoat-github-actions.git" >> "$GITHUB_ENV"
           
             - name: Add GH runner IP to AWS Security Group
               run: |
@@ -39,12 +40,12 @@ jobs:
                   echo "Syncing git repo..."
                   if [ ! -d "~/pygoat/.git" ]; then
                     echo "Directory does not exist or is not a git repository. Cloning..."
-                    git clone https://github.com/chad-butler-git/pygoat.git ~/pygoat
+                    git clone env.REPO_LOCATION ~/pygoat
                     cd ~/pygoat
                   else
                     echo "Directory exists and is a git repository. Pulling latest changes..."
                     cd ~/pygoat
-                    git pull https://github.com/chad-butler-git/pygoat.git
+                    git pull env.REPO_LOCATION
                   fi
       
                   echo "Sync git repo complete."
