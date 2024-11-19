@@ -40,13 +40,13 @@ jobs:
                   echo "Syncing git repo..."
                   if [ ! -d "~/pygoat/.git" ]; then
                     echo "Directory does not exist or is not a git repository. Cloning..."
-                    echo "REPO_LOCATION: " env.REPO_LOCATION
-                    git clone env.REPO_LOCATION ~/pygoat
+                    echo "REPO_LOCATION: " ${{ env.REPO_LOCATION }}
+                    git clone ${{ env.REPO_LOCATION }} ~/pygoat
                     cd ~/pygoat
                   else
                     echo "Directory exists and is a git repository. Pulling latest changes..."
                     cd ~/pygoat
-                    git pull env.REPO_LOCATION
+                    git pull ${{ env.REPO_LOCATION }}
                   fi
       
                   echo "Sync git repo complete."
@@ -67,6 +67,7 @@ jobs:
                   sudo systemctl restart gunicorn.service
                   sleep 10  # Give Gunicorn time to start
                   echo "Deployment completed"
+
             - name: Remove GitHub action runner IP from AWS Security Group
               if: always()
               continue-on-error: true
