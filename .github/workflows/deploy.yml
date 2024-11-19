@@ -59,6 +59,14 @@ jobs:
                   echo "Venv activated."
                   echo "Installing pip requirements..."
                   pip install -r requirements.txt
+                  echo "Checkign gunicorn..."
+                  if [ ! -d "~/pygoat/venv/bin/gunicorn" ]; then
+                    echo "Gunicorn not found. installing..."
+                    pip install gunicorn
+                  else
+                    echo "Gunicorn installed"
+                  fi
+                  
                   echo "Applying Django migrations..."
                   python3 manage.py migrate
                   echo "Restarting nginx..."
