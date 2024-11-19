@@ -37,23 +37,23 @@ jobs:
                 port: ${{ secrets.PORT }} # ssh port, default is 22
                 script: |
                   echo "Syncing git repo..."
-                  if [ ! -d "/home/ec2-user/pygoat/.git" ]; then
+                  if [ ! -d "~/pygoat/.git" ]; then
                     echo "Directory does not exist or is not a git repository. Cloning..."
-                    git clone https://github.com/chad-butler-git/pygoat.git /home/ec2-user/pygoat
-                    cd /home/ec2-user/pygoat
+                    git clone https://github.com/chad-butler-git/pygoat.git ~/pygoat
+                    cd ~/pygoat
                   else
                     echo "Directory exists and is a git repository. Pulling latest changes..."
-                    cd /home/ec2-user/pygoat
+                    cd ~/pygoat
                     git pull https://github.com/chad-butler-git/pygoat.git
                   fi
       
                   echo "Sync git repo complete."
                   echo "Activating venv..."
-                  if [ ! -d "/home/ec2-user/pygoat/venv" ]; then
+                  if [ ! -d "~/pygoat/venv" ]; then
                       echo "Venv does not exist. Creating..."
-                      python3 -m venv venv
+                      python3 -m venv ~/pygoat/venv
                   fi
-                  source venv/bin/activate
+                  source ~/pygoat/venv/bin/activate
                   echo "Venv activated."
                   echo "Installing pip requirements..."
                   pip install -r requirements.txt
