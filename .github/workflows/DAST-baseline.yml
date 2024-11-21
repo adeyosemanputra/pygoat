@@ -33,7 +33,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           target: 'ec2-52-13-21-124.us-west-2.compute.amazonaws.com'
           # rules_file_name: '.zap/rules.tsv'
-          # cmd_options: '-a'
+          # cmd_options: '-T 5'
 
       - name: Remove GitHub Actions IP from AWS Security Group
         if: always()
