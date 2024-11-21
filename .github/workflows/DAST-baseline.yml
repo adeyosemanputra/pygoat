@@ -1,0 +1,45 @@
+name: DAST Scan
+on:
+  schedule: 
+  - cron: '45 3 * * 4'
+  workflow_dispatch:
+
+jobs:
+  zap_baseline_scan:
+    runs-on: ubuntu-latest
+    name: ZAP Baseline Scan
+    steps:
+      - name: Get GitHub Action IP
+        id: ip
+        uses: haythem/public-ip@v1.3
+
+      - name: Setting environment variables
+        run: |
+          echo "AWS_DEFAULT_REGION=us-west-2" >> "$GITHUB_ENV"
+          echo "AWS_SG_NAME=launch-wizard-2" >> "$GITHUB_ENV"
+
+      - name: Add GitHub Actions IP to AWS Security Group
+        run: |
+          aws ec2 authorize-security-group-ingress --group-name ${{ env.AWS_SG_NAME }} --protocol tcp --port 80 --cidr ${{ steps.ip.outputs.ipv4 }}/32    
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ env.AWS_DEFAULT_REGION }}
+          
+      - name: Run ZAP Baseline Scan
+        continue-on-error: true
+        uses: zaproxy/action-baseline@v0.12.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          target: 'ec2-52-13-21-124.us-west-2.compute.amazonaws.com'
+          # rules_file_name: '.zap/rules.tsv'
+          # cmd_options: '-a'
+
+      - name: Remove GitHub Actions IP from AWS Security Group
+        if: always()
+        run: |
+          aws ec2 revoke-security-group-ingress --group-name ${{ env.AWS_SG_NAME }} --protocol tcp --port 80 --cidr ${{ steps.ip.outputs.ipv4 }}/32
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ env.AWS_DEFAULT_REGION }}
