@@ -31,7 +31,7 @@ jobs:
         uses: zaproxy/action-baseline@v0.12.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          target: 'ec2-52-13-21-124.us-west-2.compute.amazonaws.com'
+          target: 'http://ec2-52-13-21-124.us-west-2.compute.amazonaws.com/'
           # rules_file_name: '.zap/rules.tsv'
           cmd_options: '-D 45 -T 5'
 
