@@ -30,6 +30,7 @@ jobs:
                 AWS_DEFAULT_REGION: ${{ env.AWS_DEFAULT_REGION }}
                 
             - name: Deploy to EC2
+              continue-on-error: true
               uses: appleboy/ssh-action@v1.0.3
               with:
                 host: ${{ secrets.HOST }} # Server IP address
@@ -78,7 +79,6 @@ jobs:
 
             - name: Remove GitHub action runner IP from AWS Security Group
               if: always()
-              continue-on-error: true
               run: |
                 aws ec2 revoke-security-group-ingress --group-name ${{ env.AWS_SG_NAME }} --protocol tcp --port 22 --cidr ${{ steps.ip.outputs.ipv4 }}/32
               env:
