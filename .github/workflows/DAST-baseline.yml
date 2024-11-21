@@ -1,4 +1,4 @@
-name: DAST Scan
+name: DAST Baseline Scan
 on:
   schedule: 
   - cron: '45 3 * * 4'
