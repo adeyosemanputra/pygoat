@@ -1,6 +1,6 @@
 # PyGoat
 
-[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/{madmaud}/{pygoat-github-actions}/badge)](https://scorecard.dev/viewer/?uri=github.com/{madmaud}/{pygoat-github-actions})
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/madmaud/pygoat-github-actions/badge)](https://scorecard.dev/viewer/?uri=github.com/madmaud/pygoat-github-actions)
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 [![All Contributors](https://img.shields.io/badge/all_contributors-9-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
