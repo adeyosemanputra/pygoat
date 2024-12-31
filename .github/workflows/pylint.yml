@@ -1,0 +1,47 @@
+name: Python Security Tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  security:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.8", "3.9", "3.10"]
+    steps:
+      # Step 1: Check out the code
+      - uses: actions/checkout@v4
+
+      # Step 2: Set up Python environment
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v3
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      # Step 3: Install dependencies
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pylint bandit
+
+      # Step 4: Analyze code with pylint
+      - name: Analyze the code with pylint
+        run: |
+          pylint $(git ls-files '*.py')
+
+      # Step 5: Perform security analysis with Bandit and save report
+      - name: Security analysis with Bandit
+        run: |
+          bandit -r . -f json -o bandit-report.json
+          jq '.results[] | select(.issue_severity == "HIGH" or .issue_severity == "MEDIUM")' bandit-report.json > testReport.json
+
+      # Step 6: Display filtered results
+      - name: Log high and medium severity issues
+        run: |
+          jq . testReport.json
