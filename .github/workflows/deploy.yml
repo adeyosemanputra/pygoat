@@ -12,7 +12,7 @@ jobs:
         steps:
             - name: Get GitHub runner IP
               id: ip
-              uses: haythem/public-ip@v1.3
+              uses: haythem/public-ip@7eaf76671a0d7eec5d98ee897acda4f968735a17
         
             - name: Setting environment variables
               run: |
