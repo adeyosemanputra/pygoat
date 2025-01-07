@@ -12,7 +12,7 @@ jobs:
         steps:
             - name: Get GitHub runner IP
               id: ip
-              uses: haythem/public-ip@7eaf76671a0d7eec5d98ee897acda4f968735a17
+              uses: haythem/public-ip@bdddd92c198b0955f0b494a8ebeac529754262ff
         
             - name: Setting environment variables
               run: |
@@ -31,7 +31,7 @@ jobs:
                 
             - name: Deploy to EC2
               continue-on-error: true
-              uses: appleboy/ssh-action@v1.0.3
+              uses: appleboy/ssh-action@7eaf76671a0d7eec5d98ee897acda4f968735a17
               with:
                 host: ${{ secrets.HOST }} # Server IP address
                 username: ${{ secrets.USERNAME }} # username for SSH login (e.g. ec2-user)
