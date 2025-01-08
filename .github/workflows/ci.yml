@@ -1,90 +1,65 @@
-name: CI
+dockerimage_scan:
+  name: Build and Scan Docker Image
+  runs-on: ubuntu-latest
 
-on: [push]
+  steps:
+    # Checkout the code
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-jobs:
-  # SAST Scan Job
-  sast_scan:
-    name: Run Bandit Scan on app
-    runs-on: ubuntu-latest
+    # Remove Default Moby
+    - name: Remove Default Moby
+      run: |
+        sudo apt-get remove -y moby-engine moby-cli || echo "Moby not installed"
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.11  # Updated Python version
-
-      - name: Install Bandit
-        run: pip install bandit
-
-      - name: Run Bandit Scan in current directory
-        run: bandit -ll -ii -r . -f json -o bandit-report.json
+    # Install Docker
+    - name: Install Docker
+      run: |
+        # Update package index
+        sudo apt-get update
         
-      - name: Upload the artifact(s)
-        uses: actions/upload-artifact@v3
-        if: always()
-        with: 
-          name: Bandit vulnerability findings
-          path: bandit-report.json
+        # Install prerequisites
+        sudo apt-get install -y \
+          ca-certificates \
+          curl \
+          gnupg \
+          lsb-release
+        
+        # Add Docker's official GPG key
+        curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+        
+        # Set up Docker repository
+        echo \
+          "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
+          $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+        
+        # Install Docker
+        sudo apt-get update
+        sudo apt-get install -y docker-ce docker-ce-cli containerd.io
 
-  # Docker Image Scan Job
-  dockerimage_scan:
-    name: Build and Scan Docker Image
-    runs-on: ubuntu-latest
+    # Verify Docker Version
+    - name: Verify Docker Version
+      run: docker --version
 
-    steps:
-      # Checkout the code
-      - name: Checkout code
-        uses: actions/checkout@v2
+    # Build Docker Image
+    - name: Build Docker Image
+      run: docker build -f Dockerfile -t agapp:latest .
 
-      # Remove Default Moby
-      - name: Remove Default Moby
-        run: |
-          sudo apt-get remove -y moby-engine moby-cli || echo "Moby not installed"
+    # Install and Run Docker Scout
+    - name: Docker Scout Scan
+      run: |
+        # Install Docker Scout
+        curl -fsSL https://raw.githubusercontent.com/docker/scout-cli/main/install.sh -o install-scout.sh
+        sh install-scout.sh
 
-      # Install Docker
-      - name: Install Docker
-        run: |
-          # Update package index
-          sudo apt-get update
-          
-          # Install prerequisites
-          sudo apt-get install -y \
-            ca-certificates \
-            curl \
-            gnupg \
-            lsb-release
-          
-          # Add Docker's official GPG key
-          curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-          
-          # Set up Docker repository
-          echo \
-            "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
-            $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-          
-          # Install Docker
-          sudo apt-get update
-          sudo apt-get install -y docker-ce docker-ce-cli containerd.io
+        # Run Scout scans
+        docker scout quickview
+        docker scout cves
 
-      # Verify Docker Version
-      - name: Verify Docker Version
-        run: docker --version
-
-      # Build Docker Image
-      - name: Build Docker Image
-        run: docker build -f Dockerfile -t agapp:latest .
-
-      # Install and Run Docker Scout
-      - name: Docker Scout Scan
-        run: |
-          # Install Docker Scout
-          curl -fsSL https://raw.githubusercontent.com/docker/scout-cli/main/install.sh -o install-scout.sh
-          sh install-scout.sh
-
-          # Run Scout scans
-          docker scout quickview
-          docker scout cves
+    # Fix for the apt-get issue with dependencies (dnsutils, libpq-dev, python3-dev)
+    - name: Install Dependencies in Docker Image
+      run: |
+        # Install necessary packages
+        sudo apt-get update
+        sudo apt-get install --no-install-recommends -y dnsutils libpq-dev python3-dev
+        sudo apt-get clean && rm -rf /var/lib/apt/lists/*
