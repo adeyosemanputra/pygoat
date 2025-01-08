@@ -1,4 +1,35 @@
-dockerimage_scan:
+name: CI
+
+on: [push]
+
+jobs:
+  sast_scan:
+    name: Run Bandit Scan on app
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      - name: Install Bandit
+        run: pip install bandit
+
+      - name: Run Bandit Scan in current directory
+        run: bandit -ll -ii -r . -f json -o bandit-report.json
+        
+      - name: Upload the artifact(s)
+        uses: actions/upload-artifact@v3
+        if: always()
+        with: 
+         name: Bandit vulnerability findings
+         path: bandit-report.json
+
+  dockerimage_scan:
   name: Build and Scan Docker Image
   runs-on: ubuntu-latest
 
@@ -63,3 +94,9 @@ dockerimage_scan:
         sudo apt-get update
         sudo apt-get install --no-install-recommends -y dnsutils libpq-dev python3-dev
         sudo apt-get clean && rm -rf /var/lib/apt/lists/*
+
+         
+        
+      
+
+        
