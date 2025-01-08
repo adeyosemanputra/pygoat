@@ -3,6 +3,7 @@ name: CI
 on: [push]
 
 jobs:
+  # SAST Scan Job
   sast_scan:
     name: Run Bandit Scan on app
     runs-on: ubuntu-latest
@@ -26,33 +27,64 @@ jobs:
         uses: actions/upload-artifact@v3
         if: always()
         with: 
-         name: Bandit vulnerability findings
-         path: bandit-report.json
+          name: Bandit vulnerability findings
+          path: bandit-report.json
 
+  # Docker Image Scan Job
   dockerimage_scan:
-      name: Build our image and run a scan on it
-      runs-on: ubuntu-latest
+    name: Build and Scan Docker Image
+    runs-on: ubuntu-latest
 
-      steps:
+    steps:
+      # Checkout the code
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up our docker
-        uses: docker-practice/actions-setup-docker@v1
-        with:
-         docker_version: '20.10'
+      # Remove Default Moby
+      - name: Remove Default Moby
+        run: |
+          sudo apt-get remove -y moby-engine moby-cli || echo "Moby not installed"
 
-      - name: Build the image
+      # Install Docker
+      - name: Install Docker
+        run: |
+          # Update package index
+          sudo apt-get update
+          
+          # Install prerequisites
+          sudo apt-get install -y \
+            ca-certificates \
+            curl \
+            gnupg \
+            lsb-release
+          
+          # Add Docker's official GPG key
+          curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+          
+          # Set up Docker repository
+          echo \
+            "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
+            $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+          
+          # Install Docker
+          sudo apt-get update
+          sudo apt-get install -y docker-ce docker-ce-cli containerd.io
+
+      # Verify Docker Version
+      - name: Verify Docker Version
+        run: docker --version
+
+      # Build Docker Image
+      - name: Build Docker Image
         run: docker build -f Dockerfile -t agapp:latest .
 
-      - name: Docker Scout Scan image
+      # Install and Run Docker Scout
+      - name: Docker Scout Scan
         run: |
-         curl -fsSL https://raw.githubusercontent.com/docker/scout-cli/main/install.sh -o install-scout.sh
-         sh install-scout.sh
-         docker scout quickview
-         docker scout cves
-         
-        
-      
+          # Install Docker Scout
+          curl -fsSL https://raw.githubusercontent.com/docker/scout-cli/main/install.sh -o install-scout.sh
+          sh install-scout.sh
 
-        
+          # Run Scout scans
+          docker scout quickview
+          docker scout cves
