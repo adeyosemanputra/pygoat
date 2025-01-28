@@ -36,14 +36,20 @@ jobs:
       # Fetch project source with GitHub Actions Checkout. 
       - uses: actions/checkout@v4
       # Run the "semgrep ci" command on the command line of the docker image.
-      - run: semgrep ci
+      - run: semgrep ci --sarif > semgrep.sarif
         env:
           # Set the SEMGREP_RULES environment variable to specify which rules Semgrep should use.
           # Use common security-related rulesets for this job (starting with `p/`)
           # or use a directory with your custom rules from the current repository (such as `semgrep-rules/`).
           SEMGREP_RULES: >
             p/default  
-            
+      
+      - name: Upload SARIF file for GitHub Advanced Security Dashboard
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: semgrep.sarif
+        if: always()
+        
   semgrep-pr:
     # Run only within Pull Requests.
     # Skip any PR created by dependabot to avoid permission issues
