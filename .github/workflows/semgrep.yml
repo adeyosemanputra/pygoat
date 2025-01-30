@@ -43,6 +43,7 @@ jobs:
           # or use a directory with your custom rules from the current repository (such as `semgrep-rules/`).
           SEMGREP_RULES: >
             p/default  
+          SEMGREP_APP_TOKEN: ${{ secrets.SEMGREP_APP_TOKEN }}
       
       - name: Upload SARIF file for GitHub Advanced Security Dashboard
         uses: github/codeql-action/upload-sarif@v3
