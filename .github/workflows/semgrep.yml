@@ -1,0 +1,76 @@
+# Name of this GitHub Actions workflow.
+name: Semgrep
+
+on:
+  # Scan changed files in PRs (diff-aware scanning):
+  pull_request: {}
+  # Scan on-demand through GitHub Actions interface:
+  workflow_dispatch: {}
+  # Run the workflow on push events to mainline branches.
+  push:
+    branches:
+      - main
+      - master
+  # Schedule the CI job (this method uses cron syntax):
+  schedule:
+    - cron: '0 0 1 * *' # Sets Semgrep to scan on the first of every month at 00:00.
+
+jobs:
+  semgrep-schedule:
+    # Job for scheduled scans
+    
+    # Define the conditions for running this job. Run on schedule, push to master/main, or merged PR.
+    # Skip any PR created by Dependabot to avoid permission issues.
+    if: ((github.event_name == 'schedule' || github.event_name == 'push' || github.event.pull_request.merged == true)
+        && github.actor != 'dependabot[bot]')
+    
+    # Name this GitHub Actions job.
+    name: Semgrep default scan
+    runs-on: ubuntu-latest
+
+    container:
+      # A Docker image with Semgrep installed. Do not change this.
+      image: semgrep/semgrep
+
+    steps:
+      # Fetch project source with GitHub Actions Checkout. 
+      - uses: actions/checkout@v4
+      # Run the "semgrep ci" command on the command line of the docker image.
+      - run: semgrep ci --sarif > semgrep.sarif
+        env:
+          # Set the SEMGREP_RULES environment variable to specify which rules Semgrep should use.
+          # Use common security-related rulesets for this job (starting with `p/`)
+          # or use a directory with your custom rules from the current repository (such as `semgrep-rules/`).
+          SEMGREP_RULES: >
+            p/default  
+      
+      - name: Upload SARIF file for GitHub Advanced Security Dashboard
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: semgrep.sarif
+        if: always()
+        
+  semgrep-pr:
+    # Run only within Pull Requests.
+    # Skip any PR created by dependabot to avoid permission issues
+    if: (github.event_name == 'pull_request' && github.actor != 'dependabot[bot]')
+    
+    # Scan for PRs
+    name: Semgrep PR scan 
+    
+    runs-on: ubuntu-latest
+    container:
+      # Use the GitHub Actions Checkout step to fetch the project source code.
+      image: semgrep/semgrep
+    steps:
+      # Fetch project source with GitHub Actions Checkout.
+      - uses: actions/checkout@v4
+      # Execute the "semgrep ci" command within the Semgrep Docker container.
+      - run: semgrep ci
+        env:
+          # Set the SEMGREP_RULES environment variable to specify which rules Semgrep should use.
+          # Use common security-related rulesets for this job (starting with `p/`)
+          # or use a directory with your custom rules from the current repository (such as `semgrep-rules/`).
+          SEMGREP_RULES: > 
+            p/cwe-top-25
+            p/owasp-top-ten
