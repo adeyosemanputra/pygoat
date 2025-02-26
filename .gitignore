@@ -7,3 +7,11 @@ venv
 *db.sqlite3*
 app.log
 bin
+
+
+#  LOG files
+*.log
+
+# vscode
+.vscode/
+
