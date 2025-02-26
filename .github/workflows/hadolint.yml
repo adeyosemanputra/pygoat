@@ -5,6 +5,7 @@
 # hadoint is a Dockerfile linter written in Haskell
 # that helps you build best practice Docker images.
 # More details at https://github.com/hadolint/hadolint
+# testing the pipeline
 
 name: Hadolint
 

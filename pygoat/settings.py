@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+
 import django_heroku
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -44,7 +45,7 @@ INSTALLED_APPS = [
     'introduction.apps.IntroductionConfig',
     'challenge.apps.ChallengeConfig',
     'crispy_forms',
-
+    'crispy_bootstrap4',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -133,6 +134,8 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 

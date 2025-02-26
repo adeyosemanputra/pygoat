@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
-import os
-import sys
 import ctypes
+import os
 import platform
-import colorama
 import subprocess
+import sys
 from shutil import rmtree, which
+
+import colorama
 
 
 # Platform indepent way to check if user is admin

@@ -16,7 +16,7 @@ Table of Contents
       * [Docker Container](#docker-container)
       * [Installation Video](#installation-video)
    * [Uninstallation](#uninstallation)
-   * [Solutions](#solutions)
+   * [Solutions](/Solutions/solution.md)
    * [For Developers](/docs/dev_guide.md)
 
 ## Installation
@@ -36,26 +36,23 @@ First, Clone the repository using GitHub website or git in Terminal
 #### Method 1
 
 1. Install all app and python requirements using installer file - `bash installer.sh`
-2. Change directory to the the Django Project directory `cd pygoat`<br>
-3. Apply the migrations `python3 manage.py migrate`.<br>
-4. Finally, run the development server `python3 manage.py runserver`.<br>
-5. The project will be available at <http://127.0.0.1:8000> 
+2. Apply the migrations `python3 manage.py migrate`.<br>
+3. Finally, run the development server `python3 manage.py runserver`.<br>
+4. The project will be available at <http://127.0.0.1:8000> 
 
 #### Method 2
 
 1. Install python3 requirements `pip install -r requirements.txt`.<br> 
-2. Change directory to the the Django Project directory `cd pygoat`<br>
-3. Apply the migrations `python3 manage.py migrate`.<br>
-4. Finally, run the development server `python3 manage.py runserver`.<br>
-5. The project will be available at <http://127.0.0.1:8000> 
+2. Apply the migrations `python3 manage.py migrate`.<br>
+3. Finally, run the development server `python3 manage.py runserver`.<br>
+4. The project will be available at <http://127.0.0.1:8000> 
 
 #### Method 3
 
 1. Install all app and python requirements using `setup.py` file - `pip3 install .`
-2. Change directory to the the Django Project directory `cd pygoat`<br>
-3. Apply the migrations `python3 manage.py migrate`.<br>
-4. Finally, run the development server `python3 manage.py runserver`.<br>
-5. The project will be available at <http://127.0.0.1:8000> 
+2. Apply the migrations `python3 manage.py migrate`.<br>
+3. Finally, run the development server `python3 manage.py runserver`.<br>
+4. The project will be available at <http://127.0.0.1:8000> 
 
 ### Docker Container
 1. Install [Docker](https://www.docker.com)
@@ -70,10 +67,9 @@ First, Clone the repository using GitHub website or git in Terminal
 
 ### Build Docker Image and Run
 1. Clone the repository  &ensp; `git clone https://github.com/adeyosemanputra/pygoat.git` 
-2. Change the directory where Dockerfile exists  &ensp; `cd pygoat`
-3. Build the docker image from Dockerfile using &ensp; `docker build -f Dockerfile -t pygoat .`
-4. Run the docker image &ensp;`docker run --rm -p 8000:8000 pygoat:latest`
-5. Browse to <http://127.0.0.1:8000> or <http://0.0.0.0:8000> 
+2. Build the docker image from Dockerfile using &ensp; `docker build -f Dockerfile -t pygoat .`
+3. Run the docker image &ensp;`docker run --rm -p 8000:8000 pygoat:latest`
+4. Browse to <http://127.0.0.1:8000> or <http://0.0.0.0:8000> 
 
 ### Installation video 
 
@@ -81,6 +77,9 @@ First, Clone the repository using GitHub website or git in Terminal
  - [Installing PyGoat from Source](https://www.youtube.com/watch?v=7bYBJXG3FRQ)
 2. Without using `installer.sh`
  - [![](http://img.youtube.com/vi/rfzQiMeiwso/0.jpg)](http://www.youtube.com/watch?v=rfzQiMeiwso "Installation Pygoat")
+3. Install with Mac M1 (using Virtualenv)
+ - [![](http://img.youtube.com/vi/rfzQiMeiwso/0.jpg)](https://youtu.be/a5UV7mUw580 "Install with Mac M1 - using Virtualenv")
+
 
 ## Uninstallation
 
@@ -99,7 +98,7 @@ $ python3 uninstaller.py
 ```
 
 ## Solutions 
-<a href="/pygoat/Solutions/solution.md">Solutions to all challenges</a>
+<a href="/Solutions/solution.md">Solutions to all challenges</a>
 
 ## Contributors ✨
 

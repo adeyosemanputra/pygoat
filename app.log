@@ -815,3 +815,10 @@ INFO:django.utils.autoreload:/home/sankalpa/Desktop/gsoc/pygoat/introduction/vie
 INFO:django.utils.autoreload:/home/sankalpa/Desktop/gsoc/pygoat/introduction/views.py changed, reloading.
 INFO:django.utils.autoreload:/home/sankalpa/Desktop/gsoc/pygoat/introduction/views.py changed, reloading.
 INFO:django.utils.autoreload:/home/sankalpa/Desktop/gsoc/pygoat/introduction/views.py changed, reloading.
+WARNING:django.request:Not Found: /mitre/21f
+WARNING:django.request:Not Found: /favicon.ico
+INFO:django.utils.autoreload:/home/toxin/Project/gsoc/pygoat/pygoat/settings.py changed, reloading.
+WARNING:django.request:Not Found: /mitre/21f
+INFO:django.utils.autoreload:/home/toxin/Project/gsoc/pygoat/pygoat/settings.py changed, reloading.
+WARNING:django.request:Not Found: /mitre/21f
+WARNING:django.request:Not Found: /x

@@ -1,5 +1,6 @@
 import requests
 
+
 def check_vuln(list_of_modules)->list:
     vulns = []
     for i in list_of_modules:
