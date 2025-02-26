@@ -1,0 +1,64 @@
+name: CI
+
+on: [push]
+
+jobs:
+  sast_scan:
+    name: Run Bandit Scan on app
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      - name: Install Bandit
+        run: pip install bandit
+
+      - name: Run Bandit Scan in current directory
+        run: bandit -ll -ii -r . -f json -o bandit-report.json
+        
+      - name: Upload the artifact(s)
+        uses: actions/upload-artifact@v3
+        if: always()
+        with: 
+          name: Bandit vulnerability findings
+          path: bandit-report.json
+
+  dockerimage_scan:
+    name: Build our image and run a scan on it
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up our docker
+        uses: docker-practice/actions-setup-docker@v1
+        with:
+          docker_version: '20.10'
+
+      - name: Set up Docker daemon configuration
+        run: |
+          echo '{
+            "hosts": ["unix:///var/run/docker.sock"],
+            "live-restore": true
+          }' | sudo tee /etc/docker/daemon.json
+        # Ensure Docker is restarted to apply configuration
+      - name: Restart Docker
+        run: |
+          sudo systemctl restart docker
+
+      - name: Build the image
+        run: docker build -f Dockerfile -t agapp:latest .
+
+      - name: Docker Scout Scan image
+        run: |
+          curl -fsSL https://raw.githubusercontent.com/docker/scout-cli/main/install.sh -o install-scout.sh
+          sh install-scout.sh
+          docker scout quickview
+          docker scout cves
