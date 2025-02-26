@@ -1,0 +1,12 @@
+[
+    {
+        "name":"do-it-fast",
+        "description":"You want flag ?\nThis webside gives you ?\nyeah, just need to login and grab fast",
+        "docker_image": "rupak2001/do-it-fast",
+        "docker_port": 5050,
+        "start_port" : 5000,
+        "end_port" : 5500,
+        "flag": "flag{do_it_fast}",
+        "point" : 100
+    }
+]

@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'introduction.apps.IntroductionConfig',
+    'challenge.apps.ChallengeConfig',
     'crispy_forms',
     'crispy_bootstrap4',
     'allauth',
