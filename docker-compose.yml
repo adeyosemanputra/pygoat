@@ -1,17 +1,4 @@
 services:
-  db:
-    image: postgres
-    ports:
-      - "${POSTGRES_PORT}:5432"
-    volumes:
-      - postgres_db:/var/lib/postgresql/data
-    environment:
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_DB=${POSTGRES_DB}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-    restart: always
-    env_file:
-      - .env
   web:
     build: .
     command: gunicorn --bind 0.0.0.0:8000 --workers 6 pygoat.wsgi
@@ -21,14 +8,8 @@ services:
       - .:/app
     depends_on:
       - migration
-      - db
   migration:
     build: .
     command: python manage.py migrate --noinput
     volumes:
       - .:/app
-    depends_on:
-      - db
-
-volumes:
-  postgres_db:
