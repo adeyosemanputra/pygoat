@@ -9,7 +9,7 @@ services:
     depends_on:
       - migration
   migration:
-    build: .
+    image: pygoat/pygoat:latest
     command: python manage.py migrate --noinput
     volumes:
       - .:/app
