@@ -31,7 +31,7 @@ jobs:
       - name: Check rra.md last modified date
         id: check_date
         run: |
-          six_months_ago=$(date -d '6 months ago' +%s)
+          six_months_ago=$(date -d '3 months ago' +%s)
           echo "six_months_ago=$six_months_ago" >> $GITHUB_ENV
           echo "Six monts ago timestamp: $six_months_ago"
           
