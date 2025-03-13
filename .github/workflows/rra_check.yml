@@ -30,7 +30,7 @@ jobs:
         id: check_date
         run: |
           six_months_ago=$(date -d '3 months ago' +%s)
-          echo "six months date: " >> $GITHUB_ENV
+          echo "six_months_ago=$six_months_ago" >> $GITHUB_ENV
           echo "Six monts ago timestamp: $six_months_ago"
           
           last_modified=$(git log -1 --format=%at -- rra.md)
