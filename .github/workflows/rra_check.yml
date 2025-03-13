@@ -30,9 +30,18 @@ jobs:
         id: check_date
         run: |
           six_months_ago=$(date -d '3 months ago' +%s)
-          echo "six months date: " + $six_months_ago
+          echo "six months date: " >> $GITHUB_ENV
+          echo "Six monts ago timestamp: $six_months_ago"
+          
           last_modified=$(git log -1 --format=%at -- rra.md)
-          echo "last_modified date: " + $last_modified
+          if [ -z "$last_modified" ]; then
+            echo "Could not determine last modified date. Exiting."
+            exit 1
+          fi
+          
+          echo "last_modified = $last_modified" >> $GITHUB_ENV
+          echo "Last modified timestamp: $last_modified"
+          
           if [ "$last_modified" -lt "$six_months_ago" ]; then
             echo "needs_update=true" >> $GITHUB_ENV
             echo "Update needed"
