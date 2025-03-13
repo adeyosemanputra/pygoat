@@ -27,7 +27,7 @@ Risk Impact Rating (if known): ?
 5. Does this service handle or store sensitive personal information, such as Social Security Numbers, addresses, or phone numbers? No
 6. Is this service subject to compliance certification (e.g. PCI, GDPR, HHIPAA)? No
 7. Does this service involve the encryption, decryption, or key management of sensitive data? No
-8. Does the service share sensitive data with any third-party systems or vendors? No
+8. Does the service share sensitive data with any third-party systems or vendors? Yes
 9. Does this service process or store intellectual property, proprietary algorithms, or confidential business information? No
 10. Could a breach of this service allow unauthorized access to other critical systems or data stores? No
 11. Does this service store or process data that, if disclosed, could harm the organization's brand reputation or customer trust? No
