@@ -8,7 +8,9 @@ Answer each question. Please contact <security team> if you have questions.
 > Please update the service metadata
 
 Service Name: Pygoat-github-actions
+
 Service Owner: @chad-butler-git
+
 Risk Impact Rating (if known): ?
 
 
