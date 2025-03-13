@@ -29,7 +29,7 @@ jobs:
       - name: Check rra.md last modified date
         id: check_date
         run: |
-          six_months_ago=$(date -d '6 months ago' +%s)
+          six_months_ago=$(date -d '3 months ago' +%s)
           last_modified=$(git log -1 --format=%at -- rra.md)
           if [ "$last_modified" -lt "$six_months_ago" ]; then
             echo "needs_update=true" >> $GITHUB_ENV
