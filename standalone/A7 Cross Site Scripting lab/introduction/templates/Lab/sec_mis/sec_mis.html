@@ -1,0 +1,85 @@
+{% extends 'introduction/base.html' %}
+{% block content %}
+{% block title %}
+<title>Security Misconfiguration</title>
+{% endblock %}
+<div class="content">
+	<h3></h3>
+	<div class="box">
+		<h4>What is Security Misconfiguration</h4>
+		<p class="bp">
+			Security misconfiguration can happen at any level of an application stack, including the network services,
+			platform, web server, application server, database, frameworks, custom code, and pre-installed virtual machines,
+			containers, or storage. Automated scanners are useful for detecting misconfigurations, use of default accounts or
+			configurations, unnecessary services, legacy options, etc.
+		</p>
+		<p class="bp">
+			Such flaws frequently give attackers unauthorized access to some system data or functionality. Occasionally, such
+			flaws result in a complete system compromise.
+			The business impact depends on the protection needs of the application and data.
+		</p>
+
+		<button class="coll btn btn-info">Lab 1 Details</button>
+		<div class="lab">
+			<p class="bp">
+				This lab has a Security misconfiguration. It has a button which reveal the secret key but it is only accessible
+				if the admin is accessing it. How to checkin as admin? Is there a cookie, OR A request header?
+
+				Hint:
+			<ul>
+				<li>Clicking on the Secret Key button gives an error message, try using the hint to change the request.</li>
+			</ul>
+			</p>
+			<br>
+			<div align="right">
+				<button class="btn btn-info" type="button" onclick="window.location.href='/sec_mis_lab'">Access Lab</button>
+			</div>
+		</div>
+
+		<button class="coll btn btn-info">Lab 2 Details</button>
+		<div class="lab">
+			<p class="bp">
+				One of the features of having DEBUG=True is dumping lots of metadata from your environment, including the whole settings.py configurations, when a exception occurs.
+				<br>Can u trigger a 500 error and get the SENSITIVE_DATA ?
+			</p>
+			<br>
+			<div align="right">
+				<button class="btn btn-info" type="button" onclick="window.location.href='/data_exp_lab'">Access Lab</button>
+			</div>
+		</div>
+
+		<button class="coll btn btn-info">Lab 3 Details</button>
+		<div class="lab">
+			<p class="bp">
+				Solve lab2 before solving this. <br>
+				<h3>Can you login as admin ? </h3>
+				<br>For hint you can see the code in the lab page..
+			</p>
+			<br>
+			<div align="right">
+				<button class="btn btn-info" type="button" onclick="window.location.href='/sec_mis_lab3'">Access Lab</button>
+			</div>
+		</div>
+
+
+		<h4>Security Misconfiguration</h4>
+		<p class="bp">
+			The application might be vulnerable if the application is:
+		<ul>
+			<li> Missing appropriate security hardening across any part of the application stack, or improperly configured
+				permissions on cloud services.</li>
+			<li> Unnecessary features are enabled or installed (e.g. unnecessary ports, services, pages, accounts, or
+				privileges).</li>
+			<li> Default accounts and their passwords still enabled and unchanged.</li>
+			<li> Error handling reveals stack traces or other overly informative error messages to users.</li>
+			<li> For upgraded systems, latest security features are disabled or not configured securely.</li>
+			<li> The security settings in the application servers, application frameworks (e.g. Struts, Spring, ASP.NET),
+				libraries, databases, etc. not set to secure values.</li>
+			<li> The server does not send security headers or directives or they are not set to secure values.</li>
+			<li> The software is out of date or vulnerable (see A9:2017-Using Components with Known Vulnerabilities).
+				Without a concerted, repeatable application security configuration process, systems are at a higher risk.</li>
+		</ul>
+		</p>
+	</div>
+</div>
+{% endblock %}

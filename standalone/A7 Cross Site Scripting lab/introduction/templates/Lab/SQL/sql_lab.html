@@ -1,0 +1,48 @@
+{% extends "introduction/base.html" %}
+{% block content %}
+{% block title %}
+<title>SQL LAB</title>
+{% endblock %}
+
+<div class="jumbotron">
+    <h4 style="text-align:center"> Can You Log in as Admin</h4>
+    <div class="login">
+        <form method="post" action="/sql_lab">
+            {% csrf_token %}
+            <input id="input" type="text" name="name" placeholder="User Name"><br>
+            <input id="input" type="password" name="pass" placeholder="Password"><br>
+            <button style="margin-top:20px" class="btn btn-info" type="submit"> Log in</button>
+
+
+        </form>
+    </div>
+</div>
+
+<div class="container">
+    {% if user1 %}
+    <h4>Logged in as:
+        <pre>{{user1}}</pre>
+    </h4>
+
+    {% elif wrongpass %}
+    <h4> The password you have entered doesnt match the username!</h4>
+    <h4> The SQL query being submitted is
+        <pre>{{ sql_error }}</pre>
+    </h4>
+
+    {% elif no %}
+    <h4>User Not Found </h4>
+    {% else %}
+
+    {% endif %}
+
+
+</div>
+
+<br>
+<div align="right"> <button class="btn btn-info" type="button" onclick="window.location.href='/sql'">Back to Lab
+        Details</button></div>
+
+</p>
+
+{% endblock %}

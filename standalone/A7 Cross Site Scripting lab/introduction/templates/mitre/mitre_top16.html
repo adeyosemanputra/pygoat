@@ -1,0 +1,24 @@
+{% extends "introduction/base.html" %} 
+{% load static %} {% block content %} 
+{% block title %}
+<title>Missing Authorization</title>
+{% endblock %}
+<div class="container">
+  <h2 style="font-size: 2.7rem">
+    CWE-862: <span> Missing Authorization </span>
+  </h2>
+</div>
+<div class="box">
+  When an actor tries to access a resource or carry out an action, the software
+  doesn't do an authorisation check.
+  <br />
+  Assuming a user with a given identity, authorization is the process of
+  determining whether that user can access a given resource, based on the user's
+  privileges and any permissions or other access-control specifications that
+  apply to the resource. When access control checks are not applied, users are
+  able to access data or perform actions that they should not be allowed to
+  perform. This can lead to a wide range of problems, including information
+  exposures, denial of service, and arbitrary code execution.
+</div>
+
+{% endblock %}

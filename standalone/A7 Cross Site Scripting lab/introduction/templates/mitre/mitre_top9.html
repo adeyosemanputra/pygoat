@@ -1,0 +1,44 @@
+{% extends "introduction/base.html" %} 
+{% load static %} 
+{% block content %} 
+{%block title %}
+<title>Cross Site Request Forgery</title>
+{% endblock %}
+<div class="container">
+  <h2 style="font-size: 2.7rem">
+    CWE-352: <span>What is Cross Site Request Forgery ?</span>
+  </h2>
+</div>
+<div class="box">
+  A online security flaw called cross-site request forgery (CSRF) enables an
+  attacker to trick users into taking actions they did not plan to take. It
+  gives an attacker the ability to partially get around the same origin policy,
+  which is meant to stop various websites from interfering with one another.
+
+  <br><br>
+  A successful CSRF attack involves the attacker tricking the victim user into doing 
+  an accidental action. For instance, they might need to do this to make a money transfer, 
+  reset their password, or update their email address on file. The attacker might be able to 
+  take full control of the user's account depending on the nature of the action. The attacker 
+  might be able to fully manage all the data and functionality of the application if the 
+  compromised user has a privileged role inside it.
+  <br><br>
+  <span>How to protect</span>
+  <ul>
+    <li>User django's builtin csrf_token </li>
+    <li>For other framework look for similar method</li>
+  </ul>
+  <button class="coll btn btn-info">Lab 1 Details</button> 
+  <div class="lab">
+    <br> 
+    This lab contains a very baddly designed bank application<br>
+    can you attack user : `Alfresko` ( you need to login as Alfresko (Alfresco) for completeting the attack process )
+    <br><br>
+    Username : susUser2878 <br>
+    password : SUsUserpAsswOrd<br>
+    <div align="right">
+      <button class="btn btn-info" type="button" onclick="window.location.href='/mitre/9/lab/login'">Access Lab</button>
+    </div>
+  </div>
+</div>
+{% endblock %}

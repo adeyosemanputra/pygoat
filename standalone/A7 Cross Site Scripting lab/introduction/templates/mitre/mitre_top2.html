@@ -1,0 +1,41 @@
+{% extends "introduction/base.html" %}
+{% load static %}
+{% block content %}
+{% block title %}
+<title> Out-of-bounds Write </title>
+{% endblock %}
+    <div class="content">
+        <h3>CWE-79:  Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')</h3>
+        <div class="box">
+            <h4>What is Improper Neutralization of Input During Web Page Generation</h4>
+            <p class="bp">
+                One of the most pervasive, persistent, and deadly vulnerabilities in web applications is cross-site 
+                scripting (XSS). A web application receives data from an unreliable source, typically a web request.
+                 The information is given to a web user as dynamic content without first being checked for hazardous
+                  content. JavaScript is a common example of dangerous content that is delivered to a web browser,
+                   but it can also be HTML, Flash, or any other type of code that the browser is capable of executing.
+                    The range of XSS-based attacks is virtually infinite, although many of them include sending sensitive
+                     information to the attacker, such as cookies or other session data, which then directs the victim
+                      to their own web content.
+            </p>
+            <p class="bp">There are three main kinds of XSS:</p>
+            <p class="bp"><h3>Type 1: Reflected XSS (or Non-Persistent) -</h3> The server reads data directly from the HTTP request and reflects it back in the HTTP response. Reflected XSS exploits occur when an attacker causes a victim to supply dangerous content to a vulnerable web application, which is then reflected back to the victim and executed by the web browser. The most common mechanism for delivering malicious content is to include it as a parameter in a URL that is posted publicly or e-mailed directly to the victim. URLs constructed in this manner constitute the core of many phishing schemes, whereby an attacker convinces a victim to visit a URL that refers to a vulnerable site. After the site reflects the attacker's content back to the victim, the content is executed by the victim's browser.</p>
+            <p class="bp"><h3>Type 2: Stored XSS (or Persistent) -</h3>The application stores dangerous data in a database, message forum, visitor log, or other trusted data store. At a later time, the dangerous data is subsequently read back into the application and included in dynamic content. From an attacker's perspective, the optimal place to inject malicious content is in an area that is displayed to either many users or particularly interesting users. Interesting users typically have elevated privileges in the application or interact with sensitive data that is valuable to the attacker. If one of these users executes malicious content, the attacker may be able to perform privileged operations on behalf of the user or gain access to sensitive data belonging to the user. For example, the attacker might inject XSS into a log message, which might not be handled properly when an administrator views the logs.</p>
+            <p class="bp"><h3>Type 0: DOM-Based XSS -</h3>In DOM-based XSS, the client performs the injection of XSS into the page; in the other types, the server performs the injection. DOM-based XSS generally involves server-controlled, trusted script that is sent to the client, such as Javascript that performs sanity checks on a form before the user submits it. If the server-supplied script processes user-supplied data and then injects it back into the web page (such as with dynamic HTML), then DOM-based XSS is possible.</p>
+            <p class="bp">Once the malicious script is injected, the attacker can perform a variety of malicious activities. The attacker could transfer private information, such as cookies that may include session information, from the victim's machine to the attacker. The attacker could send malicious requests to a web site on behalf of the victim, which could be especially dangerous to the site if the victim has administrator privileges to manage that site. Phishing attacks could be used to emulate trusted web sites and trick the victim into entering a password, allowing the attacker to compromise the victim's account on that web site. Finally, the script could exploit a vulnerability in the web browser itself possibly taking over the victim's machine, sometimes referred to as "drive-by hacking."
+
+                In many cases, the attack can be launched without the victim even being aware of it. Even with careful users, attackers frequently use a variety of methods to encode the malicious portion of the attack, such as URL encoding or Unicode, so the request looks less suspicious.</p><br>
+            <button class="coll btn btn-info">Lab 1 Details</button>
+            <div class="lab">
+                <p class="bp">
+                    This Lab contains a executable file to download, you can access the lab from the Access Lab button or from the below link 
+                    Download the file and figure out whats going on. 
+                </p>
+                
+                <div align="right">
+                    <button class="btn btn-info" type="button" onclick="window.location.href='/2021/A8/lab2'">Access Lab</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

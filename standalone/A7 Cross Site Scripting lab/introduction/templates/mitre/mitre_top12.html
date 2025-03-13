@@ -1,0 +1,29 @@
+{% extends "introduction/base.html" %} 
+{% load static %} 
+{% block content %} 
+{%block title %}
+<title>Deserialization of Untrusted Data</title>
+{% endblock %}
+<div class="container">
+  <h2 style="font-size: 2.7rem">
+    CWE-502: <span>Deserialization of Untrusted Data</span>
+  </h2>
+</div>
+<div class="box">
+  The application deserializes untrusted data without sufficiently verifying
+  that the resulting data will be valid.
+  <br />
+  Serializing things for communication or storing them for later usage is
+  frequently practical. However, if deserialized data or code doesn't utilise
+  encryption to protect itself, it can frequently be changed without utilising
+  the given accessor functions. Additionally, any cryptography would still be
+  client-side security, which is a risky assumption in terms of security.
+  Unreliable data cannot be relied upon to be well-formed. It is sometimes
+  possible for attackers to use "gadget chains," or a collection of instances
+  and method invocations that can self-execute during the deserialization
+  process (i.e., before the object is returned to the caller), to perform
+  unauthorised actions, such as creating a shell, when developers do not place
+  restrictions on them.
+</div>
+
+{% endblock %}

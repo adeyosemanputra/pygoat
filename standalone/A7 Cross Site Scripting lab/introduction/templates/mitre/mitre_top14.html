@@ -1,0 +1,123 @@
+{% extends "introduction/base.html" %}
+{% load static %}
+{% block content %}
+{% block title %}
+<title> Improper Authentication </title>
+{% endblock %}
+    <div class="container">
+        <h2 style="font-size:2.7rem">CWE-287 <span>Improper Authentication</span></h2>
+    </div>
+    <div class="box">
+        The programme cannot or does not sufficiently demonstrate that an actor is the person they claim to be when they make a specific identity-related claim.
+        <br><br>
+        <button class="coll btn btn-info">Lab 1 Details</button>
+        <div class="lab">
+            <p class="bp">
+                The lab consists of a login page, which request users for their username and password.
+                If you don't know the password ,there is also a feature for login with otp!
+                When the users clicks the <code>login with otp</code> feature, user is directed to a page, which asks
+                users email id to send the otp.
+                When the user provides an email id , you can see that the 3 digit opt is sent back to the page itself.
+                This is not the general scenario , usually the code is sent to the registered email of the user.
+                <br>The user on receiving the 3 digit code can now enter the code in the input box that says
+                <code>Enter your OTP</code>
+                On entering the valid OTP the user gets a page which says <code>Login Successful as user : email</code>
+                .
+                If the Otp is wrong then the user gets a message saying <code>Invalid OTP</code>
+            </p>
+
+
+            <b>The Bug</b>
+
+            <p class="bp">
+                The main aim of this lab is to login as admin, for that you are gonna exploit the lack of <i>rate
+                    limiting</i> feature in the otp verification flow.
+                You can see that the otp is only of 3 digit(for demo purposes) and the application doesnt have any
+                <code>captcha</code> (To disallow any automated scripts or bots) or any restrictionds on the number of
+                tries for the otp.
+            </p>
+
+            <p class="bp">Now to send the otp to the admin's mail you need to figure out the admins mail id.
+                Luckily the admin has left his email id for the developers in the page source.
+                Admins email id <code>admin@pygoat.com</code>
+                After entering this email in the send otp input box and hit send, you can see that the page says that
+                otp has been sent to the email id of the admin.
+                In order to exploit the lack of rate limiting , we can try to <code>Brute-force</code> the 3 digit otp.
+            </p>
+
+            <p class="bp">
+                Steps to Brute force:
+            <ul>
+                <li>Open Burpsuite and configure your browser to intercept the web trafic, but dont turn intercept on.
+                </li>
+                <li>Send the otp to the admins mail id with the help of send otp feature.</li>
+                <li>In the enter the otp box enter a random 3 digit number.</li>
+                <li>Before your press login , turn intercept on on Burp suite and then press log in</li>
+                <li>Now you can see that the traffic is captured in Burpsuite.</li>
+                <li>Now use the send to intruder feature and send this request to the intruder.</li>
+                <li>Set the position of the payload to the <code>otp=</code> parameter.</li>
+                <li>Go to the payloads session and choose the payload type to number list</li>
+                <li> Fill the range to 100 to 999 with step 1.</li>
+                <li>Now click attack and you can see that the burp suite tries different combinations of otp and
+                    collects it response.</li>
+                <li>You can figure out if it has guessed the correct opt by seeing the difference in length of the
+                    response for each request.</li>
+                <li>The correct otp will have a small response length .</li>
+            </ul>
+            </p>
+
+            <p class="bp">Using this otp you will be able to login into admins account.</p>
+            </p>
+
+            <br>
+            <div align="right"> <button class="btn btn-info" type="button"
+                    onclick="window.location.href='/bau_lab'">Access Lab</button></div>
+
+            </p>
+        </div>
+        <button class="coll btn btn-info">Lab 2 Details</button>
+        <div class="lab">
+            <p class="bp"> 
+                Here is a admin pannel of the application. After some recon we got the username  <code> admin_pygoat@pygoat.com </code>
+                <br>
+                & password hash <code>$argon2id$v=19$m=65536,t=3,p=4$Ub40KHiEbH9I3Bsd4VHQDA$4zsIHDmAbejFJmaZq8a2yVIJdHvfylDlQ85w3YRLMSQ</code>
+                <br>
+                Can you access the admin pannel? or you can do something else so that real admin can't access the admin panel
+            </p>
+            <div align="right"> <button class="btn btn-info" type="button"
+                onclick="window.location.href='/auth_failure/lab2/admin12983gfugef81e8yeryepanel'">Access Lab</button></div>
+        </div>
+        <button class="coll btn btn-info">Lab 3 Details</button>
+        <div class="lab">
+            <p class="bp"> 
+                Lets assume a senario, a user 'X' access his account and before leaving he logs out from his account.
+                You didn't saw the user 'X's password, but can access his account ? 
+
+                these are the credentals of different users, try to get some unautherize access.<br>
+                
+                <span> username : <code>User1</code> | password : <code>Hash1</code> </span><br>
+                <span> username : <code>User2</code> | password : <code>Hash2</code> </span><br>
+                <span> username : <code>User3</code> | password : <code>Hash3</code> </span>
+            </p>
+            <div align="right"> <button class="btn btn-info" type="button"
+                onclick="window.location.href='auth_failure/lab3'">Access Lab</button></div>
+        </div><br>
+        <br>
+        <h4>Mitigation</h4>
+        <p class="bp">
+            This type of authentication flaw can be mitigated by:
+        <ul>
+            <li>Where possible, implement multi-factor authentication to prevent automated credential stuffing, brute force, and stolen credential reuse attacks.</li>
+            <li>Do not ship or deploy with any default credentials, particularly for admin users.</li>
+            <li>Implement weak password checks, such as testing new or changed passwords against the top 10,000 worst passwords list.</li>
+            <li>Align password length, complexity, and rotation policies with National Institute of Standards and Technology (NIST) 800-63b's guidelines in section 5.1.1 for Memorized Secrets or other modern, evidence-based password policies.</li>
+            <li>Ensure registration, credential recovery, and API pathways are hardened against account enumeration attacks by using the same messages for all outcomes.</li>
+            <li>Limit or increasingly delay failed login attempts, but be careful not to create a denial of service scenario. Log all failures and alert administrators when credential stuffing, brute force, or other attacks are detected.</li>
+            <li>Use a server-side, secure, built-in session manager that generates a new random session ID with high entropy after login. Session identifier should not be in the URL, be securely stored, and invalidated after logout, idle, and absolute timeouts.</li>
+        </ul>
+        </p>
+
+    </div>
+    </div>
+
+{% endblock %}

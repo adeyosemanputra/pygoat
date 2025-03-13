@@ -1,0 +1,15 @@
+{% extends "introduction/base.html" %}
+{% block content %}
+{% block title %}
+<title>SSRF LAB</title>
+{% endblock %}
+
+<div style="display:flex;flex-direction:column;align-items:center">
+    {% if access_denied %}
+        <h1>Access Denied</h1>
+    {% else %}
+        <h2>Super Secret Information</h2>
+    {% endif %}
+</div>
+
+{% endblock %}

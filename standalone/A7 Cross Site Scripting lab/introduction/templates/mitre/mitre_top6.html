@@ -1,0 +1,125 @@
+{% extends "introduction/base.html" %} 
+{% load static %} 
+{% block content %} 
+{% block title %}
+<title>OS Command Injection</title>
+{% endblock %}
+<div class="container">
+  <h2 style="font-size: 2.7rem">CWE-78: <span>OS Command Injection</span></h2>
+</div>
+<div class="box">
+  The software builds all or a portion of an OS command using input that has
+  been modified externally by an upstream component, but it fails to remove or
+  removes them wrongly specific aspects that could change the intended OS
+  command when it is sent to a downstream component.
+
+  <br />
+  As a result, attackers might be able to run risky, unexpected commands on the
+  operating system. In contexts where the attacker does not have direct access
+  to the operating system, like web applications, this flaw can result in a
+  vulnerability. Alternatively, if the flaw exists in a privileged programme, it
+  might allow the attacker to specify commands that aren't typically available
+  or to call alternative commands with rights they don't have. If the
+  compromised process does not adhere to the concept of least privilege, the
+  issue is made worse since attacker-controlled commands may run with elevated
+  system privileges, increasing the potential for damage.<br>
+  <span style="font-size:1.7rem">There are at least two subtypes of OS command injection:</span>
+  <ul>
+    <li>
+      The application's goal is to run a single, self-contained, fixed
+      programme. It plans to employ inputs from outside sources as arguments for
+      that programme. As an illustration, the software may utilise
+      system("nslookup [HOSTNAME]") to launch nslookup and let the user enter a
+      HOSTNAME as an argument. Attackers are unable to stop nslookup from
+      running. Attackers could insert command separators into the parameters if
+      the application does not remove them from the HOSTNAME argument, enabling
+      them to run their own programme after nslookup has done running.
+    </li>
+    <li>
+      The programme accepts an input and utilises it to choose exactly which
+      programme to start and which instructions to issue. This complete command
+      is just forwarded to the operating system by the programme. To execute the
+      [COMMAND] that the user supplied, for instance, the application can use
+      the syntax "exec([COMMAND]]". An attacker can run any command or programme
+      they choose if they have control of the COMMAND. Using functions like
+      exec() and CreateProcess() to carry out the command may prevent the
+      attacker from combining numerous commands into one line.
+    </li>
+  </ul>
+  These versions exhibit distinct programmer faults, which is a weakness. In the
+  first version, it is obvious that the author intended for the command to be
+  run to include input from unreliable sources as one of its arguments. While
+  the programmer in the second variation does not intend for the command to be
+  accessible to any untrusted parties, it is likely that the programmer did not
+  consider other potential channels via which hostile attackers could supply
+  input.<br><br>
+  <button class="coll btn btn-info">Lab Details</button>
+  <div class="lab">
+    <p class="bp">
+        This lab helps us to understand how command injection is exploitable in scenarios where inputs are sent
+        to exec,eval,sys etc.
+
+        <br>
+
+        The user on accessing the lab is provided with a feature to perform a name server lookup on the given
+        domain.
+        A domain name has to be provided after which the server would perform a ns lookup and return back to the
+        client.
+        If the user is running the lab, based on the OS they can select Windows or Linux.
+
+        <br>
+
+        <br><b>Exploiting the Bug </b>
+    <ol>
+        <li>Method 1</li>
+        <ul>
+            <li>The user can cause the server to execute commands ,because of the lack of input validation.</li>
+            <li>The user can give a domain say <code>domain && [any cmd]</code></li>
+            <li>In This case lets give <code>google.com && dir</code> and choose windows.</li>
+            <li>This should give you the output for both ns lookup as well as for the <code>dir</code></li>
+        </ul>
+        <li>Method 2</li>
+        <ul>
+            <li>The user can give a domain say <code>domain; [any cmd]</code></li>
+            <li>In This case lets give <code>google.com; dir</code> and choose windows.</li>
+            <li>This should give you the output for both ns lookup as well as for the <code>dir</code></li>
+        </ul>
+    </ol>
+    <br>
+    <b>Understanding the cause</b><br>
+    <p class="bp">
+        Lets first see how the name server lookup is performed
+        <br>
+        <code>  command="nslookup {}".format(domain)</code>
+        <br>
+        Here the domain is the user input domain. This command variable is then sent to exec function and the
+        output is displayed.
+        If the user inputs google.com the command variable will hold <code>nslookup google.com</code>.
+
+        <br><br>
+        <b>How CMD injection works</b>
+        Method 1
+        Now when the user enters <code>google.com && dir</code> The command variable will hold
+        <code>nslookup google.com && dir</code>.
+        The <code>&&</code> means <code>and</code>.<br>The system will execute <code>nslookup google.com</code>
+        first and then <code>dir</code><br>
+
+        Method 2
+        When the user enters <code>google.com ; dir</code> The command variable will hold
+        <code>nslookup google.com ; dir</code>.
+        The <code>;</code> implies the completion of the command before it, in this case the nslookup
+        command.<br>The system will execute <code>nslookup google.com</code> first and then <code>dir</code><br>
+
+    </p>
+
+    </p>
+
+    <br>
+    <div align="right"> <button class="btn btn-info" type="button"
+            onclick="window.location.href='/cmd_lab'">Access Lab</button></div>
+
+    </p>
+</div>
+</div>
+
+{% endblock %}

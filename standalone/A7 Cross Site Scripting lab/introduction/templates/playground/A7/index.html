@@ -1,0 +1,61 @@
+{% extends 'introduction/base.html' %}
+{% block content %}
+
+{% block title %}
+<title>Identification and Authentication Failures</title>
+{% endblock %}
+{% load static %}
+    
+<div class="container">
+    <h3 style="font-size:2.5rem">Lets fix the code from Lab 3 </h3>
+    <div class="row">
+    </div>
+    <button id="a9_b1" class="button2 button--winona button--border-thick button--round-l button--text-upper button--size-s button--text-thick" data-text="Lets go" onclick=event1()>
+        <span>Lets go</span>
+    </button>
+    <div id="a9_d1" style="display:none;flex-direction: column;align-items: center;">
+        <div id="textarea1">
+            <h6>api.py</h6>
+            <textarea  id="a7_input" placeholder="">
+@authentication_decorator
+@csrf_exempt
+def auth_failure_lab3(request):
+    if request.method == "GET":
+        try:
+            cookie = request.COOKIES["session_id"]
+            session = AF_session_id.objects.get(session_id=cookie)
+            if session :
+                return render(request,"Lab_2021/A7_auth_failure/lab3.html", {"username":session.user,"success":True})
+        except:
+            pass
+        return render(request, "Lab_2021/A7_auth_failure/lab3.html")
+    elif request.method == "POST":
+        token = str(uuid.uuid4())
+        try:
+            username = request.POST["username"]
+            password = request.POST["password"]
+            password = hashlib.sha256(password.encode()).hexdigest()
+        except:
+            response = render(request, "Lab_2021/A7_auth_failure/lab3.html")
+            response.set_cookie("session_id", None)
+            return response
+
+        if USER_A7_LAB3[username]['password'] == password:
+            session_data = AF_session_id.objects.create(session_id=token, user=USER_A7_LAB3[username]['username'])
+            session_data.save()
+            response = render(request, "Lab_2021/A7_auth_failure/lab3.html", {"success":True, "failure":False, "username":username})
+            response.set_cookie("session_id", token)
+            return response</textarea>
+        </div>
+        <button id="a9_b3" class="button2 button--winona button--border-thick button--round-l button--text-upper button--size-s button--text-thick" data-text="Evalute" onclick=event4()>
+            <span>Evalute</span>
+        </button>
+        <div id="a7_d4" style="display:none;flex-direction: column;align-items: center;"> </div>
+    </div>
+</div>
+
+<div style= "position : fixed ; right : 7px; bottom : 7px"> <button class="btn btn-info" type="button" onclick="window.location.href='/auth_failure'">Back to Lab
+    Details</button></div>
+    <script src="{% static 'js/a9.js'%}"> </script>
+    <script src="{% static 'js/a7.js'%}"> </script>
+{% endblock %}

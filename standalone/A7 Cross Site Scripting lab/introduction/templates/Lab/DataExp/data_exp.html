@@ -1,0 +1,49 @@
+{% extends 'introduction/base.html' %}
+{% block content %}
+{% block title %}
+<title>Sensitive Data Exposure</title>
+{% endblock %}
+<div class="content">
+  <h3>Senstive Data Exposure</h3>
+  <div class="box">
+
+    <h4>What is Sensitive Data Exposure</h4>
+    <p class="bp">
+      Information disclosure, also known as information leakage, is when a website unintentionally reveals sensitive
+      information to its users. Depending on the context, websites may leak all kinds of information to a potential
+      attacker, including:
+    <ul>
+      <li>Data about other users, such as usernames or financial information</li>
+      <li>Sensitive commercial or business data</li>
+      <li>Technical details about the website and its infrastructure</li>
+    </ul>
+    </p>
+    <button class="coll btn btn-info">Lab Details</button>
+    <div class="lab">
+      <p class="bp">
+        One of the features of having DEBUG=True is dumping lots of metadata from your environment, including the whole
+        settings.py configurations, when a exception occurs.
+      </p>
+
+      <br>
+      <div align="right"> <button class="btn btn-info" type="button"
+          onclick="window.location.href='/data_exp_lab'">Access Lab</button></div>
+    </div>
+    <h4>Mitigation</h4>
+    <p class="bp">Even though you will never be using DEBUG=True, you need extra care when naming the configurations in
+      the settings.py module. Make sure all sensitive variables use one of the keywords:
+    <ul>
+      <li>API</li>
+      <li>KEY</li>
+      <li>PASS</li>
+      <li>SECRET</li>
+      <li>SIGNATURE</li>
+      <li>TOKEN</li>
+    </ul>
+    </p>
+  </div>
+</div>
+
+
+
+{% endblock %}

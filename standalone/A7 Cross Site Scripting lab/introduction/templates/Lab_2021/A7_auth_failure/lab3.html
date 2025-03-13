@@ -1,0 +1,79 @@
+{% extends "introduction/base.html" %}
+{% block content %}
+{% block title %}
+<title>Identification and Authentication Failures</title>
+{% endblock %}
+
+{% if success %}
+    <h1>Successfully logged in as {{username}}
+    <form method="POST">
+        {% csrf_token %}
+    <button style="margin-top:20px" class="btn btn-info" type="submit">
+        Logout
+    </button>
+    </form>
+{% else %}
+    <div class="jumbotron">
+        <h4 style="text-align:center"> LOG IN </h4>
+        <div class="login" style="display: flex;justify-content: center;flex-direction: row;}">
+            <form method="post">
+                {% csrf_token %} 
+                <input id="input" type="text" name="username" placeholder="User Name"><br>
+                <input id="input" type="password" name="password" placeholder="Password"><br>
+                <button style="margin-top:20px" class="btn btn-info" type="submit"> Log in</button>
+            </form>
+        </div>
+    </div>
+
+    {% if failure %}
+        <script>alert("Login Failed")</script>
+    {% endif %}
+{% endif %}
+
+{% if is_locked %}
+<script>alert("Account Locked")</script>
+{% endif %}
+
+{% comment %} -------------------------------------------------------------------------- {% endcomment %}
+
+<button class="coll2 btn btn-info" style= "position : fixed ; right :200px; bottom : 7px">View Code</button>
+<div class="lab code">
+   <code>   
+    @authentication_decorator<br>
+@csrf_exempt<br>
+def auth_failure_lab3(request):<br>
+&emsp;if request.method == "GET":<br>
+&emsp;&emsp;try:<br>
+&emsp;&emsp;&emsp;cookie = request.COOKIES["session_id"]<br>
+&emsp;&emsp;&emsp;session = AF_session_id.objects.get(session_id=cookie)<br>
+&emsp;&emsp;&emsp;if session :<br>
+&emsp;&emsp;&emsp;&emsp;return render(request,"Lab_2021/A7_auth_failure/lab3.html", {"username":session.user,"success":True})<br>
+&emsp;&emsp;except:<br>
+&emsp;&emsp;&emsp;pass<br>
+&emsp;&emsp;return render(request, "Lab_2021/A7_auth_failure/lab3.html")<br>
+&emsp;elif request.method == "POST":<br>
+&emsp;&emsp;token = str(uuid.uuid4())<br>
+&emsp;&emsp;try:<br>
+&emsp;&emsp;&emsp;username = request.POST["username"]<br>
+&emsp;&emsp;&emsp;password = request.POST["password"]<br>
+&emsp;&emsp;&emsp;password = hashlib.sha256(password.encode()).hexdigest()<br>
+&emsp;&emsp;except:<br>
+&emsp;&emsp;&emsp;response = render(request, "Lab_2021/A7_auth_failure/lab3.html")<br>
+&emsp;&emsp;&emsp;response.set_cookie("session_id", None)<br>
+&emsp;&emsp;&emsp;return response<br>
+<br>
+&emsp;&emsp;if USER_A7_LAB3[username]['password'] == password:<br>
+&emsp;&emsp;&emsp;session_data = AF_session_id.objects.create(session_id=token, user=USER_A7_LAB3[username]['username'])<br>
+&emsp;&emsp;&emsp;session_data.save()<br>
+&emsp;&emsp;&emsp;response = render(request, "Lab_2021/A7_auth_failure/lab3.html", {"success":True, "failure":False, "username":username})<br>
+&emsp;&emsp;&emsp;response.set_cookie("session_id", token)<br>
+&emsp;&emsp;&emsp;return response<br>
+   </code>
+    
+</div>
+<div>
+
+<div style= "position : fixed ; right : 7px; bottom : 7px"> <button class="btn btn-info" type="button" onclick="window.location.href='/auth_failure'">Back to Lab
+    Details</button></div>
+
+{% endblock %}

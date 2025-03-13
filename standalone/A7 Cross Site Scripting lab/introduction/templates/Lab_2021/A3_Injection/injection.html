@@ -1,0 +1,94 @@
+{% extends 'introduction/base.html' %}
+{% block content %}
+{% block title %}
+<title>SQL Injection</title>
+{% endblock %}
+<div class="content">
+    <h3>Sql Injection</h3>
+    <div class="box">
+        An application is vulnerable to attack when:
+        <br>
+        1. User-supplied data is not validated, filtered, or sanitized by the application. <br>
+        2. Dynamic queries or non-parameterized calls without context-aware escaping are used directly in the interpreter. <br>
+        3. Hostile data is used within object-relational mapping (ORM) search parameters to extract additional, sensitive records. <br>
+        4. Hostile data is directly used or concatenated. The SQL or command contains the structure and malicious data in dynamic queries, commands, or stored procedures. <br><br>
+        
+        Some of the more common injections are SQL, NoSQL, OS command, Object Relational Mapping (ORM), LDAP, and Expression Language (EL) or Object Graph Navigation Library (OGNL) injection. The concept is identical among all interpreters. Source code review is the best method of detecting if applications are vulnerable to injections. Automated testing of all parameters, headers, URL, cookies, JSON, SOAP, and XML data inputs is strongly encouraged. Organizations can include static (SAST), dynamic (DAST), and interactive (IAST) application security testing tools into the CI/CD pipeline to identify introduced injection flaws before production deployment.
+    </div>
+
+    <div class="box">
+        <button class="coll btn btn-info">SQL Injection</button>
+        <div class="lab">
+            A SQL injection is a famous Injection attack that consists of insertion or “injection” of a SQL query via the input data
+            from the client to the application. A successful SQL injection exploit can read sensitive data from the
+            database, modify database data (Insert/Update/Delete), execute administration operations on the database
+            (such as shutdown the DBMS), recover the content of a given file present on the DBMS file system and in some
+            cases issue commands to the operating system. SQL injection attacks are a type of injection attack, in which
+            SQL commands are injected into data-plane input in order to affect the execution of predefined SQL commands.
+            <p class="bp">
+            <p class="bp">
+                <p class="bp">
+
+                    SQL injection errors occur when:
+    
+                    Data enters a program from an untrusted source.
+                    The data used to dynamically construct a SQL query
+                    The main consequences are:
+    
+                <p class="bp">
+                    This lab helps you to exploit the common type of sql injection vulnerability, caused due to the lack of
+                    input validation and directly exposing input into the query.<br>
+    
+                    The user on accessing the lab is given a log in page . The user has to try to login in as admin.
+                    SQL Injection vulnerability can be identified by injecting a <i>'</i> in any of the fields. If it
+                    results in an SQL error, SQL injection vulnerability is identified
+                    <br>
+    
+                    <b>Exploiting SQL Injection Vulnerability</b>
+                <ul>
+                    <li>Enter the user name as admin</li>
+                    <li>Enter the password as <code>anything' OR '1' ='1</code></li>
+                    <li>This should log you in as admin, without knowing the admins password.</li>
+                </ul><br>
+                <b>Understanding the Exploit</b><br>
+                <br>
+                <p class="bp">
+                    The website logs a user in by checking the entered username and password against the ones stored in the
+                    database. If they match, the user is logged in.
+                    Lets first analyse the sql query used to compare the username and password in the database.
+                    <br><code>"SELECT * FROM introduction_login WHERE user='"+name+"'AND password='"+password+"'"</code><br>
+                    The name and password parameters are the ones you give as input, which is directly inserted into the
+                    query.<br>
+    
+                    <br><b>Why the error?</b><br><br>
+    
+                    When we inserted a <i>'</i> in the input it threw an error , this is because the sql query was not
+                    balanced and it threw an error.
+                    <br><code>SELECT * FROM introduction_login WHERE user='admin' AND password='''</code><br>
+                    The query quotes in the password field are unbalanced, this can be balanced by adding another quote to
+                    it.
+    
+                    <br><br>Lets just plug our payload into the query and see what it looks like.
+                    <br><code>SELECT * FROM introduction_login WHERE user='admin' AND password='<b>anything' OR '1' ='1</b>'</code><br>
+    
+                    Now the query means select username = admin where password is <code>anything OR '1'='1'</code> . <br>
+                    <code>'1'='1'</code> will always result in TRUE and the query fetches the user with name admin and
+                    password=TRUE.
+    
+                    <br>Thus allowing us to login in as admin.
+    
+                </p>
+                </p>
+                </p>
+    
+                <br>
+                <div align="right"> <button class="btn btn-info" type="button"
+                        onclick="window.location.href='/injection_sql_lab'">Access Lab</button></div>
+                </p>
+        </div>
+    </div>        
+</div>
+
+
+
+{% endblock %}

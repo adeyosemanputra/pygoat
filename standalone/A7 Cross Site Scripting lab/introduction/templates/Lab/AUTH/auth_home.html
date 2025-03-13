@@ -1,0 +1,54 @@
+{% extends 'introduction/base.html' %}
+{% block content %}
+{% block title %}
+<title>Broken Authentication</title>
+{% endblock %}
+<div class="content">
+  <h3>Description</h3>
+  <div class="box">
+
+    <h4>What is Broken Authentication<h4>
+        <p class="bp">
+          Broken authentication is an umbrella term for several vulnerabilities that attackers exploit to impersonate
+          legitimate users online. Broadly, broken authentication refers to weaknesses in two areas: session management
+          and credential management. Both are classified as broken authentication because attackers can use either
+          avenue to masquerade as a user: hijacked session IDs or stolen login credentials.
+          <br>
+        <h4>Broken Authentication errors occur when:</h4>
+        <ul>
+          <li> Permits automated attacks such as credential stuffing, where the attacker has a list of valid usernames
+            and passwords.</li>
+          <li> Permits brute force or other automated attacks.</li>
+          <li> Permits default, weak, or well-known passwords, such as “Password1” or “admin/admin“.</li>
+          <li> Uses weak or ineffective credential recovery and forgot-password processes, such as “knowledge-based
+            answers”, which cannot be made safe.</li>
+          <li> Uses plain text, encrypted, or weakly hashed passwords.</li>
+          <li> Has missing or ineffective multi-factor authentication.</li>
+          <li> Exposes Session IDs in the URL (e.g., URL rewriting).</li>
+          <li> Does not rotate Session IDs after successful login.</li>
+          <li> Does not properly invalidate Session IDs. User sessions or authentication tokens (particularly single
+            sign-on (SSO) tokens) aren’t properly invalidated during logout or a period of inactivity.</li>
+        </ul>
+        <br>
+        <h4>The main consequences are:
+          <ul>
+            <li>Unauthorized users can acess the system.</li>
+            <li>User information is leaked</li>
+          </ul>
+
+          <br>
+          <div align="right"> <button class="btn btn-info" type="button"
+              onclick="window.location.href='/auth_lab'">Access Lab</button></div>
+          </p>
+  </div>
+  <h4>Mitigation<h4>
+      <p class="bp">Try thinking about cookies and how they can expose secrets !!!!</p>
+
+
+
+</div>
+</div>
+
+
+
+{% endblock %}

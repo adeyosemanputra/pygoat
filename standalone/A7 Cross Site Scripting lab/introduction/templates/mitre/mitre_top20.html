@@ -1,0 +1,18 @@
+{% extends "introduction/base.html" %}
+{% load static %}
+{% block content %}
+{% block title %}
+<title> Incorrect Default Permissions </title>
+{% endblock %}
+    <div class="container">
+        <h2 style="font-size:2.7rem">CWE-276: <span>Incorrect Default Permissions</span></h2>
+    </div>
+    <div class="box">During installation, installed file permissions are set to allow anyone to modify those files.
+        <br>
+        <br>
+        Usually this weakness is locally exploitable. A malicious user might be able to gain access to sensitive information, tamper with sensitive data or compromise the vulnerable system entirely. If a setuid/setgid executable has world writable permissions any local user can inject malicious content into it and execute arbitrary code with privileges of the file's owner.
+        <br>
+        Basically, any application writable by an unintended actor poses a threat to system security and might be used to elevate privileges on the system, e.g. if such application was modified by a malicious and unprivileged user before being executed by a privileged one.
+    </div>
+
+{% endblock %}

@@ -1,0 +1,157 @@
+{% extends 'introduction/base.html' %} {% block content %} {% block title %}
+<title>SSRF</title>
+{% endblock %}
+
+    <h3 style="align-self: center">Discussion page</h3>
+    <div class="playground">
+        <div id="ssrf-frame-1">
+            <h4>Lets fix the code in lab 1 of SSRF</h4>
+            <button class="btn btn-info" type="button" onclick=frame1to2()> start </button>
+        </div>
+        <div id="ssrf-progress-bar">
+            <div class="ssrf-progress-element" >
+                <div id="ssrf-bar-status1" ></div>
+            </div>
+            <div class="circle"></div>
+            <div class="ssrf-progress-element" >
+                <div id="ssrf-bar-status2"></div>
+            </div>
+            <div class="circle"></div>
+            <div class="ssrf-progress-element" >
+                <div id="ssrf-bar-status3"></div>
+            </div>
+        </div>
+        <div id="ssrf-frame-2">
+            
+            <h5>Choose the lines with insecure/defective code</h5>
+            <div class="code">
+                <div class="code-bar"> 
+                    <div style="display :flex">
+                        <div class="code-circle red"></div>
+                        <div class="code-circle yellow"></div>
+                        <div class="code-circle green"></div> 
+                    </div>
+                    <button class="btn btn-info" style= "height: 25px;padding: 2px;margin: 2.5px;" type="button" onclick=frame2to3()>Submit</button>
+                </div>
+                <form>
+                    <div class="code-line"><input type="checkbox" value="1">&emsp;&emsp; <label>def ssrf_lab(request):</label></div>
+                    <div class="code-line"><input type="checkbox" value="2">&emsp;&emsp; <label>&emsp;if request.user.is_authenticated:</label></div>
+                    <div class="code-line"><input type="checkbox" value="3">&emsp;&emsp; <label>&emsp;&emsp;if request.method=="GET":</label></div>
+                    <div class="code-line"><input type="checkbox" value="4">&emsp;&emsp; <label>&emsp;&emsp;&emsp;return render(request,"Lab/ssrf/ssrf_lab.html",{"blog":"Read Blog About SSRF"})</label></div>
+                    <div class="code-line"><input type="checkbox" value="5">&emsp;&emsp; <label>&emsp;&emsp;else:</label></div>
+                    <div class="code-line"><input type="checkbox" value="6">&emsp;&emsp; <label>&emsp;&emsp;&emsp;file=request.POST["blog"]</label></div>
+                    <div class="code-line"><input type="checkbox" value="7">&emsp;&emsp; <label>&emsp;&emsp;&emsp;try :</label></div>
+                    <div class="code-line"><input type="checkbox" value="8">&emsp;&emsp; <label>&emsp;&emsp;&emsp;&emsp;dirname = os.path.dirname(__file__)</label></div>
+                    <div class="code-line"><input type="checkbox" value="9">&emsp;&emsp; <label>&emsp;&emsp;&emsp;&emsp;filename = os.path.join(dirname, file)</label></div>
+                    <div class="code-line"><input type="checkbox" value="10">&emsp;&emsp; <label>&emsp;&emsp;&emsp;&emsp;file = open(filename,"r")</label></div>
+                    <div class="code-line"><input type="checkbox" value="11">&emsp;&emsp; <label>&emsp;&emsp;&emsp;&emsp;data = file.read()</label></div>
+                    <div class="code-line"><input type="checkbox" value="12">&emsp;&emsp; <label>&emsp;&emsp;&emsp;&emsp;return render(request,"Lab/ssrf/ssrf_lab.html",{"blog":data})</label></div>
+                    <div class="code-line"><input type="checkbox" value="13">&emsp;&emsp; <label>&emsp;&emsp;&emsp;except:</label></div>
+                    <div class="code-line"><input type="checkbox" value="14">&emsp;&emsp; <label>&emsp;&emsp;&emsp;&emsp;return render(request, "Lab/ssrf/ssrf_lab.html", {"blog": "No blog found"})</label></div>
+                    <div class="code-line"><input type="checkbox" value="15">&emsp;&emsp; <label>&emsp;else:</label></div>
+                    <div class="code-line"><input type="checkbox" value="16">&emsp;&emsp; <label>&emsp;&emsp;return redirect('login')</label></div>
+                </form>
+                
+            </div>
+        </div>
+    
+
+        <div id="ssrf-frame-3">
+            <h5> Some insecure codes in frontend side also ...</h5>
+            <div class="code">
+                <div class="code-bar"> 
+                    <div style="display :flex">
+                        <div class="code-circle red"></div>
+                        <div class="code-circle yellow"></div>
+                        <div class="code-circle green"></div> 
+                    </div>
+                    <button class="btn btn-info" style= "height: 25px;padding: 2px;margin: 2.5px;" type="button" onclick=frame3to4()>Submit</button>
+                </div>
+                <form>
+                    <div class="code-line"><input type="checkbox" name="form2" value="1">&emsp;&emsp; <label>&lt;div&gt;</label></div>
+                    <div class="code-line"><input type="checkbox" name="form2" value="2">&emsp;&emsp; <label>&emsp;&lt;form method="post" action="/ssrf_lab"&gt;{% csrf_token %}</label></div>
+                    <div class="code-line"><input type="checkbox" name="form2" value="3">&emsp;&emsp; <label>&emsp;&emsp;&lt;input type="hidden" name="blog" value="templates/Lab/ssrf/blogs/blog1.txt"&gt;label></div>
+                    <div class="code-line"><input type="checkbox" name="form2" value="4">&emsp;&emsp; <label>&emsp;&emsp;&lt;button type="submit" class="btn btn-info"&gt; Blog1 &lt;/button&gt;</label></div>
+                    <div class="code-line"><input type="checkbox" name="form2" value="5">&emsp;&emsp; <label>&emsp;&lt;/form&gt;</label></div>
+                    <div class="code-line"><input type="checkbox" name="form2" value="6">&emsp;&emsp; <label>&emsp;&lt;form method="post" action="/ssrf_lab"&gt;{% csrf_token %}</label></div>
+                    <div class="code-line"><input type="checkbox" name="form2" value="7">&emsp;&emsp; <label>&emsp;&emsp;&lt;input type="hidden" name="blog" value="templates/Lab/ssrf/blogs/blog2.txt"&gt;label></div>
+                    <div class="code-line"><input type="checkbox" name="form2" value="8">&emsp;&emsp; <label>&emsp;&emsp;&lt;button type="submit" class="btn btn-info"&gt; Blog1 &lt;/button&gt;</label></div>
+                    <div class="code-line"><input type="checkbox" name="form2" value="9">&emsp;&emsp; <label>&emsp;&lt;/form&gt;</label></div>
+                    <div class="code-line"><input type="checkbox" name="form2" value="10">&emsp;&emsp; <label>&emsp;&lt;form method="post" action="/ssrf_lab"&gt;{% csrf_token %}</label></div>
+                    <div class="code-line"><input type="checkbox" name="form2" value="11">&emsp;&emsp; <label>&emsp;&emsp;&lt;input type="hidden" name="blog" value="templates/Lab/ssrf/blogs/blog3.txt"&gt;label></div>
+                    <div class="code-line"><input type="checkbox" name="form2" value="12">&emsp;&emsp; <label>&emsp;&emsp;&lt;button type="submit" class="btn btn-info"&gt; Blog1 &lt;/button&gt;</label></div>
+                    <div class="code-line"><input type="checkbox" name="form2" value="13">&emsp;&emsp; <label>&emsp;&lt;/form&gt;</label></div>
+                    <div class="code-line"><input type="checkbox" name="form2" value="14">&emsp;&emsp; <label>&emsp;&lt;form method="post" action="/ssrf_lab"&gt;{% csrf_token %}</label></div>
+                    <div class="code-line"><input type="checkbox" name="form2" value="15">&emsp;&emsp; <label>&emsp;&emsp;&lt;input type="hidden" name="blog" value="templates/Lab/ssrf/blogs/blog4.txt"&gt;label></div>
+                    <div class="code-line"><input type="checkbox" name="form2" value="16">&emsp;&emsp; <label>&emsp;&emsp;&lt;button type="submit" class="btn btn-info"&gt; Blog1 &lt;/button&gt;</label></div>
+                    <div class="code-line"><input type="checkbox" name="form2" value="17">&emsp;&emsp; <label>&emsp;&lt;/form&gt;</label></div>
+                    <div class="code-line"><input type="checkbox" name="form2" value="18">&emsp;&emsp; <label>&lt;/div&gt;</label></div>
+                    
+                </form>
+            </div>
+        </div>
+        <div id="ssrf-frame-4">
+            <h2>Now Lets fix the code :)</h2>
+            <p class="problem-Statement-desc">
+                <strong>Problem Statement : </strong>
+                We need to share file content ( not the file itself )
+                Previous method had ssrf valuribility issue. Fix the code so that it can share file content securely.
+            </p>
+            <div id="textarea-container">
+                <div id="textarea1">
+                    <h6>views.py</h6>
+                    <textarea  id="python" placeholder="">
+def ssrf_lab(request):
+    if request.user.is_authenticated:
+        if request.method=="GET":
+            return render(request,"Lab/ssrf/ssrf_lab.html",{"blog":"Read Blog About SSRF"})
+        else:
+            file=request.POST["blog"]
+            try :
+                dirname = os.path.dirname(__file__)
+                filename = os.path.join(dirname, file)
+                file = open(filename,"r")
+                data = file.read()
+                return render(request,"Lab/ssrf/ssrf_lab.html",{"blog":data})
+            except:
+                return render(request, "Lab/ssrf/ssrf_lab.html", {"blog": "No blog found"})
+    else:
+        return redirect('login')</textarea>
+                </div>
+                <div id="textarea2">
+                    <h6>ssrf_lab.html</h6>
+                    <textarea id="html">
+<div style="display:flex;flex-direction:row;align-items:center;margin:15px">
+    <form method="post" action="/ssrf_lab">
+        {&#37; csrf_token &#37;}
+        <input type="hidden" name="blog" value="templates/Lab/ssrf/blogs/blog1.txt">
+        <button type="submit" class="btn btn-info"> Blog1 </button>
+    </form>
+    <form method="post" action="/ssrf_lab">
+        {&#37; csrf_token &#37;}
+        <input type="hidden" name="blog" value="templates/Lab/ssrf/blogs/blog2.txt">
+        <button type="submit" class="btn btn-info"> Blog2 </button>
+    </form>
+    <form method="post" action="/ssrf_lab">
+        {&#37; csrf_token &#37;}
+        <input type="hidden" name="blog" value="templates/Lab/ssrf/blogs/blog3.txt">
+        <button type="submit" class="btn btn-info"> Blog3 </button>
+    </form>
+    <form method="post" action="/ssrf_lab">
+        {&#37; csrf_token &#37;}
+        <input type="hidden" name="blog" value="templates/Lab/ssrf/blogs/blog4.txt">
+        <button type="submit" class="btn btn-info"> Blog4 </button>
+    </form>
+</div></textarea> 
+                </div>
+            </div>
+            <button class="btn btn-info" onclick=checkcode()> Submit </button>
+        </div>
+        <div id="ssrf-frame-5">
+            <h2>Congratulation you have secured the code.</h2>
+        </div>
+    </div>
+    
+    <div style= "position : fixed ; right : 7px; bottom : 7px"> <button class="btn btn-info" type="button" onclick="window.location.href='/ssrf'">Back to Lab
+        Details</button></div>
+{% endblock %}

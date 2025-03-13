@@ -1,0 +1,33 @@
+{% extends "introduction/base.html" %}
+{% block content %}
+{% load static %}
+<div class="container">
+  <div id="home-section1 ">
+    <div class="solution-container">
+      <h3 class="solution-title">Solution</h3>
+      <p class="solution-description">
+        You can find the complete solution of labs in our GitHub repository.
+      </p>
+
+      <div class="solution-link">
+        <a href="https://github.com/adeyosemanputra/pygoat/blob/master/Solutions/solution.md#a7cross-site-scripting"
+          target="_blank" class="btn btn-primary">
+          🔗 View Solution on GitHub
+        </a>
+      </div>
+
+
+    </div>
+
+    {% comment %} <div>
+      <img src="{% static 'Lab/icons/pygoat-small.png' %}" alt="home-section1" class="img-responsive"
+        id="home-section1-img">
+    </div> {% endcomment %}
+  </div>
+</div>
+
+
+
+{% comment %}
+<div class="line"></div>
+{% endcomment %} {% endblock content %}

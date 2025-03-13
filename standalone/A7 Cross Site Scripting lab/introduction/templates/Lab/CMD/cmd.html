@@ -1,0 +1,134 @@
+{% extends 'introduction/base.html' %}
+{% block content %}
+{% block title %}
+<title>Command Injection</title>
+{% endblock %}
+<div class="content">
+    <h3>Command Injection</h3>
+    <div class="box">
+
+        <h4>What is Command Injection</h4>
+        <p class="bp"> Command injection is an attack where the goal is execution of arbitrary commands on the host
+            operating system via a vulnerable application. Command injection attacks are possible when an application
+            passes unsafe user supplied data (forms, cookies, HTTP headers etc.) to a system shell. In this attack, the
+            attacker-supplied operating system commands are usually executed with the privileges of the vulnerable
+            application. Command injection attacks are possible largely due to insufficient input validation.
+        </p>
+        <button class="coll btn btn-info" style="margin-top: 15px;">Lab 1 Details</button>
+        <div class="lab">
+            <p class="bp">
+                This lab helps us to understand how command injection is exploitable in scenarios where inputs are sent
+                to exec,eval,sys etc.
+
+                <br>
+
+                The user on accessing the lab is provided with a feature to perform a name server lookup on the given
+                domain.
+                A domain name has to be provided after which the server would perform a ns lookup and return back to the
+                client.
+                If the user is running the lab, based on the OS they can select Windows or Linux.
+
+                <br>
+
+                <br><b>Exploiting the Bug </b>
+            <ol>
+                <li>Method 1</li>
+                <ul>
+                    <li>The user can cause the server to execute commands ,because of the lack of input validation.</li>
+                    <li>The user can give a domain say <code>domain && [any cmd]</code></li>
+                    <li>In This case lets give <code>google.com && dir</code> and choose windows.</li>
+                    <li>This should give you the output for both ns lookup as well as for the <code>dir</code></li>
+                </ul>
+                <li>Method 2</li>
+                <ul>
+                    <li>The user can give a domain say <code>domain; [any cmd]</code></li>
+                    <li>In This case lets give <code>google.com; dir</code> and choose windows.</li>
+                    <li>This should give you the output for both ns lookup as well as for the <code>dir</code></li>
+                </ul>
+            </ol>
+            <br>
+            <b>Understanding the cause</b><br>
+            <p class="bp">
+                Lets first see how the name server lookup is performed
+                <br>
+                <code>  command="nslookup {}".format(domain)</code>
+                <br>
+                Here the domain is the user input domain. This command variable is then sent to exec function and the
+                output is displayed.
+                If the user inputs google.com the command variable will hold <code>nslookup google.com</code>.
+
+                <br><br>
+                <b>How CMD injection works</b>
+                Method 1
+                Now when the user enters <code>google.com && dir</code> The command variable will hold
+                <code>nslookup google.com && dir</code>.
+                The <code>&&</code> means <code>and</code>.<br>The system will execute <code>nslookup google.com</code>
+                first and then <code>dir</code><br>
+
+                Method 2
+                When the user enters <code>google.com ; dir</code> The command variable will hold
+                <code>nslookup google.com ; dir</code>.
+                The <code>;</code> implies the completion of the command before it, in this case the nslookup
+                command.<br>The system will execute <code>nslookup google.com</code> first and then <code>dir</code><br>
+
+            </p>
+
+            </p>
+
+            <br>
+            <div align="right"> <button class="btn btn-info" type="button"
+                    onclick="window.location.href='/cmd_lab'">Access Lab</button></div>
+
+            </p>
+        </div>
+
+        <button class="coll btn btn-info" style="margin-top: 15px; margin-left: 15px;">Lab 2 Details</button>
+        <div class="lab">
+            <p class="bp">
+                This is another lab to understand code execution. There are some functions in python such as eval(), exec() which can be used to achieve code execution.
+                <br><br>
+                In this lab, we will be learning about the <code>eval()</code> function in python3. The <code>eval()</code> function evaluates the specified expression, if the expression is a legal Python statement, it will be executed.
+
+                <br>
+
+                <br><b>Challenge Description:</b><br>
+                In this challenge, we are given an input box, where we can calculate any arithmetic expression such as <code>1 + 1</code> or <code>5 * 5</code> etc.
+                Your task is to exploit this input form and achieve command execution on the system.
+                <br><br>
+            <b>Challenge Solution:</b><br>
+                We know that this application is using the <code>eval()</code> function in the backend to calculate the output. Instead of submitting arithmetic expressions, we can also submit python3 commands, which will be executed by the <code>eval()</code> function.
+                <br><br>
+                First, if we submit the expression <code>1 + 1</code>, we get the output as <code>2</code>. Similarly, on submitting the expression <code>7 * 7</code>, we get the output as <code>49</code>.
+                <br><br>
+                Now, if we submit <code>os.system("id")</code>, we get nothing in the output. But if we check the terminal, we will see that the command gets executed and the result is printed on the terminal screen. You can also verify this by submitting <code>os.system("sleep 30")</code>, and you will notice that the request completes after 30 seconds.</code>
+                <br><br>
+            </p>
+
+            <br>
+            <div align="right"> <button class="btn btn-info" type="button"
+                    onclick="window.location.href='/cmd_lab2'">Access Lab</button></div>
+
+            </p>
+        </div>
+
+        <br>
+        <h4>Mitigation</h4>
+        <p class="bp">
+        <ul>
+            <li>Input validation </li>
+            <li>Parameterization of user input</li>
+            <Li>Do not call os commands directly.</Li>
+            <li>Validating against a whitelist of permitted values.</li>
+
+
+        </ul>
+        </p>
+
+
+
+    </div>
+</div>
+
+
+
+{% endblock %}

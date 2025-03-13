@@ -1,0 +1,98 @@
+{% extends 'introduction/base.html' %}
+{% block content %}
+{% block title %}
+<title>XXE Injection</title>
+{% endblock %}
+<div class="content">
+    <h3>XXE Injection</h3>
+    <div class="box">
+
+        <h4>What is XML External Entity Injection</h4>
+        <p class="bp">XML External Entity injection (also known as XXE) is a web security vulnerability that allows an
+            attacker to interfere with an application's processing of XML data. It is a type of attack against an
+            application that parses XML input. This attack occurs when XML input containing a reference to an external
+            entity is processed by a weakly configured XML parser. <br>
+            It often allows an attacker to view files on the application server filesystem, and to interact with any
+            back-end or external systems that the application itself can access. <br>
+            In some situations, an attacker can escalate an XXE attack to compromise the underlying server or other
+            back-end infrastructure, by leveraging the XXE vulnerability to perform server-side request forgery (SSRF)
+            attacks.
+        </p>
+        <button class="coll btn btn-info">Lab Details</button>
+        <div class="lab">
+            <p class="bp">
+
+            <p class="bp">
+                This lab helps us to understand how xxe vulnerabilities can be exploited in the wild.
+                The lab consists of a commenting feature which asks the user to enter his/her thoughts about a picture
+                show!
+                Once he enters his comments, he is also given a feature to see how his comments are stored in the
+                database.
+                This can be done by clicking the <code>click here</code> button .
+            </p>
+            <p class="bp">
+                <b>What could go wrong here?</b><br>
+                When the user clicks the button to save his comments, the data is sent to the server in the from of xml
+                post request.
+                This can be seen by intercepting the request done to the server by that button using <b><a
+                        href="https://portswigger.net/burp/communitydownload">BurpSuite</a></b>.<br>
+                Sending data to the server in the form of XML is not actually vulnerable, the vulnerability lies in the
+                way the <i>xml is being parsed.</i>
+                An xml parser which allows the DTD retrival is vulnerable to XXE injection if there aren't any input
+                validations done on the xml data.
+
+            </p>
+            <p class="bp">
+                <b>Exploiting the XML Parser</b>
+            <ul>
+                <li>Open Burpsuite and make sure it is ready to capture the web traffic. </li>
+                <li>Enter your comments in the input box provided.</li>
+                <li>Before hiting the <b>Let the world see</b> button go to burpsuite and turn on intercept.</li>
+                <li>Now you should be able to see a post request containing a xml data with your comment inside your the
+                    text tag. </li>
+                <li>Now we need to introduce a DTD, which tries to fetch files from its server. </li>
+                <li>This can be done by using the document tag and defining the Entity.</li>
+                <li>The Payload </li><br>
+                <code style="text-align:center">
+                                                &lt;?xml version='1.0'?><br>
+                                                &lt;!DOCTYPE comm [<br>
+                                                &lt;!ELEMENT comm (#PCDATA)><br>
+                                                &lt;!ENTITY xxe SYSTEM "File_Path_Here"><br>
+                                                ]><br>
+                                                &lt;comm><br>
+                                                &lt;text>&xxe;&lt;/text><br>
+                                                &lt;/comm><br>
+                                            </code><br>
+                <li>Incase if the server is runnning linux then use file path <code>file:///etc/passwd</code> and if its
+                    running windows, use <code>C:\windows\system32\drivers\etc\hosts</code>. This will dump sensitive
+                    data about all users</li>
+                <li>Forward the request and turn of intercept.</li>
+                <li>Go to the see comments option and click view comments this should show you the requested files in
+                    your payload if the vulnerability exists.</li>
+            </ul>
+            </p>
+
+
+            </p>
+
+            <br>
+            <div align="right"> <button class="btn btn-info" type="button"
+                    onclick="window.location.href='/xxe_lab'">Access Lab</button></div>
+
+            </p>
+        </div>
+        <h4>Mitigation</h4>
+        <p class="bp">
+        <ul>
+            <li>DTD and XML external entity features must be disabled.</li>
+            <li>All XML processors and libraries used in the application must be patched and updated always.</li>
+            <li>Ensure that the user inputs are validated before being parsed</li>
+            <li>Make use of a good xml parsers, which arent vulnerable by default.</li>
+        </ul>
+        </p>
+    </div>
+</div>
+
+
+
+{% endblock %}

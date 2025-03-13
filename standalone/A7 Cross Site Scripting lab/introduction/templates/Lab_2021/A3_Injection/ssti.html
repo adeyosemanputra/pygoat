@@ -1,0 +1,42 @@
+{% extends 'introduction/base.html' %}
+{% block content %}
+{% block title %}
+<title>Server-side Template Injection</title>
+{% endblock %}
+<div class="content">
+    <h3>Server-Side Template Injection</h3>
+    <div class="box">
+        A Template is simply a reusable and dynamic HTML code, and a template engine helps us compile that template. 
+        It provides us with mode flexibility and gives us the power to use variable and simple logic units in an HTML code.
+
+        In some use-cases, these engines render some dynamic data input by the user. 
+        These engines can run some commands on server machines and access some environment variables and local variables. 
+        So if the user input is not verified properly, the user can give some malicious input and get the output when the page is
+        rendered.        
+        <br>
+        <br>
+        Server-side template injection occurs when:
+        <br>
+        1. User-supplied data is not validated, filtered, or sanitized by the application and directly embedded into a server side template <br>
+        2. Using malicious template directives, an attacker may be able to execute arbitrary code and take full control of the web server. <br>
+        3. Hostile data is used within object-relational mapping (ORM) search parameters to extract additional, sensitive records. <br>
+        
+        
+        
+    </div>
+
+    <div class="box">
+        <button class="coll btn btn-info">Lab Details</button>
+        <div class="lab">
+                This lab uses django's default template engine, and oviously the input is not filltered properly, try to get the admin password hash exploiting it.
+            
+                <div align="right"> <button class="btn btn-info" type="button"
+                    onclick="window.location.href='/ssti/lab'">Access Lab</button></div>
+                </p>
+        </div>
+    </div>        
+</div>
+
+
+
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "introduction/base.html" %}
+{% load static %}
+{% block content %}
+{% block title %}
+<title> 	NULL Pointer Dereference </title>
+{% endblock %}
+    <div class="container">
+        <h2 style="font-size:2.7rem">CWE-476: <span>	NULL Pointer Dereference</span></h2>
+    </div>
+    <div class="box">
+        The program can potentially dereference a null pointer, thereby raising a NullPointerException. Null pointer errors are usually the result of one or more programmer assumptions being violated. Most null pointer issues result in general software reliability problems, but if an attacker can intentionally trigger a null pointer dereference, the attacker might be able to use the resulting exception to bypass security logic or to cause the application to reveal debugging information that will be valuable in planning subsequent attacks.
+        <br>
+        <br>
+        A null-pointer dereference takes place when a pointer with a value of NULL is used as though it pointed to a valid memory area.
+        <br>
+        <br>
+        Null-pointer dereferences, while common, can generally be found and corrected in a simple way. They will always result in the crash of the process, unless exception handling (on some platforms) is invoked, and even then, little can be done to salvage the process.
+        <br>
+        <br>
+        <h4 id="example-1">Example 1</h4>
+
+In the following code, the programmer assumes that the system always has
+a property named “cmd” defined. If an attacker can control the program’s
+environment so that “cmd” is not defined, the program throws a null
+pointer exception when it attempts to call the trim() method.
+
+<p><code class="language-plaintext highlighter-rouge">   String cmd = System.getProperty("cmd");</code>
+    </div>
+{% endblock %}

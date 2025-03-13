@@ -1,0 +1,25 @@
+{% extends "introduction/base.html" %}
+{% block content %} 
+
+{% load crispy_forms_tags %}
+
+<div style="display: flex; flex-direction: row; flex-wrap: wrap">
+<div class="card mx-auto" style="width: 35rem; margin: 10px">
+<div class="conatiner border border-info rounded">
+
+	<!--Register--> 
+	<div class="container py-5">
+		<h1 style="color: #26282b;">Register</h1>
+		<form method="POST">
+			{% csrf_token %}
+			{{ register_form|crispy }}                    
+			<button class="btn btn-primary" type="submit">Register</button>
+		</form>
+		<br>
+		<p style="color:#26282b;">If you already have an account, <a href="/login" style="color:#027bff">Login</a> instead.</p>
+	</div>
+</div>
+</div>
+</div>
+
+{% endblock %}

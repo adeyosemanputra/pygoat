@@ -1,0 +1,37 @@
+{% extends "introduction/base.html" %}
+{% block content %}
+{% load crispy_forms_tags %}
+{% load socialaccount %}
+<div style="display: flex; flex-direction: row; flex-wrap: wrap">
+ <div class="card mx-auto" style="width: 30rem;margin: 10px">
+<div class="conatiner border border-info rounded">
+    <h2 align="center" style="margin:20px; color: #26282b">Login</h2>
+    
+    <form method="post">
+        <div class="login-form">
+        {% csrf_token %}
+        {{form|crispy}}
+        </div>
+        <div>
+         </p>
+        </div>
+        <div class="text-center">
+        <button type="submit" class="btn btn-info" style="margin:10px">Login</button>
+        </div>
+    </form>
+    <div style="display:flex;justify-content: center;align-items: center; margin-bottom: 10px;" align="center" id="o-auth">
+        
+        <a href="/register" class="btn btn-primary" style="margin-left:7px; background: #2aa2b8;">Register</a>
+
+        <form method="post" action="/accounts/google/login/">
+             {% csrf_token %} 
+            <button type="submit" class="btn btn-primary" style="margin-left:7px; background: #2aa2b8;">
+                Login with Google
+            </button>
+        </form>
+    </div>
+
+</div>
+</div>
+</div>
+{% endblock %}

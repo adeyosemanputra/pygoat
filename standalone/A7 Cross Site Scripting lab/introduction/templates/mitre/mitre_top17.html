@@ -1,0 +1,33 @@
+{% extends "introduction/base.html" %}
+{% load static %}
+{% block content %}
+{% block title %}
+<title> Command Injection </title>
+{% endblock %}
+    <div class="container">
+        <h2 style="font-size:2.7rem">CWE-77: <span>Command Injection</span></h2>
+    </div>
+
+    <div class="box">
+        The software builds all or a portion of a command using input that has been influenced externally from an upstream component, but it fails to neutralise or does so in a way that could cause the intended command to be changed when it is sent to a downstream component.
+        Command injection vulnerabilities typically occur when:
+        <ul>
+            <li>Data enters the application from an untrusted source.</li>
+            <li>The data is part of a string that is executed as a command by the application.</li>
+            <li>By executing the command, the application gives an attacker a privilege or capability that the attacker would not otherwise have.</li>
+
+        </ul>
+        Many protocols and products have their own custom command language. While OS or shell command strings are frequently discovered and targeted, developers may not realize that these other command languages might also be vulnerable to attacks.
+        Command injection is a common problem with wrapper programs.
+    </div><br>
+    <button class="coll btn btn-info">Lab 1 Details</button>
+    <div class="lab">
+        <p class="bp">
+        This is a web utility for scanning IP address for open ports.<br> 
+        Can you use this utility for something other than scanning ports?
+        <br>
+        <div align="right"> <button class="btn btn-info" type="button" onclick="window.location.href='/mitre/17/lab '">Access
+            Lab</button></div>
+    </div>
+
+{% endblock %}

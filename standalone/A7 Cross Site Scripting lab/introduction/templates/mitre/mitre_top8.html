@@ -1,0 +1,44 @@
+{% extends "introduction/base.html" %} 
+{% load static %} 
+{% block content %} 
+{% block title %}
+<title>Path Traversal</title>
+{% endblock %}
+<div class="container">
+  <h2 style="font-size: 2.7rem">CWE-22: <span>Path Traversal </span></h2>
+</div>
+<div class="box">
+  The software constructs a pathname from external input to identify a file or
+  directory that is beneath a restricted parent directory, but the pathname is
+  not correctly neutralised to prevent it from resolving to a destination
+  outside of the restricted directory.
+  <br><br>
+  A restricted directory is designed to be the location of many file operations.
+  Attackers can access files or folders located elsewhere on the system by
+  employing special characters like ".." and "/" separators to leave the
+  restricted area. The "../" sequence, which is read as the parent directory of
+  the present location by the majority of modern operating systems, is one of
+  the most prevalent special elements. Relative path traversal is the term used
+  to describe this. Absolute pathnames like "/usr/local/bin," which might be
+  used to access unexpected files, are similarly covered by path traversal.
+  Absolute path traversal is the term used to describe this.
+  <br><br>
+  In many programming languages, an attacker may be able to extend their assault
+  by truncating a generated filename by injecting a null byte (the 0 or NUL).
+  For instance, the programme might restrict the attacker to text files by
+  appending ".txt" to any pathname, but a null injection could effectively lift
+  this restriction.
+  <br><br>
+  <button class="coll btn btn-info">Lab 1 Details</button>
+  <div class="lab">
+        <br>
+          This lab access the blog files after fetching some local file path, try to get some other path after modifying the path.
+      
+          <div align="right"> <button class="btn btn-info" type="button"
+              onclick="window.location.href='/ssrf_lab'">Access Lab</button></div>
+          </p>
+  </div> 
+
+</div>
+
+{% endblock %}

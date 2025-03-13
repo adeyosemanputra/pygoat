@@ -1,0 +1,70 @@
+{% extends 'introduction/base.html' %}
+{% block content %}
+{% block title %}
+<title>Insufficient Logging & Monitoring</title>
+{% endblock %}
+<div class="content">
+  <h3>Insufficient Logging & Monitoring</h3>
+  <div class="box">
+    <h4>What does Insufficient Logging & Monitoring means?</h4>
+    <p class="bp">
+      Exploitation of insufficient logging and monitoring is the bedrock of nearly every major incident. Attackers rely
+      on the lack of monitoring and timely response to achieve their goals without being detected. <br>
+      Most successful attacks start with vulnerability probing. Allowing such probes to continue can raise the
+      likelihood of successful exploit to nearly 100%. <br>
+      In 2016, identifying a breach took an average of 191 days – plenty of time for damage to be inflicted.
+    </p>
+    <button class="coll btn btn-info">Lab 1 Details</button>
+    <div class="lab">
+      <p class="bp">
+        This lab helps you to get an idea of how sometimes improper logging can result in information disclosure.
+
+        The user on accessing the lab is given with a login page which tells us that the logs have been leaked.
+        The user needs to find the leak and try to gain the credentials that have been leaked in the logs.
+
+        <br><b>Finding the Log</b>
+      <ul>
+        <li>The log has been exposed in <code>/debug</code> route </li>
+        <li>This can be found out with subdomain brute-forcing or just by guess</li>
+        <li>On seeing the Log try to get the required login details as there is a leak and the logging is improperly
+          handled.</li>
+
+      </ul>
+
+      </p>
+      <br>
+      <div align="right"> <button class="btn btn-info" type="button" onclick="window.location.href='/a10_lab'">Access
+          Lab</button></div>
+    </div>
+    <button class="coll btn btn-info">Lab 2 Details</button>
+    <div class="lab">
+      <p class="bp">
+        It seems this application is logging every action performed in this logging page. 
+        But is there a way to inject some fake logs to the application?
+
+        <br>
+        <span>Login credentials are same as lab1</span>
+      <div align="right"> <button class="btn btn-info" type="button" onclick="window.location.href='/a10_lab_2'">Access
+          Lab</button></div>
+    </div>
+    <div>
+      <br>
+      <h4>Mitigation</h4>
+      <p class="bp">
+      <ul>
+        <li>Ensure that logs are created in a format that can be easily used by central log management tools.</li>
+        <li>High-value transactions should have an audit trail with integrity controls to prevent manipulation or
+          deletion.</li>
+        <li>Effective monitoring and alerting should be established so that suspicious activities can be detected and
+          responded to in a timely manner.</li>
+        <li>Make sure that there aren't any sensitive information like passwords are being logged</li>
+      </ul>
+      </p>
+    </div>
+    <div> 
+      <button class="coll btn btn-info" type="button" onclick="window.location.href='/2021/discussion/A9'">Code Discussion </button> </div>
+    </div>
+  </div>
+    
+
+  {% endblock %}

@@ -1,0 +1,104 @@
+{% extends 'introduction/base.html' %}
+{% block content %}
+{% block title %}
+<title>Command Injection</title>
+{% endblock %}
+<div class="content">
+    <h3>Broken Authentication</h3>
+    <div class="box">
+
+        <h4>What is Broken Authentication</h4>
+        <p class="bp">Broken authentication is an umbrella term for several vulnerabilities that attackers exploit to
+            impersonate legitimate users online. Broadly, broken authentication refers to weaknesses in two areas:
+            session management and credential management. Both are classified as broken authentication because attackers
+            can use either avenue to masquerade as a user: hijacked session IDs or stolen login credentials.
+
+            Attackers employ a wide variety of strategies to take advantage of these weaknesses, ranging from huge
+            credential stuffing attacks to highly targeted schemes aimed at gaining access to a specific person’s
+            credentials.
+        </p>
+        <button class="coll btn btn-info">Lab Details</button>
+        <div class="lab">
+            <p class="bp">
+
+
+            <p class="bp">
+                The lab consists of a login page, which request users for their username and password.
+                If you don't know the password ,there is also a feature for login with otp!
+                When the users clicks the <code>login with otp</code> feature, user is directed to a page, which asks
+                users email id to send the otp.
+                When the user provides an email id , you can see that the 3 digit opt is sent back to the page itself.
+                This is not the general scenario , usually the code is sent to the registered email of the user.
+                <br>The user on receiving the 3 digit code can now enter the code in the input box that says
+                <code>Enter your OTP</code>
+                On entering the valid OTP the user gets a page which says <code>Login Successful as user : email</code>
+                .
+                If the Otp is wrong then the user gets a message saying <code>Invalid OTP</code>
+            </p>
+
+
+            <b>The Bug</b>
+
+            <p class="bp">
+                The main aim of this lab is to login as admin, for that you are gonna exploit the lack of <i>rate
+                    limiting</i> feature in the otp verification flow.
+                You can see that the otp is only of 3 digit(for demo purposes) and the application doesnt have any
+                <code>captcha</code> (To disallow any automated scripts or bots) or any restrictionds on the number of
+                tries for the otp.
+            </p>
+
+            <p class="bp">Now to send the otp to the admin's mail you need to figure out the admins mail id.
+                Luckily the admin has left his email id for the developers in the page source.
+                Admins email id <code>admin@pygoat.com</code>
+                After entering this email in the send otp input box and hit send, you can see that the page says that
+                otp has been sent to the email id of the admin.
+                In order to exploit the lack of rate limiting , we can try to <code>Brute-force</code> the 3 digit otp.
+            </p>
+
+            <p class="bp">
+                Steps to Brute force:
+            <ul>
+                <li>Open Burpsuite and configure your browser to intercept the web trafic, but dont turn intercept on.
+                </li>
+                <li>Send the otp to the admins mail id with the help of send otp feature.</li>
+                <li>In the enter the otp box enter a random 3 digit number.</li>
+                <li>Before your press login , turn intercept on on Burp suite and then press log in</li>
+                <li>Now you can see that the traffic is captured in Burpsuite.</li>
+                <li>Now use the send to intruder feature and send this request to the intruder.</li>
+                <li>Set the position of the payload to the <code>otp=</code> parameter.</li>
+                <li>Go to the payloads session and choose the payload type to number list</li>
+                <li> Fill the range to 100 to 999 with step 1.</li>
+                <li>Now click attack and you can see that the burp suite tries different combinations of otp and
+                    collects it response.</li>
+                <li>You can figure out if it has guessed the correct opt by seeing the difference in length of the
+                    response for each request.</li>
+                <li>The correct otp will have a small response length .</li>
+            </ul>
+            </p>
+
+            <p class="bp">Using this otp you will be able to login into admins account.</p>
+            </p>
+
+            <br>
+            <div align="right"> <button class="btn btn-info" type="button"
+                    onclick="window.location.href='/bau_lab'">Access Lab</button></div>
+
+            </p>
+        </div><br>
+        <br>
+        <h4>Mitigation</h4>
+        <p class="bp">
+            This type of authentication flaw can be mitigated by:
+        <ul>
+            <li>Using captcha</li>
+            <li>Rate Limiting by reducing the number of tries for a particular user, based on session or ip</li>
+            <li>Blocking multiple request form the same IP</li>
+        </ul>
+        </p>
+
+    </div>
+</div>
+
+
+
+{% endblock %}

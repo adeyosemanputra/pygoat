@@ -1,0 +1,147 @@
+{% extends 'introduction/base.html' %}
+{% block content %}
+{% block title %}
+<title>Broken Access Control</title>
+{% endblock %}
+<div class="content">
+    <h3>Broken Access Control</h3>
+    <div class="box">
+
+        <h4>What is Broken Access Control</h4>
+        <p class="bp"> Access control, sometimes called authorization, is how a web application grants access to content
+            and functions to some users and not others. These checks are performed after authentication, and govern what
+            ‘authorized’ users are allowed to do. A web application’s access control model is closely tied to the
+            content and functions that the site provides. In addition, the users may fall into a number of groups or
+            roles with different abilities or privileges.
+
+            Access control enforces policy such that users cannot act outside of their intended permissions. Failures typically lead to unauthorized information disclosure, modification, or destruction of all data or performing a business function outside the user's limits. Common access control vulnerabilities include:
+
+            <ul>
+                <li>Violation of the principle of least privilege or deny by default, where access should only be granted for particular capabilities, roles, or users, but is available to anyone.</li>
+                <li>Bypassing access control checks by modifying the URL (parameter tampering or force browsing), internal application state, or the HTML page, or by using an attack tool modifying API requests.</li>
+                <li>Permitting viewing or editing someone else's account, by providing its unique identifier (insecure direct object references)</li>
+                <li>Accessing API with missing access controls for POST, PUT and DELETE.</li>
+                <li>Elevation of privilege. Acting as a user without being logged in or acting as an admin when logged in as a user.</li>
+                <li>CORS misconfiguration allows API access from unauthorized/untrusted origins.</li>
+                <li>Force browsing to authenticated pages as an unauthenticated user or to privileged pages as a standard user.</li>
+            </ul>
+        </p>
+    </div>
+
+    <div class="box">
+        <button class="coll btn btn-info">Lab 1 Details</button>
+        <div class="lab">
+            <p class="bp">
+            <p class="bp">
+                This lab helps us to understand one of the authentication flaws which leads to an attacker gaining
+                unauthorized control of an account.
+                On accessing the lab the user is provided with a simple login in page which requires a username and
+                password.
+                <br>The credentials for the user Jack is <b><code>jack:jacktheripper</code></b>.
+                <br>Use the above info to log in.<br>
+                The main aim of this lab is to login with admin privileges to get the secret key.
+
+                <br><br><b>Exploiting the Broken Access</b>
+            <ul>
+                <li>Every time a valid user logs in,the user session is set with a cookie called <code>admin</code>
+                </li>
+                <li>When you notice the cookie value when logged in as <code>jack</code> it is set to 0</li>
+                <li>Use BurpSuite to intercept the request change the value of the admin cookie from 0 to 1</li>
+                <li>This should log you in as a admin user and display the secret key</li>
+
+            </ul>
+            </p>
+            </p>
+
+            <br>
+            <div align="right"> <button class="btn btn-info" type="button" 
+                onclick="window.location.href='/broken_access_lab_1'">Access Lab 1</button></div>
+            
+            <br>
+        </div>
+    </div>
+
+
+
+    <div class="box">
+        <button class="coll btn btn-info">Lab 2 Details</button>
+        <div class="lab">
+            <p class="bp">
+            <p class="bp">
+                This lab helps us to understand one of the authentication flaws which leads to an attacker gaining
+                unauthorized control of an account.
+
+                <br>The credentials for the user Jack is <b><code>jack:jacktheripper</code></b>.
+                <br>Use the above info to log in.<br>
+                The main aim of this lab is to login with admin privileges to get the secret key.
+            
+
+
+                <br><br><b>Exploiting the Broken Access</b>
+            <ul>
+
+            <p class="bp">
+            <ul>
+                <li>Log in Using the credentials provided above</li>
+                <li>Search for information lying around in the source files</li>
+                <li>You'll find out that user agent needs to be <code>pygoat_admin</code></li>
+                <li>Use BurpSuite to intercept the request and change headers <code>User-Agent</code> to value pygoat_admin</li>
+
+            </ul>
+            </p>
+                
+            </ul>
+            </p>
+            </p>
+
+            <br>
+            <div align="right"> <button class="btn btn-info" type="button" 
+                onclick="window.location.href='/broken_access_lab_2'">Access Lab 2</button></div>
+            
+            <br>
+        </div>
+    </div>
+    <div class="box">
+        <button class="coll btn btn-info">Lab 3 Details</button>
+        <div class="lab">
+            <p class="bp">
+                user : admin <br>
+                password : admin_pass<br>
+                this is the admin credential <br>
+
+                and<br>
+                user : John<br>
+                password : reaper<br>
+
+                this is regular user credential<br>
+                can u get access to admin page contents using regular user credentials or without credentials ?<br>
+
+            </p>
+            <div align="right"> <button class="btn btn-info" type="button" 
+                onclick="window.location.href='/broken_access_lab_3'">Access Lab 3</button></div>
+            
+            <br>
+        </div>
+    </div>
+    
+    <div class="box">
+        <h4>Mitigation</h4>
+        <p class="bp">
+        <ul>
+            <li>Except for public resources, deny by default.</li>
+            <li>Implement access control mechanisms once and re-use them throughout the application, including minimizing Cross-Origin Resource Sharing (CORS) usage.</li>
+            <li>Model access controls should enforce record ownership rather than accepting that the user can create, read, update, or delete any record.</li>
+            <li>Unique application business limit requirements should be enforced by domain models</li>
+            <li>Disable web server directory listing and ensure file metadata (e.g., .git) and backup files are not present within web roots</li>
+            <li>Log access control failures, alert admins when appropriate (e.g., repeated failures)</li>
+            <li>Rate limit API and controller access to minimize the harm from automated attack tooling</li>
+            <li>Stateful session identifiers should be invalidated on the server after logout. Stateless JWT tokens should rather be short-lived so that the window of opportunity for an attacker is minimized. For longer lived JWTs it's highy recommended to follow the OAuth standards to revoke access.</li>
+
+        </ul>
+        </p>
+    </div>
+</div>
+
+
+
+{% endblock %}

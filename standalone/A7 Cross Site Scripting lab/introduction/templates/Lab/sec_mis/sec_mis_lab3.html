@@ -1,0 +1,53 @@
+{% extends "introduction/base.html" %}
+{% load static %}
+{% block content %}
+{% block title %}
+<title>Security Misconfiguration</title>
+{% endblock %}
+<div class="jumbotron" id="display">
+       {% if admin %}
+       <h2>loggedin as Admin
+       </h2>
+       {% else %}
+
+       <h2>
+        User Not allowed. [ Admin Only ]
+       </h2>
+       {% endif %}
+
+</div>
+
+<button class="coll2 btn btn-info" style= "position : fixed ; right :200px; bottom : 7px">View Code</button>
+
+<div class="lab code">
+   <code>   
+    from pygoat.settings import SECRET_COOKIE_KEY</br></br>
+def sec_misconfig_lab3(request):</br>
+&emsp;if not request.user.is_authenticated:</br>
+&emsp;&emsp;return redirect('login')</br>
+&emsp;try:</br>
+&emsp;&emsp;cookie = request.COOKIES["auth_cookie"]</br>
+&emsp;&emsp;payload = jwt.decode(cookie, SECRET_COOKIE_KEY, algorithms=['HS256'])</br>
+&emsp;&emsp;if payload['user'] == 'admin':</br>
+&emsp;&emsp;&emsp;return render(request,"Lab/sec_mis/sec_mis_lab3.html", {"admin":True} )</br>
+&emsp;except:</br>
+&emsp;&emsp;payload = {</br>
+&emsp;&emsp;&emsp;'user':'not_admin',</br>
+&emsp;&emsp;&emsp;'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=60),</br>
+&emsp;&emsp;&emsp;'iat': datetime.datetime.utcnow(),</br>
+&emsp;&emsp;}</br>
+    </br>
+&emsp;&emsp;cookie = jwt.encode(payload, SECRET_COOKIE_KEY, algorithm='HS256')</br>
+&emsp;&emsp;response = render(request,"Lab/sec_mis/sec_mis_lab3.html", {"admin":False} )</br>
+&emsp;&emsp;response.set_cookie(key = "auth_cookie", value = cookie)</br>
+&emsp;&emsp;return response </br> 
+   </code>
+    
+</div>
+
+<div align="right" style= "position : fixed ; right : 7px; bottom : 7px"> <button class="btn btn-info" type="button" onclick="window.location.href='/sec_mis'">Back to Lab
+              Details</button></div>
+
+</p>
+
+{% endblock content %}

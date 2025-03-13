@@ -1,0 +1,33 @@
+{% extends "introduction/base.html" %}
+{% load static %}
+{% block content %}
+{% block title %}
+<title>CSRF LAB</title>
+{% endblock %}
+<div class="box">
+    <h3>Current balance : {{balance}}</h3>
+</div>
+<div class="jumbotron">
+    <h4 style="text-align:center"> Money transfer </h4>
+    <div class="login" style="display: flex;justify-content: center;flex-direction: row;}">
+        <div class="box">
+            
+            <input id="input1" type="text" name="recipient" placeholder="recipient"><br>
+            <input id="input2" type="integer" name="amount" placeholder="Amount"><br>
+            <button style="margin-top:20px" class="btn btn-info" onclick="handleSubmit()"> Transfer </button>
+        </div>
+    </div>
+    <script>
+        function handleSubmit(){
+            var recipent = document.getElementById('input1').value
+            var amount = document.getElementById('input2').value
+            var url = "/mitre/9/lab/api/"+recipent+"/"+amount 
+            console.log(url)
+            window.location.href = url
+        }
+    </script>
+</div>
+
+{% endblock content %}
+
+

@@ -1,0 +1,39 @@
+{% extends "introduction/base.html" %} 
+{% load static %} 
+{% block content %} 
+{% block title %}
+<title>Use after free</title>
+{% endblock %}
+<div class="container">
+  <h2 style="font-size: 2.7rem">CWE-416: <span>User after free</span></h2>
+</div>
+<div class="box">
+  Referencing memory after it has been freed can cause a program to crash, use
+  unexpected values, or execute code.
+  <br />
+  <ul>
+    <li>Error conditions and other exceptional circumstances.</li>
+    <li>
+      Confusion over which part of the program is responsible for freeing the
+      memory.
+    </li>
+  </ul>
+  In this case, after the memory has been released, it is lawfully assigned to a
+  different pointer. The initial pointer to the memory that was freed is
+  utilised once more and now points to a position within the new allocation. As
+  the data is modified, it corrupts the memory that is still being used, leading
+  to unpredictable behaviour. Several function pointers might be dispersed
+  throughout the heap data in C++, for example, if the freshly allocated data
+  has a potential to contain a class. The execution of arbitrary code is
+  possible if one of these function pointers is overwritten with an address to
+  legitimate shellcode.
+  <br>
+  <br>
+  To prevent Use After Free vulnerabilities, software developers should carefully 
+  manage memory allocation and deallocation, validate user input to ensure that it 
+  does not trigger a double-free condition, and use safe programming practices that 
+  automatically detect and prevent the use of freed memory. Tools like memory-safe 
+  programming languages and memory-management libraries can also help prevent this 
+  type of vulnerability.
+</div>
+{% endblock %}

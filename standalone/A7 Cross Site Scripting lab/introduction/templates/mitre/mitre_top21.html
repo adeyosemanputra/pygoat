@@ -1,0 +1,53 @@
+{% extends "introduction/base.html" %}
+ {% load static %} 
+ {% block content %} 
+ {% block title %}
+<title>Server-Side Request Forgery</title>
+{% endblock %}
+<div class="container">
+  <h2 style="font-size: 2.7rem">
+    CWE-918: <span>Server-Side Request Forgery</span>
+  </h2>
+</div>
+<div class="box">
+  The web server receives a URL or similar request from an upstream component
+  and retrieves the contents of this URL, but it does not sufficiently ensure
+  that the request is being sent to the expected destination.
+  <br />
+  By providing URLs to unexpected hosts or ports, attackers can make it appear
+  that the server is sending the request, possibly bypassing access controls
+  such as firewalls that prevent the attackers from accessing the URLs directly.
+  The server can be used as a proxy to conduct port scanning of hosts in
+  internal networks, use other URLs such as that can access documents on the
+  system (using file://), or use other protocols such as gopher:// or tftp://,
+  which may provide greater control over the contents of requests.
+</div><br><br>
+<button class="coll btn btn-info">Lab 1 Details</button>
+<div class="lab">
+    <p class="bp">
+    This lab helps you to get an idea of how SSRF can result in major Security flaw.
+
+    The next pages shows some blog, but can you figure out how the blogs are presented?
+    
+    <br>
+    <div align="right"> <button class="btn btn-info" type="button" onclick="window.location.href='/ssrf_lab'">Access
+        Lab</button></div>
+</div>
+<button class="coll btn btn-info">Lab 2 Details</button>
+<div class="lab">
+    <p class="bp">
+      This website sends a request to the given url and displays the page withing the page.
+      now there is a page at <a href="/ssrf_target">/ssrf_target</a> which only allowes request from localhost ( ie 127.0.0.1 )
+      <br>
+      now start the server using <code>python manage.py runserver 0:8000</code><br>
+      get your network ip using <code>ifconfig</code> or <code>ipcofig</code>(in windows) <br>
+      now go to http://[your ip]/ssrf_target
+      <br>
+      Now you can't access the page because it is not from localhost.
+      Try to get access to this page content now using the utility.
+    </p>
+    <br>
+    <div align="right"> <button class="btn btn-info" type="button" onclick="window.location.href='/ssrf_lab2'">Access
+        Lab</button></div>
+</div>
+{% endblock %}

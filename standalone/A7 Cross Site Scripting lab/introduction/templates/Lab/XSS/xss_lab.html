@@ -1,0 +1,41 @@
+{% extends "introduction/base.html" %}
+{% block content %}
+{% block title %}
+<title>XSS LAB</title>
+{% endblock %}
+
+
+
+<div class="container" style="align:center">
+    <div class="jumbotron" style="align:center">
+        <h2 align="center">FAANG IT</h2>
+        <form method="get" action="/xssL1">
+            <label for="search"><b>FAANG NAME: <b></label>
+            <input id="search" type="text" name="q" placeholder="Facebook">
+            <button class="btn btn-info" type="submit">
+                Go
+            </button>
+        </form>
+    </div>
+</div><br>
+<div class="display">
+    {% if company %}
+    <h3>Company Name : <i>{{company}}</i></h3>
+    <h3>Ceo Name : <i>{{ceo}}</i></h3>
+    <h3>About : <i>{{about}}</i></h3>
+    {% elif query %}
+    <h3> The company '{{query|safe}}' You searched for is not Part of FAANG</h3>
+    {% else %}
+
+    {% endif %}
+
+
+</div>
+
+<br>
+<div align="right"> <button class="btn btn-info" type="button" onclick="window.location.href='/xss'">Back to Lab
+        Details</button></div>
+
+</p>
+
+{% endblock content %}

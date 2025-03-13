@@ -1,0 +1,102 @@
+{% extends 'introduction/base.html' %}
+{% block content %}
+
+{% block title %}
+<title>Insufficient Logging & Monitoring</title>
+{% endblock %}
+{% load static %}
+
+<div style="display: flex;flex-direction: column;align-items: center;">
+    <h3 style="font-size: 2rem;"> In this coding ground we will create a secure logging function </h3>
+    <button id="a9_b1" class="button2 button--winona button--border-thick button--round-l button--text-upper button--size-s button--text-thick" data-text="Lets go" onclick=event1()>
+        <span>Lets go</span>
+    </button>
+    <div id="a9_d1" style="display:none;flex-direction: column;align-items: center;">
+        <br>
+        <h3>Some points to remember while implementing logging & monnitoring </h3>
+        <ul style="list-style-type: circle;">
+            <li class="clist">Do not log too much or too little. For example, make sure to always log the timestamp and identifying information including the source IP and user-id.</li>
+            <li class="clist">Pay close attention to time syncing across nodes to ensure that timestamps are consistent.</li>
+            <li class="clist">Follow a common logging format and approach within the system and across systems of an organization.</li>
+            <li class="clist">Encode and validate any dangerous characters before logging to prevent log injection attacks.</li>
+            <li class="clist">Do not log sensitive information. For example, do not log password, session ID, credit cards, or social security numbers.</li>
+            <li class="clist">Protect log integrity. An attacker may attempt to tamper with the logs. Therefore, the permission of log files and log changes audit should be considered.</li>
+            <li class="clist">Forward logs from distributed systems to a central, secure logging service. This will sure log data cannot be lost if one node is compromised. This also allows for centralized monitoring.</li>
+            <li class="clist">For more information, visit <a href="https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html">OWASP Cheatsheet</a></li>
+        </ul>
+        <br>
+        <button id="a9_b2" style="display:block" class="button2 button--winona button--border-thick button--round-l button--text-upper button--size-s button--text-thick" data-text="Lets start coding" onclick=event2()>
+            <span>Lets start coding</span>
+        </button>
+
+    </div>
+    <div id="a9_d2" style="display:none;flex-direction: column;align-items: center;"> 
+        <br>
+        <div id="textarea-container">
+            <div id="textarea1">
+                <h6>Log.py</h6>
+                <textarea  id="a9_log" placeholder="">
+import datetime
+# f = open('test.log', 'a') --> use this file to log
+class Log:
+    def __init__(self,request):
+        self.request = request
+        
+    def info(self,msg):
+        pass
+    
+    def warning(self,msg):
+        pass
+
+    def error(self,msg):
+        pass</textarea>
+            </div>
+            <div id="textarea1">
+                <h6>api.py</h6>
+                <textarea  id="a9_api" placeholder="">
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from .main import Log
+
+@csrf_exempt
+def log_function_target(request):
+    L = Log(request)
+    if request.method == "GET":
+        L.info("GET request")
+        return JsonResponse({"message":"normal get request", "method":"get"},status = 200)
+    if request.method == "POST":
+        username = request.POST['username']
+        password = request.POST['password']
+        L.info(f"POST request with username {username} and password {password}")
+        if username == "admin" and password == "admin":
+            return JsonResponse({"message":"Loged in successfully", "method":"post"},status = 200)
+        return JsonResponse({"message":"Invalid credentials", "method":"post"},status = 401)
+    if request.method == "PUT":
+        L.info("PUT request")
+        return JsonResponse({"message":"success", "method":"put"},status = 200)
+    if request.method == "DELETE":
+        if request.user.is_authenticated:
+            return JsonResponse({"message":"User is authenticated", "method":"delete"},status = 200)
+        L.error("DELETE request")
+        return JsonResponse({"message":"permission denied", "method":"delete"},status = 200)
+    if request.method == "PATCH":
+        L.info("PATCH request")
+        return JsonResponse({"message":"success", "method":"patch"},status = 200)
+    if request.method == "UPDATE":
+        return JsonResponse({"message":"success", "method":"update"},status = 200)
+    return JsonResponse({"message":"method not allowed"},status = 403)</textarea>
+            </div>
+        </div>
+        <button id="a9_b3" class="button2 button--winona button--border-thick button--round-l button--text-upper button--size-s button--text-thick" data-text="Evalute" onclick=event3()>
+            <span>Evalute</span>
+        </button>
+    </div>
+    <div id="a9_d3" style="display:none;flex-direction:column; font-size:1.4rem">
+        <h3>Logs</h3>
+    </div>
+    <br><br>
+</div>
+
+<script src="{% static 'js/a9.js'%}"> </script>
+
+{% endblock %}

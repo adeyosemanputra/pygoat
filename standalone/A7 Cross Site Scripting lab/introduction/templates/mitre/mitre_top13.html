@@ -1,0 +1,18 @@
+{% extends "introduction/base.html" %}
+{% load static %}
+{% block content %}
+{% block title %}
+<title> Integer Overflow or Wraparound </title>
+{% endblock %}
+    <div class="container">
+        <h2 style="font-size:2.7rem">CWE-190: <span>Integer Overflow or Wraparound</span></h2>
+    </div>
+    <div class="box">
+        The software performs a calculation that can produce an integer overflow or wraparound, when the logic assumes that the resulting value will always be larger than the original value. This can introduce other weaknesses when the calculation is used for resource management or execution control.
+        <br>
+        When an integer value is increased to a value that is too large to be stored in the associated representation, an integer overflow or wraparound occurs. If this takes place, the value can wrap, turning into a very small or negative integer. Even while this might be the intended course of action in situations when wrapping is necessary, it might have security repercussions if the wrapping is unanticipated. This is especially true if human inputs can cause the integer overflow to occur. When the outcome is used to manage looping, make a security choice, or choose the offset or size for operations like memory allocation, copying, concatenation, etc., this turns into a security-critical situation.
+        <br>
+        "Integer overflow" is sometimes used to cover several types of errors, including signedness errors, or buffer overflows that involve manipulation of integer data types instead of characters. Part of the confusion results from the fact that 0xffffffff is -1 in a signed context. Other confusion also arises because of the role that integer overflows have in chains
+    </div>
+
+{% endblock %}

@@ -1,0 +1,81 @@
+{% extends "introduction/base.html" %}
+{% block content %}
+<div class="content">
+
+    <div class="title">
+        <h2>{{ chal.name }}</h2>
+    </div>
+    <div class="box" pre>
+        <pre>{{ chal.description }}</pre>
+    </div>
+    <br>
+    <button type="submit" class="btn btn-primary" id="cbtn-1" onclick="handleonclick()">Start Challenge</button>
+    <button type="submit" class="btn btn-primary" id="cbtn-2" onclick="handleRedirect()" style="display:none">Go to
+        Challenge </button>
+
+</div>
+<script>
+    var button1 = document.getElementById("cbtn-1");
+    var button2 = document.getElementById("cbtn-2");
+    var url = null;
+    const csrf_token = "{{ csrf_token|safe }}";
+
+    function handleonclick() {
+        var requestOptions = {
+            method: 'POST',
+            redirect: 'follow',
+            headers: {'X-CSRFToken': csrf_token},
+        };
+
+        fetch("/challenge/{{chal.name}}", requestOptions)
+            .then(response => {
+                console.log(response);
+                if (response.status === 200) {
+                    return response.json();
+                } else {
+                    throw new Error('Something went wrong on api server!');
+                }
+            })
+            .then(result => {
+                console.log(result);
+                button2.style.display = "revert";
+                button1.textContent = "Stop Challenge";
+                button1.onclick = handleStopChallenge;
+                url = result.endpoint;
+            })
+            .catch(error => console.log('error', error));
+    }
+
+    function handleStopChallenge() {
+        var requestOptions = {
+            method: 'DELETE',
+            redirect: 'follow',
+            headers: {'X-CSRFToken': csrf_token},
+        };
+        fetch("/challenge/{{chal.name}}", requestOptions)
+        .then(response => {
+                console.log(response);
+                if (response.status === 200) {
+                    return response.json();
+                } else {
+                    throw new Error('Something went wrong on api server!');
+                }
+            })
+            .then(result => {
+                console.log('Container stoped')
+                button1.textContent = "Start Challenge";
+                button1.onclick = handleonclick;
+                button2.style.display = "none";
+            })
+            .catch(error => console.log('error', error));
+    }
+
+    function handleRedirect() {
+        window.open(url, '_blank');
+    }
+    </script>
+</body>
+
+</html>
+
+{% endblock content %}

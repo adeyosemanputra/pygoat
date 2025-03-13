@@ -1,0 +1,65 @@
+{% extends 'introduction/base.html' %} {% block content %} {% block title %}
+<title>SSRF</title>
+{% endblock %}
+<div class="content">
+  <h3>Server-Side Request Forgery</h3>
+  <div class="box">
+    <h4>What is  Server-Side Request Forgery (SSRF)</h4>
+    <p class="bp">
+        SSRF flaws occur whenever a web application is fetching a remote resource without validating the user-supplied URL. It allows an attacker to coerce the application to send a crafted request to an unexpected destination, even when protected by a firewall, VPN, or another type of network access control list (ACL).
+
+        As modern web applications provide end-users with convenient features, fetching a URL becomes a common scenario. As a result, the incidence of SSRF is increasing. Also, the severity of SSRF is becoming higher due to cloud services and the complexity of architectures.
+    </p>
+    <button class="coll btn btn-info">Lab 1 Details</button>
+    <div class="lab">
+        <p class="bp">
+        This lab helps you to get an idea of how SSRF can result in major Security flaw.
+
+        The next pages shows some blog, but can you figure out how the blogs are presented?
+        
+        <br>
+        <div align="right"> <button class="btn btn-info" type="button" onclick="window.location.href='/ssrf_lab'">Access
+            Lab</button></div>
+    </div>
+    <button class="coll btn btn-info">Lab 2 Details</button>
+    <div class="lab">
+        <p class="bp">
+          This website sends a request to the given url and displays the page withing the page.
+          now there is a page at <a href="/ssrf_target">/ssrf_target</a> which only allowes request from localhost ( ie 127.0.0.1 )
+          <br>
+          now start the server using <code>python manage.py runserver 0:8000</code><br>
+          get your network ip using <code>ifconfig</code> or <code>ipcofig</code>(in windows) <br>
+          now go to http://[your ip]/ssrf_target
+          <br>
+          Now you can't access the page because it is not from localhost.
+          Try to get access to this page content now using the utility.
+        </p>
+        <br>
+        <div align="right"> <button class="btn btn-info" type="button" onclick="window.location.href='/ssrf_lab2'">Access
+            Lab</button></div>
+    </div>
+  <div>
+    <br>
+    <h4>Mitigation</h4>
+    <p class="bp">
+    <ul>
+        <span style = "font-size:17px;font-weight:600;margin-top:5 px">From Network layer</span>
+        <li>Segment remote resource access functionality in separate networks to reduce the impact of SSRF</li>
+        <li>Enforce “deny by default” firewall policies or network access control rules to block all but essential intranet traffic.</li>
+        <span style = "font-size:17px;font-weight:600;margin-top:5 px">From Application layer</span>
+        <li>Sanitize and validate all client-supplied input data</li>
+        <li>Enforce the URL schema, port, and destination with a positive allow list</li>
+        <li>Do not send raw responses to clients</li>
+        <li>Disable HTTP redirections</li>
+        <li>Be aware of the URL consistency to avoid attacks such as DNS rebinding and “time of check, time of use” (TOCTOU) race conditions</li>
+        <span style = "font-size:17px;font-weight:600;margin-top:5 px">Additional Measures to consider</span>
+        <li>Don't deploy other security relevant services on front systems (e.g. OpenID). Control local traffic on these systems (e.g. localhost)</li>
+        <li>For frontends with dedicated and manageable user groups use network encryption (e.g. VPNs) on independent systems to consider very high protection needs</li>
+    </ul>
+    </p>
+
+    <div> <button class="coll btn btn-info" type="button" onclick="window.location.href='/ssrf_discussion'">Code Discussion </button> </div>
+  </div>
+</div>
+
+{% endblock %}

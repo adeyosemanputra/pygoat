@@ -1,0 +1,96 @@
+{% extends "introduction/base.html" %}
+{% load static %}
+{% block content %}
+{% block title %}
+<title>A9</title>
+{% endblock %}
+
+<div class="container">
+    <h3> In this page you can upload a image and apply different math equation on it's rgb layer</h3><br><br>
+    <h4>Varriable reffernence</h4>
+    <code>img --> actual image file | r --> red chennel | g --> green chennel</code>
+    <code>b --> blue chennel | g --> green chennel</code><br><br>
+
+    <h4>Some Example</h4>
+    <ul>
+        <li>convert(r, '1')</li>
+        <li>convert(r+g+b, 'L')</li>
+        <li>convert(r-g, '1')</li>
+    </ul>
+    
+    <form enctype="multipart/form-data" id="a9_form2" method="POST" style="display: flex;flex-direction: column;align-items: center;margin-bottom: 50px;">
+        <input type="file" name="file" id="a9_file" />
+        <input type="text" name="function" id="a9_function" placeholder="function"/>
+        <button type="submit" id="a9_submit" >Submit</button>
+    </form><br><br>
+
+    {% if success %}
+    <div id="img_container" style="margin-bottom : 50px">
+        <img src='data:image/jpeg;base64,{{img_str_ref}}' style="width: 48%"/>
+        <img src='data:image/jpeg;base64,{{img_str}}' style="width: 48%"/>
+    </div>
+    {% endif %}
+
+    </div>
+
+    <button class="coll2 btn btn-info" style= "position : fixed ; right :330px; bottom : 7px">Hint</button>
+    <div class="lab code">
+        This lab uses pillow==8.0.0 package, google for vulnerability 
+    </div>
+
+    <button class="coll2 btn btn-info" style= "position : fixed ; right :200px; bottom : 7px">View Code</button>
+
+    <div class="lab code">
+    <code>   
+        def a9_lab2(request):<br>
+        &emsp;if not request.user.is_authenticated:<br>
+        &emsp;&emsp;return redirect('login')<br>
+        &emsp;<br>
+        &emsp;if request.method == "GET":<br>
+        &emsp;&emsp;return render (request,"Lab/A9/a9_lab2.html")<br>
+        &emsp;elif request.method == "POST":<br>
+        &emsp;&emsp;try :<br>
+        &emsp;&emsp;&emsp;file=request.FILES["file"]<br>
+        &emsp;&emsp;&emsp;function_str = request.POST.get("function")<br>
+        &emsp;&emsp;&emsp;img  = Image.open(file)<br>
+        &emsp;&emsp;&emsp;img = img.convert("RGB")<br>
+        &emsp;&emsp;&emsp;r,g,b  = img.split()<br>
+        &emsp;&emsp;&emsp;output = ImageMath.eval(function_str,img = img, b=b, r=r, g=g)<br>
+        
+        &emsp;&emsp;&emsp;# saving the image <br>
+        &emsp;&emsp;&emsp;buffered = BytesIO()<br>
+        &emsp;&emsp;&emsp;output.save(buffered, format="JPEG")<br>
+        &emsp;&emsp;&emsp;img_str = base64.b64encode(buffered.getvalue()).decode("utf-8")<br>
+        
+        &emsp;&emsp;&emsp;bufferd_ref = BytesIO()<br>
+        &emsp;&emsp;&emsp;img.save(bufferd_ref, format="JPEG")<br>
+        &emsp;&emsp;&emsp;img_str_ref = base64.b64encode(bufferd_ref.getvalue()).decode("utf-8")<br>
+        &emsp;&emsp;&emsp;try :<br>
+        &emsp;&emsp;&emsp;&emsp;return render(request,"Lab/A9/a9_lab2.html",{"img_str": img_str,"img_str_ref":img_str_ref, "success": True})<br>
+        &emsp;&emsp;&emsp;except Exception as e:<br>
+        &emsp;&emsp;&emsp;&emsp;print(e)<br>
+        &emsp;&emsp;&emsp;&emsp;return render(request, "Lab/A9/a9_lab2.html", {"data": "Error", "error": True})<br>
+        &emsp;&emsp;except Exception as e:<br>
+        &emsp;&emsp;&emsp;print(e)<br>
+        &emsp;&emsp;&emsp;return render(request, "Lab/A9/a9_lab2.html", {"data":"Please Upload a file", "error":True})<br>
+    </code>
+        
+    </div>
+    <div>
+
+    <div style= "position : fixed ; right : 7px; bottom : 7px"> <button class="btn btn-info" type="button" onclick="window.location.href='/a9'">Back to Lab
+        Details</button></div>
+
+<script>
+    function submite_form(){
+        console.log("Submited")
+        var form = document.getElementById('a9_form2');
+        form.submit();
+    }
+    {% if error %}
+    alert("{{ data }}");
+    {% endif %}
+
+</script>
+
+{% endblock %}

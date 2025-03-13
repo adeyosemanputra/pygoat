@@ -1,0 +1,41 @@
+{% extends "introduction/base.html" %} 
+{% load static %} 
+{% block content %}
+{%block title %}
+<title>Code Injection</title>
+{% endblock %}
+<div class="container">
+  <h2 style="font-size: 2.7rem">CWE-94: <span>Code Injection</span></h2>
+</div>
+<div class="box">
+  The software creates all or a portion of a code segment using input that has
+  been externally influenced by an upstream component, but it fails to remove or
+  removes wrongly specific parts that could alter the syntax or behaviour of the
+  intended code segment.
+  <br />
+  There are several distinct conditions that might cause injection
+  complications, and they are all handled quite differently. Because of this,
+  noting the distinctive characteristics that identify these flaws as injection
+  issues is the best method to explain them. The most crucial point to remember
+  is that every injection problem has one thing in common, namely, that they all
+  permit the injection of control plane data into the user-controlled data
+  plane. This implies that the only way to change the way a process is executed
+  is by submitting code across authorised data channels. Buffer overflows and
+  numerous other faults require the use of another vulnerability to allow for
+  execution, whereas injection problems just require that the data be parsed.
+  The most traditional examples of this category are SQL injection and format
+  string vulnerabilities.
+  <br><br>
+  <button class="coll btn btn-info">Lab Details</button>
+  <div class="lab">
+    <p class="bp">
+    This lab have a calculator with can compute simple arithmetic operations.
+    Try to exploit that</p> 
+    <div align="right">
+      <button class="btn btn-info" type="button" onclick="window.location.href='/mitre/25/lab'">
+        Access Lab
+      </button>
+    </div>
+  </div>
+</div><br>
+{% endblock %}

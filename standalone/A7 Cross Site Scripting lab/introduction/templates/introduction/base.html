@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  {% block title %}
+  <title>OWASP Pygoat</title>
+  {% endblock %}
+
+  <!-- Bootstrap CSS CDN -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
+    integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous" />
+  <!-- Our Custom CSS -->
+  <link id="pagestyle" rel="stylesheet" href="{% static 'css/dark-theme.css'%}" />
+  <link rel="stylesheet" href="{% static 'css/home.css'%}" />
+  <link rel="stylesheet" href="{% static 'Lab/ssrf.css'%}" />
+  <link rel="stylesheet" href="{% static 'Lab/ssti.css'%}" />
+  <link rel="stylesheet" href="{% static 'css/playground.css'%}" />
+  <link rel="icon" href="{% static 'Lab/icons/pygoat-mini.png' %}" />
+  <!-- Font Awesome JS -->
+  <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js"
+    integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ"
+    crossorigin="anonymous"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js"
+    integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY"
+    crossorigin="anonymous"></script>
+  <script defer src="{% static 'Lab/xss.js' %}"> </script>
+  <script defer src="{% static 'Lab/ssrf.js' %}"> </script>
+</head>
+
+<body>
+  <div class="wrapper">
+    <div class="pg active">PG</div>
+    <!-- Sidebar  -->
+    <nav id="sidebar" style="overflow: scroll" class="sidebarClass">
+      <div class="sidebar-header">
+        <div id="pygoat" style="display: flex; flex-direction: row; align-items: center">
+          <img src="{% static 'Lab/icons/pygoat-mini.svg' %}" alt="logo" width="100px" height="100px" />
+          <h3>PyGoat</h3>
+        </div>
+        <strong>PG</strong>
+      </div>
+
+      <ul class="list-unstyled components" style="margin-bottom: 0px;">
+        <li>
+          <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle" id="sidebar-home"
+            style="padding: 13% 0 0 0">
+            <i class="fas fa-flag"></i>
+            Home
+          </a>
+          <ul class="collapse list-unstyled" id="homeSubmenu">
+            <li>
+              <a href="/" class="sidebar-list-items">Introduction</a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a href="#OWASP10_2017" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle" id="owasp10_2017"
+            style="padding: 13% 10% 0 0">
+            <i class="fas fa-flag"></i>
+            challenge
+          </a>
+          <ul class="collapse list-unstyled" id="OWASP10_2017">
+            <li>
+              <a href="/xss" class="sidebar-list-items">
+                <i class="fas fa-bug"></i>
+                Cross Site Scripting
+              </a>
+            </li>
+          </ul>
+
+        <li>
+          <a href="#solutionSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"
+            id="sidebar-home" style="padding: 13% 0 0 0">
+            <i class="fas fa-flag"></i>
+            Solution
+          </a>
+          <ul class="collapse list-unstyled" id="solutionSubmenu">
+            <li>
+              <a href="/solution" class="sidebar-list-items">Checkout</a>
+            </li>
+          </ul>
+        </li>
+
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Page Content  -->
+    <div id="content" style="height: 100vh">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+
+          <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+            aria-label="Toggle navigation">
+            <i class="fas fa-align-justify"></i>
+          </button>
+
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="nav navbar-nav ml-auto">
+              <li class="nav-item">
+                <button class="nav-link dark" href='{% url "logout" %}?next=/' id="stylesheet-toggle"
+                  onclick="swapStyleSheet()">Theme</button>
+              </li>
+
+
+              {% if user.is_authenticated %}
+              <li class="nav-item">
+                <a class="nav-link" href='{% url "logout" %}?next=/'>Logout</a>
+              </li>
+
+              {% else %}
+
+              <li class="nav-item">
+                <a class="nav-link" href="/login">Login</a>
+              </li>
+              {% endif %}
+
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+      {% block content %} {% endblock %}
+    </div>
+  </div>
+
+  <!-- jQuery CDN - Slim version (=without AJAX) -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <!-- Popper.JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"
+    integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ"
+    crossorigin="anonymous"></script>
+  <!-- Bootstrap JS -->
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"
+    integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm"
+    crossorigin="anonymous"></script>
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      $(".sidebar-header").on("click", function () {
+        $("#sidebar").toggleClass("active");
+        $(".pg").toggleClass("active");
+      });
+    });
+
+    $(document).ready(function () {
+      $(".pg").on("click", function () {
+        $("#sidebar").toggleClass("active");
+        $(".pg").toggleClass("active");
+      });
+    });
+
+    function swapStyleSheet() {
+      var elem = document.getElementById('stylesheet-toggle');
+      if (elem.classList.contains('dark')) {
+        elem.classList.remove('dark');
+        elem.classList.add('light');
+        localStorage.setItem('theme', 'light');
+        document.getElementById("pagestyle").setAttribute("href", "/static/css/light.css");
+      } else {
+        elem.classList.remove('light');
+        elem.classList.add('dark');
+        localStorage.setItem('theme', 'dark');
+        document.getElementById("pagestyle").setAttribute("href", "/static/css/dark-theme.css");
+      }
+    }
+    var elem3 = document.getElementById('stylesheet-toggle');
+    if (localStorage.getItem('theme') == 'light') {
+      elem3.classList.remove('dark');
+      elem3.classList.add('light');
+      document.getElementById("pagestyle").setAttribute("href", "/static/css/light.css");
+    }
+
+  </script>
+</body>
+
+</html>

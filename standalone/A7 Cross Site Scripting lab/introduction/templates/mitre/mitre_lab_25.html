@@ -1,0 +1,47 @@
+{% extends "introduction/base.html" %}
+{% load static %}
+{% block content %}
+{% block title %}
+<title> Code Injection </title>
+{% endblock %}
+    <div class="jumbotron">
+        <h4 style="text-align:center"> Calculator </h4>
+        <div class="login" style="display: flex;justify-content: center;flex-direction: column;">
+            <div>
+                <input type="textarea" id="input" style="width: 400px;height: 50px;">
+                <button id="btn" style="width: 100px;height: 50px;" onclick="calculate()"> Calculate </button>
+            </div>
+            <textarea id="output" style="width: 40%;height: 20px;"></textarea>
+        </div>
+    </div>
+    <div style= "position : fixed ; right : 7px; bottom : 7px"> <button class="btn btn-info" type="button" onclick="window.location.href='/mitre/25'">Back to Lab
+    Details</button></div>
+    <script>
+        function calculate(){
+            var input = document.getElementById("input").value;
+            var output = document.getElementById("output");
+            var headers = new Headers();
+            var formdata = new FormData();
+            formdata.append("expression", input);
+            var requestOption = {
+                method: "POST",
+                body: formdata,
+                redirect: "follow",
+                headers: headers
+            };
+
+            fetch("/mitre/25/lab/api",requestOption)
+                .then(response => response.text())
+                .then(result => {
+                    var data = JSON.parse(result);
+                    output.value = data.result;
+                    console.log(result);
+                })
+                .catch(
+                    error => {console.log("error", error);
+                    output.value = "error";}
+                    );
+        } 
+    </script>
+
+{% endblock %}
