@@ -32,6 +32,7 @@ jobs:
           six_months_ago=$(date -d '3 months ago' +%s)
           echo "six months date: " + $six_months_ago
           last_modified=$(git log -1 --format=%at -- rra.md)
+          echo "last_modified date: " + $last_modified
           if [ "$last_modified" -lt "$six_months_ago" ]; then
             echo "needs_update=true" >> $GITHUB_ENV
             echo "Update needed"
