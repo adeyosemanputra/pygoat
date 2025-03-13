@@ -14,6 +14,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       - name: Check rra.md for 'yes' answers
         id: check_yes
@@ -29,6 +31,7 @@ jobs:
       - name: Check rra.md last modified date
         id: check_date
         run: |
+          git log --oneline -- rra.md
           six_months_ago=$(date -d '3 months ago' +%s)
           echo "six_months_ago=$six_months_ago" >> $GITHUB_ENV
           echo "Six monts ago timestamp: $six_months_ago"
