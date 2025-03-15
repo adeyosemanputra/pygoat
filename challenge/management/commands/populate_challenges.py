@@ -4,7 +4,11 @@ from django.core.management.base import BaseCommand
 from challenge.models import Challenge
 
 class Command(BaseCommand):
-    help = "Populate challenge data from challenge/challenge.json"
+    help = (
+        "Reads challenge data from 'challenge/challenge.json' and populates the "
+        "Challenge table in the database. Uses get_or_create to prevent duplicates "
+        "and handles JSON errors gracefully."
+    )
 
     def handle(self, *args, **options):
         file_path = os.path.join('challenge', 'challenge.json')
