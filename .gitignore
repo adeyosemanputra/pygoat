@@ -7,7 +7,7 @@ venv
 *db.sqlite3*
 app.log
 bin
-
+*.env
 
 #  LOG files
 *.log
