@@ -1,3 +1,15 @@
+# Pygoat v2.0.2 snapshot
+### 1.Added
+- **Custom Management Command:**  
+  Added the `populate_challenges` command that reads challenge data from `challenge/challenge.json` and populates the `Challenge` table using `get_or_create` to prevent duplicate entries. The command handles missing files and JSON decode errors gracefully.
+
+### 2.Changed
+- **Challenge Model:**  
+  - Updated the `save()` method to raise a `ValidationError` if `start_port` is greater than `end_port`.
+  - Enhanced flag handling by hashing the `flag` field using SHA-256 (prefixed with "hashed_") if it hasn't been hashed already.
+
+---
+
 # Pygoat v2.0.1 Latest
 
 1. New themes  
