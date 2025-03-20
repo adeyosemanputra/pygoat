@@ -2,6 +2,7 @@
 ### 1.Added
 - **Custom Management Command:**  
   Added the `populate_challenges` command that reads challenge data from `challenge/challenge.json` and populates the `Challenge` table using `get_or_create` to prevent duplicate entries. The command handles missing files and JSON decode errors gracefully.
+- Added `MIT License` to the project.
 
 ### 2.Changed
 - **Challenge Model:**  
