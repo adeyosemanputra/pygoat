@@ -1,13 +1,20 @@
-name: Scorecard analysis workflow
-on:
-  push:
-    # Only the default branch is supported.
-    branches:
-    - main
-  schedule:
-    # Weekly on Saturdays.
-    - cron:  '30 1 * * 6'
+# This workflow uses actions that are not certified by GitHub. They are provided
+# by a third-party and are governed by separate terms of service, privacy
+# policy, and support documentation.
 
+name: Scorecard supply-chain security
+on:
+  # For Branch-Protection check. Only the default branch is supported. See
+  # https://github.com/ossf/scorecard/blob/main/docs/checks.md#branch-protection
+  branch_protection_rule:
+  # To guarantee Maintained check is occasionally updated. See
+  # https://github.com/ossf/scorecard/blob/main/docs/checks.md#maintained
+  schedule:
+    - cron: '41 11 * * 5'
+  push:
+    branches: [ "master" ]
+
+# Declare default permissions as read only.
 permissions: read-all
 
 jobs:
@@ -15,10 +22,13 @@ jobs:
     name: Scorecard analysis
     runs-on: ubuntu-latest
     permissions:
-      # Needed for Code scanning upload
+      # Needed to upload the results to code-scanning dashboard.
       security-events: write
-      # Needed for GitHub OIDC token if publish_results is true
+      # Needed to publish results and get a badge (see publish_results below).
       id-token: write
+      # Uncomment the permissions below if installing in a private repository.
+      # contents: read
+      # actions: read
 
     steps:
       - name: "Checkout code"
@@ -31,16 +41,23 @@ jobs:
         with:
           results_file: results.sarif
           results_format: sarif
-          # Scorecard team runs a weekly scan of public GitHub repos,
-          # see https://github.com/ossf/scorecard#public-data.
-          # Setting `publish_results: true` helps us scale by leveraging your workflow to
-          # extract the results instead of relying on our own infrastructure to run scans.
-          # And it's free for you!
+          # (Optional) "write" PAT token. Uncomment the `repo_token` line below if:
+          # - you want to enable the Branch-Protection check on a *public* repository, or
+          # - you are installing Scorecard on a *private* repository
+          # To create the PAT, follow the steps in https://github.com/ossf/scorecard-action?tab=readme-ov-file#authentication-with-fine-grained-pat-optional.
+          # repo_token: ${{ secrets.SCORECARD_TOKEN }}
+
+          # Public repositories:
+          #   - Publish results to OpenSSF REST API for easy access by consumers
+          #   - Allows the repository to include the Scorecard badge.
+          #   - See https://github.com/ossf/scorecard-action#publishing-results.
+          # For private repositories:
+          #   - `publish_results` will always be set to `false`, regardless
+          #     of the value entered here.
           publish_results: true
 
-      # Upload the results as artifacts (optional). Commenting out will disable
-      # uploads of run results in SARIF format to the repository Actions tab.
-      # https://docs.github.com/en/actions/advanced-guides/storing-workflow-data-as-artifacts
+      # Upload the results as artifacts (optional). Commenting out will disable uploads of run results in SARIF
+      # format to the repository Actions tab.
       - name: "Upload artifact"
         uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
         with:
