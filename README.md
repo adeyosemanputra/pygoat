@@ -1,4 +1,4 @@
-# PyGoat Labs
+# PyGoat
 
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/cwpearce/pygoat-github-actions/badge)](https://scorecard.dev/viewer/?uri=github.com/cwpearce/pygoat-github-actions)
 
