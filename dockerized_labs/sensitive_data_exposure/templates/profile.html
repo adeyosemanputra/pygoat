@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Profile - Sensitive Data Exposure Lab</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .data-section {
+            padding: 20px;
+            border-radius: 5px;
+            background-color: #f8f9fa;
+            margin-bottom: 20px;
+        }
+        .sensitive-data {
+            font-family: monospace;
+            background-color: #e9ecef;
+            padding: 8px;
+            border-radius: 4px;
+        }
+        .challenge-card {
+            border-left: 5px solid #ffc107;
+        }
+        .hint-section {
+            border-top: 1px dashed #ccc;
+            margin-top: 20px;
+            padding-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="{% url 'index' %}">Sensitive Data Lab</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'index' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'lesson' %}">Learn</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'about' %}">About</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'profile' %}">Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <!-- Display success message if user just logged in -->
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h3 class="mb-0">User Profile</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="media">
+                            <div class="mr-3">
+                                <i class="fas fa-user-circle fa-4x text-primary"></i>
+                            </div>
+                            <div class="media-body">
+                                <h4 class="mt-0">{{ user.username }}</h4>
+                                <p class="text-muted">Member since: {% now "F j, Y" %}</p>
+                            </div>
+                        </div>
+                        
+                        <hr>
+                        
+                        <h5 class="mb-3">Your Secure Information</h5>
+                        <div class="data-section">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <p class="font-weight-bold">Credit Card:</p>
+                                </div>
+                                <div class="col-md-8">
+                                    <p class="sensitive-data">**** **** **** {{ user_data.credit_card|slice:"-4:" }}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <p class="font-weight-bold">Social Security Number:</p>
+                                </div>
+                                <div class="col-md-8">
+                                    <p class="sensitive-data">***-**-{{ user_data.ssn|slice:"-4:" }}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <p class="font-weight-bold">API Key Status:</p>
+                                </div>
+                                <div class="col-md-8">
+                                    <span class="badge badge-success">Active</span>
+                                    <small class="text-muted ml-2">(API key is securely stored)</small>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <p class="text-muted small">
+                            <i class="fas fa-shield-alt mr-1"></i>
+                            For security reasons, we only display partial information.
+                        </p>
+                        
+                        <!-- Hidden comment with sensitive information -->
+                        <!-- 
+                            This comment shows how developers sometimes leave sensitive data in HTML comments.
+                            In real applications, attackers usually check source code for such information.
+                            
+                            CHALLENGE: Find these exposed credentials!
+                            User's full credit card: {{ user_data.credit_card }}
+                            User's full SSN: {{ user_data.ssn }}
+                            User's API Key: {{ user_data.api_key }}
+                            In real world, this would be a serious security issue.
+                            We should always review our code for sensitive data before deploying it.
+                        -->
+                        
+                        <div class="mt-4">
+                            <h5>API Access</h5>
+                            <p>You can access your data programmatically through our API.</p>
+                            <div class="card bg-light">
+                                <div class="card-body">
+                                    <p class="card-text">Endpoint: <code>/api/user-data/</code></p>
+                                    <a href="{% url 'api_data' %}" target="_blank" class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-external-link-alt mr-1"></i> Test API
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="card challenge-card mb-4">
+                    <div class="card-header bg-warning">
+                        <h4 class="mb-0">Security Challenge</h4>
+                    </div>
+                    <div class="card-body">
+                        <p>
+                            This page seems secure at first glance, but there are multiple
+                            ways an attacker could find your full sensitive information!
+                        </p>
+                        <p class="font-weight-bold">Your mission:</p>
+                        <ol>
+                            <li>Find your complete credit card number</li>
+                            <li>Find your complete SSN</li>
+                            <li>Find your API key</li>
+                            <li>Try to access sensitive data of other users</li>
+                        </ol>
+                        
+                        <div class="hint-section">
+                            <p class="text-muted">
+                                <i class="fas fa-lightbulb mr-1"></i>
+                                <strong>Hint:</strong> Developers often leave sensitive information in places 
+                                they think are hidden from users!
+                            </p>
+                            <button class="btn btn-sm btn-outline-secondary" type="button" data-toggle="collapse" data-target="#extraHints">
+                                Show More Hints
+                            </button>
+                            <div class="collapse mt-2" id="extraHints">
+                                <div class="card card-body bg-light">
+                                    <p class="mb-0 small">
+                                        Check page source, JavaScript console, local storage, and API endpoints.
+                                        There's an admin endpoint at <code>/api/all-users/</code> that might
+                                        not be properly secured!
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header bg-info text-white">
+                        <h4 class="mb-0">Resources</h4>
+                    </div>
+                    <div class="list-group list-group-flush">
+                        <a href="{% url 'lesson' %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                            Lesson Content
+                            <i class="fas fa-book"></i>
+                        </a>
+                        <a href="https://developer.mozilla.org/en-US/docs/Tools" target="_blank" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                            Browser Dev Tools Guide
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Font Awesome for icons -->
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script type="text/javascript">
+        var userData = {
+            username: "{{ user.username }}",
+            apiKey: "{{ user_data.api_key }}" // Yeah it is necessary for this lab.
+        };
+        
+        localStorage.setItem('user_api_key', "{{ user_data.api_key }}");
+        
+        console.log("Sensitive data exposed in console - check browser dev tools!");
+        
+        // more bad practices
+        // function checkAdminStatus() {
+        //    const adminPassword = "super_secure_admin_pw123"; // Hard-coded credentials
+        // }
+    </script>
+</body>
+</html>

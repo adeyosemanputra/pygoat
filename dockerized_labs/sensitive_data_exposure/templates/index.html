@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sensitive Data Exposure Lab</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="{% url 'index' %}">Sensitive Data Lab</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'index' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'lesson' %}">Learn</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'about' %}">About</a>
+                </li>
+                {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'profile' %}">Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'login' %}">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'register' %}">Register</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <div class="jumbotron">
+            <h1 class="display-4">Welcome to Sensitive Data Exposure Lab</h1>
+            <p class="lead">This interactive lab demonstrates OWASP Top 10 vulnerability: Sensitive Data Exposure (A3)</p>
+            <hr class="my-4">
+            <p>Learn how sensitive data can be accidentally exposed in web apps and how hackers might find it!</p>
+            <div class="btn-group">
+                <a class="btn btn-primary btn-lg" href="{% url 'lesson' %}" role="button">Start Learning</a>
+                {% if user.is_authenticated %}
+                    <a class="btn btn-success btn-lg ml-2" href="{% url 'profile' %}" role="button">View Your Profile</a>
+                {% else %}
+                    <a class="btn btn-success btn-lg ml-2" href="{% url 'register' %}" role="button">Register & Try it</a>
+                {% endif %}
+            </div>
+        </div>
+        
+        <!-- Show demo login info only if not logged in -->
+        {% if not user.is_authenticated %}
+        <div class="card bg-light mt-3">
+            <div class="card-body">
+                <h5 class="card-title">Demo Account</h5>
+                <p class="card-text">For quick testing, use these credentials:</p>
+                <p><strong>Username:</strong> demo <br><strong>Password:</strong> demopass</p>
+                <a href="{% url 'login' %}" class="btn btn-info">Login with demo account</a>
+            </div>
+        </div>
+        {% else %}
+        <!-- Show a different card for logged-in users -->
+        <div class="card bg-light mt-3">
+            <div class="card-body">
+                <h5 class="card-title">You're logged in as {{ user.username }}</h5>
+                <p class="card-text">Ready to find some security vulnerabilities?</p>
+                <div class="btn-group">
+                    <a href="{% url 'profile' %}" class="btn btn-info">Go to Profile</a>
+                    <a href="{% url 'lesson' %}" class="btn btn-secondary ml-2">Review Lesson</a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        
+        <div class="row mt-4">
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <div class="card-header bg-danger text-white">
+                        <h5 class="mb-0">What You'll Learn</h5>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled">
+                            <li>✅ How sensitive data gets exposed</li>
+                            <li>✅ Where to look for data leakage</li>
+                            <li>✅ Common developer mistakes</li>
+                            <li>✅ How to protect sensitive info</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <div class="card-header bg-warning">
+                        <h5 class="mb-0">Hands-on Activities</h5>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled">
+                            <li>🔍 Find hidden sensitive data</li>
+                            <li>🔍 Explore insecure API endpoints</li>
+                            <li>🔍 Discover client-side exposures</li>
+                            <li>🔍 Identify improper data masking</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header bg-info text-white">
+                        <h5 class="mb-0">Real-world Context</h5>
+                    </div>
+                    <div class="card-body">
+                        <p>This vulnerability has led to massive data breaches at companies like:</p>
+                        <ul class="list">
+                            <li>Equifax (147M records)</li>
+                            <li>Capital One (100M records)</li>
+                            <li>Marriott (500M customers)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
