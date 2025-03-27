@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Insecure Deserialization Lab</title>
+</head>
+<body>
+  <h1>Upload a Pickled Object</h1>
+  <form method="post" enctype="multipart/form-data">
+    <input type="file" name="payload" />
+    <input type="submit" value="Upload" />
+  </form>
+  {% if result %}
+    <p><strong>Result:</strong> {{ result }}</p>
+  {% endif %}
+</body>
+</html>
+
