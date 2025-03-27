@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    command: >
+      sh -c "python manage.py makemigrations dataexposure &&
+             python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8000"
+    # hey dont forget to rebuild if u change requirements!!
+    # fixed db issues - make sure migrations run before server starts!!
+    # if still broken try: docker-compose down && docker-compose up --build
+    
+    # NOTE TO SELF: try on different port if 8000 is taken
+    # also need to implement persistant volume for db
+    # ports:
+    #   - "8001:8000"  # alternate port

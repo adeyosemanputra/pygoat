@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Learn - Sensitive Data Exposure</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .section-header {
+            border-left: 5px solid #007bff;
+            padding-left: 15px;
+            margin: 30px 0 20px;
+        }
+        .vulnerability-card {
+            border-left: 4px solid #dc3545;
+        }
+        .challenge-card {
+            background-color: #f8f9fa;
+        }
+        .prevention-item {
+            padding: 10px;
+            margin-bottom: 5px;
+            border-radius: 5px;
+            background-color: #e9ecef;
+        }
+        .step-number {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            background-color: #007bff;
+            color: white;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="{% url 'index' %}">Sensitive Data Lab</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'index' %}">Home</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'lesson' %}">Learn</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'about' %}">About</a>
+                </li>
+                {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'profile' %}">Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'login' %}">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'register' %}">Register</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-8">
+                <h1 class="mb-4" id="overview">Sensitive Data Exposure</h1>
+                <p class="lead">
+                    When apps accidentally expose private information like credit cards, SSNs, 
+                    or passwords, it's called "Sensitive Data Exposure" - one of the most dangerous security problems.
+                </p>
+                
+                <div class="alert alert-danger">
+                    <div class="d-flex">
+                        <div class="mr-2">
+                            <i class="fas fa-exclamation-triangle fa-2x"></i>
+                        </div>
+                        <div>
+                            <h4 class="alert-heading">Critical Risk!</h4>
+                            <p class="mb-0">According to OWASP, sensitive data exposure is the #3 most critical web application security risk.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <h2 class="section-header" id="types">Types of Sensitive Data</h2>
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <ul class="list-group">
+                            <li class="list-group-item d-flex align-items-center">
+                                <i class="fas fa-credit-card text-danger mr-3"></i>
+                                Credit card numbers
+                            </li>
+                            <li class="list-group-item d-flex align-items-center">
+                                <i class="fas fa-id-card text-danger mr-3"></i>
+                                Social Security Numbers
+                            </li>
+                            <li class="list-group-item d-flex align-items-center">
+                                <i class="fas fa-key text-danger mr-3"></i>
+                                Passwords & API keys
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <ul class="list-group">
+                            <li class="list-group-item d-flex align-items-center">
+                                <i class="fas fa-notes-medical text-danger mr-3"></i>
+                                Health records
+                            </li>
+                            <li class="list-group-item d-flex align-items-center">
+                                <i class="fas fa-user-circle text-danger mr-3"></i>
+                                Personal information
+                            </li>
+                            <li class="list-group-item d-flex align-items-center">
+                                <i class="fas fa-file-contract text-danger mr-3"></i>
+                                Business documents
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h2 class="section-header" id="vulnerabilities">Common Vulnerabilities</h2>
+                
+                <div class="card vulnerability-card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">1. Unencrypted Data Transmission</h5>
+                        <p class="card-text">
+                            When data is sent over HTTP instead of HTTPS, anyone on the same network can see it.
+                            It's like sending a postcard instead of a sealed letter!
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="card vulnerability-card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">2. Insecure API Endpoints</h5>
+                        <p class="card-text">
+                            APIs that give away sensitive data without properly checking who's asking for it.
+                            This is like a bank teller giving account details to anyone who asks!
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="card vulnerability-card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">3. Improper Data Storage</h5>
+                        <p class="card-text">
+                            Storing passwords and credit cards as plain text in databases.
+                            Like writing your ATM PIN directly on your debit card!
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="card vulnerability-card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">4. Client-side Exposure</h5>
+                        <p class="card-text">
+                            Including sensitive info in HTML comments, JavaScript, or browser storage.
+                            It's like hiding your house key under the doormat - the first place attackers look!
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="card vulnerability-card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">5. Insecure Direct Object References (IDOR)</h5>
+                        <p class="card-text">
+                            Allowing users to access other users' data by changing parameters in URLs or requests.
+                            Like being able to open someone else's mailbox just by changing the box number!
+                        </p>
+                    </div>
+                </div>
+
+                <h2 class="section-header" id="examples">Real-World Example: Equifax Breach</h2>
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title text-danger">Case Study: Equifax (2017)</h5>
+                        <p>
+                            In 2017, Equifax suffered one of the largest data breaches in history, exposing sensitive 
+                            personal information of 147 million people - nearly half the US population.
+                        </p>
+                        <ul>
+                            <li>Exposed data included SSNs, birth dates, addresses, and credit card numbers</li>
+                            <li>The breach cost Equifax over $1.4 billion in cleanup costs</li>
+                            <li>They agreed to pay up to $700 million in settlements</li>
+                        </ul>
+                        <p class="font-italic text-muted">
+                            All because they failed to properly patch and secure their systems!
+                        </p>
+                    </div>
+                </div>
+                
+                <h2 class="section-header" id="exercise">Lab Exercise</h2>
+                <div class="card challenge-card mb-4">
+                    <div class="card-body">
+                        <h4 class="card-title">Your Mission: Find the Vulnerabilities</h4>
+                        <p>Put on your hacker hat and try to find all the sensitive data leaks in this app:</p>
+                        
+                        <div class="steps mt-3">
+                            <p><span class="step-number">1</span> Create an account or use our demo account</p>
+                            <p><span class="step-number">2</span> Examine the profile page (note how data appears masked)</p>
+                            <p><span class="step-number">3</span> Check the HTML source code (right-click → View Page Source)</p>
+                            <p><span class="step-number">4</span> Open browser dev tools (F12) → Check Network, Console, Storage tabs</p>
+                            <p><span class="step-number">5</span> Try accessing these API endpoints after logging in:</p>
+                        </div>
+                        
+                        <div class="bg-dark text-light p-3 rounded mt-3">
+                            <code>/api/user-data/</code> (requires login)<br>
+                            <code>/api/all-users/</code> (completely unsecured!)
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card bg-warning text-dark mb-5">
+                    <div class="card-header">
+                        <h4 class="mb-0">Challenge: Find 5 Security Flaws</h4>
+                    </div>
+                    <div class="card-body">
+                        <p>
+                            This application has at least 5 different ways sensitive data is leaked. 
+                            Can you find them all? For each one, try to understand:
+                        </p>
+                        <ol>
+                            <li>What sensitive data is exposed</li>
+                            <li>How an attacker could find it</li>
+                            <li>How the vulnerability could be fixed</li>
+                        </ol>
+                        <div class="bg-light p-3 rounded">
+                            <p class="mb-0"><strong>Hint:</strong> One API endpoint is completely public and exposes ALL users' data without any authentication - you don't even need to log in to access it!</p>
+                        </div>
+                    </div>
+                </div>
+
+                <h2 class="section-header" id="prevention">Prevention Measures</h2>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="prevention-item">
+                            <i class="fas fa-lock text-success mr-2"></i>
+                            Always use HTTPS for data transmission
+                        </div>
+                        <div class="prevention-item">
+                            <i class="fas fa-database text-success mr-2"></i>
+                            Encrypt sensitive data at rest
+                        </div>
+                        <div class="prevention-item">
+                            <i class="fas fa-user-shield text-success mr-2"></i>
+                            Implement proper access controls for APIs
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="prevention-item">
+                            <i class="fas fa-eye-slash text-success mr-2"></i>
+                            Never store sensitive data in client-side code
+                        </div>
+                        <div class="prevention-item">
+                            <i class="fas fa-mask text-success mr-2"></i>
+                            Use proper data masking techniques
+                        </div>
+                        <div class="prevention-item">
+                            <i class="fas fa-trash text-success mr-2"></i>
+                            Delete sensitive data when no longer needed
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="sticky-top pt-4">
+                    <div class="card mb-4">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0">Lab Guide</h5>
+                        </div>
+                        <div class="list-group list-group-flush">
+                            <a href="#overview" class="list-group-item list-group-item-action">What is Sensitive Data Exposure</a>
+                            <a href="#types" class="list-group-item list-group-item-action">Types of Sensitive Data</a>
+                            <a href="#vulnerabilities" class="list-group-item list-group-item-action">Common Vulnerabilities</a>
+                            <a href="#examples" class="list-group-item list-group-item-action">Real-World Examples</a>
+                            <a href="#exercise" class="list-group-item list-group-item-action">Lab Exercise</a>
+                            <a href="#prevention" class="list-group-item list-group-item-action">Prevention Measures</a>
+                        </div>
+                    </div>
+                    
+                    {% if user.is_authenticated %}
+                    <div class="card border-success mb-4">
+                        <div class="card-header bg-success text-white">
+                            <h5 class="mb-0">Your Lab Progress</h5>
+                        </div>
+                        <div class="card-body">
+                            <p>You're logged in as <strong>{{ user.username }}</strong></p>
+                            <p>Ready to test your security skills?</p>
+                            <a href="{% url 'profile' %}" class="btn btn-outline-success btn-block">Go to Your Profile</a>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="card border-info mb-4">
+                        <div class="card-header bg-info text-white">
+                            <h5 class="mb-0">Start the Lab</h5>
+                        </div>
+                        <div class="card-body">
+                            <p>To start the hands-on portion of this lab, you need to:</p>
+                            <a href="{% url 'login' %}" class="btn btn-info btn-block mb-2">Login</a>
+                            <a href="{% url 'register' %}" class="btn btn-outline-info btn-block">Register</a>
+                        </div>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="card">
+                        <div class="card-header bg-secondary text-white">
+                            <h5 class="mb-0">Additional Resources</h5>
+                        </div>
+                        <div class="list-group list-group-flush">
+                            <a href="https://owasp.org/www-project-top-ten/2017/A3_2017-Sensitive_Data_Exposure" target="_blank" class="list-group-item list-group-item-action d-flex align-items-center">
+                                OWASP Top 10: A3 <i class="fas fa-external-link-alt ml-auto"></i>
+                            </a>
+                            <a href="https://cheatsheetseries.owasp.org/cheatsheets/Cryptographic_Storage_Cheat_Sheet.html" target="_blank" class="list-group-item list-group-item-action d-flex align-items-center">
+                                Cryptographic Storage Cheat Sheet <i class="fas fa-external-link-alt ml-auto"></i>
+                            </a>
+                            <a href="https://www.troyhunt.com/the-773-million-record-collection-1-data-reach/" target="_blank" class="list-group-item list-group-item-action d-flex align-items-center">
+                                Collection #1 Data Breach <i class="fas fa-external-link-alt ml-auto"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Font awesome for icons -->
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
