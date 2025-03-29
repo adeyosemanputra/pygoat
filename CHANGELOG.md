@@ -1,3 +1,9 @@
+# Pygoat v3.0.0 Pre
+
+* Created standalone labs of existing pygoat labs
+
+---
+
 # Pygoat v2.0.2 snapshot
 ### 1.Added
 - **Custom Management Command:**  
@@ -64,62 +70,4 @@ PyGoat Pre-Release Version 2.0
     i. New lab on template injection  
     ii. New 3 labs on cryptographic failure  
     iii. 1 more lab on broken access control  
-    iv. 1 lab on Insecure Design  
-    v. 1 more lab on security misconfiguration  
-    vi. 1 new lab on using components with known vulnerability  
-    vii. 2 new labs on Identification and Authentication failure  
-    viii. 1 lab on software and data integrity failure and XXS  
-    ix. Some labs on Insufficient logging  
-    x. 2 new labs on SSRF  
-
-* Section for Code discussion for most of the sections of OWASP 2021  
-
-* Coding playground for  
-    - SSRF  
-        i. Authentication failure  
-        ii. Insufficient logging  
-
-* Added new section for SANS 25 and MITRE 25  
-
-* Added new lab in SANS and MITRE 25 section  
-    i. Path traversal  
-    ii. Command injection  
-    iii. Code injection  
-    iv. CSRF  
-
-* New Dark theme and improved UI  
-
-* Better Docker file for smooth install  
-
-* Brand new Logo  
-
----
-
-# Pygoat Gibraltar v1.2  
-
-i. Fix [#57](https://github.com/adeyosemanputra/pygoat/pull/57) Fix Path Error  
-ii. Fix [#55](https://github.com/adeyosemanputra/pygoat/pull/55) Added Google OAuth / Auth with Google  
-iii. Fix [#54](https://github.com/adeyosemanputra/pygoat/pull/54) Change Login  
-
----
-
-# Pygoat Gibraltar v1.1  
-
-i. Added Authentication For LAB [#43](https://github.com/adeyosemanputra/pygoat/pull/43)  
-ii. Fix For A10 Insufficient Logging & Monitoring  
-
----
-
-# Pygoat Gibraltar v1.0  
-
-Added vulns done:  
-i. A1:2017-Injection  
-ii. A2:2017-Broken Authentication  
-iii. A3:2017-Sensitive Data Exposure  
-iv. A4:2017-XML External Entities (XXE)  
-v. A5:2017-Broken Access Control  
-vi. A6:2017-Security Misconfiguration  
-vii. A7:2017-Cross-Site Scripting (XSS)  
-viii. A8:2017-Insecure Deserialization  
-ix. A9:2017-Using Components with Known Vulnerabilities  
-x. A10:2017-Insufficient Logging & Monitoring  
+    iv.

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>Insecure Deserialization Lab - Result</title>
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <h3>Result</h3>
+    <div class="box">
+        {% if serialized %}
+        <pre>Your serialized token: {{ serialized }}</pre>
+        {% endif %}
+        {% if message %}
+        <pre>{{ message }}</pre>
+        {% endif %}
+        {% if error %}
+        <div class="error">{{ error }}</div>
+        {% endif %}
+        
+        <div align="right">
+            <button class="button" type="button" onclick="window.location.href='/'">Back</button>
+        </div>
+    </div>
+</div>
+{% endblock %}
