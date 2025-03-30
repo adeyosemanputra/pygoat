@@ -1,3 +1,8 @@
+## PyGoat v3.0.0 Pre
+
+### Added
+- Dockerized the **Sensitive Data Exposure** lab. (#256)
+
 # Pygoat v2.0.2 snapshot
 ### 1.Added
 - **Custom Management Command:**  
