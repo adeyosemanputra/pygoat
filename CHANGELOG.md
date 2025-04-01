@@ -1,6 +1,8 @@
-# PyGoat v3.0.0 Pre
+# Pygoat v3.0.0 Pre
 
 * Created standalone labs of existing pygoat labs
+
+---
 
 # Pygoat v2.0.2 snapshot
 ### 1.Added
