@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>About - Sensitive Data Exposure Lab</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="{% url 'index' %}">Sensitive Data Lab</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'index' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'lesson' %}">Learn</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'about' %}">About</a>
+                </li>
+                {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'profile' %}">Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'login' %}">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'register' %}">Register</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <h1>About This Lab</h1>
+        <hr>
+        
+        <div class="row mt-4">
+            <div class="col-md-8">
+                <h2>Sensitive Data Exposure</h2>
+                <p>
+                    This lab is designed to demonstrate OWASP Top 10 vulnerability A3: Sensitive Data Exposure.
+                    It is a deliberately vulnerable application created for educational purposes to help developers
+                    understand how sensitive data can be leaked in web applications and how to prevent such leaks.
+                </p>
+                
+                <h3>Features of this Lab</h3>
+                <ul>
+                    <li>Demonstrates common sensitive data exposure vulnerabilities</li>
+                    <li>Provides practical exercises to identify security issues</li>
+                    <li>Includes educational content on how to protect sensitive data</li>
+                    <li>Shows real-world examples of data leakage vulnerabilities</li>
+                </ul>
+                
+                <h3>Disclaimer</h3>
+                <div class="alert alert-warning">
+                    <strong>Educational Use Only:</strong> This application contains deliberate security vulnerabilities 
+                    for educational purposes. Do not use any real personal information when using this application.
+                    This lab should only be deployed in a controlled environment.
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card bg-light">
+                    <div class="card-header">OWASP Top 10</div>
+                    <div class="card-body">
+                        <p>
+                            The OWASP Top 10 is a standard awareness document for developers and web application security. 
+                            It represents a broad consensus about the most critical security risks to web applications.
+                        </p>
+                        <p>
+                            A3: Sensitive Data Exposure is a key risk that occurs when sensitive data is not properly 
+                            protected within applications.
+                        </p>
+                        <a href="https://owasp.org/www-project-top-ten/" class="btn btn-primary" target="_blank">Learn More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
