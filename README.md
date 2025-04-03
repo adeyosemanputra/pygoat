@@ -1,5 +1,5 @@
 # PyGoat
-[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/{S44VEDR4}/{pygoat-github-actions}/badge)](https://scorecard.dev/viewer/?uri=github.com/{S44VEDR4}/{pygoat-github-actions})
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/S44VEDR4/pygoat-github-actions/badge)](https://scorecard.dev/viewer/?uri=github.com/S44VEDR4/pygoat-github-actions)
 
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
