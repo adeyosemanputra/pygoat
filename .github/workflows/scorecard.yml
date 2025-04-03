@@ -4,6 +4,7 @@
 
 name: Scorecard supply-chain security
 on:
+  workflow_dispatch:
   # For Branch-Protection check. Only the default branch is supported. See
   # https://github.com/ossf/scorecard/blob/main/docs/checks.md#branch-protection
   branch_protection_rule:
@@ -13,6 +14,8 @@ on:
     - cron: '43 12 * * 1'
   push:
     branches: [ "master" ]
+
+
     
 # Declare default permissions as read only.
 permissions: read-all
