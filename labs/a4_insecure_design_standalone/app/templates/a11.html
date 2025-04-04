@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Insecure Design</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-4">
+        <h3>Insecure Design (OWASP A04:2021)</h3>
+        <div class="card p-3">
+            <h4>What is Insecure Design?</h4>
+            <p>
+                Insecure design represents missing or ineffective controls in an application. 
+                A secure implementation cannot fix a broken design. This lab demonstrates how flawed 
+                logic in user identity or access control can lead to business logic abuse.
+            </p>
+            <button class="btn btn-info" type="button" data-bs-toggle="collapse" data-bs-target="#labDetails">
+                Lab Details
+            </button>
+            <div class="collapse mt-3" id="labDetails">
+                <p>
+                    You can claim up to 5 free movie tickets. But is that limit enforced securely?
+                    Can you trick the system into giving you more?
+                </p>
+                <ul><strong>Hint:</strong> Try logging out, logging back in, or reusing tickets.</ul>
+                <div class="text-end">
+                    <a href="/insecure-design_lab" class="btn btn-primary">Access Lab</a>
+                </div>
+            </div>
+            <hr>
+            <h4>Mitigation Tips</h4>
+            <ul>
+                <li>Use proper session tracking and identity enforcement</li>
+                <li>Validate ticket ownership server-side</li>
+                <li>Use threat modeling to detect design flaws</li>
+                <li>Limit actions per user/session using signed tokens or backend checks</li>
+            </ul>
+        </div>
+    </div>
+
+<!-- Bootstrap JS Bundle (includes Popper) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
