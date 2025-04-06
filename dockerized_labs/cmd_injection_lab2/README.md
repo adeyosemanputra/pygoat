@@ -25,6 +25,18 @@ Then open: [http://localhost:5000](http://localhost:5000)
 - Fully Dockerized for safe testing  
 
 ---
+## 🧪 Screenshots
+
+### 🛡️ Safe Mode – Secure Evaluation
+Try inputs like: `7 + 3`, `2 * (5 + 1)`
+![Screenshot 2025-04-06 223113](https://github.com/user-attachments/assets/71a79560-15e3-4bd2-9a45-4e6a3641bb13)
+
+---
+
+### ⚠️ Unsafe Mode – Code Injection Risk
+Try inputs like: `__import__('os').system('whoami')`
+![Screenshot 2025-04-06 231839](https://github.com/user-attachments/assets/c8aac60e-459a-4d96-8ab4-4661c823ebe2)
+
 
 ## 💣 Example Payloads
 
