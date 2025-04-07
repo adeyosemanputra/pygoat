@@ -30,12 +30,7 @@ def login():
         if username not in user_tickets:
             user_tickets[username] = []
         return redirect(url_for('lab'))
-    return '''
-        <form method="POST">
-            <input name="username" placeholder="Enter username">
-            <button type="submit">Login</button>
-        </form>
-    '''
+    return render_template('login.html')
 
 
 @app.route('/logout')
