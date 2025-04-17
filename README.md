@@ -9,7 +9,7 @@ intentionally vuln web Application Security in django.
 our roadmap build intentionally vuln web Application in django. The Vulnerability can based on OWASP top ten
 <br>
 
-Table of Contentz
+Table of Contents
 =================
 
 * [pygoat](#pygoat)
