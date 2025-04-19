@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login | Insecure Design Lab</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-card {
+            max-width: 400px;
+            width: 100%;
+            animation: fadeIn 0.6s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="card login-card shadow-lg">
+        <div class="card-body p-4">
+            <h4 class="card-title text-center mb-3">
+                🎟️ OWASP A04: Insecure Design
+            </h4>
+            <p class="text-center text-muted mb-4">Login with any username – no password needed.</p>
+            <form method="POST" action="/login">
+                <div class="mb-3">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" name="username" class="form-control" placeholder="e.g. Jane" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Start Lab</button>
+            </form>
+        </div>
+        <div class="card-footer text-center bg-white">
+            <a href="/insecure-design" class="text-decoration-none small text-muted">🔍 What is this lab about?</a>
+        </div>
+    </div>
+</body>
+</html>
