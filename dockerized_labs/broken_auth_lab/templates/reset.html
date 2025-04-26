@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>Reset Password - Broken Authentication Lab</title>
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <h3>Reset Password</h3>
+    <div class="box">
+        <div class="section">
+            <h4>Enter New Password</h4>
+            <form method="POST" action="/reset/{{ token }}/confirm">
+                <input type="password" name="new_password" placeholder="New Password" required>
+                <input type="password" name="confirm_password" placeholder="Confirm New Password" required>
+                <input type="hidden" name="token" value="{{ token }}">
+                <button type="submit">Reset Password</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %} 

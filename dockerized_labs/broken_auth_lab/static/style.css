@@ -1,0 +1,216 @@
+/* Theme variables */
+:root {
+    --bg-color: #f8f9fa;
+    --card-bg: #fff;
+    --text-color: #212529;
+    --border-color: #dee2e6;
+    --card-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    --code-bg: #2c3e50;
+    --code-color: #ecf0f1;
+    --button-bg: #17a2b8;
+    --button-hover: #138496;
+    --section-bg: #f8f9fa;
+    --input-bg: #ffffff;
+    --input-color: #2c3e50;
+    --input-border: #ddd;
+}
+
+/* Dark theme */
+[data-theme="dark"] {
+    --bg-color: #212529;
+    --card-bg: #343a40;
+    --text-color: #f8f9fa;
+    --border-color: #495057;
+    --card-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    --code-bg: #1a1a1a;
+    --code-color: #ecf0f1;
+    --button-bg: #138496;
+    --button-hover: #17a2b8;
+    --section-bg: #2d3338;
+    --input-bg: #2d3338;
+    --input-color: #f8f9fa;
+    --input-border: #495057;
+}
+
+/* Reset margins and padding */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    height: 100%;
+    font-size: 16px;
+}
+
+body {
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s ease;
+}
+
+.page-container {
+    flex: 1;
+    width: 100%;
+    background: var(--bg-color);
+    transition: background-color 0.3s ease;
+}
+
+.content {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    background: var(--bg-color);
+}
+
+.box {
+    background: var(--card-bg);
+    border-radius: 8px;
+    padding: 25px;
+    margin: 20px 0;
+    box-shadow: var(--card-shadow);
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+}
+
+h1, h2, h3, h4 {
+    color: var(--text-color);
+    margin: 1rem 0;
+    transition: color 0.3s ease;
+}
+
+h3 {
+    font-size: 2rem;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 0.5rem;
+}
+
+h4 {
+    font-size: 1.5rem;
+}
+
+.section {
+    background: var(--section-bg);
+    margin: 25px 0;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+}
+
+input[type="text"], 
+input[type="password"],
+input[type="email"] {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    border: 1px solid var(--input-border);
+    border-radius: 4px;
+    background: var(--input-bg);
+    color: var(--input-color);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+button {
+    background: var(--button-bg);
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    background: var(--button-hover);
+    transform: translateY(-1px);
+}
+
+.bp {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    margin: 1rem 0;
+    color: var(--text-color);
+    transition: color 0.3s ease;
+}
+
+code {
+    background: var(--code-bg);
+    color: var(--code-color);
+    padding: 2px 4px;
+    border-radius: 3px;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    transition: all 0.3s ease;
+}
+
+pre {
+    background: var(--code-bg);
+    color: var(--code-color);
+    padding: 15px;
+    border-radius: 4px;
+    overflow-x: auto;
+    margin: 10px 0;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    transition: all 0.3s ease;
+}
+
+.lab {
+    background: var(--section-bg);
+    border-left: 4px solid var(--button-bg);
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 0 8px 8px 0;
+    transition: all 0.3s ease;
+}
+
+.lab-container {
+    margin: 20px 0;
+}
+
+.info {
+    margin-top: 30px;
+    color: var(--text-color);
+    transition: color 0.3s ease;
+}
+
+ul {
+    padding-left: 25px;
+}
+
+li {
+    margin: 10px 0;
+    line-height: 1.5;
+    font-size: 1.1rem;
+    color: var(--text-color);
+    transition: color 0.3s ease;
+}
+
+.theme-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid var(--border-color);
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    font-size: 1.2rem;
+} 
