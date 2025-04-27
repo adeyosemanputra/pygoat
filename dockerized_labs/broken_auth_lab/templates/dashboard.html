@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>Dashboard - Broken Authentication Lab</title>
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <h3>User Dashboard</h3>
+    <div class="box">
+        <div class="section">
+            <h4>Welcome, {{ username }}!</h4>
+            <div class="user-info">
+                <p class="bp">
+                    <strong>Username:</strong> {{ username }}<br>
+                    <strong>Role:</strong> <span class="role-badge">{{ role }}</span><br>
+                    <strong>Email:</strong> {{ email }}
+                </p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h4>Session Information</h4>
+            <p class="bp">
+                Your current session is active. Remember that this lab demonstrates insecure session management.
+                The session token is a base64 encoded string containing your username and timestamp.
+            </p>
+            {% if role == 'user' %}
+            <div class="lab">
+                <p class="bp">
+                    <b>Challenge:</b> Can you find a way to escalate your privileges to admin?<br>
+                    <b>Hint:</b> Examine your session cookie and its structure.
+                </p>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="info">
+            <h4>Security Notice</h4>
+            <p class="bp">
+                This is a vulnerable lab environment. In a real application, you would:
+            </p>
+            <ul>
+                <li>Use secure session management</li>
+                <li>Implement proper access controls</li>
+                <li>Encrypt sensitive data</li>
+                <li>Use secure token generation</li>
+            </ul>
+        </div>
+
+        <div style="text-align: right; margin-top: 20px;">
+            <button type="button" onclick="logout()">Logout</button>
+        </div>
+    </div>
+</div>
+
+<style>
+.user-info {
+    background: var(--section-bg);
+    padding: 20px;
+    border-radius: 8px;
+    margin: 10px 0;
+}
+
+.role-badge {
+    background: var(--button-bg);
+    color: white;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 0.9em;
+    display: inline-block;
+    margin: 0 5px;
+}
+</style>
+
+<script>
+function logout() {
+    // Clear the session cookie and redirect to login
+    document.cookie = "session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    window.location.href = "/lab";
+}
+</script>
+{% endblock %} 

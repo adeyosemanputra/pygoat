@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>Broken Authentication Lab - Exercise</title>
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <h3>Authentication Lab</h3>
+    <div class="box">
+        <div class="section">
+            <h4>Login</h4>
+            <form method="POST" action="/login">
+                <input type="text" name="username" placeholder="Username" required>
+                <input type="password" name="password" placeholder="Password" required>
+                <div style="margin: 10px 0;">
+                    <input type="checkbox" name="remember_me" id="remember_me">
+                    <label for="remember_me">Remember me</label>
+                </div>
+                <button type="submit">Login</button>
+            </form>
+            <p style="margin-top: 10px;">
+                <a href="#" onclick="showResetForm()">Forgot Password?</a>
+            </p>
+        </div>
+
+        <div class="section">
+            <h4>Register</h4>
+            <form method="POST" action="/register">
+                <input type="text" name="username" placeholder="Username" required>
+                <input type="email" name="email" placeholder="Email" required>
+                <input type="password" name="password" placeholder="Password" required>
+                <input type="password" name="confirm_password" placeholder="Confirm Password" required>
+                <button type="submit">Register</button>
+            </form>
+        </div>
+
+        <div id="resetForm" class="section" style="display: none;">
+            <h4>Reset Password</h4>
+            <form method="POST" action="/reset-password">
+                <input type="email" name="email" placeholder="Email" required>
+                <button type="submit">Send Reset Link</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+function showResetForm() {
+    document.getElementById('resetForm').style.display = 'block';
+}
+</script>
+{% endblock %} 

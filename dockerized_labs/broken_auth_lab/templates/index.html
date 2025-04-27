@@ -1,0 +1,174 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>Broken Authentication Lab</title>
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <h3>Broken Authentication</h3>
+    <div class="box">
+        <h4>What is Broken Authentication</h4>
+        <p class="bp">
+            Authentication is the process of verifying that an individual, entity or website is whom it claims to be.
+            Authentication in the context of web applications is commonly performed by submitting a username or ID and one or
+            more items of private information that only a given user should know. Broken Authentication occurs when
+            applications incorrectly implement authentication and session management functions, allowing attackers to
+            compromise passwords, keys, or session tokens, or exploit other implementation flaws to assume other users'
+            identities temporarily or permanently.
+        </p>
+
+        <div class="lab">
+            <p class="bp">
+                This lab demonstrates common authentication vulnerabilities. Your goal is to bypass the authentication
+                mechanisms and gain unauthorized access to user accounts.
+            </p>
+            <p class="bp">
+                The application has several vulnerabilities:
+                <ul>
+                    <li>Weak password requirements</li>
+                    <li>No brute force protection</li>
+                    <li>Insecure "Remember Me" functionality</li>
+                    <li>Vulnerable password reset mechanism</li>
+                </ul>
+            </p>
+            <p class="bp">
+                <b>Hint:</b> Start by examining the password reset functionality. Look for ways to manipulate the reset token
+                or intercept the reset process.
+            </p>
+            <div style="text-align: right;">
+                <button type="button" onclick="showLabDetails()" style="margin-right: 10px;">Lab Details</button>
+                <button type="button" onclick="window.location.href='/lab'">Access Lab</button>
+            </div>
+        </div>
+
+        <div id="labDetails" class="section" style="display: none; margin-top: 20px;">
+            <h4>Detailed Lab Lessons</h4>
+            
+            <div class="lesson-section">
+                <h5>1. Weak Password Policy</h5>
+                <p class="bp">
+                    Learn how insufficient password requirements make brute-force attacks easier:
+                    <ul>
+                        <li>No minimum length requirement</li>
+                        <li>No special character requirement</li>
+                        <li>No complexity validation</li>
+                        <li>Common passwords accepted</li>
+                    </ul>
+                </p>
+            </div>
+
+            <div class="lesson-section">
+                <h5>2. Insecure Password Storage</h5>
+                <p class="bp">
+                    Understand the risks of improper password storage:
+                    <ul>
+                        <li>Passwords stored in plain text</li>
+                        <li>No hashing implementation</li>
+                        <li>No salting mechanism</li>
+                        <li>Database exposure risks</li>
+                    </ul>
+                </p>
+            </div>
+
+            <div class="lesson-section">
+                <h5>3. Session Management Vulnerabilities</h5>
+                <p class="bp">
+                    Explore session security issues:
+                    <ul>
+                        <li>Base64 encoded tokens (not encrypted)</li>
+                        <li>Predictable token structure</li>
+                        <li>No token signing</li>
+                        <li>Privilege escalation possibilities</li>
+                    </ul>
+                </p>
+            </div>
+
+            <div class="lesson-section">
+                <h5>4. Password Reset Flaws</h5>
+                <p class="bp">
+                    Discover common password reset vulnerabilities:
+                    <ul>
+                        <li>Weak token generation</li>
+                        <li>Predictable reset tokens</li>
+                        <li>No token expiration</li>
+                        <li>Token exposure in UI</li>
+                    </ul>
+                </p>
+            </div>
+
+            <div class="lesson-section">
+                <h5>5. Missing Security Controls</h5>
+                <p class="bp">
+                    Identify missing security controls:
+                    <ul>
+                        <li>No brute force protection</li>
+                        <li>No rate limiting</li>
+                        <li>No account lockout</li>
+                        <li>No multi-factor authentication</li>
+                    </ul>
+                </p>
+            </div>
+
+            <div class="lesson-section">
+                <h5>6. Hands-on Learning</h5>
+                <p class="bp">
+                    Practice real-world attack scenarios:
+                    <ul>
+                        <li>Session token manipulation</li>
+                        <li>Password policy bypass</li>
+                        <li>Privilege escalation techniques</li>
+                        <li>Token prediction attacks</li>
+                    </ul>
+                </p>
+            </div>
+        </div>
+
+        <div class="info">
+            <h4>How to Prevent</h4>
+            <p>To prevent broken authentication vulnerabilities:</p>
+            <ul>
+                <li>Implement strong password policies</li>
+                <li>Use multi-factor authentication where possible</li>
+                <li>Implement proper session management</li>
+                <li>Use secure session storage</li>
+                <li>Implement account lockout after failed attempts</li>
+                <li>Use secure password recovery mechanisms</li>
+                <li>Ensure password hashing using strong algorithms (e.g., bcrypt)</li>
+                <li>Implement proper SSL/TLS configuration</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<style>
+.lesson-section {
+    background: var(--section-bg);
+    padding: 15px;
+    margin: 15px 0;
+    border-radius: 8px;
+    border-left: 4px solid var(--button-bg);
+}
+
+.lesson-section h5 {
+    color: var(--text-color);
+    margin: 0 0 10px 0;
+    font-size: 1.2em;
+}
+
+.lesson-section ul {
+    margin: 10px 0;
+}
+</style>
+
+<script>
+function showLabDetails() {
+    const details = document.getElementById('labDetails');
+    if (details.style.display === 'none') {
+        details.style.display = 'block';
+    } else {
+        details.style.display = 'none';
+    }
+}
+</script>
+{% endblock %} 
