@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block content %}
+{% block title %}
+<title>XXE Lab</title>
+{% endblock %}
+
+<div class="jumbotron">
+    <h4>Share Your Thoughts</h4>
+    <form name="ajax" onsubmit="SendToServer(); return false;">
+        <div class="form-group">
+            <label for="comment">Comment Your Thoughts:</label>
+            <input id="comment" type="text" name="comment" class="form-control">
+            <input type="hidden" id="Url" data-url="{% url 'xxe_parse' %}" />
+        </div>
+        <button class="btn btn-info" type="submit">Let the world see</button>
+    </form>
+</div>
+
+<div class="container">
+    <h4>To see your comments </h4>
+    <button class="btn btn-info" type="button" onclick="window.location.href='/see/'">Click Here</button>
+    <br><br>
+    {% if com %}
+    <h5>Your comments:</h5>
+    <pre>{{ com }}</pre>
+    {% endif %}
+</div>
+
+<br>
+<div align="right">
+    <button class="btn btn-info" type="button" onclick="window.location.href='/'">Back to Lab Details</button>
+</div>
+
+{% block extra_js %}
+<script>
+function SendToServer() {
+    var comment = document.getElementById("comment").value;
+    var xhr = new XMLHttpRequest();
+    var xml = "<?xml version='1.0'?><comm><text>" + comment + "</text></comm>";
+    var url = document.getElementById("Url").getAttribute("data-url");
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader("Content-Type", "text/xml");
+    xhr.send(xml);
+    setTimeout(function() {
+        window.location.href = '/see/';
+    }, 500);
+}
+</script>
+{% endblock %}
+{% endblock %} 
