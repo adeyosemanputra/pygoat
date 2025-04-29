@@ -1,0 +1,86 @@
+name: Pygoat Deploy CD
+on:
+    push:
+        branches: [main, aws-deployment]
+    workflow_dispatch:
+
+jobs:
+    deploy:
+        name: Deploy
+        runs-on: ubuntu-latest
+    
+        steps:
+            - name: Get GitHub runner IP
+              id: ip
+              uses: haythem/public-ip@v1.3
+        
+            - name: Setting environment variables
+              run: |
+                echo "AWS_DEFAULT_REGION=<YOUR REGION HERE>" >> "$GITHUB_ENV"
+                echo "AWS_SG_NAME=PyGoatSG" >> "$GITHUB_ENV"
+                echo "REPO_LOCATION=<YOUR REPO HERE>" >> "$GITHUB_ENV"
+          
+            - name: Add GH runner IP to AWS Security Group
+              run: |
+                aws ec2 authorize-security-group-ingress --group-name ${{ env.AWS_SG_NAME }} --protocol tcp --port 22 --cidr ${{ steps.ip.outputs.ipv4 }}/32    
+                
+              env:
+                AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+                AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+                AWS_DEFAULT_REGION: ${{ env.AWS_DEFAULT_REGION }}
+                
+            - name: Deploy to EC2
+              continue-on-error: true
+              uses: appleboy/ssh-action@v1.0.3
+              with:
+                host: ${{ secrets.HOST }} # Server IP address
+                username: ${{ secrets.USERNAME }} # username for SSH login (e.g. ec2-user)
+                key: ${{ secrets.KEY }} # private key of SSH user
+                port: ${{ secrets.PORT }} # ssh port, default is 22
+                script: |
+                  echo "Syncing git repo..."
+                  if [ ! -d "~/pygoat/.git" ]; then
+                    echo "Directory does not exist or is not a git repository. Cloning..."
+                    git clone ${{ env.REPO_LOCATION }} ~/pygoat
+                    cd ~/pygoat
+                  else
+                    echo "Directory exists and is a git repository. Pulling latest changes..."
+                    cd ~/pygoat
+                    git pull ${{ env.REPO_LOCATION }}
+                  fi
+      
+                  echo "Sync git repo complete."
+                  echo "Activating venv..."
+                  if [ ! -d "~/pygoat/venv" ]; then
+                      echo "Venv does not exist. Creating..."
+                      python3 -m venv ~/pygoat/venv
+                  fi
+                  source ~/pygoat/venv/bin/activate
+                  echo "Venv activated."
+                  echo "Installing pip requirements..."
+                  pip install -r requirements.txt
+                  echo "Checkign gunicorn..."
+                  if [ ! -d "~/pygoat/venv/bin/gunicorn" ]; then
+                    echo "Gunicorn not found. installing..."
+                    pip install gunicorn
+                  else
+                    echo "Gunicorn installed"
+                  fi
+                  
+                  echo "Applying Django migrations..."
+                  python3 manage.py migrate
+                  echo "Restarting nginx..."
+                  sudo systemctl restart nginx
+                  echo "Starting gunicorn service..."
+                  sudo systemctl restart gunicorn.service
+                  sleep 10  # Give Gunicorn time to start
+                  echo "Deployment completed"
+
+            - name: Remove GitHub action runner IP from AWS Security Group
+              if: always()
+              run: |
+                aws ec2 revoke-security-group-ingress --group-name ${{ env.AWS_SG_NAME }} --protocol tcp --port 22 --cidr ${{ steps.ip.outputs.ipv4 }}/32
+              env:
+                AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+                AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+                AWS_DEFAULT_REGION: ${{ env.AWS_DEFAULT_REGION }}
