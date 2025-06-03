@@ -1017,9 +1017,9 @@ def crypto_failure_lab(request):
             password = request.POST["password"]
             try:
                 password = md5(password.encode()).hexdigest()
-                user = CF_user.objects.get(username=username,password=password)
+                user = CF_user.objects.filter(username=username,password=password).first()
                 return render(request,"Lab_2021/A2_Crypto_failur/crypto_failure_lab.html",{"user":user, "success":True,"failure":False})
-            except:
+            except Exception as e:
                 return render(request,"Lab_2021/A2_Crypto_failur/crypto_failure_lab.html",{"success":False, "failure":True})
     else :
         return redirect('login')
@@ -1033,7 +1033,7 @@ def crypto_failure_lab2(request):
             password = request.POST["password"]
             try:
                 password = customHash(password)
-                user = CF_user.objects.get(username=username,password2=password)
+                user = CF_user.objects.filter(username=username,password2=password).first()
                 return render(request,"Lab_2021/A2_Crypto_failur/crypto_failure_lab2.html",{"user":user, "success":True,"failure":False})
             except:
                 return render(request,"Lab_2021/A2_Crypto_failur/crypto_failure_lab2.html",{"success":False, "failure":True})
