@@ -33,12 +33,12 @@ jobs:
         with:
           command: cves
           image: ${{ steps.meta.outputs.tags }}
-          sarif-file: sarif.output.json
+          # sarif-file: sarif.output.json
           summary: true
 
-      - name: Upload SARIF result
-        uses: github/codeql-action/upload-sarif@v2
-        with:
-          sarif_file: sarif.output.json
+      # - name: Upload SARIF result
+      #   uses: github/codeql-action/upload-sarif@v2
+      #   with:
+      #     sarif_file: sarif.output.json
       
       
