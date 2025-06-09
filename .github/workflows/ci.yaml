@@ -8,6 +8,7 @@ on:
 
 jobs:
   BuildImage:
+    environment: main
     runs-on : ubuntu-latest
     env:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}  
