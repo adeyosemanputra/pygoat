@@ -35,8 +35,9 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           args: >
-            -Dsonar.projectKey: "gantahari1_gantahari"
             -Dsonar.organization: "gantahari1"
+            -Dsonar.projectKey: "gantahari1_gantahari"
+            
           
   DockerScout:
     if: false
