@@ -38,7 +38,7 @@ jobs:
             
           
   DockerScout:
-    if: false
+    if: true
     environment: main
     runs-on : ubuntu-latest
     env:
