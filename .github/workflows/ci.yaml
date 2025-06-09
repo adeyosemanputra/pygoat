@@ -35,8 +35,8 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           args: >
-            -Dsonar.organization= "gantahari"
-            -Dsonar.projectKey= "gantahari_pygoat"
+            -Dsonar.organization=gantahari
+            -Dsonar.projectKey=gantahari_pygoat
             
           
   DockerScout:
