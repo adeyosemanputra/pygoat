@@ -33,6 +33,9 @@ jobs:
         uses: SonarSource/sonarqube-scan-action@v4
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          projectKey: "gantahari1_gantahari"
+          organization: "gantahari1"
           
   DockerScout:
     if: false
