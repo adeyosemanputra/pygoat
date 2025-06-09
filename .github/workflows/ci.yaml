@@ -5,74 +5,61 @@ on:
     branches:
     - master
 
-
 jobs:
-  SonarQube:
+  DockerImageBuild:
     environment: main
-    runs-on : ubuntu-latest
+    runs-on: ubuntu-latest
     env:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}  
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-      DOCKER_IMAGENAME:  "pygoatghaimage"
+      DOCKER_IMAGENAME: "pygoatghaimage"
+
     steps:
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@v4.2.2
+
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ env.DOCKER_USERNAME }}
           password: ${{ env.DOCKER_PASSWORD }}
-      
-      - name: Build and push
+
+      - name: Build and push Docker image
         uses: docker/build-push-action@v6
         with:
           push: true
           tags: ${{ env.DOCKER_USERNAME }}/${{ env.DOCKER_IMAGENAME }}:${{ github.run_id }}
+        id: build_image
 
+  SonarQube:
+    needs: DockerImageBuild 
+    environment: main
+    runs-on: ubuntu-latest
+    steps:
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v4
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           args: >
             -Dsonar.organization=gantahari
             -Dsonar.projectKey=gantahari_pygoat
-            
-          
-  DockerScout:
-    if: false
-    environment: main
-    runs-on : ubuntu-latest
-    env:
-      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}  
-      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-      DOCKER_IMAGENAME:  "pygoatghaimage"
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4.2.2
-      - name: Login to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ env.DOCKER_USERNAME }}
-          password: ${{ env.DOCKER_PASSWORD }}
-      
-      - name: Build and push
-        uses: docker/build-push-action@v6
-        with:
-          push: true
-          tags: ${{ env.DOCKER_USERNAME }}/${{ env.DOCKER_IMAGENAME }}:${{ github.run_id }}
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
+  
+  DockerScout:
+    needs: DockerImageBuild
+    environment: main
+    runs-on: ubuntu-latest
+    steps:
       - name: Analyze for critical and high CVEs
         uses: docker/scout-action@v1
         with:
           command: cves
-          image: ${{ steps.meta.outputs.tags }}
-          # sarif-file: sarif.output.json
+          image: ${{ env.DOCKER_USERNAME }}/${{ env.DOCKER_IMAGENAME }}:${{ github.run_id }}
+          sarif-file: sarif.output.json
           summary: true
 
-      # - name: Upload SARIF result
-      #   uses: github/codeql-action/upload-sarif@v2
-      #   with:
-      #     sarif_file: sarif.output.json
-      
-      
+      - name: Upload SARIF result
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: sarif.output.json
