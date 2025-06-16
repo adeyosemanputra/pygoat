@@ -6,6 +6,7 @@ on:
     - master
 jobs:
   SonarQube:
+    if: false
     environment: main
     runs-on : ubuntu-latest
     env:
@@ -38,7 +39,7 @@ jobs:
             
           
   DockerScout:
-    if: true
+    if: false
     environment: main
     runs-on : ubuntu-latest
     env:
@@ -72,3 +73,33 @@ jobs:
         uses: github/codeql-action/upload-sarif@v2
         with:
           sarif_file: sarif.output.json
+
+trivy:
+    if: true
+    environment: main
+    runs-on : ubuntu-latest
+    env:
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}  
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      DOCKER_IMAGENAME:  "pygoatghaimage"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.2.2
+
+      - name: running trivy
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          scan-type: 'config'
+          hide-progress: true
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+          exit-code: '1'
+          severity: 'CRITICAL,HIGH'
+
+      - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: 'trivy-results.sarif'
+
+      
+  
