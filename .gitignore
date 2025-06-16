@@ -15,3 +15,5 @@ bin
 # vscode
 .vscode/
 
+**.terraform**
+# Local env files
