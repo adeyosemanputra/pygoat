@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Cross-Site Scripting (XSS) Lab</title>
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <h3>Cross-Site Scripting</h3>
+    <div class="box">
+        <h4>What is Cross-Site Scripting (XSS)?</h4>
+        <p class="bp">
+            Cross-site scripting (XSS) is a form of client-side code injection where the attacker tries to inject malicious script into a trusted site. The malicious script is usually a piece of JavaScript code, which helps the attacker to perform malicious activities, like redirecting the victim to an attacker site, stealing cookies etc. Sometimes XSS vulnerability can be chained with other vulnerabilities to create greater impact.
+
+            There are three main types of XSS attacks:
+        </p>
+
+        <h4>Types of XSS</h4>
+        <div class="section">
+            <h5>1. Reflected XSS</h5>
+            <p class="bp">
+                Reflected XSS occurs when user input is immediately returned by a web application in an error
+                message, search result, or any other response that includes some or all of the input provided by the user as
+                part of the request, without that data being made safe to render in the browser.
+            </p>
+
+            <h5>2. Stored XSS</h5>
+            <p class="bp">
+                Stored XSS occurs when user input is stored on the target server, such as in a database, in a message forum, visitor log, 
+                comment field, etc. And then a victim is able to retrieve the stored data from the web application without that data being made 
+                safe to render in the browser.
+            </p>
+
+            <h5>3. DOM XSS</h5>
+            <p class="bp">
+                DOM-based XSS occurs when JavaScript takes an attacker-controllable value and passes it to a sink that supports dynamic code execution. 
+                The vulnerability exists in client-side code rather than server-side code.
+            </p>
+        </div>
+
+        <div class="lab">
+            <p class="bp">
+                This lab contains three different XSS challenges that demonstrate each type of XSS vulnerability.
+            </p>
+            <p class="bp">
+                The labs demonstrate:
+                <ul>
+                    <li>Reflected XSS through unescaped search results</li>
+                    <li>Stored XSS with simple filter bypass</li>
+                    <li>DOM XSS using non-alphanumeric JavaScript</li>
+                </ul>
+            </p>
+            <div style="text-align: right;">
+                <button type="button" onclick="showLabDetails()" style="margin-right: 10px;">Lab Details</button>
+                <button type="button" onclick="window.location.href='/lab1'" style="margin-right: 10px;">Lab 1</button>
+                <button type="button" onclick="window.location.href='/lab2'" style="margin-right: 10px;">Lab 2</button>
+                <button type="button" onclick="window.location.href='/lab3'">Lab 3</button>
+            </div>
+        </div>
+
+        <div id="labDetails" class="section" style="display: none; margin-top: 20px;">
+            <h4>Lab Descriptions</h4>
+            
+            <div class="lesson-section">
+                <h5>Lab 1: Reflected XSS</h5>
+                <p class="bp">
+                    Search for FAANG companies and try:
+                    <ul>
+                        <li>Enter a regular company name</li>
+                        <li>Try using HTML tags in the search</li>
+                        <li>Attempt to execute JavaScript through script tags</li>
+                    </ul>
+                </p>
+            </div>
+
+            <div class="lesson-section">
+                <h5>Lab 2: Stored XSS with Filter</h5>
+                <p class="bp">
+                    The comment system tries to block XSS:
+                    <ul>
+                        <li>Simple filter removes script tags</li>
+                        <li>Try alternative HTML tags</li>
+                        <li>Goal: Set the flag cookie to "success"</li>
+                    </ul>
+                </p>
+            </div>
+
+            <div class="lesson-section">
+                <h5>Lab 3: DOM XSS Challenge</h5>
+                <p class="bp">
+                    Bypass alphanumeric filtering:
+                    <ul>
+                        <li>All letters and numbers are removed</li>
+                        <li>Output is placed in a script tag</li>
+                        <li>Use special characters to construct code</li>
+                    </ul>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function showLabDetails() {
+    const details = document.getElementById('labDetails');
+    if (details.style.display === 'none') {
+        details.style.display = 'block';
+    } else {
+        details.style.display = 'none';
+    }
+}
+</script>
+{% endblock %}

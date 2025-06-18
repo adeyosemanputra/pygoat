@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Lab 3: DOM XSS</title>
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <div class="box">
+        <h3>Special Character Challenge</h3>
+        <div class="form-container">
+            <form method="post" action="/lab3">
+                <div class="section">
+                    <label for="username" class="form-label">Enter your code (alphanumeric characters will be removed):</label>
+                    <input type="text" id="username" name="username" required>
+                    <button type="submit">Submit</button>
+                </div>
+            </form>
+
+            {% if code %}
+            <div class="section">
+                <h4>Filtered Result:</h4>
+                <pre>{{ code }}</pre>
+
+                {# Vulnerable: Code is evaluated in script tag #}
+                <script>
+                    // LAB 3 JS CODE
+                    {{ code }}
+                </script>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="box">
+        <h4>Lab Instructions</h4>
+        <div class="lab">
+            <p class="bp">
+                This lab demonstrates DOM-based XSS with a twist: you can't use regular characters. The challenge is to 
+                execute JavaScript using only special characters.
+            </p>
+            
+            <div class="section">
+                <h5>The Challenge:</h5>
+                <ul>
+                    <li>All alphanumeric characters (a-z, A-Z, 0-9) will be removed from your input</li>
+                    <li>Your filtered input will be executed inside a script tag</li>
+                    <li>Goal: Find a way to execute <code>alert(1)</code> without using normal characters</li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <h5>Hints:</h5>
+                <p class="bp">
+                    You can construct JavaScript without alphanumeric characters! Try these techniques:
+                </p>
+                <ul>
+                    <li>Use <code>[]+({})</code> to create the string "[object Object]"</li>
+                    <li>Access characters using array indices</li>
+                    <li>Combine symbols like <code>+![]</code> to create numbers</li>
+                    <li>Chain these techniques to build strings and execute code</li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <h5>Getting Started:</h5>
+                <pre><code>// Examples of what works:
+[]                  // becomes "0" 
+![]                // becomes false
+!![]               // becomes true
++!![]              // becomes 1</code></pre>
+            </div>
+        </div>
+        
+        <div style="text-align: right;">
+            <button onclick="window.location.href='/lab2'" style="margin-right: 10px;">Previous Lab</button>
+            <button onclick="window.location.href='/'">Back to Home</button>
+        </div>
+    </div>
+</div>
+{% endblock %}
