@@ -1,0 +1,22 @@
+# Description: Automates Snyk Code static analysis scan on every push or pull_request,
+# uploading results to Github's code scanning system.
+# Explicity install Snyk CLI and run snky code test
+# can use snyk personal account token for testing
+
+name: "snyk code test"
+on: [push, pull_request]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: snyk/actions/setup@master
+      - name: Snyk Test
+        run: snyk code test --org=${{ secrets.SNYK_ORG }} --sarif > snyk-sarif2.json
+        continue-on-error: true
+        env:
+           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      - name: Upload SARIF file
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: snyk-sarif2.json
