@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>Broken Access Control Lab - Login</title>
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <h3>Broken Access Control Lab</h3>
+    <div class="box">
+        <h4>Lab Login</h4>
+        <div class="lab-container">
+            <p class="bp">
+                Try to access the admin content by exploiting broken access control.
+                <br>
+                <b>Regular user credentials:</b> <code>jack:jacktheripper</code>
+            </p>
+            <div class="login-form">
+                <form action="/lab/login" method="POST">
+                    <input type="text" name="username" placeholder="Username" required>
+                    <input type="password" name="password" placeholder="Password" required>
+                    <button type="submit">Login</button>
+                </form>
+            </div>
+        </div>
+        <div align="right">
+            <button type="button" onclick="window.location.href='/'">Back to Lab Details</button>
+        </div>
+    </div>
+</div>
+{% endblock %} 

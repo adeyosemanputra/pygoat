@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>Broken Access Control Lab</title>
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <h3>Broken Access Control</h3>
+    <div class="box">
+        <h4>What is Broken Access Control</h4>
+        <p class="bp">
+            Access control, sometimes called authorization, is how a web application grants access to content
+            and functions to some users and not others. These checks are performed after authentication, and govern what
+            'authorized' users are allowed to do. A web application's access control model is closely tied to the
+            content and functions that the site provides. In addition, the users may fall into a number of groups or
+            roles with different abilities or privileges.
+        </p>
+
+        <div class="lab">
+            <p class="bp">
+                This Lab consists of a Page that has some content only available for the admin to see. How can we access that
+                page as admin? How is our role defined?
+            </p>
+            <p class="bp">
+                The credentials for the user Jack are <code>jack:jacktheripper</code>.<br>
+                The main aim of this lab is to login with admin privileges to get the secret key.
+            </p>
+            <p class="bp">
+                <b>Hint:</b> Every time a valid user logs in, a cookie called <code>admin</code> is set. When logged in as <code>jack</code> 
+                it is set to 0. Can you modify this to gain admin access?
+            </p>
+            <div align="right">
+                <button type="button" onclick="window.location.href='/lab'">Access Lab</button>
+            </div>
+        </div>
+
+        <div class="info">
+            <h4>How to Prevent</h4>
+            <p>To prevent broken access control vulnerabilities:</p>
+            <ul>
+                <li>Implement proper session management techniques</li>
+                <li>Use secure tokens like JWT for authorization</li>
+                <li>Deny access by default unless explicitly granted</li>
+                <li>Implement proper access control checks at each level</li>
+                <li>Thoroughly test access controls to ensure they work as designed</li>
+                <li>Log access control failures and alert admins when appropriate</li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %} 
