@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}Lab 1{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Lab 1: YAML Parsing Vulnerability</h1>
+    
+    <div class="box">
+        <h2>Description</h2>
+        <p>This lab demonstrates why components with known vulnerabilities can be a serious issue.
+           The application uses an outdated version of the PyYAML library which is vulnerable to code execution.</p>
+        
+        <div class="lab-section">
+            <h3>Current Versions</h3>
+            <button onclick="getVersionInfo()" class="btn">Check Library Versions</button>
+            <div id="versionInfo" class="result"></div>
+        </div>
+
+        <div class="lab-section">
+            <h3>YAML File Upload</h3>
+            <form action="{{ url_for('upload_yaml') }}" method="post" enctype="multipart/form-data">
+                <div>
+                    <label for="file">Select YAML File:</label>
+                    <input type="file" id="file" name="file" accept=".yml,.yaml,png,jpeg">
+                </div>
+                <button type="submit" class="btn">Upload</button>
+            </form>
+        </div>
+
+        <div class="lab-section">
+            <h3>Vulnerability Details</h3>
+            <div class="alert alert-warning">
+                <ul>
+                    <li>The app uses <code>pyyaml 5.1</code> which is vulnerable to code execution</li>
+                    <li>Libraries known for code injection vulnerabilities include PyYAML 5.4 and earlier</li>
+                    <li>Example vulnerable YAML payload:</li>
+                </ul>
+                <pre><code>!!python/object/apply:subprocess.Popen
+- ls</code></pre>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function getVersionInfo() {
+    fetch('/get_version')
+        .then(response => response.json())
+        .then(data => {
+            const versionDiv = document.getElementById('versionInfo');
+            versionDiv.innerHTML = `
+                <div class="alert alert-info">
+                    <strong>PyYAML Version:</strong> ${data.pyyaml}<br>
+                    <strong>Pillow Version:</strong> ${data.pillow}
+                </div>
+            `;
+        });
+}
+</script>
+{% endblock %}

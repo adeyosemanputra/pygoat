@@ -1,0 +1,11 @@
+.git
+.vscode/
+__pycache__/
+*.pyc
+*.pyo
+.env
+.venv/
+env/
+venv/
+app.log
+*.log

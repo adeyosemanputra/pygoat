@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %} Using Components with Known Vulnerabilities {% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Using Components with Known Vulnerabilities</h1>
+    
+    <div class="box">
+        <h2>Overview</h2>
+        <p>When a developer uses a piece of code or library which already has a known vulnerability, then
+           this may result in compromise of the entire application. This occurs when the components such as libraries
+           and frameworks used within the app mostly execute with full privileges. If a vulnerable component is
+           exploited, it makes the hacker's job easier to cause a serious data loss or server takeover.</p>
+    </div>
+
+    <div class="box">
+        <h2>Available Labs</h2>
+        
+        <div class="lab-grid">
+            <div class="lab-card">
+                <div class="lab-card-content">
+                    <h3>Lab 1: YAML Parsing Vulnerability</h3>
+                    <p>Explore vulnerabilities in outdated YAML parsing libraries that can lead to remote code execution.</p>
+                </div>
+                <a href="{{ url_for('lab1') }}" class="btn">Access Lab 1</a>
+            </div>
+
+            <div class="lab-card">
+                <div class="lab-card-content">
+                    <h3>Lab 2: Image Processing Vulnerability</h3>
+                    <p>Learn about security issues in outdated image processing libraries that can be exploited.</p>
+                </div>
+                <a href="{{ url_for('lab2') }}" class="btn">Access Lab 2</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="box">
+        <h2>Mitigation Steps</h2>
+        <div class="lab-section">
+            <ul>
+                <li>Remove unused dependencies, unnecessary features, components, files, and documentation.</li>
+                <li>Only obtain components from official sources over secure links.</li>
+                <li>Monitor for libraries and components that are unmaintained or do not create security patches for older versions.</li>
+                <li>Use Library scanners to test for vulnerabilities in packages.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

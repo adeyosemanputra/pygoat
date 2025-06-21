@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}Processing Result{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Processing Result</h1>
+    
+    <div class="box">
+        <h2>File: {{ filename }}</h2>
+        
+        <div class="lab-section">
+            {% if image %}
+                <div class="alert alert-info">
+                    <h3>Image Processing Result</h3>
+                    <p>Left: Original Image | Right: Processed Image</p>
+                </div>
+                <div class="image-comparison">
+                    {% if img_str_ref %}
+                        <img src="data:image/jpeg;base64,{{ img_str_ref }}" alt="Original Image" class="result-image">
+                    {% endif %}
+                    {% if img_str %}
+                        <img src="data:image/jpeg;base64,{{ img_str }}" alt="Processed Image" class="result-image">
+                    {% endif %}
+                </div>
+            {% else %}
+                <div class="result">
+                    <h3>YAML Content</h3>
+                    <pre><code>{{ content }}</code></pre>
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="lab-section">
+            {% if request.path.startswith('/upload_yaml') %}
+                <a href="{{ url_for('lab1') }}" class="btn">Back to Lab 1</a>
+            {% else %}
+                <a href="{{ url_for('lab2') }}" class="btn">Back to Lab 2</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
