@@ -1,0 +1,299 @@
+name: PyGoat Security CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, master, develop ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build-and-test:
+    name: Build and Test
+    runs-on: ubuntu-latest
+    
+    services:
+      postgres:
+        image: postgres:13
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: pygoat_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+        
+    - name: Cache pip dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+          
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pytest pytest-django coverage
+        
+    - name: Run Django migrations
+      env:
+        DATABASE_URL: postgres://postgres:postgres@localhost:5432/pygoat_test
+      run: |
+        python manage.py migrate --settings=pygoat.settings
+        
+    - name: Run Django tests
+      env:
+        DATABASE_URL: postgres://postgres:localhost:5432/pygoat_test
+      run: |
+        python manage.py test --settings=pygoat.settings
+        
+    - name: Generate coverage report
+      env:
+        DATABASE_URL: postgres://postgres:postgres@localhost:5432/pygoat_test
+      run: |
+        coverage run --source='.' manage.py test --settings=pygoat.settings
+        coverage xml
+        
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./coverage.xml
+        flags: unittests
+
+  sca-scan:
+    name: Software Composition Analysis (SCA)
+    runs-on: ubuntu-latest
+    needs: build-and-test
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+        
+    - name: Install pip-audit
+      run: |
+        python -m pip install --upgrade pip
+        pip install pip-audit
+        
+    - name: Run pip-audit scan
+      run: |
+        pip-audit --requirement requirements.txt --format=json --output=pip-audit-report.json
+        pip-audit --requirement requirements.txt --format=cyclonedx-json --output=sbom.json
+        
+    - name: Upload pip-audit results
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: pip-audit-results
+        path: |
+          pip-audit-report.json
+          sbom.json
+
+  sast-scan:
+    name: Static Application Security Testing (SAST)
+    runs-on: ubuntu-latest
+    needs: build-and-test
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+        
+    - name: Install bandit
+      run: |
+        python -m pip install --upgrade pip
+        pip install bandit[toml]
+        
+    - name: Run bandit SAST scan
+      run: |
+        bandit -r . -f json -o bandit-report.json || true
+        bandit -r . -f txt -o bandit-report.txt || true
+        
+    - name: Upload bandit results
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: bandit-results
+        path: |
+          bandit-report.json
+          bandit-report.txt
+
+  secrets-scan:
+    name: Secrets Detection
+    runs-on: ubuntu-latest
+    needs: build-and-test
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        
+    - name: Download gitleaks configuration
+      run: |
+        wget -O gitleaks.toml https://raw.githubusercontent.com/zricethezav/gitleaks/master/config/gitleaks.toml
+        
+    - name: Run gitleaks scan
+      uses: gitleaks/gitleaks-action@v2
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }}
+      with:
+        config-path: gitleaks.toml
+        
+    - name: Upload gitleaks results
+      uses: actions/upload-artifact@v3
+      if: failure()
+      with:
+        name: gitleaks-results
+        path: results.sarif
+
+  dast-scan:
+    name: Dynamic Application Security Testing (DAST)
+    runs-on: ubuntu-latest
+    needs: [build-and-test, sca-scan, sast-scan, secrets-scan]
+    
+    services:
+      postgres:
+        image: postgres:13
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: pygoat
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+        
+    - name: Install dependencies and start PyGoat
+      env:
+        DATABASE_URL: postgres://postgres:postgres@localhost:5432/pygoat
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        python manage.py migrate
+        python manage.py runserver 0.0.0.0:8000 &
+        sleep 30
+        
+    - name: Wait for application to be ready
+      run: |
+        timeout 60s bash -c 'until curl -f http://localhost:8000; do sleep 2; done'
+        
+    - name: Run OWASP ZAP Baseline Scan
+      run: |
+        docker run --network host -v $(pwd):/zap/wrk/:rw \
+          -t ghcr.io/zaproxy/zaproxy:stable \
+          zap-baseline.py \
+          -t http://localhost:8000 \
+          -J zap-baseline-report.json \
+          -r zap-baseline-report.html \
+          -x zap-baseline-report.xml \
+          -I || true
+          
+    - name: Run Nikto scan (alternative DAST)
+      run: |
+        docker run --network host -v $(pwd):/tmp \
+          frapsoft/nikto \
+          -host http://localhost:8000 \
+          -output /tmp/nikto-report.xml \
+          -Format xml || true
+        
+    - name: Upload DAST results
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: dast-results
+        path: |
+          zap-baseline-report.json
+          zap-baseline-report.html
+          zap-baseline-report.xml
+          nikto-report.xml
+
+  security-report:
+    name: Generate Security Report
+    runs-on: ubuntu-latest
+    needs: [sca-scan, sast-scan, secrets-scan, dast-scan]
+    if: always()
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Download all artifacts
+      uses: actions/download-artifact@v3
+      
+    - name: Generate security summary
+      run: |
+        echo "# PyGoat Security Scan Results" > security-report.md
+        echo "" >> security-report.md
+        echo "## SCA (Software Composition Analysis)" >> security-report.md
+        if [ -f pip-audit-results/pip-audit-report.json ]; then
+          echo "✅ pip-audit scan completed" >> security-report.md
+        else
+          echo "❌ pip-audit scan failed" >> security-report.md
+        fi
+        echo "" >> security-report.md
+        echo "## SAST (Static Application Security Testing)" >> security-report.md
+        if [ -f bandit-results/bandit-report.json ]; then
+          echo "✅ bandit scan completed" >> security-report.md
+        else
+          echo "❌ bandit scan failed" >> security-report.md
+        fi
+        echo "" >> security-report.md
+        echo "## Secrets Detection" >> security-report.md
+        if [ -f gitleaks-results/results.sarif ]; then
+          echo "⚠️ gitleaks found potential secrets" >> security-report.md
+        else
+          echo "✅ No secrets detected" >> security-report.md
+        fi
+        echo "" >> security-report.md
+        echo "## DAST (Dynamic Application Security Testing)" >> security-report.md
+        if [ -f dast-results/zap-baseline-report.json ]; then
+          echo "✅ OWASP ZAP scan completed" >> security-report.md
+        else
+          echo "❌ OWASP ZAP scan failed" >> security-report.md
+        fi
+        if [ -f dast-results/nikto-report.xml ]; then
+          echo "✅ Nikto scan completed" >> security-report.md
+        else
+          echo "❌ Nikto scan failed" >> security-report.md
+        fi
+        
+    - name: Upload security report
+      uses: actions/upload-artifact@v3
+      with:
+        name: security-report
+        path: security-report.md
