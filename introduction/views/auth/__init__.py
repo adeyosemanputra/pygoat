@@ -1,0 +1,1 @@
+# Initialize auth views package
