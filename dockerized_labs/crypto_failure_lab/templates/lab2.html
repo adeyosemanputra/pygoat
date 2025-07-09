@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}
+<title>Cryptographic Failure</title>
+{% endblock %}
+
+{% block content %}
+{% if success %}
+    <h1>Successfully logged in as {{user}}</h1>
+{% else %}
+
+<div class="jumbotron">
+    <div class="box" style="max-width: 700px; margin: 80px auto 0 auto; padding: 40px;">
+        <h4 style="text-align:center">LOG IN</h4>
+        <div class="login" style="display: flex;justify-content: center;flex-direction: row;">
+            <form method="post">
+                <input id="input" type="text" name="username" placeholder="User Name"><br>
+                <input id="input" type="password" name="password" placeholder="Password"><br>
+                <button style="margin-top:20px" class="btn btn-info" type="submit">Log in</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% if failure %}
+    <h1>Login Failed</h1>
+{% endif %}
+<div class="container">
+</div>
+{% endif %}
+
+<br>
+<button class="coll2 btn btn-info" style="position: fixed; right:200px; bottom: 7px" onclick="toggleHint()">Hint</button>
+<div id="hint" class="lab code" style="display: none;">
+    Look at how the hashes are generated - is it really more secure?
+</div>
+
+<div style="position: fixed; right: 7px; bottom: 7px">
+    <button class="btn btn-info" type="button" onclick="window.location.href='/'">Back to Lab Details</button>
+</div>
+
+<script>
+function toggleHint() {
+    const element = document.getElementById('hint');
+    element.style.display = element.style.display === 'none' ? 'block' : 'none';
+}
+</script>
+{% endblock %}

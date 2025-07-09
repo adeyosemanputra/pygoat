@@ -1,0 +1,23 @@
+SSRF Attack Vectors
+
+Common SSRF attack vectors include:
+
+1. Direct URL Manipulation
+- Modifying URLs to access internal resources
+- Using different URL schemes (file://, dict://, etc.)
+- Leveraging DNS rebinding
+
+2. Protocol-Based Attacks
+- Using gopher:// for crafting custom TCP packets
+- Exploiting FTP for port scanning
+- Abusing Redis protocol
+
+3. Cloud Metadata Endpoints
+- AWS: http://169.254.169.254/
+- GCP: http://metadata.google.internal/
+- Azure: http://169.254.169.254/metadata/
+
+4. Internal Service Access
+- Accessing admin interfaces
+- Reaching database servers
+- Connecting to internal APIs

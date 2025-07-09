@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>SSRF Lab</title>
+{% endblock %}
+
+{% block content %}
+<div style="display:flex;flex-direction:column;align-items:center">
+    {% if error %}
+    <div class="alert alert-danger" role="alert">
+        {{ error }}
+    </div>
+    {% endif %}
+
+    <form method="POST">
+        <div class="form-group">
+            <label for="url">URL</label>
+            <input type="text" class="form-control" id="url" name="url" placeholder="Enter URL">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </form>
+    
+    {% if response %}
+        <div style="width:70%;overflow:scroll;background-color:#000">{{response | safe}}</div>
+    {% endif %}
+</div>
+
+<button class="coll2 btn btn-info" style="position: fixed; right:330px; bottom: 7px" onclick="toggleHint()">Hint</button>
+<div id="hint" class="lab code" style="display: none;">
+    Try to access the /internal endpoint from localhost
+</div>
+
+<button class="coll2 btn btn-info" style="position: fixed; right:200px; bottom: 7px" onclick="toggleSourceCode()">View Code</button>
+
+<div id="sourceCode" class="lab code" style="display: none;">
+    <pre>
+@app.route('/lab2', methods=['GET', 'POST'])
+def lab2():
+    if request.method == 'POST':
+        url = request.form.get('url')
+        try:
+            # Vulnerable implementation - no URL validation
+            response = requests.get(url)
+            return render_template('lab2.html', response=response.text)
+        except:
+            return render_template('lab2.html', error="Invalid URL")
+    return render_template('lab2.html')
+
+@app.route('/internal')
+def internal():
+    client_ip = get_client_ip(request)
+    if client_ip == '127.0.0.1':
+        return render_template('internal.html')
+    return render_template('internal.html', access_denied=True)
+    </pre>
+</div>
+
+<div style="position: fixed; right: 7px; bottom: 7px">
+    <button class="btn btn-info" type="button" onclick="window.location.href='/'">Back to Lab Details</button>
+</div>
+
+<script>
+function toggleSourceCode() {
+    const element = document.getElementById('sourceCode');
+    element.style.display = element.style.display === 'none' ? 'block' : 'none';
+}
+
+function toggleHint() {
+    const element = document.getElementById('hint');
+    element.style.display = element.style.display === 'none' ? 'block' : 'none';
+}
+</script>
+{% endblock %}
