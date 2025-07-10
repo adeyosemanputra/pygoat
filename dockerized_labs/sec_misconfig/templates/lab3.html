@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Security Misconfiguration - Lab 3</title>
+{% endblock %}
+
+{% block content %}
+<div class="box">
+    <h4>JWT Token Misconfiguration</h4>
+    <p class="bp">
+        This lab demonstrates how misconfigured JWT tokens can be manipulated.
+        Try to modify the token to gain admin access.
+    </p>
+    
+    <div class="section">
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" id="username" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="role">Role:</label>
+            <input type="text" id="role" class="form-control" value="user" readonly>
+        </div>
+        <button class="btn btn-info" onclick="getToken()">Get Token</button>
+    </div>
+
+    <div class="section">
+        <div class="form-group">
+            <label for="token">JWT Token:</label>
+            <textarea id="token" class="form-control" rows="3" ></textarea>
+        </div>
+        <button class="btn btn-info" onclick="verifyToken()">Verify Token</button>
+    </div>
+
+    <div id="result" class="section"></div>
+</div>
+
+<div class="box">
+    <h4>Server Code</h4>
+    <pre class="code">
+@app.route('/lab3/get-token', methods=['POST'])
+def get_token():
+    data = request.get_json()
+    username = data.get('username', '')
+    role = data.get('role', 'user')
+    
+    # Using a weak secret key (misconfiguration)
+    secret = 'secret123'
+    
+    token = jwt.encode(
+        {
+            'username': username,
+            'role': role,
+            'exp': datetime.utcnow() + timedelta(hours=1)
+        },
+        secret,
+        algorithm='HS256'
+    )
+    return jsonify({'token': token})
+
+@app.route('/lab3/verify-token', methods=['POST'])
+def verify_token():
+    token = request.get_json().get('token', '')
+    secret = 'secret123'
+    
+    try:
+        payload = jwt.decode(token, secret, algorithms=['HS256'])
+        if payload['role'] == 'admin':
+            return jsonify({
+                'message': 'Success! You gained admin access.',
+                'payload': payload
+            })
+        return jsonify({
+            'message': 'Token verified but user is not admin',
+            'payload': payload
+        })
+    except jwt.ExpiredSignatureError:
+        return jsonify({'error': 'Token has expired'}), 401
+    except jwt.InvalidTokenError:
+        return jsonify({'error': 'Invalid token'}), 401</pre>
+</div>
+
+<script>
+function getToken() {
+    const username = document.getElementById('username').value;
+    const role = document.getElementById('role').value;
+    
+    fetch('/lab3/get-token', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({username, role})
+    })
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById('token').value = data.token;
+    });
+}
+
+function verifyToken() {
+    const token = document.getElementById('token').value;
+    
+    fetch('/lab3/verify-token', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({token})
+    })
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById('result').innerHTML = `
+            <div class="alert ${data.error ? 'alert-danger' : 'alert-success'}">
+                ${data.error || data.message}
+                ${data.payload ? '<pre>' + JSON.stringify(data.payload, null, 2) + '</pre>' : ''}
+            </div>
+        `;
+    });
+}
+</script>
+
+<div class="button-container">
+    <button class="btn btn-info" type="button" onclick="window.location.href='/'">Back to Lab Details</button>
+</div>
+{% endblock %}

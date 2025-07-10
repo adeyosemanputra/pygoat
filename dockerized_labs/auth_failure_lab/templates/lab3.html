@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block title %}Authentication Lab 3 - Session Management{% endblock %}
+
+{% block content %}
+<h3>Session Management</h3>
+<div class="box login-box">
+    {% if success %}
+        <div class="success">
+            <h4>Login Successful</h4>
+            <p>Logged in as: <code>{{username}}</code></p>
+        </div>
+        <form method="POST">
+            <button type="submit">Logout</button>
+        </form>
+    {% else %}
+        <h4 style="text-align:center">User Login</h4>
+        <form method="post">
+            <div class="form-group">
+                <input type="text" name="username" placeholder="Username" required>
+            </div>
+            <div class="form-group">
+                <input type="password" name="password" placeholder="Password" required>
+            </div>
+            <button type="submit">Log in</button>
+        </form>
+
+        {% if failure %}
+            <div class="error">Invalid username or password</div>
+        {% endif %}
+    {% endif %}
+</div>
+
+<button class="code-toggle">View Code</button>
+<button class="back-button" onclick="window.location.href='/'">Back to Lab Details</button>
+
+<div class="lab code">
+    <pre>
+@app.route('/lab3', methods=['GET', 'POST'])
+def lab3():
+    if request.method == "GET":
+        try:
+            session_id = request.cookies.get("session_id")
+            session = Session.query.filter_by(session_id=session_id).first()
+            if session:
+                return render_template("lab3.html", username=session.user, success=True)
+        except:
+            pass
+        return render_template("lab3.html")
+    
+    elif request.method == "POST":
+        if "username" not in request.form:
+            response = make_response(render_template("lab3.html"))
+            response.set_cookie("session_id", "", expires=0)
+            return response
+
+        username = request.form.get("username")
+        password = request.form.get("password")
+        password_hash = hashlib.sha256(password.encode()).hexdigest()
+
+        if username in USERS and USERS[username]["password"] == password_hash:
+            session_id = str(uuid.uuid4())
+            session = Session(session_id=session_id, user=USERS[username]["username"])
+            db.session.add(session)
+            db.session.commit()
+            
+            response = make_response(render_template("lab3.html", success=True, username=username))
+            response.set_cookie("session_id", session_id)
+            return response
+
+        return render_template("lab3.html", failure=True)</pre>
+</div>
+{% endblock %}

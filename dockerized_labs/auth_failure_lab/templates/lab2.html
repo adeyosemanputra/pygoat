@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %}Authentication Lab 2 - Admin Panel{% endblock %}
+
+{% block content %}
+<h3>Admin Authentication</h3>
+<div class="box login-box">
+    {% if success %}
+        <div class="success">
+            <h4>Login Successful</h4>
+            <p>Logged in as: <code>{{user.username}}</code></p>
+        </div>
+    {% else %}
+        <h4 style="text-align:center">Admin Login</h4>
+        <form method="post">
+            <div class="form-group">
+                <input type="text" name="username" placeholder="Username" required>
+            </div>
+            <div class="form-group">
+                <input type="password" name="password" placeholder="Password" required>
+            </div>
+            <button type="submit">Log in</button>
+        </form>
+
+        {% if failure %}
+            <div class="error">Login Failed</div>
+        {% endif %}
+
+        {% if is_locked %}
+            <div class="error">Account is locked due to too many failed attempts. Try again in 24 hours.</div>
+        {% endif %}
+    {% endif %}
+</div>
+
+<button class="code-toggle">View Code</button>
+<button class="back-button" onclick="window.location.href='/'">Back to Lab Details</button>
+
+<div class="lab code">
+    <pre>
+@app.route('/lab2', methods=['GET', 'POST'])
+def lab2():
+    if request.method == "POST":
+        username = request.form.get("username")
+        password = request.form.get("password")
+        try:
+            user = Admin.query.filter_by(username=username).first()
+            if user.is_locked and user.lockout_cooldown > datetime.now():
+                return render_template("lab2.html", is_locked=True)
+            
+            try:
+                ph = PasswordHasher()
+                ph.verify(user.password, password)
+                if user.is_locked and user.lockout_cooldown < datetime.now():
+                    user.is_locked = False
+                    user.last_login = datetime.now()
+                    user.fail_attempts = 0
+                    db.session.commit()
+                return render_template("lab2.html", user=user, success=True)
+            except:
+                fail_attempts = user.fail_attempts + 1
+                if fail_attempts == 5:
+                    user.is_active = False
+                    user.fail_attempts = 0
+                    user.is_locked = True
+                    user.lockout_cooldown = datetime.now() + timedelta(minutes=1440)
+                    db.session.commit()
+                    return render_template("lab2.html", success=False, failure=True, is_locked=True)
+                user.fail_attempts = fail_attempts
+                db.session.commit()
+                return render_template("lab2.html", success=False, failure=True)
+        except Exception as e:
+            return render_template("lab2.html", success=False, failure=True)
+    return render_template("lab2.html")</pre>
+</div>
+{% endblock %}

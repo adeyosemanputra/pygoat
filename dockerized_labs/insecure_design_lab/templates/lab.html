@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Insecure Design Lab</title>
+{% endblock %}
+
+{% block content %}
+<div style="display:flex; flex-direction: row-reverse; align-items:center; justify-content:space-evenly; align-content:center">
+    <div style="display:flex; flex-direction: column; align-items:center">    
+        <div class="jumbotron">
+            <h4 style="text-align:center">My Tickets </h4>
+            <div class="login" style="text-align:center">
+                {% for ticket in tickets %}
+                <div>{{ ticket }}</div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <div style="display:flex; flex-direction: column; align-items:center">
+        {% if error %}
+        <div class="btn btn-info" style="text-align:center;">
+            {{ error|safe }}
+        </div>
+        {% endif %}
+        <br>
+        <div class="jumbotron">
+            <h4 style="text-align:center">Claim Upto 5 Free Tickits </h4>
+            <div class="login" style="text-align:center">
+                <form method="post" action="{{ url_for('lab') }}">
+                    <input id="input" type="number" name="count" placeholder="0"><br>
+                    <button style="margin-top:20px" class="btn btn-info" type="submit"> Claim </button>
+                </form>
+            </div>
+        </div>
+        <br>
+        <div class="jumbotron">
+            <h4 style="text-align:center"> Watch Movie </h4>
+            <div class="login" style="text-align:center">
+                <form method="post" action="{{ url_for('lab') }}">
+                    <input id="input" type="text" name="ticket" placeholder="Tickit"><br>
+                    <button style="margin-top:20px" class="btn btn-info" type="submit"> Watch </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div style="position: fixed; bottom: 20px; right: 20px; z-index: 1050;">
+    <button class="btn btn-info back-button" type="button" onclick="window.location.href='{{ url_for('index') }}'">Back to Lab Details</button>
+</div>
+
+
+{% endblock %}
