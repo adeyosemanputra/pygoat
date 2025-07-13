@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}XXE Lab{% endblock %}
+
+{% block content %}
+<div class="content">
+    <div class="box">
+        <h2>XXE Vulnerability Lab</h2>
+        <div style="text-align: center;">
+            <img class="img" src="/static/xxe.jpg" style="width: 600px; height: 400px; ">
+        </div>
+        <div class="comment-section">
+            <form name="ajax" onsubmit="sendToServer(event)">
+                <div class="form-group">
+                    <label for="comment">Share Your Thoughts:</label>
+                    <input id="comment" type="text" name="comment" class="form-control">
+                </div>
+                <button class="btn btn-info" type="submit">Let the world see</button>
+            </form>
+        </div>
+
+        {% if error %}
+        <div class="error-message">
+            {{ error }}
+        </div>
+        {% endif %}
+
+        <div class="view-comments">
+            <h4>View Comments</h4>
+            <button class="btn btn-info" type="button" onclick="window.location.href='/see'">Click Here</button>
+            
+            {% if com %}
+            <div class="comments-display">
+                <h4>Current Comments:</h4>
+                <pre>{{ com }}</pre>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="navigation">
+            <button class="btn btn-info back-button" type="button" onclick="window.location.href='/'">Back to Lab Details</button>
+        </div>
+    </div>
+</div>
+
+<script>
+function sendToServer(event) {
+    event.preventDefault();
+    
+    const comment = document.getElementById("comment").value;
+    const xhr = new XMLHttpRequest();
+    
+    // Create XML payload
+    const xml = `<?xml version='1.0'?><comm><text>${comment}</text></comm>`;
+    
+    xhr.open("POST", "/parse", true);
+    xhr.setRequestHeader("Content-Type", "text/xml");
+    xhr.send(xml);
+
+    // Optional: Add success/error handling
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            window.location.href = '/see';
+        } else {
+            console.error('Error submitting comment');
+        }
+    };
+}
+</script>
+{% endblock %}

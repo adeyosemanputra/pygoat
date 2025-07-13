@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block title %}<title>Lab 1 - Insufficient Login Attempt Logging</title>{% endblock %}
+
+{% block content %}
+<div class="box">
+    <h3>Lab 1: Insufficient Login Attempt Logging</h3>
+
+    <div class="section">
+        <h4>Description</h4>
+        <p>
+            This lab demonstrates the risks of insufficient logging of login attempts. The application doesn't properly track failed login attempts, making it vulnerable to brute force attacks without detection.
+        </p>
+    </div>
+
+    <div class="section">
+        <h4>Login Form</h4>
+        <form method="POST" action="/lab1/login">
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <div class="button-container">
+                <button type="submit">Login</button>
+            </div>
+        </form>
+        {% if error %}
+        <div class="error">
+            {{ error }}
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="lab">
+        <button class="coll btn btn-info" onclick="toggleLabDetails('hint')">View Hint</button>
+        <div id="hint" class="section" style="display: none;">
+            <p>Try to:</p>
+            <ul>
+                <li>Use a tool like Burp Intruder to attempt multiple logins</li>
+                <li>Check if you can see any logs of your attempts</li>
+                <li>The correct username is "admin" - try to brute force the password</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="lab">
+        <button class="coll btn btn-info" onclick="toggleLabDetails('solution')">View Solution</button>
+        <div id="solution" class="section" style="display: none;">
+            <p>The application is vulnerable because:</p>
+            <ul>
+                <li>Failed login attempts are not properly logged</li>
+                <li>No rate limiting is implemented</li>
+                <li>No alerts are triggered for multiple failed attempts</li>
+                <li>The correct credentials are: username="admin", password="secretpass123"</li>
+            </ul>
+            <p>Best practices for secure implementation:</p>
+            <ul>
+                <li>Log all authentication attempts (success and failure)</li>
+                <li>Include relevant details like timestamp, IP address, and user agent</li>
+                <li>Implement rate limiting and account lockout</li>
+                <li>Set up alerts for suspicious activity</li>
+                <li>Use secure logging mechanisms that prevent log injection</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="button-container">
+        <button onclick="window.location.href='/lab2'">Go to Lab 2</button>
+        <button onclick="window.location.href='/'">Back to Lab Details</button>
+    </div>
+</div>
+
+<script>
+    function toggleLabDetails(id) {
+        const el = document.getElementById(id);
+        if (el.style.display === "none" || el.style.display === "") {
+            el.style.display = "block";
+        } else {
+            el.style.display = "none";
+        }
+    }
+</script>
+{% endblock %}

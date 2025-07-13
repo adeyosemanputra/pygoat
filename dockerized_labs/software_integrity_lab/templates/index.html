@@ -1,0 +1,61 @@
+{% extends "layout.html" %}
+
+{% block title %}Software and Data Integrity Lab{% endblock %}
+
+{% block content %}
+<div class="box">
+    <h3>Software and Data Integrity Failures</h3>
+    <div class="section">
+        <h4>Description</h4>
+        <p class="bp">
+            Software and data integrity failures occur when code and infrastructure don't protect against integrity violations. These vulnerabilities can have serious consequences for application security.
+        </p>
+        <div class="info">
+            <h4>Common Scenarios:</h4>
+            <ul>
+                <li>Software relies on plugins, libraries, or modules from untrusted sources</li>
+                <li>Auto-update functionality doesn't verify updates</li>
+                <li>Insecure deserialization is present</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="lab">
+        <!-- <h4>Available Labs</h4>  -->
+        <button class="coll btn btn-info" onclick="toggleLabDetails('lab1')">Lab 1 Details</button>
+        <div id="lab1" style="display: none;">
+            <div class="section">
+                <h4>Lab 1: Insecure Deserialization</h4>
+                <p class="bp">Learn about pickle deserialization vulnerabilities in Python and how they can be exploited to gain unauthorized access.</p>
+            </div>
+            <div class="button-container">
+                <button onclick="window.location.href='/lab1'">Access Lab 1</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="lab">
+        <button class="coll btn btn-info" onclick="toggleLabDetails('lab2')">Lab 2 Details</button>
+        <div id="lab2" style="display: none;">
+            <div class="section">
+                <h4>Lab 2: Software Supply Chain Attack</h4>
+                <p class="bp">Understand how malicious code can be injected into download links and how to protect against supply chain attacks.</p>
+            </div>
+            <div class="button-container">
+                <button onclick="window.location.href='/lab2'">Access Lab 2</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function toggleLabDetails(id) {
+        const el = document.getElementById(id);
+        if (el.style.display === "none" || el.style.display === "") {
+            el.style.display = "block";
+        } else {
+            el.style.display = "none";
+        }
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}<title>Server-side Template Injection</title>{% endblock %}
+
+{% block content %}
+<div class="box">
+    <h3>Server-Side Template Injection</h3>
+    <div class="section">
+        <h4>What is Template Injection?</h4>
+        <p class="bp">
+            A Template is a reusable and dynamic HTML code that a template engine compiles. Template engines provide flexibility and 
+            allow us to use variables and logic in HTML code. However, when user input is directly embedded into templates without 
+            proper validation, it can lead to server-side template injection vulnerabilities.
+        </p>
+
+        <div class="info">
+            <h4>Vulnerabilities occur when:</h4>
+            <ul>
+                <li>User-supplied data is not validated, filtered, or sanitized by the application and directly embedded into a server side template</li>
+                <li>Using malicious template directives, an attacker may be able to execute arbitrary code and take full control of the web server.</li>
+                <li>Hostile data is used within object-relational mapping (ORM) search parameters to extract additional, sensitive records.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="lab">
+        <button class="coll btn btn-info" onclick="toggleLabDetails('lab')">Lab Details</button>
+        <div id="lab" class="section" style="display: none;">
+            <h4>Blog System with Template Injection</h4>
+            <p class="bp">
+                This lab simulates a blog system that uses Jinja2 template engine but doesn't properly validate user input.
+                Your goal is to exploit the template injection vulnerability to access sensitive information.
+            </p>
+            
+            <div class="info">
+                <h4>Challenge:</h4>
+                <ul>
+                    <li>Create a blog post that exploits template injection</li>
+                    <li>Try to access server information using template expressions</li>
+                    <li>Find ways to execute arbitrary Python code through template syntax</li>
+                </ul>
+            </div>
+
+            <div class="button-container">
+                <button onclick="window.location.href='/lab'">Access Lab</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h4>Mitigation</h4>
+        <ul>
+            <li>Validate and sanitize all user input before processing</li>
+            <li>Use safe template syntax and disable dangerous features</li>
+            <li>Implement proper template sandboxing</li>
+            <li>Follow the principle of least privilege</li>
+        </ul>
+    </div>
+</div>
+
+<script>
+    function toggleLabDetails(id) {
+        const el = document.getElementById(id);
+        if (el.style.display === "none" || el.style.display === "") {
+            el.style.display = "block";
+        } else {
+            el.style.display = "none";
+        }
+    }
+</script>
+{% endblock %}

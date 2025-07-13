@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block title %}<title>SQL Injection Lab</title>{% endblock %}
+
+{% block content %}
+<div class="box">
+    <h3>SQL Injection</h3>
+    <div class="section">
+        <h4>What is SQL Injection</h4>
+        <p class="bp">
+            A SQL injection attack consists of insertion or "injection" of a SQL query via the input data from the client to the application. 
+            A successful SQL injection exploit can read sensitive data from the database, modify database data (Insert/Update/Delete), 
+            execute administration operations on the database, and in some cases issue commands to the operating system.
+        </p>
+        <div class="info">
+            <h4>SQL Injection occurs when:</h4>
+            <ul>
+                <li>Data enters a program from an untrusted source</li>
+                <li>The data is used to dynamically construct a SQL query</li>
+                <li>Input validation is missing or insufficient</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="lab">
+        <button class="coll btn btn-info" onclick="toggleLabDetails('lab1')">Lab Details</button>
+        <div id="lab1" class="section" style="display: none;">
+            <h4>Lab Challenge</h4>
+            <p class="bp">
+                This lab demonstrates a common SQL injection vulnerability caused by lack of input validation and directly exposing user input in queries.
+                Your goal is to log in as the admin user without knowing the password.
+            </p>
+
+            <div class="info">
+                <h4>Steps to identify SQL Injection:</h4>
+                <ul>
+                    <li>Try injecting a single quote (<code>'</code>) in the input fields</li>
+                    <li>If you see an SQL error, you've identified a potential SQL injection vulnerability</li>
+                    <li>Use SQL boolean logic to bypass authentication</li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <h4>Understanding the Exploit</h4>
+                <p class="bp">
+                    The website uses the following query to check credentials:
+                    <pre>SELECT * FROM users WHERE username='[input]' AND password='[input]'</pre>
+                    
+                    When exploited with: <code>admin' OR '1'='1</code>
+                    The query becomes:
+                    <pre>SELECT * FROM users WHERE username='admin' AND password='anything' OR '1'='1'</pre>
+                    
+                    Since '1'='1' is always true, this bypasses the password check.
+                </p>
+            </div>
+
+            <div class="button-container">
+                <button onclick="window.location.href='/lab'">Access Lab</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h4>Mitigation</h4>
+        <ul>
+            <li>Use Prepared Statements (with Parameterized Queries)</li>
+            <li>Use Stored Procedures</li>
+            <li>Implement proper input validation</li>
+            <li>Escape all user-supplied input</li>
+        </ul>
+    </div>
+</div>
+
+<script>
+    function toggleLabDetails(id) {
+        const el = document.getElementById(id);
+        if (el.style.display === "none" || el.style.display === "") {
+            el.style.display = "block";
+        } else {
+            el.style.display = "none";
+        }
+    }
+</script>
+{% endblock %}

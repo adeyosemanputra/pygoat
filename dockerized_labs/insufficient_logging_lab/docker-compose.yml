@@ -1,0 +1,8 @@
+version: '3'
+services:
+  insufficient_logging:
+    build: .
+    ports:
+      - "5014:5014"
+    volumes:
+      - .:/app
