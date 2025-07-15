@@ -1,0 +1,14 @@
+version: '3'
+services:
+  web:
+    build: .
+    ports:
+      - "5009:5009"
+    volumes:
+      - .:/app
+    environment:
+      - FLASK_APP=app.py
+      - FLASK_ENV=development
+      - DEBUG=True
+      - SECRET_KEY=your_secret_key_here
+      - JWT_SECRET_KEY=jwt_secret_key_here

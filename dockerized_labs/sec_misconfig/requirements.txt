@@ -1,0 +1,3 @@
+Flask==2.2.5
+PyJWT==2.8.0
+python-dotenv==0.21.1

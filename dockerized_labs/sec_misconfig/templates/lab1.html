@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Security Misconfiguration - Lab 1</title>
+{% endblock %}
+
+{% block content %}
+<div class="jumbotron">
+    <button class="btn btn-info" type="button" onclick="showHostMessage()">Secret Key</button>
+    <br><br>
+    <h3 id="msg" style="display: none;">Only admin.localhost:8000 can access, Your X-Host is None</h3>
+
+    {% if secret %}
+    <h2>Success. You have the secret key:
+        <pre>{{ secret }}</pre>
+    </h2>
+    {% endif %}
+
+    {% if no_secret %}
+    <h3>No secret</h3>
+    {% endif %}
+</div>
+
+<div class="button-container">
+    <button class="btn btn-info" type="button" onclick="window.location.href='/'">Back to Lab Details</button>
+</div>
+
+<script>
+    function showHostMessage() {
+        document.getElementById("msg").style.display = "block";
+    }
+</script>
+{% endblock %}
