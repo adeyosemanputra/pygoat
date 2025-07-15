@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>SSRF Lab</title>
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <h3>Server-Side Request Forgery (SSRF) Lab</h3>
+    <div class="box">
+        
+        <div class="section">
+            <h2>What is Server-Side Request Forgery (SSRF)</h2>
+            <p>SSRF flaws occur whenever a web application is fetching a remote resource without validating the user-supplied URL. It allows an attacker to coerce the application to send a crafted request to an unexpected destination, even when protected by a firewall, VPN, or another type of network access control list (ACL). As modern web applications provide end-users with convenient features, fetching a URL becomes a common scenario. As a result, the incidence of SSRF is increasing. Also, the severity of SSRF is becoming higher due to cloud services and the complexity of architectures.</p>
+        </div>
+
+        <div class="section">
+            <h2>Lab 1: File Reading SSRF</h2>
+            <p>This lab helps you to get an idea of how SSRF can result in major Security flaw. The next pages shows some blog, but can you figure out how the blogs are presented?</p>
+            <p><b>Hint:</b> Try to find a .env file</p>
+            <div class="button-container">
+                <button onclick="window.location.href='/lab1'">Access Lab 1</button>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Lab 2: URL SSRF</h2>
+            <p>This lab demonstrates a vulnerable file reading implementation that can be exploited through path traversal.</p>
+            <p>This website sends a request to the given url and displays the page withing the page. now there is a page at /ssrf_target which only allowes request from localhost ( ie 127.0.0.1 )
+                now start the server using python manage.py runserver 0:5000
+                get your network ip using ifconfig or ipcofig(in windows)
+                now go to http://[your ip]/ssrf_target
+                Now you can't access the page because it is not from localhost. Try to get access to this page content now using the utility.</p>
+            <p><b>Hint:</b> Try to access the internal endpoint at http://127.0.0.1:5000/internal</p>
+            <div class="button-container">
+                <button onclick="window.location.href='/lab2'">Access Lab 2</button>
+            </div>
+        </div>
+
+        <div class="section info">
+            <h4>Prevention Measures</h4>
+            <h3>From Network Layer:</h3>
+            <ul>
+                <li>Segment remote resource access functionality in separate networks</li>
+                <li>Enforce "deny by default" firewall policies</li>
+                <li>Implement proper network access control rules</li>
+            </ul>
+            
+            <h3>From Application Layer:</h3>
+            <ul>
+                <li>Sanitize and validate all client-supplied input data</li>
+                <li>Enforce the URL schema, port, and destination with a positive allow list</li>
+                <li>Do not send raw responses to clients</li>
+                <li>Disable HTTP redirections</li>
+                <li>Implement proper URL validation and sanitization</li>
+            </ul>
+
+            <h3>Additional Measures to consider:</h3>
+            <li>Don't deploy other security relevant services on front systems (e.g. OpenID). Control local traffic on these systems (e.g. localhost) For frontends with dedicated and manageable user groups use network encryption (e.g. VPNs) on independent systems to consider very high protection needs</li>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

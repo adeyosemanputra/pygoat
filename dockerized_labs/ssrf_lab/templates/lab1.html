@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>SSRF Lab 1</title>
+{% endblock %}
+
+{% block content %}
+
+<div class="content">
+    <div class="box">
+        <div style="display:flex;flex-direction:column;align-items:center">
+            <div>
+                <h3>Read Blog</h3>
+            </div>
+            <div style="display:flex;flex-direction:row;align-items:center;margin:15px">
+                <form method="post" action="/lab1">
+                    <input type="hidden" name="blog" value="blogs/blog1.txt">
+                    <button type="submit" class="btn btn-info">Blog 1</button>
+                </form>
+                <form method="post" action="/lab1">
+                    <input type="hidden" name="blog" value="blogs/blog2.txt">
+                    <button type="submit" class="btn btn-info">Blog 2</button>
+                </form>
+                <form method="post" action="/lab1">
+                    <input type="hidden" name="blog" value="blogs/blog3.txt">
+                    <button type="submit" class="btn btn-info">Blog 3</button>
+                </form>
+                <form method="post" action="/lab1">
+                    <input type="hidden" name="blog" value="blogs/blog4.txt">
+                    <button type="submit" class="btn btn-info">Blog 4</button>
+                </form>
+            </div>
+
+            <div class="blog-content">
+                {{ blog }}
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    <button class="coll2 btn btn-info" style="position: fixed; right:330px; bottom: 7px" onclick="toggleHint()">Hint</button>
+    <div id="hint" class="lab code" style="display: none;">
+        Try to find a .env file
+    </div>
+
+    <button class="coll2 btn btn-info" style="position: fixed; right:200px; bottom: 7px" onclick="toggleSourceCode()">View Code</button>
+    <div id="sourceCode" class="lab code" style="display: none;">
+        <pre>
+def lab1():
+    if request.method == 'POST':
+        file = request.form.get('blog')
+        try:
+            # Vulnerable implementation - allows directory traversal
+            file_path = os.path.join(os.path.dirname(__file__), file)
+            with open(file_path, "r") as f:
+                blog_content = f.read()
+            return render_template('lab1.html', blog=blog_content)
+        except:
+            return render_template('lab1.html', blog="No blog found")
+    return render_template('lab1.html', blog="Read Blog About SSRF")
+        </pre>
+    </div>
+
+    <div style="position: fixed; right: 7px; bottom: 7px">
+        <button class="btn btn-info" type="button" onclick="window.location.href='/'">Back to Lab Details</button>
+    </div>
+
+    <script>
+    function toggleSourceCode() {
+        const element = document.getElementById('sourceCode');
+        element.style.display = element.style.display === 'none' ? 'block' : 'none';
+    }
+    
+    function toggleHint() {
+        const element = document.getElementById('hint');
+        element.style.display = element.style.display === 'none' ? 'block' : 'none';
+    }
+    </script>
+{% endblock %}

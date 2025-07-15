@@ -1,0 +1,8 @@
+version: '3'
+services:
+  crypto_failure_lab:
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/app

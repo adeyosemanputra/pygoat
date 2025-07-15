@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>SSRF Internal Page</title>
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <div style="display:flex;flex-direction:column;align-items:center">
+        {% if access_denied %}
+            <h3>Access Denied</h3>
+            <p class="bp">This endpoint can only be accessed from localhost (127.0.0.1)</p>
+        {% else %}
+            <h3>Super Secret Information</h3>
+            <p class="bp">Congratulations! You've successfully accessed the internal endpoint through SSRF!</p>
+            <div class="section">
+                <h4>Secret Data</h4>
+                <pre class="code">SSRF_LAB_COMPLETE=true
+ADMIN_PASSWORD=supersecret123
+API_KEY=abcdef123456</pre>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

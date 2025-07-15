@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>Cryptographic Failure Lab</title>
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <h3>Cryptographic Failure</h3>
+    <div class="box">
+        <div class="box">
+            <h4>What is Cryptographic Failure</h4>
+            <p class="bp">
+                Cryptographic failure is the root cause of Sensitive Data Exposure.
+                Enumerations (CWEs) included are CWE-259: Use of Hard-coded Password, CWE-327: Broken or Risky Crypto Algorithm, and CWE-331 Insufficient Entropy.
+                The first thing is to determine the protection needs of data in transit and at rest. For example, passwords, credit card numbers, health records, personal information, and business secrets require extra protection, mainly if that data falls under privacy laws, e.g., EU's General Data Protection Regulation (GDPR), or regulations, e.g., financial data protection such as PCI Data Security Standard (PCI DSS).
+            </p>
+        </div>
+
+        <button class="coll btn btn-info">Lab 1 Details</button>
+        <div class="lab">
+            <p class="bp">
+                Can you login as Admin? 
+                Some hacker previously performed a SQL injection attack and managed to get the database dump for user table.
+                <br><br>
+                <code>
+                user1,e99a18c428cb38d5f260853678922e03<br>
+                admin,21232f297a57a5a743894a0e4a801fc3<br>
+                user2,d8578edf8458ce06fbc5bb76a58c5ca4<br>
+                </code>
+                <br><br>
+                <div align="right">
+                    <button class="btn btn-info" type="button" onclick="window.location.href='/lab1'">Access Lab</button>
+                </div>
+            </p>
+        </div>
+
+        <button class="coll btn btn-info">Lab 2 Details</button>
+        <div class="lab">
+            <p class="bp">
+                Can you login as Admin? 
+                Some hacker previously performed a SQL injection attack and managed to get the database dump for user table.
+                Looks like this time they used better hashing algorithm.
+                <br><br>
+                <code>
+                user1,40bd001563085fc35165329ea1ff5c5ecbdbbeef<br>
+                admin,d033e22ae348aeb5660fc2140aec35850c4da997<br>
+                user2,b1b3773a05c0ed0176787a4f1574ff0075f7521e<br>
+                </code>
+                <br><br>
+                <div align="right">
+                    <button class="btn btn-info" type="button" onclick="window.location.href='/lab2'">Access Lab</button>
+                </div>
+            </p>
+        </div>
+
+        <button class="coll btn btn-info">Lab 3 Details</button>
+        <div class="lab">
+            <p class="bp">
+                We have user credentials for this page, but can you login as admin and get the secret?
+                <br><br>
+                <code>
+                username: User<br>
+                password: P@$$w0rd<br>
+                </code>
+                <br><br>
+                <div align="right">
+                    <button class="btn btn-info" type="button" onclick="window.location.href='/lab3'">Access Lab</button>
+                </div>
+            </p>
+        </div>
+
+        <div>
+            <div class="box">
+                <h4>How to Prevent</h4>
+                <p class="bp">
+                <ul  class="Mitigation">
+                    <li>Classify data processed, stored, or transmitted by an application. Identify which data is sensitive according to privacy laws, regulatory requirements, or business needs.</li>
+                    <li>Don't store sensitive data unnecessarily. Discard it as soon as possible or use PCI DSS compliant tokenization or even truncation. Data that is not retained cannot be stolen.</li>
+                    <li>Make sure to encrypt all sensitive data at rest.</li>
+                    <li>Ensure up-to-date and strong standard algorithms, protocols, and keys are in place; use proper key management.</li>
+                    <li>Encrypt all data in transit with secure protocols such as TLS with forward secrecy (FS) ciphers, cipher prioritization by the server, and secure parameters.</li>
+                    <li>Disable caching for response that contain sensitive data.</li>
+                    <li>Store passwords using strong adaptive and salted hashing functions with a work factor (delay factor), such as Argon2, scrypt, bcrypt or PBKDF2.</li>
+                    <li>Initialization vectors must be chosen appropriate for the mode of operation. For many modes, this means using a CSPRNG.</li>
+                    <li>Always use authenticated encryption instead of just encryption.</li>
+                    <li>Keys should be generated cryptographically randomly and stored in memory as byte arrays.</li>
+                    <li>Ensure that cryptographic randomness is used where appropriate, and that it has not been seeded in a predictable way.</li>
+                    <li>Avoid deprecated cryptographic functions and padding schemes, such as MD5, SHA1, PKCS number 1 v1.5.</li>
+                </ul>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+var coll = document.getElementsByClassName("coll");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+    coll[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+        var content = this.nextElementSibling;
+        if (content.style.display === "block") {
+            content.style.display = "none";
+        } else {
+            content.style.display = "block";
+        }
+    });
+}
+</script>
+{% endblock %}
