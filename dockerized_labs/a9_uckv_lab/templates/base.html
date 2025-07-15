@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}A9:2017 Using Components with Known Vulnerabilities{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">🌙</button>
+    <div class="content">
+        <div class="container">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-warning">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+    <script>
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            requestAnimationFrame(() => {
+                html.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+                
+                const themeToggle = document.querySelector('.theme-toggle');
+                themeToggle.innerHTML = newTheme === 'dark' ? '☀️' : '🌙';
+            });
+        }
+
+        // Set theme on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            const html = document.documentElement;
+            
+            requestAnimationFrame(() => {
+                html.setAttribute('data-theme', savedTheme);
+                const themeToggle = document.querySelector('.theme-toggle');
+                themeToggle.innerHTML = savedTheme === 'dark' ? '☀️' : '🌙';
+            });
+        });
+    </script>
+</body>
+</html>

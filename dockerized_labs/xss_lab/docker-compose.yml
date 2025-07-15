@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  xss_lab:
+    build: .
+    container_name: xss_lab
+    ports:
+      - "5006:5006"
+    volumes:
+      - .:/app
+    environment:
+      - FLASK_APP=app.py
+      - FLASK_ENV=production
+    restart: unless-stopped
+    networks:
+      - app_network
+
+networks:
+  app_network:
+    driver: bridge
