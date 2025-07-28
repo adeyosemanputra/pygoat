@@ -10,8 +10,6 @@ services:
       - .:/app
     environment:
       - FLASK_APP=app.py
-      - FLASK_ENV=production
-    restart: unless-stopped
     networks:
       - app_network
 

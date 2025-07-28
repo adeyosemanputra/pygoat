@@ -35,49 +35,52 @@
     <div id="result" class="section"></div>
 </div>
 
-<div class="box">
-    <h4>Server Code</h4>
-    <pre class="code">
-@app.route('/lab3/get-token', methods=['POST'])
-def get_token():
-    data = request.get_json()
-    username = data.get('username', '')
-    role = data.get('role', 'user')
-    
-    # Using a weak secret key (misconfiguration)
-    secret = 'secret123'
-    
-    token = jwt.encode(
-        {
-            'username': username,
-            'role': role,
-            'exp': datetime.utcnow() + timedelta(hours=1)
-        },
-        secret,
-        algorithm='HS256'
-    )
-    return jsonify({'token': token})
+<button class="coll2 btn btn-info"  onclick="toggleSourceCode()">View Code</button>
+<div id="sourceCode" class="lab code" style="display: none;"> 
+    <!-- <div class="box"> -->
+        <h4>Server Code</h4>
+        <pre class="code">
+    @app.route('/lab3/get-token', methods=['POST'])
+    def get_token():
+        data = request.get_json()
+        username = data.get('username', '')
+        role = data.get('role', 'user')
+        
+        # Using a weak secret key (misconfiguration)
+        secret = 'secret123'
+        
+        token = jwt.encode(
+            {
+                'username': username,
+                'role': role,
+                'exp': datetime.utcnow() + timedelta(hours=1)
+            },
+            secret,
+            algorithm='HS256'
+        )
+        return jsonify({'token': token})
 
-@app.route('/lab3/verify-token', methods=['POST'])
-def verify_token():
-    token = request.get_json().get('token', '')
-    secret = 'secret123'
-    
-    try:
-        payload = jwt.decode(token, secret, algorithms=['HS256'])
-        if payload['role'] == 'admin':
+    @app.route('/lab3/verify-token', methods=['POST'])
+    def verify_token():
+        token = request.get_json().get('token', '')
+        secret = 'secret123'
+        
+        try:
+            payload = jwt.decode(token, secret, algorithms=['HS256'])
+            if payload['role'] == 'admin':
+                return jsonify({
+                    'message': 'Success! You gained admin access.',
+                    'payload': payload
+                })
             return jsonify({
-                'message': 'Success! You gained admin access.',
+                'message': 'Token verified but user is not admin',
                 'payload': payload
             })
-        return jsonify({
-            'message': 'Token verified but user is not admin',
-            'payload': payload
-        })
-    except jwt.ExpiredSignatureError:
-        return jsonify({'error': 'Token has expired'}), 401
-    except jwt.InvalidTokenError:
-        return jsonify({'error': 'Invalid token'}), 401</pre>
+        except jwt.ExpiredSignatureError:
+            return jsonify({'error': 'Token has expired'}), 401
+        except jwt.InvalidTokenError:
+            return jsonify({'error': 'Invalid token'}), 401</pre>
+    <!-- </div> -->
 </div>
 
 <script>
@@ -118,6 +121,11 @@ function verifyToken() {
         `;
     });
 }
+
+function toggleSourceCode() {
+        const element = document.getElementById('sourceCode');
+        element.style.display = element.style.display === 'none' ? 'block' : 'none';
+    }
 </script>
 
 <div class="button-container">

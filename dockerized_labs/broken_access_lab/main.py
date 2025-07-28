@@ -25,11 +25,15 @@ def index():
 def lab():
     return render_template('lab.html')
 
-@app.route('/lab/login', methods=['POST'])
+@app.route('/lab/login', methods=['GET', 'POST'])
 def lab_login():
-    username = request.form.get('username')
-    password = request.form.get('password')
-    
+    if request.cookies.get('admin') == '1':
+        return render_template('result.html', username='admin', message="Welcome Admin! Secret key: ADMIN_KEY_123")
+
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+
     if username in users and users[username].password == password:
         user = users[username]
         response = make_response(render_template('result.html', 

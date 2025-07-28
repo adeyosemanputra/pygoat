@@ -5,20 +5,22 @@
 {% endblock %}
 
 {% block content %}
-<div class="jumbotron">
-    <button class="btn btn-info" type="button" onclick="showHostMessage()">Secret Key</button>
-    <br><br>
-    <h3 id="msg" style="display: none;">Only admin.localhost:8000 can access, Your X-Host is None</h3>
+<div class="section">
+    <div class="jumbotron">
+        <button class="btn btn-info" type="button" onclick="getSecret()">Secret Key</button>
+        <br><br>
+        <h3 id="msg" style="display: none;"> </h3>
 
-    {% if secret %}
-    <h2>Success. You have the secret key:
-        <pre>{{ secret }}</pre>
-    </h2>
-    {% endif %}
+        {% if secret %}
+        <h2>Success. You have the secret key:
+            <pre>{{ secret }}</pre>
+        </h2>
+        {% endif %}
 
-    {% if no_secret %}
-    <h3>No secret</h3>
-    {% endif %}
+        {% if no_secret %}
+        <h3>No secret</h3>
+        {% endif %}
+    </div>
 </div>
 
 <div class="button-container">
@@ -26,8 +28,25 @@
 </div>
 
 <script>
-    function showHostMessage() {
-        document.getElementById("msg").style.display = "block";
+    function getSecret() {
+        const msgElement = document.getElementById('msg');
+
+        fetch('/lab1/get-secret')
+            .then(response => response.json())
+            .then(data => {
+                msgElement.style.display = 'block';
+
+                if (data.secret) {
+                    msgElement.innerHTML = `Success. You have the secret key: <pre>${data.secret}</pre>`;
+                } else {
+                    msgElement.innerHTML = `Only admin.localhost:8000 can access, Your X-Host is None`;
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                msgElement.style.display = 'block';
+                msgElement.innerHTML = 'An error occurred while fetching data.';
+            });
     }
 </script>
 {% endblock %}

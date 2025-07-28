@@ -12,13 +12,15 @@
     </div>
     {% endif %}
 
-    <form method="POST">
-        <div class="form-group">
-            <label for="url">URL</label>
-            <input type="text" class="form-control" id="url" name="url" placeholder="Enter URL">
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </div>
-    </form>
+    <div class="box">
+        <form method="POST">
+            <div class="form-group">
+                <label for="url">URL</label>
+                <input type="text" class="form-control" id="url" name="url" placeholder="Enter URL">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+    </div>
     
     {% if response %}
         <div style="width:70%;overflow:scroll;background-color:#000">{{response | safe}}</div>
