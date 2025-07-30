@@ -6,82 +6,83 @@
 
 {% block content %}
 <h3>Security Misconfiguration</h3>
-<div class="box">
-    <h4>What is Security Misconfiguration</h4>
-    <p class="bp">
-        Security misconfiguration can happen at any level of an application stack, including the network services,
-        platform, web server, application server, database, frameworks, custom code, and pre-installed virtual machines,
-        containers, or storage. Automated scanners are useful for detecting misconfigurations, use of default accounts or
-        configurations, unnecessary services, legacy options, etc.
-    </p>
-    <p class="bp">
-        Such flaws frequently give attackers unauthorized access to some system data or functionality. Occasionally, such
-        flaws result in a complete system compromise.
-        The business impact depends on the protection needs of the application and data.
-    </p>
-</div>
-
-    <button class="coll btn btn-info" onclick="toggleLabDetails('lab1')">Lab 1 Details</button>
-    <div id="lab1"  style="display: none;">
-        <div class="section">
-                <h4>Lab 1: Header Authentication</h4>
-                <p class="bp">
-                    This lab has a Security misconfiguration. It has a button which reveals the secret key but it is only accessible
-                    if the admin is accessing it. How to check in as admin? Is there a cookie, OR A request header?
-                </p>
-                <p><b>Hint:</b> Clicking on the Secret Key button gives an error message with a hint about headers.</p>
-                <div class="button-container">
-                    <button onclick="window.location.href='/lab1'">Access Lab 1</button>
-                </div>
-        </div>
-    </div>
-
-    <button class="coll btn btn-info" onclick="toggleLabDetails('lab2')">Lab 2 Details</button>
-    <div id="lab2"  style="display: none;">    
-        <div class="section">
-            <h4>Lab 2: Debug Information Exposure</h4>
-            <p class="bp">
-                One of the features of having DEBUG=True is dumping lots of metadata from your environment, including sensitive configurations, when an exception occurs.
-                <br>Can you trigger a 500 error and get the SENSITIVE_DATA?
-            </p>
-            <div class="button-container">
-                <button onclick="window.location.href='/lab2'">Access Lab 2</button>
-            </div>
-        </div>
-    </div>
-
-    <button class="coll btn btn-info" onclick="toggleLabDetails('lab3')">Lab 3 Details</button>
-    <div id="lab3"  style="display: none;">    
-        <div class="section">
-            <h4>Lab 3: JWT Token Manipulation</h4>
-            <p class="bp">
-                Solve lab 2 before solving this. <br>
-                <h3>Can you login as admin?</h3>
-                <br>For hint you can see the code in the lab page.
-            </p>
-            <div class="button-container">
-                <button onclick="window.location.href='/lab3'">Access Lab 3</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="box">
-        <h4>Common Security Misconfiguration Issues</h4>
+<div class="box"> 
+    <div class="section">
+        <h4>What is Security Misconfiguration</h4>
         <p class="bp">
-            The application might be vulnerable if:
+            Security misconfiguration can happen at any level of an application stack, including the network services,
+            platform, web server, application server, database, frameworks, custom code, and pre-installed virtual machines,
+            containers, or storage. Automated scanners are useful for detecting misconfigurations, use of default accounts or
+            configurations, unnecessary services, legacy options, etc.
         </p>
-        <ul>
-            <li>Missing appropriate security hardening across any part of the application stack.</li>
-            <li>Improperly configured permissions on cloud services.</li>
-            <li>Unnecessary features are enabled or installed.</li>
-            <li>Default accounts and their passwords still enabled and unchanged.</li>
-            <li>Error handling reveals stack traces or other overly informative error messages to users.</li>
-            <li>Latest security features are disabled or not configured securely.</li>
-            <li>Security headers are missing or set to insecure values.</li>
-            <li>Software is out of date or vulnerable.</li>
-        </ul>
+        <p class="bp">
+            Such flaws frequently give attackers unauthorized access to some system data or functionality. Occasionally, such
+            flaws result in a complete system compromise.
+            The business impact depends on the protection needs of the application and data.
+        </p>
     </div>
 
+        <button class="coll btn btn-info" onclick="toggleLabDetails('lab1')">Lab 1 Details</button>
+        <div id="lab1"  style="display: none;">
+            <div class="section">
+                    <h4>Lab 1: Header Authentication</h4>
+                    <p class="bp">
+                        This lab has a Security misconfiguration. It has a button which reveals the secret key but it is only accessible
+                        if the admin is accessing it. How to check in as admin? Is there a cookie, OR A request header?
+                    </p>
+                    <p><b>Hint:</b> Clicking on the Secret Key button gives an error message with a hint about headers.</p>
+                    <div class="button-container">
+                        <button onclick="window.location.href='/lab1'">Access Lab 1</button>
+                    </div>
+            </div>
+        </div>
+
+        <button class="coll btn btn-info" onclick="toggleLabDetails('lab2')">Lab 2 Details</button>
+        <div id="lab2"  style="display: none;">    
+            <div class="section">
+                <h4>Lab 2: Debug Information Exposure</h4>
+                <p class="bp">
+                    One of the features of having DEBUG=True is dumping lots of metadata from your environment, including sensitive configurations, when an exception occurs.
+                    <br>Can you trigger a 500 error and get the SENSITIVE_DATA?
+                </p>
+                <div class="button-container">
+                    <button onclick="window.location.href='/lab2'">Access Lab 2</button>
+                </div>
+            </div>
+        </div>
+
+        <button class="coll btn btn-info" onclick="toggleLabDetails('lab3')">Lab 3 Details</button>
+        <div id="lab3"  style="display: none;">    
+            <div class="section">
+                <h4>Lab 3: JWT Token Manipulation</h4>
+                <p class="bp">
+                    Solve lab 2 before solving this. <br>
+                    <h3>Can you login as admin?</h3>
+                    <br>For hint you can see the code in the lab page.
+                </p>
+                <div class="button-container">
+                    <button onclick="window.location.href='/lab3'">Access Lab 3</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h4>Common Security Misconfiguration Issues</h4>
+            <p class="bp">
+                The application might be vulnerable if:
+            </p>
+            <ul>
+                <li>Missing appropriate security hardening across any part of the application stack.</li>
+                <li>Improperly configured permissions on cloud services.</li>
+                <li>Unnecessary features are enabled or installed.</li>
+                <li>Default accounts and their passwords still enabled and unchanged.</li>
+                <li>Error handling reveals stack traces or other overly informative error messages to users.</li>
+                <li>Latest security features are disabled or not configured securely.</li>
+                <li>Security headers are missing or set to insecure values.</li>
+                <li>Software is out of date or vulnerable.</li>
+            </ul>
+        </div>
+</div>
 <script>
     function toggleLabDetails(id) {
         const el = document.getElementById(id);

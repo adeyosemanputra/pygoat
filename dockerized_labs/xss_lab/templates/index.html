@@ -97,6 +97,83 @@
                 </p>
             </div>
         </div>
+        <div class="section">
+            <h4>Mitigation</h4>
+            <p class="bp"> First let's analyse what part of the code has resulted in this vulnerability.
+
+
+                <br><b>#code in views.py</b><br></bt>
+                <code>return render(request,'Lab/XSS/xss_lab.html',{'query': q})</code><br>
+                <br><b>#code in html template</b><br>
+                <code> &lt;h3&gt; The company '{query|safe}' You searched for is not Part of FAANG &lt;/h3&gt;</code>
+            </p>
+
+            <p class="bp">In the above code the q variable holds the users input . This input is stored in a variable called
+                <b>‘query’</b> , which is sent to a html template which renders a html along with the value of the query.
+            </p>
+            <p class="bp">The query received from the user is considered to be safe which resulted in the template rendering
+                the user input without escaping the input. This can be seen by using the keyword <b>'safe'</b> in the html
+                template.</p>
+
+            <br>
+            <p class="bp">
+            <h4>What happens without the safe keyword?</h4><br>
+
+
+            <p class="bp">Without the safe keyword Django would automatically escape the malicious string in the query
+                context variable.</p>
+
+            <p class="bp">It does this by passing all string data through Python’s <code>html.escape()</code> function. This
+                function will:</p>
+            <ul class="bp">
+                <li>Replace any & with an <code>& amp;</code> ampersand HTML character-reference</li>
+                <li>Replace any < or> with an & lt; or & gt; HTML character-reference</li>
+                <li>Replace any " with an escaped \"</li>
+                <li>Replace any ' with an escaped \'</li>
+
+
+            </ul>
+
+            </p>
+            
+
+                <br>
+            <h4>Now talking about the mitigation</h4>
+
+            <br>
+            <p class="bp">
+                <li>Encode the following characters with HTML entity encoding to prevent switching into any execution
+                    context, such as script, style, or event handlers. Using hex entities is recommended in the spec. The 5
+                    characters significant in XML.
+
+                    <ul>
+                        <code>& --> & amp;</code><br>
+                        <code>
+                            < --> & lt;
+                        </code><br>
+                        <code> --> & gt;</code><br>
+                        <code>" --> & quot;</code><br>
+                        <code>' --> &# x27;</code>
+                    </ul>
+                </li>
+
+                <li>CSS Encode And Strictly Validate Before Inserting Untrusted Data into HTML Style Property Values</li>
+                <li>JavaScript Encode Before Inserting Untrusted Data into JavaScript Data Values</li>
+
+
+                <li>HTML Encode JSON values in an HTML context and read the data with JSON.parse</li>
+
+                <li>URL Encode Before Inserting Untrusted Data into HTML URL Parameter Values</li>
+                <li>Implement Content Security Policy</li>
+                <li>Use HTTPOnly cookie flag</li>
+
+
+            
+
+            </p>
+        </div>
+
+
     </div>
 </div>
 

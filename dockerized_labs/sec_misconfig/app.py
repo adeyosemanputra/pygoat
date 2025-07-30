@@ -11,7 +11,7 @@ app.debug = True  # Intentionally enabled for Lab 2
 SENSITIVE_DATA = {
     'database_url': 'postgresql://admin:password123@localhost:5432/production',
     'api_key': 'sk_live_abcdef123456',
-    'secret_key': 'super_secret_key_do_not_share'
+    'secret_key': 'secret356!werndt9038'
 }
 
 @app.route('/')
@@ -21,6 +21,14 @@ def index():
 @app.route('/lab1')
 def lab1():
     return render_template('lab1.html')
+
+@app.route('/lab1/get-secret')
+def get_secret():
+    if request.headers.get('X-Host') == 'admin.localhost:8000':
+        secret = SENSITIVE_DATA['secret_key']
+        return jsonify({'secret': secret})
+    else:
+        return jsonify({'secret': None})
 
 @app.route('/lab1/check-auth')
 def check_auth():
@@ -33,8 +41,9 @@ def check_auth():
 def lab2():
     return render_template('lab2.html')
 
-@app.route('/lab2/trigger-error')
-def trigger_error():
+@app.errorhandler(404)
+def page_not_found(e):
+# def trigger_error():
     # Sensitive configuration and credentials that would be exposed in debug mode
     app_config = {
         'SECRET_KEY': 'super_secret_production_key_123',
@@ -62,7 +71,7 @@ def trigger_error():
     os.environ['ADMIN_TOKEN'] = 'admin_access_token_highly_sensitive'
 
     # This will cause an error and expose all the above information in debug mode
-    result = 1/0  # Intentional ZeroDivisionError to trigger debug page
+    raise Exception("An intentional error was triggered to demonstrate a vulnerability.")
     return result
 
 @app.route('/lab3')
@@ -111,4 +120,4 @@ def verify_token():
         return jsonify({'error': 'Invalid token'}), 401
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5009)
+    app.run(debug=True, host='0.0.0.0', port=5009)

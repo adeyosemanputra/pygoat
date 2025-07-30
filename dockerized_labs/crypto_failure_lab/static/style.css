@@ -5,10 +5,10 @@
     --border-color: #dee2e6;
     --card-shadow: 0 2px 4px rgba(0,0,0,0.1);
     --code-bg: #2c3e50;
-    --code-color: #ecf0f1;
+    --code-color: #0a0b0b;
     --button-bg: #17a2b8;
     --button-hover: #138496;
-    --section-bg: #f8f9fa;
+    --section-bg: #f0f2f3;
     --input-bg: #ffffff;
     --input-color: #2c3e50;
     --input-border: #ddd;
@@ -154,6 +154,8 @@ pre {
     margin: 20px 0;
     border-radius: 0 8px 8px 0;
     transition: all 0.3s ease;
+    display: none;
+    margin-top: 10px;
 }
 
 .info {
