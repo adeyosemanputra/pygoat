@@ -1,0 +1,10 @@
+version: '3'
+services:
+  software_integrity_lab:
+    build: .
+    ports:
+      - "5011:5011"
+    volumes:
+      - .:/app
+    environment:
+      - FLASK_ENV=development

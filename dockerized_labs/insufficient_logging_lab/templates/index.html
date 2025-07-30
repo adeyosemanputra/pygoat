@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}<title>Insufficient Logging Lab</title>{% endblock %}
+
+{% block content %}
+
+<div class="content">
+    <h3>Insufficient Logging & Monitoring Lab</h3>
+
+    <div class="section">
+        <h4>Introduction</h4>
+        <p>
+            Insufficient logging and monitoring, coupled with missing or ineffective integration with incident response, allows attackers to further attack systems, maintain persistence, pivot to more systems to tamper with, extract, or destroy data. Most breach studies demonstrate the time to detect a breach is over 200 days, typically detected by external parties rather than internal processes or monitoring.
+        </p>
+    </div>
+
+    <div class="box">
+        <button class="coll btn btn-info" onclick="toggleLabDetails('lab1')">Lab 1 Details</button>
+        <div id="lab1"  style="display: none;">
+            <div class="section">
+                <p>This lab helps you to get an idea of how sometimes improper logging can result in information disclosure. The user on accessing the lab is given with a login page which tells us that the logs have been leaked. The user needs to find the leak and try to gain the credentials that have been leaked in the logs.
+                Finding the Log</p>
+                <br> <p>The log has been exposed in /debug route
+                        This can be found out with subdomain brute-forcing or just by guess
+                        On seeing the Log try to get the required login details as there is a leak and the logging is improperly handled.</p>
+            </div>
+            <div align="right">
+                        <button type="button" onclick="window.location.href='/lab1'">Access Lab 1</button>
+            </div>
+        
+        </div>
+
+        <button class="coll btn btn-info" onclick="toggleLabDetails('lab2')">Lab 2 Details</button>
+        <div id="lab2"  style="display: none;">
+            <div class="section">
+                <p>It seems this application is logging every action performed in this logging page. But is there a way to inject some fake logs to the application?
+                
+            </div>
+            <div align="right">
+                        <button type="button" onclick="window.location.href='/lab2'">Access Lab 2</button>
+            </div>
+        
+        </div>
+    </div>
+
+    <div class="section">
+        <h4>Mitigation</h4>
+        <ul>
+            <li>Ensure that logs are created in a format that can be easily used by central log management tools.</li>
+            <li>High-value transactions should have an audit trail with integrity controls to prevent manipulation or deletion.</li>
+            <li>Effective monitoring and alerting should be established so that suspicious activities can be detected and responded to in a timely manner.</li>
+            <li>Make sure that there aren't any sensitive information like passwords are being logged</li>
+        </ul>
+    </div>
+
+</div>
+
+    
+
+<script>
+    function toggleLabDetails(id) {
+        const el = document.getElementById(id);
+        if (el.style.display === "none" || el.style.display === "") {
+            el.style.display = "block";
+        } else {
+            el.style.display = "none";
+        }
+    }
+</script>
+{% endblock %}

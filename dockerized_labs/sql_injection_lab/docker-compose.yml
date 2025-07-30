@@ -1,0 +1,10 @@
+version: '3'
+services:
+  sql_injection_lab:
+    build: .
+    ports:
+      - "5012:5012"
+    volumes:
+      - .:/app
+    environment:
+      - FLASK_ENV=development

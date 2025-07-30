@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+
+{% block title %}<title>Command Injection Lab</title>{% endblock %}
+
+{% block content %}
+<div class="box">
+    <h3>Command Injection</h3>
+    <div class="section">
+        <h4>What is Command Injection</h4>
+        <p class="bp">
+            Command injection is an attack where the goal is execution of arbitrary commands on the host operating system via a vulnerable application. 
+            Command injection attacks are possible when an application passes unsafe user supplied data (forms, cookies, HTTP headers etc.) to a system shell.
+            These attacks are particularly dangerous as they execute with the privileges of the vulnerable application.
+        </p>
+    </div>
+
+    <div class="lab">
+        <button class="coll btn btn-info" onclick="toggleLabDetails('lab1')">Lab 1 Details</button>
+        <div id="lab1" class="section" style="display: none;">
+            <h4>Name Server Lookup Challenge</h4>
+            <p class="bp">
+                This lab demonstrates how command injection vulnerabilities can occur when user input is passed to system commands.
+                The application provides a feature to perform a DNS lookup on a given domain.
+            </p>
+
+            <div class="info">
+                <h4>Exploitation Methods:</h4>
+                <h4>Method 1: Using &&</h4>
+                <ul>
+                    <li>Enter: <code>domain && [any cmd]</code></li>
+                    <li>Example: <code>google.com && dir</code> (Windows) or <code>google.com && ls</code> (Linux)</li>
+                    <li>The <code>&&</code> operator executes the second command after the first one completes</li>
+                </ul>
+
+                <h4>Method 2: Using Semicolon</h4>
+                <ul>
+                    <li>Enter: <code>domain; [any cmd]</code></li>
+                    <li>Example: <code>google.com; dir</code> (Windows) or <code>google.com; ls</code> (Linux)</li>
+                    <li>The <code>;</code> operator separates commands for sequential execution</li>
+                </ul>
+            </div>
+
+            <div class="info">
+                <h4>Understanding the cause</h4>
+            <p class="bp">
+            Lets first see how the name server lookup is performed
+            <code> command="nslookup {}".format(domain) </code>
+            Here the domain is the user input domain. This command variable is then sent to exec function and the output is displayed. If the user inputs google.com the command variable will hold nslookup google.com.
+            </p>
+            <br>
+            <p>
+                How CMD injection works Method 1 Now when the user enters <code>google.com && dir</code> The command variable will hold <code>nslookup google.com && dir</code>. The && means and.
+                The system will execute <code>nslookup google.com first</code> and then dir
+                Method 2 When the user enters google.com ; dir The command variable will hold <code>nslookup google.com</code> ; dir. The ; implies the completion of the command before it, in this case the nslookup command.
+                The system will execute <code>nslookup google.com</code> first and then dir
+            </p>
+            </div>
+
+            <div class="button-container">
+                <button onclick="window.location.href='/lab1'">Access Lab 1</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="lab">
+        <button class="coll btn btn-info" onclick="toggleLabDetails('lab2')">Lab 2 Details</button>
+        <div id="lab2" class="section" style="display: none;">
+            <h4>Python eval() Code Execution</h4>
+            <p class="bp">
+                This lab demonstrates how the Python <code>eval()</code> function can be exploited for code execution. 
+                The application provides a calculator feature that evaluates mathematical expressions.
+            </p>
+            <br>
+            <p>
+                In this lab, we will be learning about the eval() function in python3. The eval() function evaluates the specified expression, if the expression is a legal Python statement, it will be executed.
+                <!-- <br> -->
+                <h4>Challenge Description:</h4>
+                In this challenge, we are given an input box, where we can calculate any arithmetic expression such as 1 + 1 or 5 * 5 etc. Your task is to exploit this input form and achieve command execution on the system.
+                <br>
+                <h4>Challenge Solution:</h4>    
+                We know that this application is using the eval() function in the backend to calculate the output. Instead of submitting arithmetic expressions, we can also submit python3 commands, which will be executed by the eval() function.
+                <br>Now, if we submit os.system("id"), we get nothing in the output. But if we check the terminal, we will see that the command gets executed and the result is printed on the terminal screen. You can also verify this by submitting os.system("sleep 30"), and you will notice that the request completes after 30 seconds.
+            </p>
+
+            <div class="info">
+                <h4>Exploitation:</h4>
+                <ul>
+                    <li>Normal usage: Enter math expressions like <code>1 + 1</code> or <code>7 * 7</code></li>
+                    <li>Malicious usage: Enter Python code like <code>os.system("command")</code></li>
+                    <li>Try <code>os.system("id")</code> or <code>os.system("whoami")</code></li>
+                    <li>The command output might appear in the server logs</li>
+                </ul>
+            </div>
+
+            <div class="button-container">
+                <button onclick="window.location.href='/lab2'">Access Lab 2</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h4>Mitigation</h4>
+        <ul>
+            <li>Implement strict input validation</li>
+            <li>Use parameterized APIs instead of system commands</li>
+            <li>Avoid calling OS commands directly</li>
+            <li>Validate inputs against a whitelist of permitted values</li>
+            <li>Run with minimal required privileges</li>
+        </ul>
+    </div>
+</div>
+
+<script>
+    function toggleLabDetails(id) {
+        const el = document.getElementById(id);
+        if (el.style.display === "none" || el.style.display === "") {
+            el.style.display = "block";
+        } else {
+            el.style.display = "none";
+        }
+    }
+</script>
+{% endblock %}

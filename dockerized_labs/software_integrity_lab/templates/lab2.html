@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+
+{% block title %}Lab 2: Software Supply Chain Attack{% endblock %}
+
+{% block content %}
+<div class="box">
+    <h3>Lab 2: Software Supply Chain Attack</h3>
+    
+    <div class="section">
+        <h4>Challenge</h4>
+        <p class="bp">This application allows users to download a file. Can you manipulate the download link to serve a malicious file instead?</p>
+
+        <form method="GET">
+            <div class="form-group">
+                <label for="username">Enter your username:</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <button type="submit">Submit</button>
+        </form>
+
+        {% if success %}
+        <div class="section">
+            <h4>Welcome {{ username }}!</h4>
+            <p class="bp">Click below to download your file:</p>
+            <a href="/download/real.txt" id="download-link"><button>Download File</button></a>
+        </div>
+
+        <div class="section">
+            <h4>Hints</h4>
+            <ul>
+                <li>The download link is generated based on user input</li>
+                <li>Look for ways to modify the download path</li>
+                <li>Check if you can access different files in the static directory</li>
+            </ul>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+{% if success %}
+<script>
+// Intentionally vulnerable to XSS that can modify the download link
+document.title = "Welcome " + "{{ username }}";
+</script>
+{% endif %}
+{% endblock %}
