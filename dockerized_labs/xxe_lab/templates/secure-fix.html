@@ -1,0 +1,111 @@
+<!-- Custom CSS Modal for Security Fix -->
+<div id="secureFixModal" class="custom-modal">
+    <div class="modal-overlay"></div>
+    <div class="modal-container">
+        <div class="modal-header">
+            <h3 class="modal-title">
+                🛡️ Security Fix for XXE Injection
+            </h3>
+            <button type="button" class="close-btn" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="tabs-container">
+                <div class="tab-buttons">
+                    <!-- <button class="tab-btn active" onclick="showTab('vulnerability')">Vulnerability</button> -->
+                    <button class="tab-btn active" style="font-weight: bold; font-size: 18px;" onclick="showTab('secure-code')">Secure Code</button>
+                    <button class="tab-btn " style="font-weight: bold; font-size: 18px;" onclick="showTab('prevention')">Solution</button>
+                </div>
+
+                <div class="tab-content">
+                    <div id="secure-code" class="tab-panel active">
+                        <h4>Secure XML Parsing Implementation</h4>
+                        <pre class="code-block"><code>
+from defusedxml.ElementTree import parse
+from defusedxml.ElementTree import ParseError
+
+def secure_parse_xml(xml_data):
+    try:
+        # Use defusedxml for secure parsing
+        tree = parse(xml_data)
+        root = tree.getroot()
+        
+        # Process the XML safely
+        data = {}
+        for child in root:
+            data[child.tag] = child.text
+            
+        return data
+        
+    except ParseError as e:
+        return {"error": "Invalid XML format"}
+    except Exception as e:
+        return {"error": "Processing error"}</code></pre>
+                    </div>
+
+                    <div id="prevention" class="tab-panel">
+                        <h4>Solution</h4>
+                                <p>When the user clicks the button to save his comments, the data is sent to the server in th from of xml post request. This can be seen , by intercepting the request done to the server by that button using BurpSuite. Sending data to the server in the form of XML is not actually vulnerable, the vulnerability lies in the way the xml is being parsed. An xml parsers which allows the DTD retrival is said to vulnerable to XXE injection if there arent any input validation done on the xml data.</p>
+                               
+                                <h4>Exploit Workflow</h4>
+                                <ol>
+                                <li>
+                                    <strong>Capture the Request</strong><br />
+                                    Open BurpSuite and enable <em>Intercept</em>. 
+                                    Enter a comment in the input box and click
+                                    <em>“Let the world see”</em>. Burp will capture a POST request with your comment inside an XML
+                                    <code>&lt;text&gt;</code> tag.
+                                </li>
+                                <li>
+                                    <strong>Inject a Malicious DTD</strong><br />
+                                    Edit the XML to include an external entity that tries to read a local file.
+                                <br>
+                                <br>    
+                                <strong>The Payload</strong>
+                                <pre class="code-block"><code>
+&lt;?xml version='1.0'?&gt;
+&lt;!DOCTYPE comm [
+&lt;!ELEMENT comm (#PCDATA)&gt;
+&lt;!ENTITY xxe SYSTEM "File_Path_Here"&gt;
+]&gt;
+&lt;comm&gt;
+&lt;text&gt;&amp;xxe;&lt;/text&gt;
+&lt;/comm&gt;
+                                </code></pre>
+                                </li>
+                                <li>
+                                    <strong>Choose Target File</strong><br />
+                                    Linux: <code>file:///etc/passwd</code><br />
+                                    Windows: <code>C:\Windows\System32\drivers\etc\hosts</code>
+                                </li>
+                                <li>
+                                    <strong>Forward the Request</strong><br />
+                                    Send the modified request and turn off <em>Intercept</em>. Return to the browser and open
+                                    <em>View Comments</em>.
+                                </li>
+                                <li>
+                                    <strong>Observe the Result</strong><br />
+                                    If vulnerable, the response will include the contents of the target file.
+                                </li>
+                                </ol>
+                            <br>    
+                                <h3>Solving with BurpSuite</h3>
+                                <ol>
+                                <li>Submit any comment normally.</li>
+                                <li>Intercept the request in BurpSuite.</li>
+                                <li>Replace the XML body with the malicious payload shown above.</li>
+                                <li>Forward the request and disable Intercept.</li>
+                                <li>Refresh / open <em>View Comments</em> to see leaked sensitive data (e.g., <code>/etc/passwd</code>) if the app is vulnerable.</li>
+                                </ol>
+                        <br>
+                        <h4>OWASP References</h4>
+                        <ul>
+                            <li><a href="https://owasp.org/www-community/vulnerabilities/XML_External_Entity_(XXE)_Processing" target="_blank">OWASP XXE</a></li>
+                            <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.html" target="_blank">OWASP XXE Prevention Cheat Sheet</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>

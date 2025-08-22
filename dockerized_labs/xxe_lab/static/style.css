@@ -196,3 +196,246 @@ ul {
 li {
     margin: 0.5rem 0;
 }
+
+.modal-content {
+  color: var(--text-color);   
+  background: var(--section-bg);          
+}
+
+.modal-header,
+.modal-body,
+.modal-footer {
+  color: var(--text-color);            
+}
+.modal-header .modal-title,
+.modal-header .modal-title i{
+  color: var(--text-color);             
+}
+
+/* Header Container */
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+/* Notebook Button */
+.notebook-btn {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    color: var(--button-bg);
+}
+
+.notebook-btn:hover {
+    background: var(--section-bg);
+    transform: scale(1.1);
+}
+
+/* Custom Modal Styles */
+.custom-modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.modal-container {
+    position: relative;
+    background: var(--card-bg);
+    margin: 2% auto;
+    padding: 0;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 800px;
+    max-height: 90vh;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal-header {
+    padding: 20px 25px;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--section-bg);
+}
+
+.modal-title {
+    margin: 0;
+    color: var(--text-color);
+    font-size: 1.5rem;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
+    color: var(--text-color);
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+}
+
+.close-btn:hover {
+    background: rgba(255, 0, 0, 0.1);
+    color: #ff0000;
+}
+
+.modal-body {
+    padding: 25px;
+    overflow-y: auto;
+    max-height: calc(90vh - 140px);
+}
+
+.modal-footer {
+    padding: 15px 25px;
+    border-top: 1px solid var(--border-color);
+    text-align: right;
+    background: var(--section-bg);
+}
+
+.close-btn-footer {
+    background: var(--button-bg);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.close-btn-footer:hover {
+    background: var(--button-hover);
+}
+
+/* Tab Styles */
+.tabs-container {
+    width: 100%;
+}
+
+.tab-buttons {
+    display: flex;
+    border-bottom: 2px solid var(--border-color);
+    margin-bottom: 20px;
+}
+
+.tab-btn {
+    background: none;
+    border: none;
+    padding: 12px 20px;
+    cursor: pointer;
+    font-size: 1rem;
+    color: var(--text-color);
+    border-bottom: 3px solid transparent;
+    transition: all 0.3s ease;
+    flex: 1;
+}
+
+.tab-btn:hover {
+    background: var(--section-bg);
+}
+
+.tab-btn.active {
+    color: var(--button-bg);
+    border-bottom-color: var(--button-bg);
+    font-weight: 600;
+}
+
+.tab-content {
+    min-height: 300px;
+}
+
+.tab-panel {
+    display: none;
+    animation: fadeIn 0.3s ease-in;
+}
+
+.tab-panel.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.tab-panel h4 {
+    color: var(--text-color);
+    margin: 20px 0 10px 0;
+    font-size: 1.2rem;
+}
+
+.tab-panel p {
+    margin: 10px 0;
+    line-height: 1.6;
+    color: var(--text-color);
+}
+
+.tab-panel ul, .tab-panel ol {
+    margin: 15px 0;
+    padding-left: 25px;
+}
+
+.tab-panel li {
+    margin: 8px 0;
+    color: var(--text-color);
+}
+
+.tab-panel a {
+    color: var(--button-bg);
+    text-decoration: none;
+}
+
+.tab-panel a:hover {
+    text-decoration: underline;
+}
+
+/* Code Block in Modal */
+.tab-panel .code-block {
+    background: var(--code-bg);
+    color: var(--code-color);
+    padding: 20px;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 15px 0;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 14px;
+    line-height: 1.4;
+}
