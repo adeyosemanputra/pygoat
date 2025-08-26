@@ -3,11 +3,17 @@
 {% block title %} Using Components with Known Vulnerabilities {% endblock %}
 
 {% block content %}
-<div class="container">
-    <h1>Using Components with Known Vulnerabilities</h1>
+<div class="content">
+    <div class="header-container">
+        <h1 style="border-bottom: 2px solid #474646; padding-bottom: 10px;">Using Components with Know Vulnerability</h1>
+        <button class="notebook-btn" onclick="openModal()" title="View Secure Implementation">
+        🔗
+        </button>
+    </div>
+    {% include 'secure-fix.html' %}
     
     <div class="box">
-        <h2>Overview</h2>
+        <h3>What does Using Components with Know Vulnerability means?</h3>
         <p>When a developer uses a piece of code or library which already has a known vulnerability, then
            this may result in compromise of the entire application. This occurs when the components such as libraries
            and frameworks used within the app mostly execute with full privileges. If a vulnerable component is
@@ -15,7 +21,7 @@
     </div>
 
     <div class="box">
-        <h2>Available Labs</h2>
+        <h3>Available Labs</h3>
         
         <div class="lab-grid">
             <div class="lab-card">
@@ -37,7 +43,7 @@
     </div>
 
     <div class="box">
-        <h2>Mitigation Steps</h2>
+        <h3>Mitigation Steps</h3>
         <div class="lab-section">
             <ul>
                 <li>Remove unused dependencies, unnecessary features, components, files, and documentation.</li>
@@ -48,4 +54,41 @@
         </div>
     </div>
 </div>
+<script>
+        // Modal functionality
+function openModal() {
+    document.getElementById('secureFixModal').style.display = 'block';
+    document.body.style.overflow = 'hidden'; 
+}
+
+function closeModal() {
+    document.getElementById('secureFixModal').style.display = 'none';
+    document.body.style.overflow = 'auto'; 
+}
+function showTab(tabName) {
+    const panels = document.querySelectorAll('.tab-panel');
+    panels.forEach(panel => panel.classList.remove('active'));
+    
+    const buttons = document.querySelectorAll('.tab-btn');
+    buttons.forEach(btn => btn.classList.remove('active'));
+    
+    document.getElementById(tabName).classList.add('active');
+    
+    event.target.classList.add('active');
+}
+
+document.addEventListener('click', function(event) {
+    const modal = document.getElementById('secureFixModal');
+    const overlay = event.target.classList.contains('modal-overlay');
+    if (overlay) {
+        closeModal();
+    }
+});
+
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+        closeModal();
+    }
+});
+</script>
 {% endblock %}

@@ -1,0 +1,120 @@
+<!-- Custom CSS Modal for Security Fix -->
+<div id="secureFixModal" class="custom-modal">
+    <div class="modal-overlay"></div>
+    <div class="modal-container">
+        <div class="modal-header">
+            <h2 class="modal-title">
+                🛡️ Security Fix for Insufficient Logging & Monitoring
+            </h2>
+            <button type="button" class="close-btn" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="tabs-container">
+                <div class="tab-buttons">
+                    <!-- <button class="tab-btn active" onclick="showTab('vulnerability')">Vulnerability</button> -->
+                    <button class="tab-btn active" style="font-weight: bold; font-size: 18px;" onclick="showTab('secure-code')">Secure Code</button>
+                    <button class="tab-btn " style="font-weight: bold; font-size: 18px;" onclick="showTab('prevention')">Solution</button>
+                </div>
+
+                <div class="tab-content">
+                    <div id="secure-code" class="tab-panel active">
+                        <h4>Secure Implementation for Insufficient Logging & Monitoring</h4>
+                        <pre class="code-block"><code>
+
+import logging
+import hashlib
+import json
+from datetime import datetime
+from functools import wraps
+
+# Configure secure logging
+logging.basicConfig(level=logging.INFO)
+security_logger = logging.getLogger('security')
+security_logger.setLevel(logging.INFO)
+
+
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+file_handler = logging.FileHandler('security.log')  # Use secure location in production
+file_handler.setFormatter(formatter)
+security_logger.addHandler(file_handler)
+
+# Prevent duplicate logs from root logger
+security_logger.propagate = False
+
+class SecurityMonitor:
+    def __init__(self):  # Fixed: proper __init__ method
+        self.failed_attempts = {}
+    
+    def log_security_event(self, event_type, user_id, ip_address, details):
+        """Log security events with sanitization and hashing"""
+        log_entry = {
+            'timestamp': datetime.utcnow().isoformat(),
+            'event_type': event_type,
+            'user_id': hashlib.sha256(str(user_id).encode()).hexdigest()[:16],
+            'ip_address': ip_address,
+            'details': str(details).replace('\n', '').replace('\r', '').replace('\t', ' '),  # Enhanced sanitization
+            'severity': 'CRITICAL' if event_type in ['failed_login_multiple', 'privilege_escalation'] else 'WARNING'
+        }
+        
+        security_logger.warning(json.dumps(log_entry))
+        
+        # Real-time alert for critical events
+        if log_entry['severity'] == 'CRITICAL':
+            print(f" CRITICAL ALERT: {event_type} from {ip_address}")
+
+monitor = SecurityMonitor()
+
+def monitor_auth(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        user_id = kwargs.get('user_id', 'unknown')
+        ip_address = kwargs.get('ip_address', 'unknown')
+        
+        try:
+            result = func(*args, **kwargs)
+            # Log successful authentication
+            monitor.log_security_event('successful_login', user_id, ip_address, 'Login successful')
+            return result
+            
+        except Exception as e:
+            # Log failed authentication
+            monitor.log_security_event('failed_login', user_id, ip_address, f'Login failed: {str(e)}')
+            
+            key = f"{user_id}:{ip_address}"
+            monitor.failed_attempts[key] = monitor.failed_attempts.get(key, 0) + 1
+            
+            # Alert on multiple failures
+            if monitor.failed_attempts[key] >= 5:
+                monitor.log_security_event('failed_login_multiple', user_id, ip_address,
+                                         f'Multiple failed attempts: {monitor.failed_attempts[key]}')
+            raise
+    
+    return wrapper
+</code></pre>
+                    </div>
+
+                    <div id="prevention" class="tab-panel">
+                                <h4>Solution</h4>
+                                <!-- <ol> -->
+                                <p> This lab highlights a weakness caused by insufficient logging and monitoring of authentication attempts. The application does not record failed logins or implement any safeguards against brute-force attacks, allowing an attacker to guess credentials without detection. </p>
+                                <p>Why it is vulnerable:</p>
+                                <li>Failed login attempts are not properly logged.</li>
+                                <li>No rate-limiting or account lockout mechanism is in place.</li>
+                                <li>The system does not generate alerts for multiple consecutive failures.</li>
+                                <li>As a result, valid credentials such as username="admin" and password="secretpass123" can eventually be discovered by brute force.</li><br>
+
+                                
+                                
+                        <br>
+                        <h4>OWASP References</h4>
+                        <ul>
+                            <li><a href="https://owasp.org/Top10/A09_2021-Security_Logging_and_Monitoring_Failures/" target="_blank">OWASP Insufficient Logging & Monitoring</a></li>
+                            <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/DotNet_Security_Cheat_Sheet.html#a09-security-logging-and-monitoring-failures" target="_blank">OWASP Insufficient Logging & Monitoring Prevention Cheat Sheet</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>

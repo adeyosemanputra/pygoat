@@ -1,0 +1,119 @@
+<!-- Custom CSS Modal for Security Fix -->
+<div id="secureFixModal" class="custom-modal">
+    <div class="modal-overlay"></div>
+    <div class="modal-container">
+        <div class="modal-header">
+            <h2 class="modal-title">
+                🛡️ Security Fix for IAF
+            </h2>
+            <button type="button" class="close-btn" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="tabs-container">
+                <div class="tab-buttons">
+                    <!-- <button class="tab-btn active" onclick="showTab('vulnerability')">Vulnerability</button> -->
+                    <button class="tab-btn active" style="font-weight: bold; font-size: 18px;" onclick="showTab('secure-code')">Secure Code</button>
+                    <button class="tab-btn " style="font-weight: bold; font-size: 18px;" onclick="showTab('prevention')">Solution</button>
+                </div>
+
+                <div class="tab-content">
+                    <div id="secure-code" class="tab-panel active">
+                        <h4>Secure Implementation for IAF</h4>
+                        <pre class="code-block"><code>
+import hashlib, os, hmac, secrets, re, time
+from http import cookies
+
+users, sessions, failed_attempts = {}, {}, {}
+
+def hash_password(password: str, salt: bytes = None) -> (bytes, bytes):
+    salt = salt or os.urandom(16)
+    pwd_hash = hashlib.pbkdf2_hmac('sha256', password.encode(), salt, 100000)
+    return salt, pwd_hash
+
+def verify_password(password: str, salt: bytes, pwd_hash: bytes) -> bool:
+    return hmac.compare_digest(hash_password(password, salt)[1], pwd_hash)
+
+def valid_password(password: str) -> bool:
+    if (len(password) < 8 or
+        not re.search(r"[A-Z]", password) or
+        not re.search(r"[a-z]", password) or
+        not re.search(r"[0-9]", password) or
+        not re.search(r"[@$!%*?&#]", password)):
+        return False
+    return True
+
+def register(username: str, password: str):
+    if not valid_password(password):
+        return "Weak password"
+    salt, pwd_hash = hash_password(password)
+    users[username] = {"salt": salt, "hash": pwd_hash}
+    return "User registered"
+
+def login(username: str, password: str, ip: str):
+    key, now = (username, ip), time.time()
+    if key in failed_attempts and failed_attempts[key]["count"] >= 5 and now < failed_attempts[key]["unlock"]:
+        return "Account temporarily locked"
+    user = users.get(username)
+    if not user or not verify_password(password, user["salt"], user["hash"]):
+        failed_attempts[key] = {"count": failed_attempts.get(key, {"count": 0})["count"]+1, "unlock": now+60}
+        return "Invalid credentials"
+    failed_attempts.pop(key, None)
+    session_id = secrets.token_urlsafe(32)
+    sessions[session_id] = {"username": username, "expiry": now + 1800}
+    cookie = cookies.SimpleCookie()
+    cookie["session_id"] = session_id
+    cookie["session_id"]["httponly"] = True
+    cookie["session_id"]["secure"] = True
+    cookie["session_id"]["samesite"] = "Strict"
+    return f"Login successful. Set-Cookie: {cookie.output(header='')}"
+
+def logout(session_id: str):
+    sessions.pop(session_id, None)
+    return "Logged out"
+</code></pre>
+                    </div>
+
+                    <div id="prevention" class="tab-panel">
+                                <h4>Solution</h4>
+                                <p>The main aim of this lab is to login as admin, and to achieve this, exploit the lack of rate limiting feature in the otp verification flow. You can see that the otp is only of 3 digit(for demo purposes) and neither does the application have any captcha nor any restriction on number of tries for the otp.</p>
+                                <p>Now to send the otp to admins mail you need to figure out the admins mail id. Luckily the admin has left his email id for the developers in the page source. Admin's email id is admin@pygoat.com Enter this email in the send otp input box and hit send,you can see that the page says that otp is sent to the email id of the admin.</p>
+                                <p>In order to exploit the lack of rate limiting , we can try to Brute-force the 3 digit otp.</p>
+                                <strong>Steps to Brute force:</strong>
+                                <ul>
+                                <li>Open Burp Suite and configure your browser to intercept the web traffic, but keep intercept turned off.</li>
+                                <li>Use the "Send OTP" feature to send the OTP to the admin’s email ID.</li>
+                                <li>In the "Enter OTP" box, type any random 3-digit number.</li>
+                                <li>Before pressing login, turn intercept on in Burp Suite and then click login.</li>
+                                <li>Burp Suite will capture the traffic.</li>
+                                <li>Send the captured request to Intruder using the "Send to Intruder" feature.</li>
+                                <li>Set the payload position to the <code>otp=</code> parameter.</li>
+                                <li>In the payloads section, choose payload type as "Number list".</li>
+                                <li>Set the range from 100 to 999 with step 1.</li>
+                                <li>Click "Attack" and Burp Suite will try different OTP combinations and record the responses.</li>
+                                <li>The correct OTP can be identified by a different (smaller) response length compared to others.</li>
+                                <li>Using this OTP, you will be able to log in to the admin’s account.</li>
+                                </ul>
+
+                                <br><strong>Brute forcing using BurpSuite</strong>
+
+                                <p>After sending OTP to admins EmailID, start up, Start up BurpSuite, turn intercept on and send any randon OTP in send OTP box</p>
+                                <p>Once request is intercepted by burpsuite, click on actions and then send to intruder</p>
+                                <p>In your intruder screen Parameters enclosed by the "§" symbol will be brute forced.</p>
+                                <p>Select payload type as Numbers, enter range as 100-999 and step as 1. Then start attack.</p>
+                                <p>When attack is going on, the correct OTP will have a different response length. In this case its smaller.</p>
+                                <p>We see that OTP value 136 gives us a different lenght.</p>
+                                <p>It can also be found out by ordering by length.</p>
+
+                                <br><br>
+                        <h4>OWASP References</h4>
+                        <ul>
+                            <li><a href="https://owasp.org/Top10/A07_2021-Identification_and_Authentication_Failures/" target="_blank">OWASP IAF</a></li>
+                            <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html" target="_blank">OWASP IAF Cheatsheet</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>

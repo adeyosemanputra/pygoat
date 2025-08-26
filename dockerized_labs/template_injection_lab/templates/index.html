@@ -3,8 +3,14 @@
 {% block title %}<title>Server-side Template Injection</title>{% endblock %}
 
 {% block content %}
-<div class="box">
-    <h3>Server-Side Template Injection</h3>
+<div class="content">
+    <div class="header-container">
+        <h1 style="border-bottom: 2px solid #474646; padding-bottom: 10px;">Server-side Template Injection</h1>
+        <button class="notebook-btn" onclick="openModal()" title="View Secure Implementation">
+        🔗
+        </button>
+    </div>
+    {% include 'secure-fix.html' %}
     <div class="section">
         <h4>What is Template Injection?</h4>
         <p class="bp">
@@ -59,13 +65,57 @@
 </div>
 
 <script>
-    function toggleLabDetails(id) {
-        const el = document.getElementById(id);
-        if (el.style.display === "none" || el.style.display === "") {
-            el.style.display = "block";
-        } else {
-            el.style.display = "none";
-        }
+function toggleLabDetails(id) {
+    const el = document.getElementById(id);
+    if (el.style.display === "none" || el.style.display === "") {
+        el.style.display = "block";
+    } else {
+        el.style.display = "none";
     }
+}
+
+    // Modal functionality
+function openModal() {
+    document.getElementById('secureFixModal').style.display = 'block';
+    document.body.style.overflow = 'hidden'; // Prevent background scrolling
+}
+
+function closeModal() {
+    document.getElementById('secureFixModal').style.display = 'none';
+    document.body.style.overflow = 'auto'; // Re-enable background scrolling
+}
+
+// Tab functionality
+function showTab(tabName) {
+    // Hide all tab panels
+    const panels = document.querySelectorAll('.tab-panel');
+    panels.forEach(panel => panel.classList.remove('active'));
+    
+    // Remove active class from all tab buttons
+    const buttons = document.querySelectorAll('.tab-btn');
+    buttons.forEach(btn => btn.classList.remove('active'));
+    
+    // Show selected tab panel
+    document.getElementById(tabName).classList.add('active');
+    
+    // Add active class to clicked button
+    event.target.classList.add('active');
+}
+
+// Close modal when clicking overlay
+document.addEventListener('click', function(event) {
+    const modal = document.getElementById('secureFixModal');
+    const overlay = event.target.classList.contains('modal-overlay');
+    if (overlay) {
+        closeModal();
+    }
+});
+
+// Close modal with Escape key
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+        closeModal();
+    }
+});
 </script>
 {% endblock %}

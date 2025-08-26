@@ -6,7 +6,13 @@
 
 {% block content %}
 <div class="content">
-    <h3>Insecure Design</h3>
+    <div class="header-container">
+        <h1 style="border-bottom: 2px solid #474646; padding-bottom: 10px;">Insecure Design</h1>
+        <button class="notebook-btn" onclick="openModal()" title="View Secure Implementation">
+        🔗
+        </button>
+    </div>
+    {% include 'secure-fix.html' %}
     <div class="box">
         <h4>What is Insecure Design ?</h4>
         <p class="bp">
@@ -25,23 +31,25 @@
             design is required.
         </p>
     </div>
-    <div class="box">
-        <button class="btn btn-info">Lab Details</button>
-        <div class="lab">
-            <p class="bp">
-                This lab helps you to get an idea of how Insecure Design can result in major Security flaw.
+    <!-- <div class="box"> -->
+        <button class="coll btn btn-info" onclick="toggleLabDetails('lab1')">Lab Details</button>
+        <div id="lab1"  style="display: none;">
+            <div class="lab">
+                <p class="bp">
+                    This lab helps you to get an idea of how Insecure Design can result in major Security flaw.
 
-                In the next page, user can get 5 free tickets for a Movie. But he/she have to wait until all the tickets are sold out.
-                For this particular situation, we can get advantage of the Insecure Design and somehow get all the tickets for the movie.
+                    In the next page, user can get 5 free tickets for a Movie. But he/she have to wait until all the tickets are sold out.
+                    For this particular situation, we can get advantage of the Insecure Design and somehow get all the tickets for the movie.
 
-                <ul><code>Hint</code></ul>
-                <ul>Log out and think how you can bypass the ticket limit per user...</ul>
-            </p>
-            <div class="button-container">
-                <button class="btn btn-info" onclick="window.location.href='{{ url_for('lab') }}'">Access Lab</button>
+                    <ul><code>Hint</code></ul>
+                    <ul>Log out and think how you can bypass the ticket limit per user...</ul>
+                </p>
+                <div class="button-container">
+                    <button class="btn btn-info" onclick="window.location.href='{{ url_for('lab') }}'">Access Lab</button>
+                </div>
             </div>
         </div>
-    </div>
+    <!-- </div> -->
     <div class="box">
         <h3>Mitigation</h3>
         <ul>
@@ -58,4 +66,52 @@
         </ul>
     </div>
 </div>
+
+<script>
+     function toggleLabDetails(id) {
+        const el = document.getElementById(id);
+        if (el.style.display === "none" || el.style.display === "") {
+            el.style.display = "block";
+        } else {
+            el.style.display = "none";
+        }
+    }
+
+    
+       // Modal functionality
+    function openModal() {
+        document.getElementById('secureFixModal').style.display = 'block';
+        document.body.style.overflow = 'hidden'; 
+    }
+
+    function closeModal() {
+        document.getElementById('secureFixModal').style.display = 'none';
+        document.body.style.overflow = 'auto'; 
+    }
+    function showTab(tabName) {
+        const panels = document.querySelectorAll('.tab-panel');
+        panels.forEach(panel => panel.classList.remove('active'));
+        
+        const buttons = document.querySelectorAll('.tab-btn');
+        buttons.forEach(btn => btn.classList.remove('active'));
+        
+        document.getElementById(tabName).classList.add('active');
+        
+        event.target.classList.add('active');
+    }
+
+    document.addEventListener('click', function(event) {
+        const modal = document.getElementById('secureFixModal');
+        const overlay = event.target.classList.contains('modal-overlay');
+        if (overlay) {
+            closeModal();
+        }
+    });
+
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            closeModal();
+        }
+    });
+</script>
 {% endblock %}
