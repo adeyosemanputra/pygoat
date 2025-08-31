@@ -1,0 +1,11 @@
+version: '3'
+services:
+  web:
+    build: .
+    ports:
+      - "5100:5100"
+    volumes:
+      - .:/app
+    environment:
+      - FLASK_ENV=development
+      - FLASK_DEBUG=True

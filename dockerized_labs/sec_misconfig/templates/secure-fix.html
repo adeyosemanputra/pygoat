@@ -1,0 +1,117 @@
+<!-- Custom CSS Modal for Security Fix -->
+<div id="secureFixModal" class="custom-modal">
+    <div class="modal-overlay"></div>
+    <div class="modal-container">
+        <div class="modal-header">
+            <h2 class="modal-title">
+                🛡️ Security Fix for Security Misconfiguration
+            </h2>
+            <button type="button" class="close-btn" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="tabs-container">
+                <div class="tab-buttons">
+                    <!-- <button class="tab-btn active" onclick="showTab('vulnerability')">Vulnerability</button> -->
+                    <button class="tab-btn active" style="font-weight: bold; font-size: 18px;" onclick="showTab('secure-code')">Secure Code</button>
+                    <button class="tab-btn " style="font-weight: bold; font-size: 18px;" onclick="showTab('prevention')">Solution</button>
+                </div>
+
+                <div class="tab-content">
+                    <div id="secure-code" class="tab-panel active">
+                        <h4>Secure Implementation of Security Misconfiguration</h4>
+                        <pre class="code-block"><code>
+from flask import Flask, request, jsonify
+import os, secrets
+
+def create_secure_app():
+    app = Flask(__name__)
+    
+    # Secure config
+    app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
+    if not app.config['SECRET_KEY']:
+        raise RuntimeError("SECRET_KEY must be set in environment for production")
+    
+    app.config['DEBUG'] = os.environ.get('FLASK_ENV') == 'development'
+    
+    # Security headers
+    @app.after_request
+    def add_security_headers(response):
+        response.headers['X-Content-Type-Options'] = 'nosniff'
+        response.headers['X-Frame-Options'] = 'DENY'
+        response.headers['Content-Security-Policy'] = "default-src 'self'"
+        response.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains'
+        return response
+    
+    # Error handling
+    @app.errorhandler(500)
+    def handle_error(e):
+        if app.debug:
+            return jsonify({'error': str(e)}), 500
+        return jsonify({'error': 'Internal server error'}), 500
+    
+    # HTTPS enforcement
+    @app.before_request
+    def force_https():
+        if not app.debug and not request.is_secure:
+            return jsonify({'error': 'HTTPS required'}), 400
+    
+    return app
+
+
+def validate_config():
+    """Check for common misconfigurations"""
+    issues = []
+    
+    if not os.environ.get('SECRET_KEY'):
+        issues.append("SECRET_KEY not set in environment (required in production)")
+    
+    if os.environ.get('DEBUG') == 'True' and os.environ.get('FLASK_ENV') != 'development':
+        issues.append("DEBUG enabled in production!")
+    
+    if os.environ.get('FLASK_ENV') not in ['development', 'production']:
+        issues.append("FLASK_ENV should be 'development' or 'production'")
+    
+    return issues
+</code></pre>
+                    </div>
+
+                    <div id="prevention" class="tab-panel">
+                                <h4>Solution</h4>
+                                <h4>Lab 1</h4>
+                                <p> The user is provided with a button which, on clicking, says that <pre><code>"Only admin.localhost:8000 can access, Your X-Host is None"</code></pre> with this information we can conclude that we need to have a header called <pre><code>X-Host:</code></pre>  and its value should be  <pre><code>admin.localhost:8000. </code></pre> </p>
+                                <p>In order to add this header we can capture the requet of the button in BurpSuite and add the header to the request and forward it .</p>
+                                <p>This should give you the secret key.</p><br>
+                                <strong>Solving with BurpSuite</strong>
+                                <li> [Open Burpsuite -> Proxy -> Intercept -> Disable Intercept -> Open Browser ->Open the Lab URL -> Enable Intercept ->Click on the "SECRET KEY" Button]</li>
+                                <li> When request is initially intercepted in BurpSuite, Click the small + button to add a header.</li>
+                                <li>After header <pre><code>X-host: admin.localhost:8000</code></pre> has been added the interceptor tab and request data tab should show the new header.</li>
+                                <li>Now, click forward and turn off intercept to see Secret Key.</li>
+
+
+
+
+
+                                <!-- <li> -->
+                                    <br>
+                                    <h4>Lab 2</h4>
+                                    <p>The user has to find a way to trigger server error , so that the server throws some sensitive data in its error . Here the developer has forgoten to turn debug to false which resulted in showing the app.py file which has some sensitive data. Try entering a random route to trigger the error and go through the app.py file to find the sensitive data.</p>
+
+
+                                    <br>
+                                    <h4>Lab 3</h4>
+                                    <p>In this lab, the vulnerability lies in the misconfiguration of JWT (JSON Web Token) handling. Once a token is generated after login, it can be intercepted and decoded using online tools such as <a href="jwt.ms" target="_blank">jwt.ms </a> or <a href="jwt.io" target="_blank"> jwt.io </a>. By decoding the token, the payload can be modified—for example, changing the user role from "user" to "admin". Since the server does not properly validate the token’s integrity, the manipulated JWT can then be re-encoded and used to gain unauthorized administrator access.</p>
+                                    
+     
+                        <br>
+                        <h4>OWASP References</h4>
+                        <ul>
+                            <li><a href="https://owasp.org/www-project-mobile-top-10/2023-risks/m8-security-misconfiguration" target="_blank">OWASP SECURITY MISCONFIGURATION </a></li>
+                            <li><a href="https://owasp.org/API-Security/editions/2023/en/0xa8-security-misconfiguration/" target="_blank">OWASP SECURITY MISCONFIGURATION API</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>

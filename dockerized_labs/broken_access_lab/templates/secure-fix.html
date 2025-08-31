@@ -1,0 +1,95 @@
+<!-- Custom CSS Modal for Security Fix -->
+<div id="secureFixModal" class="custom-modal">
+    <div class="modal-overlay"></div>
+    <div class="modal-container">
+        <div class="modal-header">
+            <h2 class="modal-title">
+                🛡️ Security Fix for Broken Access Control
+            </h2>
+            <button type="button" class="close-btn" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="tabs-container">
+                <div class="tab-buttons">
+                    <!-- <button class="tab-btn active" onclick="showTab('vulnerability')">Vulnerability</button> -->
+                    <button class="tab-btn active" style="font-weight: bold; font-size: 18px;" onclick="showTab('secure-code')">Secure Code</button>
+                    <button class="tab-btn " style="font-weight: bold; font-size: 18px;" onclick="showTab('prevention')">Solution</button>
+                </div>
+
+                <div class="tab-content">
+                    <div id="secure-code" class="tab-panel active">
+                        <h4>Secure Implementation for Broken Access Control</h4>
+                        <pre class="code-block"><code>
+from enum import Enum
+
+class Role(Enum):
+    ADMIN = "admin"
+    USER = "user"
+    GUEST = "guest"
+
+class Permission(Enum):
+    READ = "read"
+    WRITE = "write"
+    DELETE = "delete"
+
+class AccessControl:
+    _permissions = {
+        Role.ADMIN: {Permission.READ, Permission.WRITE, Permission.DELETE},
+        Role.USER: {Permission.READ, Permission.WRITE},
+        Role.GUEST: {Permission.READ},
+    }
+
+    @classmethod
+    def has_permission(cls, role: Role, permission: Permission) -> bool:
+        return permission in cls._permissions.get(role, set())
+    
+    @staticmethod
+    def is_owner(user_id: int, resource_owner_id: int) -> bool:
+        return user_id == resource_owner_id
+
+class SecureSession:
+    def __init__(self, user_id: int, role: Role):
+        self.user_id = user_id
+        self.role = role
+
+    def can_access(self, resource_owner_id: int, permission: Permission) -> bool:
+        # Admins bypass ownership
+        if self.role == Role.ADMIN:
+            return True
+        # Otherwise must have permission + be owner
+        return (AccessControl.has_permission(self.role, permission) and
+                AccessControl.is_owner(self.user_id, resource_owner_id))
+</code></pre>
+                    </div>
+
+                    <div id="prevention" class="tab-panel">
+                                <h4>Solution</h4>
+                                <p>On accessing the lab the user is provided with a simple login in page which requires a username and password.
+                                The credentials for the user Jack is <pre>jack:jacktheripper</pre>
+                                Use the above info to log in.</p>
+                                <p>The main aim of this lab is to login with admin privileges to get the secret key.</p><br>
+                                <strong>Exploiting the Broken Access</strong>
+                                <li>Every time a valid user logs in,the user session is set with a cookie called admin When you notice the cookie value when logged in as jack it is set to 0 Use BurpSuite to intercept the request change the value of the admin cookie from 0 to 1 This should log you in as a admin user and display the secret key</li>
+                                <br><strong>Solving Using BurpSuite</strong>
+                                <li>We can log in as jack:jacktheripper and admin cookie is set to 0. This does not give us the secret key.</li>
+                                <li>To change admin cookie in request, we open up burpsuite and after logging in, refresh the page and change value of admin cookie to 1.</li>
+                                <li>This results is being logged in as Admin.</li><br>
+
+                                <strong>Solving using Browser</strong>
+                                <p>Once again, we log in as jack:jacktheripper</p>
+                                <p>In inspect section, change value of admin cookie to 1 and refresh the page.</p>
+                                <p>This results is being logged in as Admin.</p>
+
+                                <br><br>
+                        <h4>OWASP References</h4>
+                        <ul>
+                            <li><a href="https://owasp.org/Top10/A01_2021-Broken_Access_Control/" target="_blank">OWASP Broken Access Control</a></li>
+                            <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html" target="_blank">OWASP Broken Access Control Cheatsheet</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>

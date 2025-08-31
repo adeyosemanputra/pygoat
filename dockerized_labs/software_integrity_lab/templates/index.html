@@ -3,13 +3,18 @@
 {% block title %}Software and Data Integrity Lab{% endblock %}
 
 {% block content %}
-<div class="box">
-    <h3>Software and Data Integrity Failures</h3>
+<div class="content">
+    <div class="header-container">
+        <h1 style="border-bottom: 2px solid #474646; padding-bottom: 10px;">Software and Data Integrity Failures</h1>
+        <button class="notebook-btn" onclick="openModal()" title="View Secure Implementation">
+        🔗
+        </button>
+    </div>
+    {% include 'secure-fix.html' %}
     <div class="section">
         <h4>Description</h4>
         <p class="bp">
-            Software and data integrity failures occur when code and infrastructure don't protect against integrity violations. These vulnerabilities can have serious consequences for application security.
-        </p>
+        Exploitation of deserialization is somewhat difficult, as off the shelf exploits rarely work without changes or tweaks to the underlying exploit code. Software and data integrity failures relate to code and infrastructure that does not protect against integrity violations. An example of this is where an application relies upon plugins, libraries, or modules from untrusted sources, repositories, and content delivery networks (CDNs). An insecure CI/CD pipeline can introduce the potential for unauthorized access, malicious code, or system compromise. Lastly, many applications now include auto-update functionality, where updates are downloaded without sufficient integrity verification and applied to the previously trusted application. Attackers could potentially upload their own updates to be distributed and run on all installations. Another example is where objects or data are encoded or serialized into a structure that an attacker can see and modify is vulnerable to insecure deserialization.</p>
         <div class="info">
             <h4>Common Scenarios:</h4>
             <ul>
@@ -46,6 +51,49 @@
             </div>
         </div>
     </div>
+
+    <div class="section">
+        <h4>Insecure Deserialization</h4>
+        <p class="bp">
+           Applications and APIs will be vulnerable if they deserialize hostile or tampered objects supplied by an attacker. This can result in two primary types of attacks:</p>        
+        <p>Object and data structure related attacks where the attacker modifies application logic or achieves arbitrary remote code execution if there are classes available to the application that can change behavior during or after deserialization.
+           Typical data tampering attacks such as access-control-related attacks where existing data structures are used but the content is changed.</p>
+        <br>
+        <h4>Serialization may be used in applications for:</h4>
+        <p class="bp">
+            Remote- and inter-process communication (RPC/IPC)
+            Wire protocols, web services, message brokers
+            Caching/Persistence
+            Databases, cache servers, file systems
+            HTTP cookies, HTML form parameters, API authentication tokens.</p><br>        
+        <h4>How to Prevent</h4>
+        <p class="bp">
+           The only safe architectural pattern is not to accept serialized objects from untrusted sources or to use serialization mediums that only permit primitive data types. If that is not possible, consider one of more of the following:</p>        
+        <p>Implementing integrity checks such as digital signatures on any serialized objects to prevent hostile object creation or data tampering.
+            Enforcing strict type constraints during deserialization before object creation as the code typically expects a definable set of classes. Bypasses to this technique have been demonstrated, so reliance solely on this is not advisable.
+            Isolating and running code that deserializes in low privilege environments when possible.
+            Log deserialization exceptions and failures, such as where the incoming type is not the expected type, or the deserialization throws exceptions.
+            Restricting or monitoring incoming and outgoing network connectivity from containers or servers that deserialize. Monitoring deserialization, alerting if a user deserializes constantly.</p>
+        <br>
+        <h4>Key Principles for Integrity Protection:</h4>
+        <p> HASH VERIFICATION:</p>
+        <li>Use SHA-256 or stronger hashing algorithms</li>
+        <li>Use hmac.compare_digest() for secure comparison</li><br>
+
+        <p> SERIALIZATION SAFETY:</p>
+        <li>Use JSON for data serialization (safe)</li>
+        <li>NEVER use pickle with untrusted data (can execute code)</li><br>
+
+        <p> DATA VALIDATION:</p>
+        <li>Validate structure, types, and lengths</li>
+        <li>Check required fields exist</li><br>
+
+        <p> UPDATE SECURITY:</p>
+        <li>Verify hashes before installing updates</li>
+        <li>Use digital signatures for critical updates</li>
+
+    </div>
+    
 </div>
 
 <script>
@@ -57,5 +105,41 @@
             el.style.display = "none";
         }
     }
+
+        // Modal functionality
+    function openModal() {
+        document.getElementById('secureFixModal').style.display = 'block';
+        document.body.style.overflow = 'hidden'; 
+    }
+
+    function closeModal() {
+        document.getElementById('secureFixModal').style.display = 'none';
+        document.body.style.overflow = 'auto'; 
+    }
+    function showTab(tabName) {
+        const panels = document.querySelectorAll('.tab-panel');
+        panels.forEach(panel => panel.classList.remove('active'));
+        
+        const buttons = document.querySelectorAll('.tab-btn');
+        buttons.forEach(btn => btn.classList.remove('active'));
+        
+        document.getElementById(tabName).classList.add('active');
+        
+        event.target.classList.add('active');
+    }
+
+    document.addEventListener('click', function(event) {
+        const modal = document.getElementById('secureFixModal');
+        const overlay = event.target.classList.contains('modal-overlay');
+        if (overlay) {
+            closeModal();
+        }
+    });
+
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            closeModal();
+        }
+    });
 </script>
 {% endblock %}

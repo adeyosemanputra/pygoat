@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% block title %}<title>Sensitive Data Exposure</title>{% endblock %}
+
+{% block content %}
+<div class="content">
+    <div class="header-container">
+        <h1 style="border-bottom: 2px solid #474646; padding-bottom: 10px;">Sensitive Data Exposure</h1>
+        <button class="notebook-btn" onclick="openModal()" title="View Secure Implementation">
+        🔗
+        </button>
+    </div>
+    {% include 'secure-fix.html' %}
+    <div class="section">
+
+        <h4>What is Sensitive Data Exposure ?</h4>
+        <p class="bp">
+        Information disclosure, also known as information leakage, is when a website unintentionally reveals sensitive
+        information to its users. Depending on the context, websites may leak all kinds of information to a potential
+        attacker, including:
+        <ul>
+        <li>Data about other users, such as usernames or financial information</li>
+        <li>Sensitive commercial or business data</li>
+        <li>Technical details about the website and its infrastructure</li>
+        </ul>
+        </p>
+    </div>
+    <button class="coll btn btn-info" onclick="toggleLabDetails('lab')">Lab Details</button>
+    <div id="lab"  style="display: none;">
+        <div class="section">
+        <p class="bp">
+            One of the features of having DEBUG=True is dumping lots of metadata from your environment, including the whole
+            settings.py configurations, when a exception occurs.
+        </p>
+
+        <br>
+        <div class="button-container"> <button type="button"
+            onclick="window.location.href='/lab'">Access Lab</button></div>
+        </div>
+    </div>
+    <div class="section">
+        <h4>Mitigation</h4>
+        <p class="bp">Even though you will never be using DEBUG=True, you need extra care when naming the configurations in
+        the settings.py module. Make sure all sensitive variables use one of the keywords:
+        <ul>
+        <li>API</li>
+        <li>KEY</li>
+        <li>PASS</li>
+        <li>SECRET</li>
+        <li>SIGNATURE</li>
+        <li>TOKEN</li>
+        </ul>
+        </p>
+    </div>
+</div>
+<script>
+    function toggleLabDetails(id) {
+    const element = document.getElementById(id);
+    element.classList.toggle("hidden");
+}
+
+   // Modal functionality
+    function openModal() {
+        document.getElementById('secureFixModal').style.display = 'block';
+        document.body.style.overflow = 'hidden'; 
+    }
+
+    function closeModal() {
+        document.getElementById('secureFixModal').style.display = 'none';
+        document.body.style.overflow = 'auto'; 
+    }
+    function showTab(tabName) {
+        const panels = document.querySelectorAll('.tab-panel');
+        panels.forEach(panel => panel.classList.remove('active'));
+        
+        const buttons = document.querySelectorAll('.tab-btn');
+        buttons.forEach(btn => btn.classList.remove('active'));
+        
+        document.getElementById(tabName).classList.add('active');
+        
+        event.target.classList.add('active');
+    }
+
+    document.addEventListener('click', function(event) {
+        const modal = document.getElementById('secureFixModal');
+        const overlay = event.target.classList.contains('modal-overlay');
+        if (overlay) {
+            closeModal();
+        }
+    });
+
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            closeModal();
+        }
+    });
+
+</script>
+{% endblock %}
