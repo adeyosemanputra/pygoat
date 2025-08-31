@@ -1,0 +1,274 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>SecureBank - Dashboard</title>
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <div class="banking-nav">
+        <h3>SecureBank - Dashboard</h3>
+        <div class="nav-buttons">
+            <button onclick="window.location.href='/transfer'" style="background: #17a2b8;">Transfer Money</button>
+            <button onclick="window.location.href='/logout'" style="background: #6c757d;">Logout</button>
+        </div>
+    </div>
+    
+    <div class="box">
+        <div class="account-summary">
+            <h4>Welcome, {{ user.full_name }}!</h4>
+            <div class="account-details">
+                <div class="balance-card">
+                    <h5>Current Balance</h5>
+                    <p class="balance">₹{{ "%.2f"|format(user.balance) }}</p>
+                </div>
+                <div class="account-info-card">
+                    <h5>Account Information</h5>
+                    <p><strong>Account Number:</strong> {{ user.account_number }}</p>
+                    <p><strong>Account Holder:</strong> {{ user.full_name }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="quick-actions">
+            <h4>Quick Actions</h4>
+            <div class="action-buttons">
+                <button onclick="window.location.href='/transfer'" class="action-btn transfer">
+                    💸 Transfer Money
+                </button>
+                <button onclick="checkBalance()" class="action-btn balance">
+                    💰 Check Balance
+                </button>
+                <button onclick="viewSecurity()" class="action-btn security">
+                    🔒 Security Headers
+                </button>
+            </div>
+        </div>
+
+        {% if transactions %}
+        <div class="recent-transactions">
+            <h4>Recent Transactions</h4>
+            <div class="transactions-list">
+                {% for transaction in transactions %}
+                <div class="transaction-item">
+                    <div class="transaction-details">
+                        <strong>To: {{ transaction.recipient }}</strong><br>
+                        <small>{{ transaction.description }}</small><br>
+                        <small>{{ transaction.timestamp }}</small>
+                    </div>
+                    <div class="transaction-amount">
+                        -₹{{ "%.2f"|format(transaction.amount) }}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="security-status">
+            <h4>Current Security Status</h4>
+            <div class="security-info">
+                <p><strong>Security Headers:</strong> 
+                    {% if session.secure_mode %}
+                        <span style="color: #28a745;">✅ Enabled</span>
+                    {% else %}
+                        <span style="color: #dc3545;">❌ Disabled (Vulnerable to Clickjacking)</span>
+                    {% endif %}
+                </p>
+                <button onclick="window.location.href='/toggle_secure_mode'">
+                    {% if session.secure_mode %}
+                        Disable Security Headers
+                    {% else %}
+                        Enable Security Headers
+                    {% endif %}
+                </button>
+            </div>
+        </div>
+
+        <div class="lab-warnings">
+            <h4>Lab Testing Information</h4>
+            <p class="bp">
+                <strong>Clickjacking Test:</strong> When security headers are disabled, this banking interface 
+                can be embedded in malicious iframes. Try the <a href="/malicious" target="_blank">malicious page</a> 
+                to see how clickjacking works.
+            </p>
+            <div class="warning-buttons">
+                <button onclick="window.open('/malicious', '_blank')" style="background: #dc3545;">
+                    🚨 View Malicious Page
+                </button>
+                <button onclick="window.location.href='/lab'">
+                    📚 Lab Details
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function checkBalance() {
+    alert(`Your current balance is ₹{{ "%.2f"|format(user.balance) }}`);
+}
+
+function viewSecurity() {
+    window.location.href = '/';
+}
+</script>
+
+<style>
+.banking-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.nav-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.account-summary {
+    margin-bottom: 30px;
+}
+
+.account-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.balance-card, .account-info-card {
+    padding: 20px;
+    background: var(--section-bg);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.balance {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #28a745;
+    margin: 10px 0;
+}
+
+.quick-actions {
+    margin: 30px 0;
+}
+
+.action-buttons {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.action-btn {
+    padding: 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.action-btn.transfer {
+    background: #17a2b8;
+    color: white;
+}
+
+.action-btn.balance {
+    background: #28a745;
+    color: white;
+}
+
+.action-btn.security {
+    background: #ffc107;
+    color: #212529;
+}
+
+.action-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.recent-transactions {
+    margin: 30px 0;
+}
+
+.transactions-list {
+    margin-top: 15px;
+}
+
+.transaction-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid var(--border-color);
+    background: var(--section-bg);
+    margin: 5px 0;
+    border-radius: 4px;
+}
+
+.transaction-amount {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #dc3545;
+}
+
+.security-status {
+    margin: 30px 0;
+    padding: 20px;
+    background: var(--section-bg);
+    border-radius: 8px;
+    border-left: 4px solid var(--button-bg);
+}
+
+.security-info {
+    margin-top: 15px;
+}
+
+.lab-warnings {
+    margin: 30px 0;
+    padding: 20px;
+    background: #fff3cd;
+    color: #856404;
+    border-radius: 8px;
+    border: 1px solid #ffeaa7;
+}
+
+[data-theme="dark"] .lab-warnings {
+    background: #4a4a00;
+    color: #ffff99;
+    border-color: #666600;
+}
+
+.warning-buttons {
+    margin-top: 15px;
+    display: flex;
+    gap: 10px;
+}
+
+@media (max-width: 768px) {
+    .banking-nav {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .account-details {
+        grid-template-columns: 1fr;
+    }
+    
+    .nav-buttons {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .warning-buttons {
+        flex-direction: column;
+    }
+}
+</style>
+{% endblock %}

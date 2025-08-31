@@ -1,0 +1,160 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>SecureBank - Login</title>
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <h3>SecureBank - Login</h3>
+    
+    <div class="box">
+        <div class="banking-header">
+            <h4>Welcome to SecureBank Online Banking</h4>
+            <p class="bp">Please enter your credentials to access your account</p>
+        </div>
+
+        {% if error %}
+        <div class="alert error">
+            <strong>Error:</strong> {{ error }}
+        </div>
+        {% endif %}
+
+        <form method="POST" class="login-form">
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" placeholder="Enter your username" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+            </div>
+            
+            <button type="submit" class="login-btn">Login to Banking</button>
+        </form>
+
+        <div class="demo-accounts">
+            <h5>Demo Accounts for Testing</h5>
+            <div class="account-info">
+                <div class="account">
+                    <strong>Account 1:</strong><br>
+                    Username: <code>john_doe</code><br>
+                    Password: <code>password123</code><br>
+                    Balance: ₹25,000
+                </div>
+                <div class="account">
+                    <strong>Account 2:</strong><br>
+                    Username: <code>jane_smith</code><br>
+                    Password: <code>securepass</code><br>
+                    Balance: ₹15,000
+                </div>
+            </div>
+        </div>
+
+        <div class="lab-info">
+            <h5>Lab Information</h5>
+            <p class="bp">
+                This is a demonstration banking application for testing clickjacking vulnerabilities. 
+                After logging in, you'll have access to money transfer functionality that may be vulnerable 
+                to clickjacking attacks when security headers are not properly configured.
+            </p>
+        </div>
+
+        <div style="text-align: center; margin-top: 20px;">
+            <button onclick="window.location.href='/'" style="margin-right: 10px;">Back to Overview</button>
+            <button onclick="window.location.href='/malicious'" style="background: #dc3545;">View Malicious Page</button>
+        </div>
+    </div>
+</div>
+
+<style>
+.banking-header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding: 20px;
+    background: var(--section-bg);
+    border-radius: 8px;
+}
+
+.login-form {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.login-btn {
+    width: 100%;
+    background: #28a745;
+    padding: 15px;
+    font-size: 1.1rem;
+}
+
+.login-btn:hover {
+    background: #218838;
+}
+
+.demo-accounts {
+    margin: 30px 0;
+    padding: 20px;
+    background: var(--section-bg);
+    border-radius: 8px;
+}
+
+.account-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 15px;
+}
+
+.account {
+    padding: 15px;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+}
+
+.lab-info {
+    margin: 20px 0;
+    padding: 15px;
+    background: #e9ecef;
+    border-left: 4px solid var(--button-bg);
+    border-radius: 0 8px 8px 0;
+}
+
+[data-theme="dark"] .lab-info {
+    background: #2d3338;
+}
+
+.alert.error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    padding: 15px;
+    border-radius: 4px;
+    margin: 15px 0;
+}
+
+[data-theme="dark"] .alert.error {
+    background: #4a1e1e;
+    color: #e6a3a3;
+    border-color: #5a2d2d;
+}
+
+@media (max-width: 768px) {
+    .account-info {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+{% endblock %}

@@ -13,3 +13,44 @@ services:
     command: python manage.py migrate --noinput
     volumes:
       - .:/app
+
+  bopla_lab:
+    # image: pygoat/bopla_lab
+    build: 
+      context: challenge/labs/bopla_lab/
+    depends_on:
+      - web
+    networks:
+      - my_network
+    container_name: bopla_lab
+    ports:
+      - "7018:8080"
+
+  business_logic_lab:
+    # image: pygoat/business_logic_lab
+    build: 
+      context: challenge/labs/business_logic_lab/
+    depends_on:
+      - web
+    networks:
+      - my_network
+    container_name: business_logic_lab
+    ports:
+      - "7019:5010"
+
+  security_headers_lab:
+    # image: pygoat/security_headers_lab
+    build: 
+      context: challenge/labs/security_headers_lab/
+    depends_on:
+      - web
+    networks:
+      - my_network
+    container_name: security_headers_lab
+    ports:
+      - "7020:5011"
+
+  
+networks:
+  my_network:
+    driver: bridge

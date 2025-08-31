@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Lab Details - Business Logic Flaws</title>
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <h3>Lab Details: Business Logic Flaws</h3>
+    
+    <div class="box">
+        <h4>Lab Scenario</h4>
+        <div class="section">
+            <p class="bp">
+                <strong>Vulnerability Type:</strong> Business Logic Flaw - Discount Abuse<br>
+                <strong>Difficulty:</strong> Beginner<br>
+                <strong>OWASP Top 10:</strong> A04:2021 - Insecure Design
+            </p>
+        </div>
+
+        <div class="lab">
+            <h4>Your Mission</h4>
+            <p class="bp">
+                You've discovered an online electronics store that offers discount coupons. Your goal is to exploit 
+                a business logic flaw to reduce your cart total below ₹100.
+            </p>
+            
+            <ol class="bp">
+                <li>Visit the <a href="/store">store</a> and add products to your cart (aim for ₹1000+ total)</li>
+                <li>Go to your <a href="/cart">cart</a> and try applying discount coupons</li>
+                <li>Experiment with applying the same coupon multiple times</li>
+                <li>Reduce the total cost below ₹100 to complete the challenge</li>
+            </ol>
+        </div>
+
+        <div class="section">
+            <h4>What to Look For</h4>
+            <div class="lesson-section">
+                <h5>Business Logic Validation</h5>
+                <p class="bp">
+                    Pay attention to how the application handles coupon applications:
+                    <ul>
+                        <li>Does it check if a coupon has already been applied?</li>
+                        <li>Can you apply the same coupon multiple times?</li>
+                        <li>What happens to the discount calculation?</li>
+                    </ul>
+                </p>
+            </div>
+
+            <div class="lesson-section">
+                <h5>State Management</h5>
+                <p class="bp">
+                    Observe how the application tracks applied coupons:
+                    <ul>
+                        <li>Where are applied coupons stored?</li>
+                        <li>Is there proper validation of coupon usage?</li>
+                        <li>Can the state be manipulated?</li>
+                    </ul>
+                </p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h4>Testing in Secure Mode</h4>
+            <p class="bp">
+                The application includes a "Secure Mode" toggle that demonstrates the proper implementation:
+                <ul>
+                    <li>Enable secure mode in the cart page</li>
+                    <li>Try applying the same coupon multiple times</li>
+                    <li>Notice how proper validation prevents abuse</li>
+                </ul>
+            </p>
+        </div>
+
+        <div class="section">
+            <h4>Hints</h4>
+            <div class="lesson-section">
+                <h5>Hint 1: Available Coupons</h5>
+                <p class="bp">
+                    <code>DISCOUNT10</code> - Gives 10% off any order<br>
+                    <code>SAVE20</code> - Gives 20% off orders over ₹500
+                </p>
+            </div>
+
+            <div class="lesson-section">
+                <h5>Hint 2: Multiple Applications</h5>
+                <p class="bp">
+                    Try applying the same coupon code repeatedly. Notice what happens to your total.
+                </p>
+            </div>
+
+            <div class="lesson-section">
+                <h5>Hint 3: Compound Discounts</h5>
+                <p class="bp">
+                    Multiple discounts can stack, potentially reducing the price dramatically.
+                </p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h4>Real-World Impact</h4>
+            <p class="bp">
+                This type of vulnerability can cause significant financial damage:
+                <ul>
+                    <li><strong>Revenue Loss:</strong> Customers can purchase items for free or near-free</li>
+                    <li><strong>Inventory Issues:</strong> Products sold below cost can impact supply chain</li>
+                    <li><strong>Business Reputation:</strong> Abuse can lead to loss of customer trust</li>
+                    <li><strong>Legal Issues:</strong> May violate terms of service and regulations</li>
+                </ul>
+            </p>
+        </div>
+
+        <div style="text-align: center; margin-top: 30px;">
+            <button onclick="window.location.href='/store'" style="margin-right: 10px;">Start Lab</button>
+            <button onclick="window.location.href='/'" style="margin-right: 10px;">Back to Overview</button>
+            <button onclick="window.location.href='/solution'">View Solution</button>
+        </div>
+    </div>
+</div>
+{% endblock %}

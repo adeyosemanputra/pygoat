@@ -5,6 +5,7 @@ from django.views.decorators.csrf import csrf_exempt
 import subprocess
 from .utility import get_free_port
 from .models import Challenge, UserChallenge
+from django.http import HttpResponse
 # Create your views here.
 
 
@@ -85,4 +86,20 @@ class DoItFast(View):
     def put(self, request, challange):
         # TODO : implement flag checking
         return "not implemented"
+
+
+def bopla_lab(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    return redirect("http://localhost:7018")
+
+def business_logic_lab(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    return redirect("http://localhost:7019")
+
+def security_headers_lab(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    return redirect("http://localhost:7020")
     

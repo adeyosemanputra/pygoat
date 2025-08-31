@@ -1,0 +1,332 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Shopping Cart - Business Logic Lab</title>
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <h3>Shopping Cart</h3>
+    
+    <div class="box">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h4>Your Items</h4>
+            <div>
+                <button onclick="window.location.href='/store'" style="margin-right: 10px;">Continue Shopping</button>
+                <button onclick="window.location.href='/clear_cart'" style="background: #dc3545;">Clear Cart</button>
+            </div>
+        </div>
+
+        {% if cart %}
+            <div class="cart-items">
+                {% for item in cart %}
+                <div class="cart-item">
+                    <div class="item-info">
+                        <span class="item-image">{{ item.image }}</span>
+                        <div>
+                            <h5>{{ item.name }}</h5>
+                            <p>Quantity: {{ item.quantity }}</p>
+                        </div>
+                    </div>
+                    <div class="item-price">₹{{ item.price * item.quantity }}</div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="cart-summary">
+                <div class="summary-row">
+                    <span>Subtotal:</span>
+                    <span>₹{{ cart_total }}</span>
+                </div>
+                
+                {% if discount_amount > 0 %}
+                <div class="summary-row discount">
+                    <span>Discount Applied:</span>
+                    <span>-₹{{ "%.2f"|format(discount_amount) }}</span>
+                </div>
+                {% endif %}
+                
+                <div class="summary-row total">
+                    <span><strong>Total:</strong></span>
+                    <span><strong>₹{{ "%.2f"|format(final_total) }}</strong></span>
+                </div>
+            </div>
+
+            <div class="coupon-section">
+                <h4>Apply Discount Coupon</h4>
+                
+                <div class="security-toggle" style="margin-bottom: 15px;">
+                    <label>
+                        <input type="checkbox" id="secureMode" {% if secure_mode %}checked{% endif %} 
+                               onchange="toggleSecureMode()"> 
+                        Secure Mode (prevents multiple coupon applications)
+                    </label>
+                </div>
+                
+                <div class="coupon-form">
+                    <input type="text" id="couponCode" placeholder="Enter coupon code (e.g., DISCOUNT10)" 
+                           style="flex: 1; margin-right: 10px;">
+                    <button onclick="applyCoupon()">Apply Coupon</button>
+                </div>
+                
+                <div id="couponMessage" class="coupon-message"></div>
+                
+                {% if applied_coupons %}
+                <div class="applied-coupons">
+                    <h5>Applied Coupons:</h5>
+                    {% for coupon in applied_coupons %}
+                    <div class="applied-coupon">
+                        <span>{{ coupon }} - {{ coupons[coupon].description }}</span>
+                        <button onclick="window.location.href='/remove_coupon/{{ coupon }}'" 
+                                style="background: #dc3545; padding: 5px 10px; font-size: 0.8rem;">Remove</button>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                
+                <div class="available-coupons">
+                    <h5>Available Coupons:</h5>
+                    {% for code, coupon in coupons.items() %}
+                    <div class="coupon-info">
+                        <code>{{ code }}</code> - {{ coupon.description }}
+                        {% if coupon.min_amount > 0 %}
+                        (minimum order: ₹{{ coupon.min_amount }})
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="challenge-status">
+                <h4>Challenge Status</h4>
+                {% if final_total < 100 %}
+                <div class="alert success">
+                    <strong>🎉 Challenge Completed!</strong><br>
+                    You successfully reduced the total below ₹100! 
+                    Final amount: ₹{{ "%.2f"|format(final_total) }}
+                </div>
+                {% else %}
+                <div class="alert info">
+                    <strong>Challenge:</strong> Reduce the total cost below ₹100 by applying discount coupons.<br>
+                    Current total: ₹{{ "%.2f"|format(final_total) }} (Need to reduce by ₹{{ "%.2f"|format(final_total - 100) }} more)
+                </div>
+                {% endif %}
+            </div>
+
+        {% else %}
+            <div class="empty-cart">
+                <p>Your cart is empty!</p>
+                <button onclick="window.location.href='/store'">Start Shopping</button>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<style>
+.cart-items {
+    margin-bottom: 20px;
+}
+
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.item-info {
+    display: flex;
+    align-items: center;
+}
+
+.item-image {
+    font-size: 2rem;
+    margin-right: 15px;
+}
+
+.item-price {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.cart-summary {
+    background: var(--section-bg);
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px 0;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0;
+}
+
+.summary-row.discount span:last-child {
+    color: #28a745;
+}
+
+.summary-row.total {
+    font-size: 1.2rem;
+    border-top: 1px solid var(--border-color);
+    padding-top: 10px;
+    margin-top: 15px;
+}
+
+.coupon-section {
+    background: var(--section-bg);
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px 0;
+}
+
+.coupon-form {
+    display: flex;
+    margin: 15px 0;
+}
+
+.coupon-message {
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 4px;
+    display: none;
+}
+
+.coupon-message.success {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+    display: block;
+}
+
+.coupon-message.error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    display: block;
+}
+
+.applied-coupons {
+    margin: 15px 0;
+}
+
+.applied-coupon {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
+    margin: 5px 0;
+    background: var(--card-bg);
+    border-radius: 4px;
+    border: 1px solid var(--border-color);
+}
+
+.available-coupons {
+    margin-top: 15px;
+    font-size: 0.9rem;
+}
+
+.coupon-info {
+    margin: 5px 0;
+    padding: 5px 0;
+}
+
+.challenge-status {
+    background: var(--section-bg);
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px 0;
+}
+
+.alert {
+    padding: 15px;
+    border-radius: 4px;
+    margin: 10px 0;
+}
+
+.alert.success {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.alert.info {
+    background: #d1ecf1;
+    color: #0c5460;
+    border: 1px solid #bee5eb;
+}
+
+.empty-cart {
+    text-align: center;
+    padding: 40px;
+}
+
+.security-toggle {
+    background: #fff3cd;
+    color: #856404;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ffeaa7;
+}
+
+[data-theme="dark"] .security-toggle {
+    background: #4a4a00;
+    color: #ffff99;
+    border-color: #666600;
+}
+</style>
+
+<script>
+function applyCoupon() {
+    const couponCode = document.getElementById('couponCode').value.trim();
+    const messageDiv = document.getElementById('couponMessage');
+    
+    if (!couponCode) {
+        showMessage('Please enter a coupon code', 'error');
+        return;
+    }
+    
+    fetch('/apply_coupon', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `coupon_code=${encodeURIComponent(couponCode)}`
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showMessage(data.message, 'success');
+            setTimeout(() => {
+                window.location.reload();
+            }, 1000);
+        } else {
+            showMessage(data.message, 'error');
+        }
+        document.getElementById('couponCode').value = '';
+    })
+    .catch(error => {
+        showMessage('Error applying coupon', 'error');
+        console.error('Error:', error);
+    });
+}
+
+function showMessage(message, type) {
+    const messageDiv = document.getElementById('couponMessage');
+    messageDiv.textContent = message;
+    messageDiv.className = `coupon-message ${type}`;
+}
+
+function toggleSecureMode() {
+    window.location.href = '/toggle_secure_mode';
+}
+
+document.getElementById('couponCode').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+        applyCoupon();
+    }
+});
+</script>
+
+{% endblock %}
