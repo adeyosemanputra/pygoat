@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>BOPLA Lab - Vulnerable Application</title>
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <div class="box">
+        <h3>Project Management System</h3>
+        
+        <div class="navigation">
+            <a href="/login">Login</a>
+            <a href="/dashboard">Dashboard</a>
+            <a href="/logout">Logout</a>
+            <a href="/">← Back to Lab Info</a>
+        </div>
+
+        <div class="section">
+            <h4>Authentication Required</h4>
+            <div class="bp">
+                Please log in to access the project management system.
+            </div>
+            
+            <div class="login-form">
+                <h4>Available Test Accounts:</h4>
+                <div class="bp">
+                    <strong>Developer Account:</strong><br>
+                    Username: user1<br>
+                    Password: password123<br><br>
+                    
+                    <strong>Manager Account:</strong><br>
+                    Username: user2<br>
+                    Password: pass456<br><br>
+                    
+                    <strong>Admin Account:</strong><br>
+                    Username: admin<br>
+                    Password: admin123
+                </div>
+                
+                <button onclick="window.location.href='/login'">Go to Login</button>
+            </div>
+        </div>
+
+        <div class="section">
+            <h4>What to Look For</h4>
+            <ul>
+                <li>API endpoints that return project details</li>
+                <li>Sensitive information in API responses</li>
+                <li>Data that frontend doesn't display but API returns</li>
+                <li>Different responses for different user roles</li>
+                <li>Budget information, credentials, internal notes</li>
+            </ul>
+        </div>
+
+        <div class="vulnerability-hint" id="vulnerability-hint" style="display: none;">
+            <strong>💡 Hint:</strong> Use browser developer tools (F12) to monitor network requests when viewing projects.
+            Pay attention to the API responses - they might contain more data than what's displayed on screen!
+        </div>
+
+        <button onclick="showVulnerabilityHint()" class="secondary">Show Hint</button>
+    </div>
+</div>
+{% endblock %}

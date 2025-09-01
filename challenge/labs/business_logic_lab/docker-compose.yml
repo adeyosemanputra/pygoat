@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  business_logic_lab:
+    build: .
+    ports:
+      - "5010:5010"
+    environment:
+      - FLASK_APP=app.py
+      - FLASK_ENV=development
+    volumes:
+      - .:/app
+    restart: unless-stopped
