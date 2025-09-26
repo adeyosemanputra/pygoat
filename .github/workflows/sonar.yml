@@ -1,13 +1,14 @@
 name: Sonar Scan
-true:
+
+on:
   push:
     branches:
-    - main
-  pull_request: null
+      - main
+  pull_request: {}
+  workflow_dispatch: {}
+
 jobs:
   sonar:
     uses: ArmorCode-Public-Test/.github/.github/workflows/sonar-template.yml@main
     with:
       projectKey: ${{ github.repository }}
-'on':
-  workflow_dispatch: {}
