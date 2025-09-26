@@ -9,6 +9,6 @@ on:
 
 jobs:
   sonar:
-    uses: ArmorCode-Public-Test/.github/.github/workflows/sonar-template.yml@main
+    uses: ArmorCode-Public-Test/.github/workflows/sonar-template.yml@main
     with:
       projectKey: ${{ github.repository }}
