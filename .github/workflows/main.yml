@@ -20,5 +20,12 @@ jobs:
       run: pip install bandit
 
     - name: Run Bandit Scan
-      run: bandit -ii -ll -r .
+      run: bandit -ii -ll -r . -f json -o bandit-report.json
+      
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: bandit-findings
+        path: bandit-report.json
       
