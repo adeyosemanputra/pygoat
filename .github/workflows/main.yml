@@ -31,14 +31,14 @@ jobs:
       
   image_scan:
    name: Build Image and Run Image Scan
-   runs-on: ubuntu-22.04
+   runs-on: ubuntu-latest
 
    steps:
    - name: Checkout code
      uses: actions/checkout@v2
 
    - name: Set up Docker
-     uses: docker-practice/actions-setup-docker@v1
+     uses: docker/setup-docker-action@v4
      with:
       docker_version: '20.10.7'
 
