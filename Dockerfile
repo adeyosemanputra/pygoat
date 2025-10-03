@@ -17,11 +17,10 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
-#Upgrade pip
-RUN python -m pip install --upgrade pip
 
 # Install dependencies
-RUN python -m pip install --no-cache-dir pip==22.0.4
+# RUN python -m pip install --no-cache-dir pip==22.0.4
+RUN python -m pip install --upgrade pip
 COPY requirements.txt requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
