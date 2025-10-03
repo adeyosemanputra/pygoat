@@ -51,4 +51,4 @@ jobs:
        sh install-scout.sh
        echo ${{ secrets.REPO_PWD }} | docker login -u ${{ secrets.REPO_USER }} --password-stdin
        docker scout quickview
-       docker scout cves
+       docker scout cves 
