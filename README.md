@@ -1,10 +1,13 @@
 # PyGoat
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/leswlk/pygoat-github-actions/badge)](https://scorecard.dev/viewer/?uri=github.com/leswlk/pygoat-github-actions)
+
+
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 [![All Contributors](https://img.shields.io/badge/all_contributors-9-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 intentionally vuln web Application Security in django.
-our roadmap build intentionally vuln web Application in django. The Vulnerability can based on OWASP top ten
+our roadmap build intentionally vuln web Application in django. The Vulnerability can based on OWASP top ten test
 <br>
 
 Table of Contents
@@ -128,4 +131,4 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
-This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome! TEST
