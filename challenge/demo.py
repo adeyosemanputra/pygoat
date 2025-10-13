@@ -1,12 +1,12 @@
-# This is an intentionally vulnerable demonstration for educational purposes only.
+# This is a fixed version demonstrating how to prevent SQL injection in Django.
 
 from django.db import connection
 from django.http import HttpResponse
 
-def vuln_sql_injection(request):
+def vuln_sql_injection_safe(request):
     query = request.GET.get('search', '')
-    # WARNING: This is intentionally vulnerable to SQL Injection!
+    # Use parameterized queries to prevent SQL Injection
     with connection.cursor() as cursor:
-        cursor.execute(f"SELECT * FROM challenge_challenge WHERE name = '{query}'")
+        cursor.execute("SELECT * FROM challenge_challenge WHERE name = %s", [query])
         results = cursor.fetchall()
     return HttpResponse(str(results))
