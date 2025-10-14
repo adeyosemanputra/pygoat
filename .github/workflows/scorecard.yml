@@ -1,20 +1,26 @@
 name: OpenSSF Scorecard
 
 on:
-  schedule: [ { cron: '37 9 * * 2' } ]
-  push: { branches: [ "master" ] }
-  pull_request: { branches: [ "master" ] }
+  schedule:
+    - cron: '37 9 * * 2'     # Tuesdays 09:37 UTC
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+  # Runs in the base repo context so SARIF can upload for forked PRs (no checkout here).
+  pull_request_target:
+    types: [opened, synchronize, reopened]
   workflow_dispatch:
 
-# Least privilege default; override per-job below
+# Least privilege by default
 permissions:
   contents: read
 
 jobs:
-  analysis:
+  scorecard:
     name: Scorecard analysis
     runs-on: ubuntu-latest
-
+    # Needed for badge publishing + code scanning upload
     permissions:
       security-events: write
       id-token: write
@@ -25,8 +31,7 @@ jobs:
         with:
           egress-policy: audit
 
-      - name: Checkout code
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      # No checkout needed for Scorecard
 
       - name: Run Scorecard
         uses: ossf/scorecard-action@4eaacf0543bb3f2c246792bd56e8cdeffafb205a # v2.4.3
@@ -34,15 +39,27 @@ jobs:
           results_file: results.sarif
           results_format: sarif
           publish_results: true
+          # In case I may decide to use a PAT to read classic Branch Protection:
+          # repo_token: ${{ secrets.SCORECARD_TOKEN }}
 
-      - name: Upload artifact
+      # Upload SARIF in a fork-safe way (runs in base-repo context)
+      - name: Upload SARIF (forked PRs)
+        if: github.event_name == 'pull_request_target' && github.event.pull_request.head.repo.fork == true
+        uses: github/codeql-action/upload-sarif@3599b3baa15b485a2e49ef411a7a4bb2452e7f93 # v3.30.5
+        with:
+          sarif_file: results.sarif
+
+      # Normal uploads for push/PR from same repo/schedule
+      - name: Upload SARIF (normal runs)
+        if: github.event_name != 'pull_request_target'
+        uses: github/codeql-action/upload-sarif@3599b3baa15b485a2e49ef411a7a4bb2452e7f93 # v3.30.5
+        with:
+          sarif_file: results.sarif
+
+      - name: Upload artifact (debugging)
+        if: always()
         uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
         with:
           name: SARIF file
           path: results.sarif
           retention-days: 5
-
-      - name: Upload to code scanning
-        uses: github/codeql-action/upload-sarif@3599b3baa15b485a2e49ef411a7a4bb2452e7f93 # v3.30.5
-        with:
-          sarif_file: results.sarif
