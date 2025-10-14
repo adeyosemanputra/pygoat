@@ -1,0 +1,50 @@
+[[IgnoredVulns]]
+id = "GHSA-2g68-c3qc-8985"
+reason = "Training lab; not shipped"
+ignoreUntil = "2026-12-31"
+
+[[IgnoredVulns]]
+id = "GHSA-cpwx-vrp4-4pq7"
+reason = "Training lab; not shipped"
+ignoreUntil = "2026-12-31"
+
+[[IgnoredVulns]]
+id = "GHSA-f9vj-2wh5-fj8j"
+reason = "Training lab; not shipped"
+ignoreUntil = "2026-12-31"
+
+[[IgnoredVulns]]
+id = "GHSA-gmj6-6f8f-6699"
+reason = "Training lab; not shipped"
+ignoreUntil = "2026-12-31"
+
+[[IgnoredVulns]]
+id = "GHSA-h5c8-rqwp-cp95"
+reason = "Training lab; not shipped"
+ignoreUntil = "2026-12-31"
+
+[[IgnoredVulns]]
+id = "GHSA-h75v-3vvj-5mfj"
+reason = "Training lab; not shipped"
+ignoreUntil = "2026-12-31"
+
+[[IgnoredVulns]]
+id = "GHSA-hrfv-mqp8-q5rw"
+reason = "Training lab; not shipped"
+ignoreUntil = "2026-12-31"
+
+[[IgnoredVulns]]
+id = "GHSA-q2x7-8rv6-6q7h"
+reason = "Training lab; not shipped"
+ignoreUntil = "2026-12-31"
+
+[[IgnoredVulns]]
+id = "GHSA-q34m-jh98-gwm2"
+reason = "Training lab; not shipped"
+ignoreUntil = "2026-12-31"
+
+[[IgnoredVulns]]
+id = "PYSEC-2023-221"
+reason = "Training lab; not shipped"
+ignoreUntil = "2026-12-31"
+

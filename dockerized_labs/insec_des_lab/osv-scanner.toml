@@ -1,0 +1,15 @@
+[[IgnoredVulns]]
+id = "GHSA-2g68-c3qc-8985"
+reason = "Training lab; not shipped"
+ignoreUntil = "2026-12-31"
+
+[[IgnoredVulns]]
+id = "GHSA-f9vj-2wh5-fj8j"
+reason = "Training lab; not shipped"
+ignoreUntil = "2026-12-31"
+
+[[IgnoredVulns]]
+id = "GHSA-q34m-jh98-gwm2"
+reason = "Training lab; not shipped"
+ignoreUntil = "2026-12-31"
+
