@@ -7,7 +7,7 @@ on:
     branches: [ "master" ]
   pull_request:
     branches: [ "master" ]
-  workflow_dispatch:
+  workflow_dispatch: {}
 
 # Least privilege by default
 permissions:
@@ -18,38 +18,50 @@ jobs:
     name: Scorecard analysis
     runs-on: ubuntu-latest
     permissions:
-      security-events: write   # needed for SARIF upload (when allowed)
-      id-token: write          # needed for publish_results: true
-
+      contents: read
+      id-token: write          # needed only to publish to scorecard.dev
     steps:
       - name: Harden runner
         uses: step-security/harden-runner@f4a75cfd619ee5ce8d5b864b0d183aff3c69b55a # v2.13.1
         with:
           egress-policy: audit
 
-      # No checkout needed for Scorecard
+      # No checkout needed for Scorecard itself
       - name: Run Scorecard
         uses: ossf/scorecard-action@4eaacf0543bb3f2c246792bd56e8cdeffafb205a # v2.4.3
         with:
-          results_file: results.sarif
-          results_format: sarif
           publish_results: true
-          # If classic branch protection and deeper fields,
-          # provide an admin-scoped PAT:
-          # repo_token: ${{ secrets.SCORECARD_TOKEN }}
+          results_format: sarif
+          results_file: results.sarif
 
-      # Upload SARIF only when permissions allow (i.e., not a forked PR)
-      - name: Upload SARIF
-        if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.fork != true
-        uses: github/codeql-action/upload-sarif@3599b3baa15b485a2e49ef411a7a4bb2452e7f93 # v3.30.5
-        with:
-          sarif_file: results.sarif
-
-      # Keep a copy for debugging even when upload is skipped
-      - name: Upload artifact (debug)
-        if: always()
+      # Hand off SARIF to next job (keeps least-privilege here)
+      - name: Upload SARIF artifact (handoff)
         uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
         with:
           name: scorecard-sarif
           path: results.sarif
           retention-days: 5
+
+  upload-sarif:
+    name: Upload SARIF to Code Scanning
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.fork != true
+    needs: scorecard
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write   # confined to this job only
+    steps:
+      - name: Checkout (required for fingerprinting)
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11  # v4
+
+      - name: Download SARIF artifact
+        uses: actions/download-artifact@f44cd7b40bfd40b6aa1cc1b9b5b7bf03d3c67110 # v4
+        with:
+          name: scorecard-sarif
+          path: .
+
+      - name: Upload SARIF to Code Scanning
+        uses: github/codeql-action/upload-sarif@3599b3baa15b485a2e49ef411a7a4bb2452e7f93 # v3.30.5
+        with:
+          sarif_file: results.sarif
+          wait-for-processing: true
