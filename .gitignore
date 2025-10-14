@@ -15,3 +15,7 @@ bin
 # vscode
 .vscode/
 
+staticfiles/
+results.sarif
+*.pyc
+__pycache__/
