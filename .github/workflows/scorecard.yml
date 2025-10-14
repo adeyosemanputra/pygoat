@@ -1,41 +1,39 @@
 name: OpenSSF Scorecard
 
 on:
-  # Default branch only for schedule (GitHub runs cron on the latest commit of the default branch)
-  schedule:
-    - cron: '37 9 * * 2'
-  push:
-    branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
+  schedule: [ { cron: '37 9 * * 2' } ]
+  push: { branches: [ "master" ] }
+  pull_request: { branches: [ "master" ] }
   workflow_dispatch:
 
-permissions: read-all
+# Least privilege default; override per-job below
+permissions:
+  contents: read
 
 jobs:
   analysis:
     name: Scorecard analysis
     runs-on: ubuntu-latest
 
-    # Job-level permissions required when publishing results/badge
     permissions:
       security-events: write
       id-token: write
 
     steps:
       - name: Harden runner
-        uses: step-security/harden-runner@cba0d0b8f5b0f6b0f9e1b2e4f2a2d2d3d4e5f6a7 # example SHA
+        uses: step-security/harden-runner@f4a75cfd619ee5ce8d5b864b0d183aff3c69b55a # v2.13.1
+        with:
+          egress-policy: audit
 
       - name: Checkout code
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
       - name: Run Scorecard
-        uses: ossf/scorecard-action@<latest_v2.4.3_commit_sha>
+        uses: ossf/scorecard-action@4eaacf0543bb3f2c246792bd56e8cdeffafb205a # v2.4.3
         with:
           results_file: results.sarif
           results_format: sarif
           publish_results: true
-          # repo_token: ${{ secrets.SCORECARD_TOKEN }} # only if needed per docs
 
       - name: Upload artifact
         uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
@@ -45,6 +43,6 @@ jobs:
           retention-days: 5
 
       - name: Upload to code scanning
-        uses: github/codeql-action/upload-sarif@v3
+        uses: github/codeql-action/upload-sarif@3599b3baa15b485a2e49ef411a7a4bb2452e7f93 # v3.30.5
         with:
           sarif_file: results.sarif
