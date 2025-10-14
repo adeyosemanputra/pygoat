@@ -60,25 +60,33 @@ jobs:
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          # Create or reset the branch
+
+          # Make sure we know the remote state of the branch (if it already exists)
+          git fetch --prune origin "$BRANCH" || true
+
+          # Create/reset local branch from current commit
           git checkout -B "$BRANCH"
+
           git add requirements.in requirements.txt requirements-dev.in requirements-dev.txt
           if git diff --staged --quiet; then
             echo "No changes to commit."
             echo "skip_pr=true" >> "$GITHUB_ENV"
           else
             git commit -m "chore(deps): add hash-locked requirements via pip-tools"
+            # Update the remote branch safely even if it already exists
             git push --force-with-lease --set-upstream origin "$BRANCH"
           fi
 
       - name: Open pull request
         if: env.skip_pr != 'true'
         env:
-          GH_TOKEN: ${{ github.token }}   # ← this authenticates gh
+          GH_TOKEN: ${{ github.token }}
         run: |
-          gh pr create \
-            --title "chore(deps): add hash-locked requirements via pip-tools" \
-            --body "Adds requirements.txt and requirements-dev.txt with --require-hashes for reproducible installs." \
-            --base master \
-            --head chore/hash-locked-reqs || \
-          echo "PR may already exist; listing open PRs..." && gh pr list --head chore/hash-locked-reqs
+          # Create PR if it doesn't exist; otherwise just show it
+          gh pr view chore/hash-locked-reqs --json url >/dev/null 2>&1 \
+            || gh pr create \
+                 --title "chore(deps): add hash-locked requirements via pip-tools" \
+                 --body "Adds requirements.txt and requirements-dev.txt with --require-hashes for reproducible installs." \
+                 --base master \
+                 --head chore/hash-locked-reqs
+          gh pr view chore/hash-locked-reqs --json url -q .url
