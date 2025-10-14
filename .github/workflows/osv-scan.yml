@@ -54,9 +54,9 @@ jobs:
           scan-args: >-
             --format json
             --output osv-labs-results.json
-            --lockfile dockerized_labs/broken_auth_lab/requirements.lab.txt
-            --lockfile dockerized_labs/insec_des_lab/requirements.lab.txt
-            --lockfile dockerized_labs/sensitive_data_exposure/requirements.lab.txt
+            --lockfile dockerized_labs/broken_auth_lab/lab-reqs.txt
+            --lockfile dockerized_labs/insec_des_lab/lab-reqs.txt
+            --lockfile dockerized_labs/sensitive_data_exposure/lab-reqs.txt
       - name: Upload labs JSON
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02  # v4 pinned
         with:
