@@ -9,57 +9,32 @@ on:
   schedule:
     - cron: "30 12 * * 1"  # Mondays 12:30 UTC
 
-# Least privilege at the workflow level
 permissions:
   contents: read
 
 jobs:
-  # PR diff scan (uploads SARIF only for same-repo PRs)
+  # PR: scan ONLY core lockfiles, upload SARIF (same-repo PRs only)
   osv-pr:
     if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork == false
     permissions:
       contents: read
-      actions: read             
-      security-events: write   
+      actions: read
+      security-events: write
     uses: google/osv-scanner-action/.github/workflows/osv-scanner-reusable-pr.yml@e92b5d07338d4f0ba0981dffed17c48976ca4730
-    # with:
-    #   scan-args: |-
-    #     --recursive
-    #     ./
+    with:
+      scan-args: >-
+        --lockfile requirements.txt
+        --lockfile requirements-dev.txt
 
-  # Full scan on push/schedule (uploads SARIF)
+  # Push/schedule: scan ONLY core lockfiles, upload SARIF
   osv-scheduled:
     if: github.event_name != 'pull_request'
     permissions:
       contents: read
-      actions: read            
-      security-events: write   
+      actions: read
+      security-events: write
     uses: google/osv-scanner-action/.github/workflows/osv-scanner-reusable.yml@e92b5d07338d4f0ba0981dffed17c48976ca4730
-
-  # Optional: JSON artifact only (read-only)
-  osv-json:
-    name: OSV JSON artifact
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-    steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-
-      - name: Run OSV (JSON, lockfiles only)
-        continue-on-error: true
-        uses: google/osv-scanner-action/osv-scanner-action@e92b5d07338d4f0ba0981dffed17c48976ca4730
-        with:
-          scan-args: >-
-            --format json
-            --output results.json
-            --lockfile requirements.txt
-            --lockfile requirements-dev.txt
-            --lockfile dockerized_labs/broken_auth_lab/requirements.txt
-            --lockfile dockerized_labs/insec_des_lab/requirements.txt
-            --lockfile dockerized_labs/sensitive_data_exposure/requirements.txt
-
-      - name: Upload JSON
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
-        with:
-          name: osv-results-json
-          path: results.json
+    with:
+      scan-args: >-
+        --lockfile requirements.txt
+        --lockfile requirements-dev.txt

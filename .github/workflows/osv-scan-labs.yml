@@ -1,0 +1,25 @@
+name: OSV scan (labs only)
+
+on:
+  schedule:
+    - cron: "15 3 * * 1"   # Mondays 03:15 UTC
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  labs:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
+      security-events: write   # only to upload SARIF
+    uses: google/osv-scanner-action/.github/workflows/osv-scanner-reusable.yml@e92b5d07338d4f0ba0981dffed17c48976ca4730
+    with:
+      # Scan just the lab manifests; DO NOT fail the run
+      scan-args: >-
+        --fail-on-vuln=false
+        --lockfile dockerized_labs/broken_auth_lab/requirements.txt
+        --lockfile dockerized_labs/insec_des_lab/requirements.txt
+        --lockfile dockerized_labs/sensitive_data_exposure/requirements.txt
