@@ -34,19 +34,21 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
       - name: Run OSV (labs JSON)
-        continue-on-error: true   # OSV exits 1 when vulns found; we still want the file
+        # OSV exits with code 1 when vulns are found; we want the JSON anyway
+        continue-on-error: true
         uses: google/osv-scanner-action/osv-scanner-action@e92b5d07338d4f0ba0981dffed17c48976ca4730
         with:
-          scan-args: >-
+          scan-args: |-
             --format json
-            --output results.json
-            --fail-on-vuln=false
+            --output osv-labs-results.json
             --lockfile dockerized_labs/broken_auth_lab/requirements.txt
             --lockfile dockerized_labs/insec_des_lab/requirements.txt
             --lockfile dockerized_labs/sensitive_data_exposure/requirements.txt
+            .
 
       - name: Upload JSON
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: osv-labs-results-json
-          path: results.json
+          path: osv-labs-results.json
+          if-no-files-found: warn
