@@ -10,14 +10,14 @@ permissions:
 
 jobs:
   labs:
-    runs-on: ubuntu-latest
+    # Call the OSV reusable workflow at the job level (no runs-on, no steps)
     permissions:
       contents: read
       actions: read
-      security-events: write   # only to upload SARIF
+      security-events: write
     uses: google/osv-scanner-action/.github/workflows/osv-scanner-reusable.yml@e92b5d07338d4f0ba0981dffed17c48976ca4730
     with:
-      # Scan just the lab manifests; DO NOT fail the run
+      # Scan only lab manifests; do not fail when vulns are found
       scan-args: >-
         --fail-on-vuln=false
         --lockfile dockerized_labs/broken_auth_lab/requirements.txt
