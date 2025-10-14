@@ -1,34 +1,50 @@
-name: Dependency submission
+name: Dependency Graph (Python)
 
 on:
-  workflow_dispatch: {}
+  workflow_dispatch:
   push:
     branches: [ "master" ]
-  schedule:
-    - cron: "23 8 * * 1" # Mondays 08:23 UTC
 
-# default: least privilege
 permissions:
   contents: read
 
 jobs:
-  submit-deps:
+  submit:
     runs-on: ubuntu-latest
-    # Narrow write only to this job
     permissions:
-      contents: write       # required for dependency submission
-      id-token: write       # recommended by the action
+      contents: read
+      id-token: write
+      dependency-graph: write
     steps:
       - name: Harden runner
-        uses: step-security/harden-runner@f4a75cfd619ee5ce8d5b864b0d183aff3c69b55a # v2.13.1
+        uses: step-security/harden-runner@f4a75cfd619ee5ce8d5b864b0d183aff3c69b55a
         with:
           egress-policy: audit
 
       - name: Checkout
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
 
-      - name: Submit dependencies (Python only; exclude labs)
-        uses: advanced-security/component-detection-dependency-submission-action@36cc9538d9adbc134d9285d35e75a53ebbb1577f # v0.0.15
+      - name: Set up Python
+        uses: actions/setup-python@0a5c61591373683505ea898e09a3ea4f39ef2b9c # v5
         with:
-          detectorsFilter: Pip
-          directoryExclusionList: dockerized_labs
+          python-version: '3.12'
+
+      - name: Install deps & CycloneDX
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt -r requirements-dev.txt
+          pip install cyclonedx-bom jq
+
+      # Create CycloneDX JSON SBOMs for both files, then merge them
+      - name: Generate SBOM (CycloneDX JSON)
+        run: |
+          cyclonedx-bom -r -i requirements.txt         -o sbom-core.json -j
+          cyclonedx-bom -r -i requirements-dev.txt     -o sbom-dev.json  -j
+          jq -s '.[0].components += .[1].components | .[0]' sbom-core.json sbom-dev.json > sbom-merged.json
+          jq '.metadata.component |= (.name="pygoat-github-actions" | .version=env.GITHUB_SHA)' sbom-merged.json > sbom.json
+
+      - name: Submit dependencies to GitHub
+        uses: github/dependency-submission-action@v4
+        with:
+          # v4 accepts an SBOM; if your runner logs complain, try input name 'sbom' instead of 'sbom-path'
+          sbom-path: sbom.json
