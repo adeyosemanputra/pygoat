@@ -1,4 +1,4 @@
-FROM python:3.11.0b1-buster
+FROM python:3.11.0b1-buster@sha256:97551b2b2d6af516fb98fe121d03b5877db165e493b0dd27bfae3b97c45cfcee
 
 
 # set work directory
