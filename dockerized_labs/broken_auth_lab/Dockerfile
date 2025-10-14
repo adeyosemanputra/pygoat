@@ -6,7 +6,7 @@ WORKDIR /app
 ENV PIP_REQUIRE_HASHES=1
 
 # copy the pinned+hashed lock file and install
-COPY requirements.lab.txt ./requirements.lab.txt
+COPY lab-reqs.txt ./lab-reqs.txt
 RUN pip install --no-cache-dir -r lab-reqs.txt
 
 # Copy the rest of the application
