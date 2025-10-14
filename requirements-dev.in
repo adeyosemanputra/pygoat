@@ -1,2 +1,4 @@
 pytest
 flake8
+atheris==2.3.0
+pyinstaller==6.9.0
