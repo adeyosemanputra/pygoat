@@ -1,11 +1,25 @@
 version: 2
 updates:
   - package-ecosystem: "pip"
-    directory: "/"              # location of requirements*.txt files
-    schedule:
-      interval: "weekly"
+    directory: "/"
+    schedule: { interval: "weekly" }
 
   - package-ecosystem: "github-actions"
-    directory: "/"              # location of workflow files
-    schedule:
-      interval: "weekly"
+    directory: "/"
+    schedule: { interval: "weekly" }
+
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule: { interval: "weekly" }
+
+  - package-ecosystem: "docker"
+    directory: "/dockerized_labs/broken_auth_lab"
+    schedule: { interval: "weekly" }
+
+  - package-ecosystem: "docker"
+    directory: "/dockerized_labs/insec_des_lab"
+    schedule: { interval: "weekly" }
+
+  - package-ecosystem: "docker"
+    directory: "/dockerized_labs/sensitive_data_exposure"
+    schedule: { interval: "weekly" }
