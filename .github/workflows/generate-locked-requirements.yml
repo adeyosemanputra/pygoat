@@ -1,7 +1,7 @@
 name: Generate hashed requirements
 
 on:
-  workflow_dispatch: {}  # to "Run workflow"
+  workflow_dispatch: {}  # manual trigger
 
 permissions:
   contents: read
@@ -9,9 +9,11 @@ permissions:
 jobs:
   lock-deps:
     runs-on: ubuntu-latest
+    # Needs to push a branch and open a PR
     permissions:
-      contents: write       # push branch with generated files
-      pull-requests: write  # open PR
+      contents: write
+      pull-requests: write
+
     steps:
       - name: Harden runner
         uses: step-security/harden-runner@f4a75cfd619ee5ce8d5b864b0d183aff3c69b55a # v2.13.1
@@ -29,18 +31,19 @@ jobs:
       - name: Install pip-tools
         run: python -m pip install --upgrade pip pip-tools
 
-      - name: Prepare inputs
-        id: prep
+      - name: Prepare inputs (preserve existing content)
         shell: bash
         run: |
           set -euo pipefail
-          # If you only have requirements.txt, convert it to .in (keep pins you had)
+          # If requirements.in is missing but requirements.txt exists, convert it.
           if [ ! -f requirements.in ] && [ -f requirements.txt ]; then
-            cp requirements.txt requirements.in
+            mv requirements.txt requirements.in
           fi
-          # Ensure the .in files exist (empty is fine to start)
-          : > requirements.in
-          # Seed dev tools if none yet
+          # Ensure requirements.in exists (empty is okay if starting fresh).
+          if [ ! -f requirements.in ]; then
+            : > requirements.in
+          fi
+          # Ensure dev input exists with basic tools if starting fresh.
           if [ ! -f requirements-dev.in ]; then
             printf "pytest\nflake8\n" > requirements-dev.in
           fi
@@ -57,21 +60,25 @@ jobs:
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git checkout -b "$BRANCH"
+          # Create or reset the branch
+          git checkout -B "$BRANCH"
           git add requirements.in requirements.txt requirements-dev.in requirements-dev.txt
           if git diff --staged --quiet; then
             echo "No changes to commit."
             echo "skip_pr=true" >> "$GITHUB_ENV"
           else
             git commit -m "chore(deps): add hash-locked requirements via pip-tools"
-            git push --set-upstream origin "$BRANCH"
+            git push --force-with-lease --set-upstream origin "$BRANCH"
           fi
 
       - name: Open pull request
         if: env.skip_pr != 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}   # ← this authenticates gh
         run: |
           gh pr create \
             --title "chore(deps): add hash-locked requirements via pip-tools" \
             --body "Adds requirements.txt and requirements-dev.txt with --require-hashes for reproducible installs." \
             --base master \
-            --head chore/hash-locked-reqs
+            --head chore/hash-locked-reqs || \
+          echo "PR may already exist; listing open PRs..." && gh pr list --head chore/hash-locked-reqs
