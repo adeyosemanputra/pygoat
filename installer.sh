@@ -9,4 +9,6 @@ apt-get -y -qq install python3-pip # python3 and pip installed
 
 apt-get -y -qq install git # installing git
 
-python3 -m pip install -r requirements.txt #installing pip requirements
+pip install --require-hashes -r requirements.txt
+# or, if it needs dev tools:
+# pip install --require-hashes -r requirements-dev.txt

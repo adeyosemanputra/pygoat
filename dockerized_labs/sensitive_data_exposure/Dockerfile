@@ -1,10 +1,13 @@
-FROM python:3.9-slim
+FROM python:3.9-slim@sha256:aeebfa2890da7819f1617ec9a5650669570ab0802e5f51063aa8b7499da1ed26
 
 WORKDIR /app
 
-COPY requirements.txt .
+# ensure hash enforcement
+ENV PIP_REQUIRE_HASHES=1
 
-RUN pip install --no-cache-dir -r requirements.txt
+# copy the pinned+hashed lock file and install
+COPY requirements.txt ./requirements.txt
+RUN pip install --no-cache-dir --require-hashes -r requirements.txt
 
 COPY . .
 
