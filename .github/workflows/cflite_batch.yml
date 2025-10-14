@@ -1,12 +1,10 @@
-# .github/workflows/cflite_batch.yml
 name: ClusterFuzzLite batch fuzzing
 
 on:
   schedule:
-    - cron: "0 2 * * *"   # daily at 02:00 UTC
+    - cron: '0 2 * * *'   # daily at 02:00 UTC
   workflow_dispatch: {}
 
-# Least privilege by default
 permissions:
   contents: read
 
@@ -16,53 +14,64 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
-      matrix:
-        sanitizer: [ address ]
+      matrix: { sanitizer: [ address ] }
 
     steps:
       - name: Harden runner
         uses: step-security/harden-runner@f4a75cfd619ee5ce8d5b864b0d183aff3c69b55a # v2.13.1
 
       - name: Build fuzzers (${{ matrix.sanitizer }})
-        uses: google/clusterfuzzlite/actions/build_fuzzers@884713a6c30a92e5e8544c39945cd7cb630abcd1 # v1
+        uses: google/clusterfuzzlite/actions/build_fuzzers@884713a6c30a92e5e8544c39945cd7cb630abcd1 # v1 pinned
         with:
           language: python
           sanitizer: ${{ matrix.sanitizer }}
 
       - name: Run fuzzers (${{ matrix.sanitizer }})
-        uses: google/clusterfuzzlite/actions/run_fuzzers@884713a6c30a92e5e8544c39945cd7cb630abcd1 # v1
+        uses: google/clusterfuzzlite/actions/run_fuzzers@884713a6c30a92e5e8544c39945cd7cb630abcd1 # v1 pinned
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
           fuzz-seconds: 3600
           mode: batch
           sanitizer: ${{ matrix.sanitizer }}
           output-sarif: true
 
-      - name: Upload fuzz artifacts (SARIF, logs)
-        if: hashFiles('results.sarif') != ''
+      - name: Collect SARIF
+        run: |
+          mkdir -p sarif_out
+          find "$GITHUB_WORKSPACE" -type f -name '*.sarif' -exec cp {} sarif_out/ \; || true
+
+      - name: Upload SARIF artifact
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-          name: cflite-batch-${{ matrix.sanitizer }}-sarif
-          path: |
-            results.sarif
-            findings/**
+          name: cflite-batch-sarif
+          path: sarif_out/
           if-no-files-found: ignore
 
   upload-sarif:
     name: Upload to code scanning
     needs: fuzz-batch
-    if: always() && hashFiles('**/results.sarif') != ''
     runs-on: ubuntu-latest
     permissions:
       contents: read
       security-events: write
     steps:
       - name: Download SARIF
-        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4 pinned
         with:
-          name: cflite-batch-address-sarif
-          path: .
+          name: cflite-batch-sarif
+          path: sarif_in/
+
+      - name: Find SARIF
+        id: find
+        run: |
+          FILE="$(find sarif_in -type f -name '*.sarif' | head -n1 || true)"
+          if [ -n "$FILE" ]; then
+            echo "sarif=$FILE" >> "$GITHUB_OUTPUT"
+          else
+            echo "No SARIF found."
+          fi
+
       - name: Upload SARIF
+        if: steps.find.outputs.sarif
         uses: github/codeql-action/upload-sarif@3599b3baa15b485a2e49ef411a7a4bb2452e7f93 # v3.30.5
         with:
-          sarif_file: results.sarif
+          sarif_file: ${{ steps.find.outputs.sarif }}
