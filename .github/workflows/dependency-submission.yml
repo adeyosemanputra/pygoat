@@ -13,9 +13,10 @@ permissions:
 jobs:
   submit-deps:
     runs-on: ubuntu-latest
+    # Job-level escalate: least privilege at workflow-level is still contents:read
     permissions:
-      contents: write   # required to submit the dependency snapshot
-      id-token: write   # required by the action for OIDC
+      contents: write   # needed to submit snapshot
+      id-token: write   # needed by the action for OIDC
 
     steps:
       - name: Harden runner
@@ -26,5 +27,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
 
-      - name: Detect & submit to Dependency Graph
+      # Only include the two core lockfiles in a tiny folder we point the detector at
+      - name: Prepare minimal submission set
+        run: |
+          set -euo pipefail
+          mkdir -p .depgraph/core
+          cp requirements.txt .depgraph/core/
+          cp requirements-dev.txt .depgraph/core/ || true
+          ls -la .depgraph/core
+
+      - name: Detect & submit to Dependency Graph (core only)
+        # Pin third-party action by commit SHA (fixes Scorecard’s “not pinned by hash”)
         uses: advanced-security/component-detection-dependency-submission-action@5a8ce4ad8c6fbb9b88f66f672014e44b427d7d54
+        with:
+          filePath: .depgraph/core
