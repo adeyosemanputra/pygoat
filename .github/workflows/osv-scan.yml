@@ -13,12 +13,11 @@ permissions:
   contents: read
 
 jobs:
-  # PR: scan ONLY core lockfiles, upload SARIF (same-repo PRs only)
+  # PRs from same repo: scan ONLY core lockfiles + upload SARIF
   osv-pr:
     if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork == false
     permissions:
       contents: read
-      actions: read
       security-events: write
     uses: google/osv-scanner-action/.github/workflows/osv-scanner-reusable-pr.yml@e92b5d07338d4f0ba0981dffed17c48976ca4730
     with:
@@ -26,15 +25,43 @@ jobs:
         --lockfile requirements.txt
         --lockfile requirements-dev.txt
 
-  # Push/schedule: scan ONLY core lockfiles, upload SARIF
+  # Pushes & schedule: scan ONLY core lockfiles + upload SARIF
   osv-scheduled:
     if: github.event_name != 'pull_request'
     permissions:
       contents: read
-      actions: read
       security-events: write
     uses: google/osv-scanner-action/.github/workflows/osv-scanner-reusable.yml@e92b5d07338d4f0ba0981dffed17c48976ca4730
     with:
       scan-args: >-
         --lockfile requirements.txt
         --lockfile requirements-dev.txt
+
+  # Labs visibility (JSON artifact, non-failing). Runs on all events.
+  osv-labs-json:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        # (optional) replace with your pinned SHA if you prefer
+
+      - name: OSV (labs → JSON; non-fatal)
+        continue-on-error: true
+        uses: google/osv-scanner-action/osv-scanner-action@e92b5d07338d4f0ba0981dffed17c48976ca4730
+        with:
+          scan-args: >-
+            --format json
+            --output osv-labs-results.json
+            --lockfile dockerized_labs/broken_auth_lab/requirements.txt
+            --lockfile dockerized_labs/insec_des_lab/requirements.txt
+            --lockfile dockerized_labs/sensitive_data_exposure/requirements.txt
+
+      - name: Upload labs JSON artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: osv-labs-results-json
+          path: osv-labs-results.json
+          retention-days: 14
+        # (optional) replace with your pinned SHA if you prefer
