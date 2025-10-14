@@ -7,14 +7,12 @@ on:
   schedule:
     - cron: "23 10 * * 2"   # Tuesdays 10:23 UTC
 
-# least privilege by default
 permissions:
   contents: read
 
 jobs:
   submit-deps:
     runs-on: ubuntu-latest
-    # This action needs these two at the JOB level
     permissions:
       contents: write   # required to submit the dependency snapshot
       id-token: write   # required by the action for OIDC
@@ -28,7 +26,5 @@ jobs:
       - name: Checkout
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
 
-      # Detect deps from the repo (requirements.txt, etc.) and submit to Dependency Graph
       - name: Detect & submit to Dependency Graph
-        uses: advanced-security/component-detection-dependency-submission-action@v0.0.2
-        # no extra inputs needed for pip/requirements.txt; defaults are fine
+        uses: advanced-security/component-detection-dependency-submission-action@5a8ce4ad8c6fbb9b88f66f672014e44b427d7d54
