@@ -1,22 +1,19 @@
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-# hadoint is a Dockerfile linter written in Haskell
-# that helps you build best practice Docker images.
-# More details at https://github.com/hadolint/hadolint
-# testing the pipeline
-
 name: Hadolint
 
 on:
   push:
-    branches: [ master ]
+    branches: [ "master" ]
+    paths:
+      - "**/Dockerfile"
+      - ".hadolint.yaml"
   pull_request:
-    # The branches below must be a subset of the branches above
-    branches: [ master ]
+    branches: [ "master" ]
+    paths:
+      - "**/Dockerfile"
+      - ".hadolint.yaml"
+  workflow_dispatch: {}
 
-
+# Least privilege token 
 permissions:
   contents: read
 
@@ -24,18 +21,34 @@ jobs:
   hadolint:
     name: Run hadolint scanning
     runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    strategy:
+      matrix:
+        dockerfile: [ "Dockerfile", "pygoat/Dockerfile" ]  
+      fail-fast: false
 
     steps:
+      - name: Harden runner
+        uses: step-security/harden-runner@f4a75cfd619ee5ce8d5b864b0d183aff3c69b55a # v2.13.1
+        with:
+          egress-policy: audit
+
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
-      - name: Run hadolint on Dockerfile
+      # Skip gracefully if a matrix path doesn't exist
+      - name: Check Dockerfile exists
+        id: exists
+        run: |
+          if [ -f "${{ matrix.dockerfile }}" ]; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Hadolint ${{ matrix.dockerfile }}
+        if: steps.exists.outputs.present == 'true'
         uses: hadolint/hadolint-action@f988afea3da57ee48710a9795b6bb677cc901183
         with:
-          dockerfile: ./Dockerfile
-
-      - name: Run hadolint on pygoat/Dockerfile
-        uses: hadolint/hadolint-action@f988afea3da57ee48710a9795b6bb677cc901183
-        with:
-          dockerfile: ./Dockerfile
-
+          dockerfile: ${{ matrix.dockerfile }}

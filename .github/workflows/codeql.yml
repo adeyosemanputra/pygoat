@@ -11,12 +11,14 @@ on:
 
 permissions:
   contents: read
-  security-events: write
 
 jobs:
   analyze:
     name: CodeQL (python)
     runs-on: ubuntu-latest
+
+    permissions:
+      security-events: write   # required to upload CodeQL SARIF
 
     steps:
       - name: Checkout
