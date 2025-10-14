@@ -1,0 +1,34 @@
+name: Dependency submission
+
+on:
+  workflow_dispatch: {}
+  push:
+    branches: [ "master" ]
+  schedule:
+    - cron: "23 8 * * 1" # Mondays 08:23 UTC
+
+# default: least privilege
+permissions:
+  contents: read
+
+jobs:
+  submit-deps:
+    runs-on: ubuntu-latest
+    # Narrow write only to this job
+    permissions:
+      contents: write       # required for dependency submission
+      id-token: write       # recommended by the action
+    steps:
+      - name: Harden runner
+        uses: step-security/harden-runner@f4a75cfd619ee5ce8d5b864b0d183aff3c69b55a # v2.13.1
+        with:
+          egress-policy: audit
+
+      - name: Checkout
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+
+      - name: Submit dependencies (Python only; exclude labs)
+        uses: advanced-security/component-detection-dependency-submission-action@36cc9538d9adbc134d9285d35e75a53ebbb1577f # v0.0.15
+        with:
+          detectorsFilter: Pip
+          directoryExclusionList: dockerized_labs
