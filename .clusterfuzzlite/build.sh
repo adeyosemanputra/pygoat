@@ -1,18 +1,18 @@
 #!/bin/bash -eux
-# Install your app (only needed if you ship C-exts; harmless otherwise)
-# pip3 install .
+# ClusterFuzzLite build for Python fuzzers
 
-# Build Python fuzzers into $OUT as standalone binaries and wrappers (per OSS-Fuzz guidance)
-for fuzzer in $(find $SRC -name 'fuzz_*.py'); do
-  fbase=$(basename -s .py "$fuzzer")
-  pkg="${fbase}.pkg"
-  pyinstaller --distpath "$OUT" --onefile --name "$pkg" "$fuzzer"
-  # Wrapper that executes the packaged fuzzer with the right env
-  cat > "$OUT/$fbase" << 'EOF'
+# Install tools strictly from hashed dev requirements (no ad-hoc pip)
+python3 -m pip install --no-cache-dir --require-hashes -r requirements-dev.txt
+
+# Package each fuzz target under fuzz/ into $OUT and add a small wrapper.
+for f in $(find fuzz -maxdepth 1 -name 'fuzz_*.py'); do
+  base="$(basename -s .py "$f")"
+  pyinstaller --clean --distpath "$OUT" --onefile --name "${base}.pkg" "$f"
+  cat > "$OUT/$base" << 'EOF'
 #!/bin/sh
-this_dir="$(dirname "$0")"
-# For pure-Python targets, omit LD_PRELOAD to avoid sanitizer issues.
-exec "$this_dir/${0##*/}.pkg" "$@"
+set -eu
+dir="$(dirname "$0")"
+exec "$dir/${0##*/}.pkg" "$@"
 EOF
-  chmod +x "$OUT/$fbase"
+  chmod +x "$OUT/$base"
 done
