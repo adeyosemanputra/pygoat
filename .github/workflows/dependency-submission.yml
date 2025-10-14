@@ -1,23 +1,24 @@
-name: Submit dependencies
+name: Dependency submission (Component Detection)
 
 on:
-  workflow_dispatch: {}
+  workflow_dispatch:
   push:
     branches: [ "master" ]
   schedule:
-    - cron: "19 10 * * 3"  # Wednesdays 10:19 UTC
+    - cron: "23 10 * * 2"   # Tuesdays 10:23 UTC
 
-# Least privilege by default
+# least privilege by default
 permissions:
   contents: read
 
 jobs:
-  submit-dependencies:
-    name: Detect & submit to Dependency Graph
+  submit-deps:
     runs-on: ubuntu-latest
+    # This action needs these two at the JOB level
     permissions:
-      contents: write   # required to submit dependencies
-      id-token: write   # required by the submission action
+      contents: write   # required to submit the dependency snapshot
+      id-token: write   # required by the action for OIDC
+
     steps:
       - name: Harden runner
         uses: step-security/harden-runner@f4a75cfd619ee5ce8d5b864b0d183aff3c69b55a # v2.13.1
@@ -26,15 +27,8 @@ jobs:
 
       - name: Checkout
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
-        with:
-          fetch-depth: 0
 
-      # Auto-detects manifests (e.g., requirements*.txt) and submits a snapshot.
-      # Your labs are already renamed to *.lab.txt, so they won’t be included.
-      - name: Detect & submit dependencies
-        uses: advanced-security/component-detection-dependency-submission-action@36cc9538d9adbc134d9285d35e75a53ebbb1577f
-        with:
-          # Optional extra guardrails if you want to be explicit:
-          exclude-paths: |
-            dockerized_labs/
-            **/*.lab.txt
+      # Detect deps from the repo (requirements.txt, etc.) and submit to Dependency Graph
+      - name: Detect & submit to Dependency Graph
+        uses: advanced-security/component-detection-dependency-submission-action@v0.0.2
+        # no extra inputs needed for pip/requirements.txt; defaults are fine
