@@ -1,0 +1,63 @@
+name: OSV scan
+
+on:
+  workflow_dispatch: {}
+  pull_request:
+    branches: [ "master" ]
+  push:
+    branches: [ "master" ]
+  schedule:
+    - cron: "30 12 * * 1"  # Mondays 12:30 UTC
+
+# Required for SARIF upload + least privilege
+permissions:
+  actions: read
+  security-events: write
+  contents: read
+
+jobs:
+  # PR diff scan (blocks new vulns introduced in the PR)
+  osv-pr:
+    if: github.event_name == 'pull_request'
+    uses: google/osv-scanner-action/.github/workflows/osv-scanner-reusable-pr.yml@e92b5d07338d4f0ba0981dffed17c48976ca4730
+    # Optional:
+    # with:
+    #   scan-args: |-
+    #     --recursive
+    #     ./
+
+  # Full scan on push/schedule (reports all known vulns)
+  osv-scheduled:
+    if: github.event_name != 'pull_request'
+    uses: google/osv-scanner-action/.github/workflows/osv-scanner-reusable.yml@e92b5d07338d4f0ba0981dffed17c48976ca4730
+
+  osv-json:
+    name: OSV JSON artifact
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run OSV (JSON, lockfiles only)
+        # Don’t fail the job when vulnerabilities are found (exit code 1)
+        continue-on-error: true
+        uses: google/osv-scanner-action/osv-scanner-action@e92b5d07338d4f0ba0981dffed17c48976ca4730
+        with:
+          scan-args: >-
+            --format json
+            --output results.json
+            --lockfile requirements.txt
+            --lockfile requirements-dev.txt
+            --lockfile dockerized_labs/broken_auth_lab/requirements.txt
+            --lockfile dockerized_labs/insec_des_lab/requirements.txt
+            --lockfile dockerized_labs/sensitive_data_exposure/requirements.txt
+
+      - name: Upload JSON
+        uses: actions/upload-artifact@v4
+        with:
+          name: osv-results-json
+          path: results.json
+        with:
+          name: osv-results-json
+          path: results.json
