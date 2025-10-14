@@ -6,8 +6,8 @@ WORKDIR /app
 ENV PIP_REQUIRE_HASHES=1
 
 # copy the pinned+hashed lock file and install
-COPY requirements.txt ./requirements.txt
-RUN pip install --no-cache-dir --require-hashes -r requirements.txt
+COPY requirements.lab.txt ./requirements.lab.txt
+RUN pip install --no-cache-dir --require-hashes -r requirements.lab.txt
 
 
 COPY . .
