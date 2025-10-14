@@ -3,6 +3,16 @@ name: ClusterFuzzLite PR fuzzing
 on:
   pull_request:
     branches: [ "master" ]
+    # Only run when code or fuzz targets change (skip docs/workflows)
+    paths:
+      - 'fuzz/**'
+      - '**/*.py'
+      - 'requirements*.txt'
+      - 'Dockerfile'
+      - 'dockerized_labs/**'
+    paths-ignore:
+      - '.github/**'
+      - '**/*.md'
 
 permissions: read-all
 
@@ -13,6 +23,7 @@ jobs:
       fail-fast: false
       matrix:
         sanitizer: [ address ]
+
     steps:
       - name: Build fuzzers (${{ matrix.sanitizer }})
         uses: google/clusterfuzzlite/actions/build_fuzzers@v1

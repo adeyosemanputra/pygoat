@@ -1,0 +1,86 @@
+# .github/workflows/cflite_batch.yml
+name: ClusterFuzzLite batch fuzzing
+
+on:
+  schedule:
+    - cron: "0 2 * * *"   # daily at 02:00 UTC
+  workflow_dispatch: {}
+
+# Least privilege by default
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  batch-fuzz:
+    name: Build & run fuzzers (read-only)
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        sanitizer: [ address ]
+
+    steps:
+      - name: Harden runner
+        uses: step-security/harden-runner@f4a75cfd619ee5ce8d5b864b0d183aff3c69b55a # v2.13.1
+        with:
+          egress-policy: audit
+
+      - name: Build fuzzers (${{ matrix.sanitizer }})
+        uses: google/clusterfuzzlite/actions/build_fuzzers@v1
+        with:
+          language: python
+          sanitizer: ${{ matrix.sanitizer }}
+
+      - name: Run fuzzers (batch, ${{ matrix.sanitizer }})
+        uses: google/clusterfuzzlite/actions/run_fuzzers@v1
+        with:
+          fuzz-seconds: 3600
+          mode: batch
+          sanitizer: ${{ matrix.sanitizer }}
+          output-sarif: true
+
+      # Save SARIF(s) for the upload job
+      - name: Collect SARIF
+        shell: bash
+        run: |
+          mkdir -p sarif_out
+          find "$GITHUB_WORKSPACE" -type f -name '*.sarif' -exec cp {} sarif_out/ \; || true
+
+      - name: Upload SARIF artifact
+        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
+        with:
+          name: cfl-sarif
+          path: sarif_out/
+
+  upload-sarif:
+    name: Upload SARIF to code scanning (write only here)
+    needs: batch-fuzz
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write   # only this job can write to Code Scanning
+      contents: read
+    steps:
+      - name: Download SARIF artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: cfl-sarif
+          path: sarif_in/
+
+      - name: Find SARIF
+        id: find
+        shell: bash
+        run: |
+          set -e
+          FILE="$(find sarif_in -type f -name '*.sarif' | head -n1 || true)"
+          if [ -n "$FILE" ]; then
+            echo "sarif=$FILE" >> "$GITHUB_OUTPUT"
+          else
+            echo "No SARIF found."
+          fi
+
+      - name: Upload to code scanning
+        if: steps.find.outputs.sarif
+        uses: github/codeql-action/upload-sarif@3599b3baa15b485a2e49ef411a7a4bb2452e7f93 # v3.30.5
+        with:
+          sarif_file: ${{ steps.find.outputs.sarif }}
