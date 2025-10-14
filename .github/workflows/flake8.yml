@@ -15,6 +15,9 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    env:
+      PIP_REQUIRE_HASHES: "1"   # enforce hash-checked installs
+
 
     steps:
       - name: Harden runner
@@ -33,9 +36,8 @@ jobs:
 
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-          pip install flake8
+          [ -f requirements.txt ] && pip install --require-hashes -r requirements.txt || true
+          pip install --require-hashes -r requirements-dev.txt
 
       - name: Lint with flake8 (errors fail)
         run: flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
