@@ -1,0 +1,29 @@
+name: ClusterFuzzLite PR fuzzing
+
+on:
+  pull_request:
+    branches: [ "master" ]
+
+permissions: read-all
+
+jobs:
+  fuzz:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        sanitizer: [ address ]
+    steps:
+      - name: Build fuzzers (${{ matrix.sanitizer }})
+        uses: google/clusterfuzzlite/actions/build_fuzzers@v1
+        with:
+          language: python
+          sanitizer: ${{ matrix.sanitizer }}
+
+      - name: Run fuzzers (${{ matrix.sanitizer }})
+        uses: google/clusterfuzzlite/actions/run_fuzzers@v1
+        with:
+          fuzz-seconds: 600
+          mode: code-change
+          sanitizer: ${{ matrix.sanitizer }}
+          output-sarif: true
