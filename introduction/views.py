@@ -382,7 +382,7 @@ def ba_lab(request):
 
 def data_exp(request):
     if request.user.is_authenticated:
-        return  redirect("http://localhost:7018")
+        return  redirect("http://localhost:7021")
     else:
         return redirect('login')
 
