@@ -86,7 +86,7 @@ def authentication_decorator(func):
 
 def xss(request):
     if request.user.is_authenticated:
-        return render(request,"Lab/XSS/xss.html")
+        return redirect("http://localhost:7001")
     else:
         return redirect('login')
 
@@ -139,7 +139,7 @@ def xss_lab3(request):
 def sql(request):
     if request.user.is_authenticated:
 
-        return  render(request,'Lab/SQL/sql.html')
+        return redirect("http://localhost:7016")
     else:
         return redirect('login')
 
@@ -191,7 +191,7 @@ def sql_lab(request):
 
 def insec_des(request):
     if request.user.is_authenticated:
-        return  render(request,'Lab/insec_des/insec_des.html')
+        return  redirect("http://localhost:7010")
     else:
         return redirect('login')
 
@@ -225,7 +225,7 @@ def insec_des_lab(request):
 def xxe(request):
     if request.user.is_authenticated:
 
-        return render (request,'Lab/XXE/xxe.html')
+        return redirect("http://localhost:7003")
     else:
         return redirect('login')
 
@@ -264,11 +264,14 @@ def xxe_parse(request):
     return render(request, 'Lab/XXE/xxe_lab.html')
 
 def auth_home(request):
-    return render(request,'Lab/AUTH/auth_home.html')
+    if request.user.is_authenticated:
+       return redirect("http://localhost:7005")
+    else:
+        return redirect('login')
 
 
 def auth_lab(request):
-    return render(request,'Lab/AUTH/auth_lab.html')
+    return redirect("http://localhost:7005")
 
 def auth_lab_signup(request):
     if request.method == 'GET':
@@ -329,7 +332,7 @@ def auth_lab_logout(request):
 @csrf_exempt
 def ba(request):
     if request.user.is_authenticated:
-        return render(request,"Lab/BrokenAccess/ba.html")
+        return redirect("http://localhost:7006")
     else:
         return redirect('login')
 @csrf_exempt
@@ -379,7 +382,7 @@ def ba_lab(request):
 
 def data_exp(request):
     if request.user.is_authenticated:
-        return  render(request,'Lab/DataExp/data_exp.html')
+        return  redirect("http://localhost:7021")
     else:
         return redirect('login')
 
@@ -402,7 +405,7 @@ def error(request):
 
 def cmd(request):
     if request.user.is_authenticated:
-        return render(request,'Lab/CMD/cmd.html')
+        return redirect("http://localhost:7008")
     else:
         return redirect('login')
 @csrf_exempt
@@ -466,7 +469,7 @@ def cmd_lab2(request):
 def bau(request):
     if request.user.is_authenticated:
 
-        return render(request,"Lab/BrokenAuth/bau.html")
+        return redirect("http://localhost:7007")
     else:
         return redirect('login')
 def bau_lab(request):
@@ -515,7 +518,7 @@ def Otp(request):
 
 def sec_mis(request):
     if request.user.is_authenticated:
-        return render(request,"Lab/sec_mis/sec_mis.html")
+        return redirect("http://localhost:7013")
     else:
         return redirect('login')
 
@@ -537,7 +540,7 @@ def secret(request):
 
 def a9(request):
     if request.user.is_authenticated:
-        return render(request,"Lab/A9/a9.html")
+        return redirect("http://localhost:7004")
     else:
         return redirect('login')
 @csrf_exempt
@@ -606,7 +609,7 @@ def A9_discussion(request):
 
 def a10(request):
     if request.user.is_authenticated:
-        return render(request,"Lab/A10/a10.html")
+        return redirect("http://localhost:7012")
     else:
         return redirect('login')
 def a10_lab(request):
@@ -674,7 +677,7 @@ def gentckt():
 
 def insec_desgine(request):
     if request.user.is_authenticated:
-        return render(request,"Lab/A11/a11.html")
+        return redirect("http://localhost:7011")
     else:
         return redirect('login')
 
@@ -733,7 +736,7 @@ def a1_broken_access(request):
     if not request.user.is_authenticated:
         return redirect('login')
     
-    return render(request,"Lab_2021/A1_BrokenAccessControl/broken_access.html")
+    return redirect("http://localhost:7006")
 
 
 @csrf_exempt
@@ -841,7 +844,7 @@ def injection(request):
     if not request.user.is_authenticated:
         return redirect('login')
     
-    return render(request,"Lab_2021/A3_Injection/injection.html")
+    return redirect("http://localhost:7016")
 
 
 @csrf_exempt
@@ -904,7 +907,7 @@ def injection_sql_lab(request):
 
 def ssrf(request):
     if request.user.is_authenticated:
-        return render(request,"Lab/ssrf/ssrf.html")
+        return redirect("http://localhost:7002")
     else:
         return redirect('login')
 
@@ -961,7 +964,7 @@ def ssrf_lab2(request):
 
 def ssti(request):
     if request.user.is_authenticated:
-        return render(request,"Lab_2021/A3_Injection/ssti.html")
+        return redirect("http://localhost:7017")
     else:
         return redirect('login')
 
@@ -1004,7 +1007,7 @@ def ssti_view_blog(request,blog_id):
 
 def crypto_failure(request):
     if request.user.is_authenticated:
-        return render(request,"Lab_2021/A2_Crypto_failur/crypto_failure.html",{"success":False,"failure":False})
+        return redirect("http://localhost:7009")
     else:
         redirect('login')
 
@@ -1106,7 +1109,7 @@ def sec_misconfig_lab3(request):
 @authentication_decorator
 def auth_failure(request):    
     if request.method == "GET":
-        return render(request,"Lab_2021/A7_auth_failure/a7.html")
+        return redirect("http://localhost:7005")
 
 
 ## used admin password --> 2022_in_pygoat@pygoat.com  
@@ -1206,7 +1209,7 @@ def A7_discussion(request):
 @authentication_decorator
 def software_and_data_integrity_failure(request):
     if request.method == "GET":
-        return render(request,"Lab_2021/A8_software_and_data_integrity_failure/desc.html")
+        return redirect("http://localhost:7015")
 
 
 @authentication_decorator

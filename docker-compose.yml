@@ -50,6 +50,221 @@ services:
     ports:
       - "7020:5011"
 
+  xss_lab:
+    # image: pygoat/xss_lab
+    build: 
+      context: dockerized_labs/xss_lab/
+    networks:
+      - my_network
+    container_name: xss-lab
+    depends_on:
+      - web
+    ports:
+      - "7001:5006"
+
+  ssrf_lab:
+    # image: pygoat/ssrf_lab
+    build: 
+      context: dockerized_labs/ssrf_lab/
+    networks:
+      - my_network
+    container_name: ssrf-lab
+    depends_on:
+      - web
+    ports:
+      - "7002:5000"
+
+  xxe_lab:
+      # image: pygoat/xxe_lab
+    build: 
+      context: dockerized_labs/xxe_lab/
+    networks:
+      - my_network
+    container_name: xxe-lab
+    depends_on:
+      - web
+    ports:
+      - "7003:5010"
+
+  a9_uckv_lab:
+    # image: pygoat/a9_uckv_lab
+    build: 
+      context: dockerized_labs/a9_uckv_lab/
+    depends_on:
+      - web
+    networks:
+      - my_network
+    container_name: a9-uckv-lab
+    ports:
+      - "7004:9000"
+
+  auth_failure_lab:
+    # image: pygoat/auth_failure_lab
+    build: 
+      context: dockerized_labs/auth_failure_lab/
+    depends_on:
+      - web
+    networks:
+      - my_network
+    container_name: authentication-failure-lab
+    ports:
+      - "7005:5007"
+
+  broken_access_lab:
+    # image: pygoat/broken_access_lab
+    build: 
+      context: dockerized_labs/broken_access_lab/
+    depends_on:
+      - web
+    networks:
+      - my_network
+    container_name: broken-access-lab
+    ports:
+      - "7006:8080"
+
+  broken_auth_lab:
+    # image: pygoat/broken_auth_lab
+    build: 
+      context: dockerized_labs/broken_auth_lab/
+    depends_on:
+      - web
+    networks:
+      - my_network
+    container_name: broken-authentication-lab
+    ports:
+      - "7007:5000"
+
+  command_injection_lab:
+    # image: pygoat/command_injection_lab
+    build: 
+      context: dockerized_labs/command_injection_lab/
+    depends_on:
+      - web
+    networks:
+      - my_network
+    container_name: command-injection-lab
+    ports:
+      - "7008:5013"
+
+  crypto_failure_lab:
+    # image: pygoat/crypto_failure_lab
+    build: 
+      context: dockerized_labs/crypto_failure_lab/
+    depends_on:
+      - web
+    networks:
+      - my_network
+    container_name: cryptographic-failure-lab
+    ports:
+      - "7009:5000"
+
+  insec_des_lab:
+    # image: pygoat/insec_des_lab
+    build: 
+      context: dockerized_labs/insec_des_lab/
+    depends_on:
+      - web
+    networks:
+      - my_network
+    container_name: insecure-deserialization-lab
+    ports:
+      - "7010:8080"
+
+  insecure_design_lab:
+    # image: pygoat/insecure_design_lab
+    build: 
+      context: dockerized_labs/insecure_design_lab/
+    depends_on:
+      - web
+    networks:
+      - my_network
+    container_name: insecure-design-lab
+    ports:
+      - "7011:5008"
+
+  insufficient_logging_lab:
+    # image: pygoat/insufficient_logging_lab
+    build: 
+      context: dockerized_labs/insufficient_logging_lab/
+    depends_on:
+      - web
+    networks:
+      - my_network
+    container_name: insufficient-logging-lab
+    ports:
+      - "7012:5014"
+
+  sec_misconfig:
+    # image: pygoat/sec_misconfig
+    build: 
+      context: dockerized_labs/sec_misconfig/
+    depends_on:
+      - web
+    networks:
+      - my_network
+    container_name: security-misconfiguration
+    ports:
+      - "7013:5009"
+
+  sensitive_data_exposure:
+    # image: pygoat/sensitive_data_exposure
+    build: 
+      context: dockerized_labs/sensitive_data_exposure/
+    depends_on:
+      - web
+    networks:
+      - my_network
+    container_name: sensitive-data-exposure
+    ports:
+      - "7014:8000"
+
+  software_integrity_lab:
+    # image: pygoat/software_integrity_lab
+    build: 
+      context: dockerized_labs/software_integrity_lab/
+    depends_on:
+      - web
+    networks:
+      - my_network
+    container_name: software-integrity-lab
+    ports:
+      - "7015:5011"
+
+  sql_injection_lab:
+    # image: pygoat/sql_injection_lab
+    build: 
+      context: dockerized_labs/sql_injection_lab/
+    depends_on:
+      - web
+    networks:
+      - my_network
+    container_name: sql-injection-lab
+    ports:
+      - "7016:5012"
+
+  template_injection_lab:
+    # image: pygoat/template_injection_lab
+    build: 
+      context: dockerized_labs/template_injection_lab/
+    depends_on:
+      - web
+    networks:
+      - my_network
+    container_name: template-injection-lab
+    ports:
+      - "7017:5015"
+
+  sde:
+  # image: pygoat/sde_lab
+    build: 
+      context: dockerized_labs/sde/
+    depends_on:
+      - web
+    networks:
+      - my_network
+    container_name: sde-lab
+    ports:
+      - "7021:5100"
   
 networks:
   my_network:
