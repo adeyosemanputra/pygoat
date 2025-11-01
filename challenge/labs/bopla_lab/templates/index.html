@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>BOPLA Lab - Broken Object Property Level Authorization</title>
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <!-- <div class="box"> -->
+    <h3>Challenge 1</h3>
+    <div class="box">    
+        <div class="bp">
+            <h2>Broken Object Property Level Authorization (BOPLA)</h2>
+            Welcome to the BOPLA vulnerability lab! This lab demonstrates how APIs can expose sensitive object properties
+            even when the frontend doesn't display them - a critical security issue in modern web applications.
+        </div>
+
+        <div class="section">
+            <h4>Lab Objective</h4>
+            <div class="bp">
+                Learn to identify and exploit Broken Object Property Level Authorization vulnerabilities where APIs
+                return more data than users should have access to, even if the frontend filters it out.
+            </div>
+        </div>
+
+        <div class="section">
+            <h4>Scenario</h4>
+            <div class="bp">
+                You're testing a project management application. The frontend shows basic project information,
+                but the API might be exposing sensitive data like budgets, credentials, and internal notes.
+                Your task is to discover what sensitive information is being leaked through the API.
+            </div>
+        </div>
+
+        <div class="section">
+            <h4>Tools Needed</h4>
+            <ul>
+                <li>Browser Developer Tools (Network tab)</li>
+                <li>Burp Suite or OWASP ZAP (recommended)</li>
+                <li>Postman or curl</li>
+                <li>JSON viewer/formatter</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h4>Lab Instructions</h4>
+            <ol>
+                <li><strong>Start the Lab:</strong> Click "Start Lab" to access the vulnerable application</li>
+                <li><strong>Login:</strong> Use any of these credentials:
+                    <ul>
+                        <li>user1 / password123 (Developer role)</li>
+                        <li>user2 / pass456 (Manager role)</li>
+                        <li>admin / admin123 (Admin role)</li>
+                    </ul>
+                </li>
+                <li><strong>Explore Projects:</strong> View projects in the dashboard</li>
+                <li><strong>Intercept API Calls:</strong> Use browser dev tools or Burp Suite to inspect API responses</li>
+                <li><strong>Analyze Responses:</strong> Look for sensitive data that shouldn't be exposed</li>
+                <li><strong>Compare Roles:</strong> Test with different user roles to understand the vulnerability</li>
+                <li><strong>Document Findings:</strong> Note what sensitive information is leaked</li>
+            </ol>
+        </div>
+
+        <div class="lab-container">
+            <div class="lab">
+                <h4>Lab Environment</h4>
+                <div class="bp">
+                    Click the button below to start the lab environment. You'll be redirected to the vulnerable
+                    project management application.
+                </div>
+                <button onclick="window.open('/lab', '_blank')">Start Lab</button>
+                <button onclick="window.open('/solution', '_blank')" class="secondary">View Solution</button>
+            </div>
+        </div>
+
+        <div class="section">
+            <h4>Learning Goals</h4>
+            <ul>
+                <li>Understand Broken Object Property Level Authorization (BOPLA)</li>
+                <li>Learn to identify over-exposed API endpoints</li>
+                <li>Understand the difference between frontend filtering and backend authorization</li>
+                <li>Practice API security testing techniques</li>
+                <li>Learn proper API response filtering implementation</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h4>Key Points</h4>
+            <ul>
+                <li>APIs should only return data that users are authorized to see</li>
+                <li>Frontend filtering is NOT a security control</li>
+                <li>Different user roles should receive different data sets</li>
+                <li>Sensitive data should never be included in API responses unless necessary</li>
+                <li>Always implement server-side authorization at the property level</li>
+            </ul>
+        </div>
+
+        <div class="navigation">
+            <a href="/">← Back to Home</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

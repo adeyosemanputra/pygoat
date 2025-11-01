@@ -1,0 +1,92 @@
+<!-- Custom CSS Modal for Security Fix -->
+<div id="secureFixModal" class="custom-modal">
+    <div class="modal-overlay"></div>
+    <div class="modal-container">
+        <div class="modal-header">
+            <h2 class="modal-title">
+                🛡️ Security Fix for XSS
+            </h2>
+            <button type="button" class="close-btn" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="tabs-container">
+                <div class="tab-buttons">
+                    <!-- <button class="tab-btn active" onclick="showTab('vulnerability')">Vulnerability</button> -->
+                    <button class="tab-btn active" style="font-weight: bold; font-size: 18px;" onclick="showTab('secure-code')">Secure Code</button>
+                    <button class="tab-btn " style="font-weight: bold; font-size: 18px;" onclick="showTab('prevention')">Solution</button>
+                </div>
+
+                <div class="tab-content">
+                    <div id="secure-code" class="tab-panel active">
+                        <h4>Secure Implementation for XSS Prevention</h4>
+                        <pre class="code-block"><code>
+import html
+
+def secure_display_input(user_input):
+    try:
+        # Use html.escape() for secure XSS prevention
+        safe_content = html.escape(user_input, quote=True)
+
+        return {"content": safe_content}
+        
+    except TypeError as e:
+        return {"error": "Invalid input type"}
+    except Exception as e:
+        return {"error": "Processing error"}
+
+# Demonstration
+if __name__ == "__main__":
+    # Malicious XSS attempt
+    malicious = '&lt;script&gt;alert("xss")&lt;/script&gt;'
+    normal = "Hello World!"
+    
+    print("Safe processing:")
+    print(f"Malicious: {secure_display_input(malicious)}")
+    print(f"Normal: {secure_display_input(normal)}")</code></pre>
+                    </div>
+
+                    <div id="prevention" class="tab-panel">
+                                <h4>Demonstrating XSS Vulnerability</h4>
+                                <ol>
+                                <li> Instead of entering a normal search term, try providing an HTML tag. <pre><code>&lt;h4&gt;Hello&lt;/h4&gt;</code></pre></li>
+                                <li>You will notice that the word Hello has been parsed as a heading on the page.</li>
+                                <li>This shows that the page is able to render the user given html tags.</li>
+                                <li>This behavior indicates that the application is vulnerable to Cross-Site Scripting (XSS). To exploit it, we can execute arbitrary JavaScript in the browser.</li>
+                                <li>For now let's just use a basic javascript code to alert a text to prove that xss is possible .<pre><code>&lt;script&gt;alert("xss")&lt;/script&gt;</code></pre> </li>
+                                <li>If executed, this payload triggers an alert box, confirming that the browser is interpreting and running the injected script,  thus alerting “xss” with a pop up.</li>
+                                </ol>
+
+
+
+                                <!-- <li> -->
+                                    <br>
+                                    <h4>Solving XSS in Browser</h4>
+                                    <li>Testing with harmless HTML tags</li>
+                                    <p>Entering input with h4 and font color tags to check for XSS</p>
+                                    <pre><code>&lt;h4&gt;&lt;font color="green"&gt;TEXT&lt;/font&gt;&lt;/h4&gt;</code></pre><br>
+
+                                    <h4>Result:</h4>
+                                    <li>The output page displays TEXT as a heading, styled in green.</li>
+                                    <li>This proves that user input is directly injected into the page without sanitization.</li>
+                                
+                                <p>Once we’ve confirmed that HTML is being rendered, we can move to JavaScript injection.
+                                   To see results on screen, make sure your browser has JavaScript enabled.
+                                </p> 
+                                <br>   
+                                <h4>Lab 3</h4>
+                                <p>[ step- 1 ] Checking user input is being reflected or not</p>
+                                <li>Though alphanumeric characters are being escaped we can still write js code with these 6 character. <pre><code>![]()+</code></pre></li>
+                                <li>check <a href="https://jsfuck.com/" target="_blank">jsfuck.</a></li>
+                        <br>
+                        <h4>OWASP References</h4>
+                        <ul>
+                            <li><a href="https://owasp.org/www-community/attacks/xss/" target="_blank">OWASP XSS</a></li>
+                            <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html" target="_blank">OWASP XSS Prevention Cheat Sheet</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>

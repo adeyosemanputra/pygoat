@@ -3,6 +3,6 @@ services:
   template_injection:
     build: .
     ports:
-      - "5015:5015
+      - "5015:5015"
     volumes:
       - .:/app

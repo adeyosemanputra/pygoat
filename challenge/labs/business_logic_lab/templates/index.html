@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Business Logic Flaws - Discount Abuse Lab</title>
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <h3>Challenge 2</h3>
+    <div class="box">
+        <h3>Business Logic Flaws - Discount Abuse</h3>
+        <h4>What are Business Logic Flaws?</h4>
+        <p class="bp">
+            Business logic flaws are application vulnerabilities that occur when the application's business rules, workflows, or policies are not properly implemented or validated. These vulnerabilities allow attackers to abuse legitimate functionality in ways the developers never intended.
+        </p>
+
+        <h4>The Discount Abuse Scenario</h4>
+        <div class="section">
+            <p class="bp">
+                <strong>Story:</strong> You are shopping in an online store. During checkout, the site offers discount coupons like "DISCOUNT10" for 10% off. However, the application doesn't properly validate that a coupon can only be applied once per order.
+            </p>
+            
+            <p class="bp">
+                <strong>Vulnerability:</strong> The business logic doesn't prevent repeated coupon application, allowing a malicious user to reduce the price to nearly zero by applying the same discount multiple times.
+            </p>
+        </div>
+
+        <div class="lab">
+            <h4>Lab Challenge</h4>
+            <p class="bp">
+                <strong>Goal:</strong> Reduce the total cost below ₹100 by repeatedly applying discount coupons.
+            </p>
+            
+            <p class="bp">
+                <strong>Available Coupons:</strong>
+                <ul>
+                    <li><code>DISCOUNT10</code> - 10% off your order</li>
+                    <li><code>SAVE20</code> - 20% off orders over ₹500</li>
+                </ul>
+            </p>
+            
+            <div style="text-align: right;">
+                <button type="button" onclick="window.location.href='/lab'" style="margin-right: 10px;">Lab Details</button>
+                <button type="button" onclick="window.location.href='/store'" style="margin-right: 10px;">Start Shopping</button>
+                <button type="button" onclick="window.location.href='/solution'">View Solution</button>
+            </div>
+        </div>
+
+        <div class="section">
+            <h4>Impact of Business Logic Flaws</h4>
+            <p class="bp">
+                Business logic vulnerabilities can lead to:
+                <ul>
+                    <li><strong>Financial Loss:</strong> Discount abuse, price manipulation, free purchases</li>
+                    <li><strong>Privilege Escalation:</strong> Bypassing access controls or user restrictions</li>
+                    <li><strong>Data Manipulation:</strong> Unauthorized modification of business data</li>
+                    <li><strong>Process Circumvention:</strong> Skipping required validation steps</li>
+                </ul>
+            </p>
+        </div>
+
+        <div class="section">
+            <h4>Common Business Logic Vulnerabilities</h4>
+            <div class="lesson-section">
+                <h5>1. Input Validation Bypass</h5>
+                <p class="bp">
+                    Failing to validate that user inputs follow business rules (e.g., negative quantities, invalid dates)
+                </p>
+            </div>
+
+            <div class="lesson-section">
+                <h5>2. Race Conditions</h5>
+                <p class="bp">
+                    Multiple requests processed simultaneously can bypass validation checks
+                </p>
+            </div>
+
+            <div class="lesson-section">
+                <h5>3. State Management Issues</h5>
+                <p class="bp">
+                    Improper tracking of user actions or transaction states
+                </p>
+            </div>
+
+            <div class="lesson-section">
+                <h5>4. Workflow Circumvention</h5>
+                <p class="bp">
+                    Skipping required steps in multi-step processes
+                </p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h4>Prevention & Mitigation</h4>
+            <p class="bp">
+                <strong>Best Practices:</strong>
+                <ul>
+                    <li>Implement proper server-side validation for all business rules</li>
+                    <li>Use unique identifiers and state tracking for transactions</li>
+                    <li>Implement rate limiting and abuse detection</li>
+                    <li>Log all significant business actions for monitoring</li>
+                    <li>Conduct thorough testing of edge cases and negative scenarios</li>
+                    <li>Regular security reviews of business logic implementation</li>
+                </ul>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

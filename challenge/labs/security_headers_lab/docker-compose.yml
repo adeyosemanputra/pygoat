@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  security_headers_lab:
+    build: .
+    ports:
+      - "5011:5011"
+    environment:
+      - FLASK_APP=app.py
+      - FLASK_ENV=development
+    volumes:
+      - .:/app
+    restart: unless-stopped

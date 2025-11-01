@@ -1,0 +1,172 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Lab Details - Security Headers Misconfiguration</title>
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <h3>Lab Details: Security Headers Misconfiguration</h3>
+    
+    <div class="box">
+        <h4>Lab Scenario</h4>
+        <div class="section">
+            <p class="bp">
+                <strong>Vulnerability Type:</strong> Security Headers Misconfiguration - Clickjacking<br>
+                <strong>Difficulty:</strong> Beginner to Intermediate<br>
+                <strong>OWASP Top 10:</strong> A05:2021 - Security Misconfiguration
+            </p>
+        </div>
+
+        <div class="lab">
+            <h4>Your Mission</h4>
+            <p class="bp">
+                You've discovered a banking web application that lacks proper security headers. Your goal is to 
+                understand how clickjacking attacks work and learn to prevent them with proper security headers.
+            </p>
+            
+            <ol class="bp">
+                <li><strong>Login to Banking:</strong> Use demo credentials to access SecureBank</li>
+                <li><strong>Access Transfer Page:</strong> Navigate to the money transfer functionality</li>
+                <li><strong>Test Clickjacking:</strong> Visit the malicious page and observe iframe embedding</li>
+                <li><strong>Enable Security Headers:</strong> Toggle secure mode and test again</li>
+                <li><strong>Compare Results:</strong> Understand the difference between vulnerable and secure modes</li>
+            </ol>
+        </div>
+
+        <div class="section">
+            <h4>What to Look For</h4>
+            <div class="lesson-section">
+                <h5>Missing Security Headers</h5>
+                <p class="bp">
+                    Check for the absence of these critical headers:
+                    <ul>
+                        <li><code>X-Frame-Options</code> - Controls iframe embedding</li>
+                        <li><code>Content-Security-Policy</code> - Modern CSP frame-ancestors directive</li>
+                        <li><code>X-Content-Type-Options</code> - Prevents MIME sniffing</li>
+                        <li><code>X-XSS-Protection</code> - Browser XSS filtering</li>
+                    </ul>
+                </p>
+            </div>
+
+            <div class="lesson-section">
+                <h5>Iframe Embedding Test</h5>
+                <p class="bp">
+                    Observe how the banking interface behaves:
+                    <ul>
+                        <li>Can the transfer page be embedded in an iframe?</li>
+                        <li>Does the browser block or allow the embedding?</li>
+                        <li>What happens when security headers are enabled?</li>
+                    </ul>
+                </p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h4>Step-by-Step Testing</h4>
+            <div class="lesson-section">
+                <h5>Phase 1: Vulnerable Mode Testing</h5>
+                <ol class="bp">
+                    <li>Ensure security headers are disabled (vulnerable mode)</li>
+                    <li>Login to the banking application</li>
+                    <li>Navigate to the transfer page</li>
+                    <li>Use browser developer tools to check response headers</li>
+                    <li>Visit the malicious page and observe iframe loading</li>
+                </ol>
+            </div>
+
+            <div class="lesson-section">
+                <h5>Phase 2: Secure Mode Testing</h5>
+                <ol class="bp">
+                    <li>Enable security headers (secure mode)</li>
+                    <li>Refresh the transfer page</li>
+                    <li>Check response headers again</li>
+                    <li>Visit the malicious page and observe iframe blocking</li>
+                    <li>Compare the differences in browser behavior</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="section">
+            <h4>Testing Tools & Techniques</h4>
+            <div class="lesson-section">
+                <h5>Browser Developer Tools</h5>
+                <p class="bp">
+                    Use these tools to analyze security headers:
+                    <ul>
+                        <li><strong>Network Tab:</strong> Check response headers for security directives</li>
+                        <li><strong>Console:</strong> Look for iframe-related error messages</li>
+                        <li><strong>Elements Tab:</strong> Inspect iframe elements and their loading status</li>
+                        <li><strong>Security Tab:</strong> Review overall page security indicators</li>
+                    </ul>
+                </p>
+            </div>
+
+            <div class="lesson-section">
+                <h5>Command Line Testing</h5>
+                <pre><code># Check headers with curl
+curl -I http://localhost:5011/transfer
+
+# Look for these headers in secure mode:
+# X-Frame-Options: DENY
+# Content-Security-Policy: frame-ancestors 'none'</code></pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h4>Real-World Impact</h4>
+            <p class="bp">
+                Clickjacking vulnerabilities can lead to:
+                <ul>
+                    <li><strong>Financial Fraud:</strong> Unauthorized money transfers or payments</li>
+                    <li><strong>Account Takeover:</strong> Changes to account settings or passwords</li>
+                    <li><strong>Social Engineering:</strong> Unwanted social media actions (likes, shares)</li>
+                    <li><strong>Data Theft:</strong> Unauthorized access to sensitive information</li>
+                    <li><strong>Malware Distribution:</strong> Tricking users into downloading malicious files</li>
+                </ul>
+            </p>
+        </div>
+
+        <div class="section">
+            <h4>Learning Objectives</h4>
+            <p class="bp">
+                After completing this lab, you will understand:
+                <ul>
+                    <li>How clickjacking attacks work in practice</li>
+                    <li>The importance of security headers in web applications</li>
+                    <li>How to implement proper iframe protection</li>
+                    <li>The difference between X-Frame-Options and CSP frame-ancestors</li>
+                    <li>How to test for and identify clickjacking vulnerabilities</li>
+                </ul>
+            </p>
+        </div>
+
+        <div class="section">
+            <h4>Additional Resources</h4>
+            <p class="bp">
+                <strong>Demo Accounts:</strong>
+                <ul>
+                    <li>Username: <code>john_doe</code> | Password: <code>password123</code></li>
+                    <li>Username: <code>jane_smith</code> | Password: <code>securepass</code></li>
+                </ul>
+            </p>
+            
+            <p class="bp">
+                <strong>Key URLs:</strong>
+                <ul>
+                    <li><code>/login</code> - Banking login page</li>
+                    <li><code>/transfer</code> - Money transfer page (requires login)</li>
+                    <li><code>/malicious</code> - Demonstration of clickjacking attack</li>
+                    <li><code>/toggle_secure_mode</code> - Switch between vulnerable/secure modes</li>
+                </ul>
+            </p>
+        </div>
+
+        <div style="text-align: center; margin-top: 30px;">
+            <button onclick="window.location.href='/login'" style="margin-right: 10px;">Start Lab</button>
+            <button onclick="window.location.href='/'" style="margin-right: 10px;">Back to Overview</button>
+            <button onclick="window.location.href='/solution'">View Solution</button>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html data-theme="light">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block title %}{% endblock %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">🌙</button>
+    <div class="page-container">
+        {% block content %}{% endblock %}
+    </div>
+    <script>
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            requestAnimationFrame(() => {
+                html.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+                
+                const themeToggle = document.querySelector('.theme-toggle');
+                themeToggle.innerHTML = newTheme === 'dark' ? '☀️' : '🌙';
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            const html = document.documentElement;
+            
+            requestAnimationFrame(() => {
+                html.setAttribute('data-theme', savedTheme);
+                const themeToggle = document.querySelector('.theme-toggle');
+                themeToggle.innerHTML = savedTheme === 'dark' ? '☀️' : '🌙';
+            });
+        });
+
+        async function testAPI(projectId, endpoint = 'details') {
+            try {
+                const response = await fetch(`/api/project/${projectId}/${endpoint}`);
+                const data = await response.json();
+                
+                if (endpoint === 'details') {
+                    console.log('%c VULNERABLE API RESPONSE (Check this console!):', 'color: red; font-weight: bold; font-size: 14px;');
+                    console.log('%cAPI Endpoint:', 'font-weight: bold;', `/api/project/${projectId}/details`);
+                    console.log('%cSensitive Data Exposed:', 'color: red; font-weight: bold;');
+                    console.log(data);
+                    
+                    alert('Vulnerable API called! Check browser console (F12) to see the exposed sensitive data.\n\nLook for budget, client_credentials, internal_notes, and team_members!');
+                } else {
+                    const responseDiv = document.getElementById('api-response');
+                    if (responseDiv) {
+                        responseDiv.innerHTML = `<strong>Safe API Response:</strong><br><pre>${JSON.stringify(data, null, 2)}</pre>`;
+                        responseDiv.style.display = 'block';
+                    }
+                }
+                
+                return data;
+            } catch (error) {
+                console.error('API Error:', error);
+                alert('Error calling API: ' + error.message);
+            }
+        }
+
+        function showVulnerabilityHint() {
+            const hint = document.getElementById('vulnerability-hint');
+            if (hint) {
+                hint.style.display = 'block';
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!-- Custom CSS Modal for Security Fix -->
+<div id="secureFixModal" class="custom-modal">
+    <div class="modal-overlay"></div>
+    <div class="modal-container">
+        <div class="modal-header">
+            <h2 class="modal-title">
+                🛡️ Security Fix for SSRF
+            </h2>
+            <button type="button" class="close-btn" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="tabs-container">
+                <div class="tab-buttons">
+                    <!-- <button class="tab-btn active" onclick="showTab('vulnerability')">Vulnerability</button> -->
+                    <button class="tab-btn active" style="font-weight: bold; font-size: 18px;" onclick="showTab('secure-code')">Secure Code</button>
+                    <button class="tab-btn " style="font-weight: bold; font-size: 18px;" onclick="showTab('prevention')">Solution</button>
+                </div>
+
+                <div class="tab-content">
+                    <div id="secure-code" class="tab-panel active">
+                        <h4>Secure Implementation for SSRF Prevention</h4>
+                        <pre class="code-block"><code>
+import socket, ipaddress, requests
+from urllib.parse import urlparse
+
+ALLOWED_HOSTS = ["example.com", ".trusted.cdn.net"]
+ALLOWED_SCHEMES = ("http", "https")
+
+def is_safe_url(url: str) -> bool:
+    try:
+        parsed = urlparse(url)
+        
+        if parsed.scheme not in ALLOWED_SCHEMES or not parsed.hostname:
+            return False
+        
+        host = parsed.hostname.lower()
+        if not any(host == h or host.endswith(h) for h in ALLOWED_HOSTS):
+            return False
+        
+        # Block private/internal IPs
+        for _, _, _, _, addr in socket.getaddrinfo(host, None):
+            ip = ipaddress.ip_address(addr[0])
+            if ip.is_private or ip.is_loopback or ip.is_reserved:
+                return False
+                
+        return True
+        
+    except Exception:
+        return False</code></pre>
+                    </div>
+
+                    <div id="prevention" class="tab-panel">
+                                <h4>Solution</h4>
+                                <!-- <ol> -->
+                                <p> The website serves some blog content, and to understand how this process works, we can inspect the elements using the browser’s Developer Tools. </p>
+                                <p>Upon inspection, we find that there is a hidden input field which takes the file path of the blog as a parameter. If the application does not properly validate or sanitize this path, it becomes possible to manipulate the value and access arbitrary files on the server.</p>
+                                <p>For example find this:</p>
+                                <pre><code>&lt;input type="hidden" name="blog" value="blogs/blog1.txt"&gt;</code></pre><br> 
+                                <p>Try changing the value</p>
+                                <pre><code>&lt;input type="hidden" name="blog" value="app.py"&gt;</code></pre><br>
+
+                                <p>Our main objective is to locate the .env file. This file is typically used to store sensitive credentials and configuration details. By convention, it is usually located in the base directory of the application.</p><br>
+                                <p>To discover it, we can use a trial-and-error approach with different path traversal attempts, such as:</p>
+                                <pre><code>&lt;.env&gt;</code></pre>
+                                <pre><code>&lt;../.env&gt;</code></pre>
+                                <pre><code>&lt;../../.env&gt;</code></pre><br>
+
+                                <p>In this case, the correct payload is:</p>
+                                <pre><code>&lt;.env&gt;</code></pre>
+
+
+
+
+                                <!-- <li> -->
+                                    <br>
+                                    <h4>Lab 2</h4>
+                                    <p>This lab includes a local page located at /internal, which is accessible only from localhost.</p>
+                                    <li>If the server is started with:</li>
+                                    <pre><code>&lt;python manage.py runserver&gt;</code></pre>
+                                    <p>the /internal page can be accessed locally. (ex. http://127.0.0.1:5000/internal)</p>
+
+                                    <li>However, if the server is started with:</li>
+                                    <pre><code>&lt;python manage.py runserver 0:8000&gt;</code></pre>
+                                    <p>the page will not be directly accessible from an external machine using http://[your-ip]:5000/internal.</p>
+
+                                    <p>Now, the application provides a utility that takes a URL as input and fetches its data. By supplying the localhost URL (http://127.0.0.1:5000/internal) to this utility, we can make it retrieve the page internally and display its content externally—effectively bypassing the localhost restriction.</p>
+     
+                        <br>
+                        <h4>OWASP References</h4>
+                        <ul>
+                            <li><a href="https://owasp.org/www-project-web-security-testing-guide/v42/4-Web_Application_Security_Testing/07-Input_Validation_Testing/19-Testing_for_Server-Side_Request_Forgery" target="_blank">OWASP SSRF Testing</a></li>
+                            <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html" target="_blank">OWASP SSRF Prevention Cheat Sheet</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>

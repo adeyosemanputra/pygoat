@@ -3,10 +3,16 @@
 
 {% block content %}
 <div class="content">
-    <h3>Identification and Authentication Failures</h3>
+    <div class="header-container">
+        <h1 style="border-bottom: 2px solid #474646; padding-bottom: 10px;">Identification and Authentication Failures</h1>
+        <button class="notebook-btn" onclick="openModal()" title="View Secure Implementation">
+        🔗
+        </button>
+    </div>
+    {% include 'secure-fix.html' %}
     
     <div class="box">
-        <h4>Overview</h4>
+        <h4>What is Identification and Authentication Failures ?</h4>
         <p class="bp">
             Previously known as Broken Authentication, this category includes Common Weakness Enumerations (CWEs) 
             related to identification failures. Notable CWEs included are CWE-297: Improper Validation of Certificate
@@ -135,7 +141,7 @@
                     <li>Challenge: Find and exploit session management vulnerabilities</li>
 
                 <p class="bp">
-                    These are the credentals of different users, try to get some unautherize access.
+                    These are the credentals of different users, try to get some unauthorize access.
                 </p><br>
                     <span> username : <code>User1</code> | password : <code>password1</code> </span><br>
                     <span> username : <code>User2</code> | password : <code>password2</code> </span><br>
@@ -174,5 +180,41 @@
             el.style.display = "none";
         }
     }
+
+    // Modal functionality
+function openModal() {
+    document.getElementById('secureFixModal').style.display = 'block';
+    document.body.style.overflow = 'hidden'; 
+}
+
+function closeModal() {
+    document.getElementById('secureFixModal').style.display = 'none';
+    document.body.style.overflow = 'auto'; 
+}
+function showTab(tabName) {
+    const panels = document.querySelectorAll('.tab-panel');
+    panels.forEach(panel => panel.classList.remove('active'));
+    
+    const buttons = document.querySelectorAll('.tab-btn');
+    buttons.forEach(btn => btn.classList.remove('active'));
+    
+    document.getElementById(tabName).classList.add('active');
+    
+    event.target.classList.add('active');
+}
+
+document.addEventListener('click', function(event) {
+    const modal = document.getElementById('secureFixModal');
+    const overlay = event.target.classList.contains('modal-overlay');
+    if (overlay) {
+        closeModal();
+    }
+});
+
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+        closeModal();
+    }
+});
 </script>
 {% endblock %}

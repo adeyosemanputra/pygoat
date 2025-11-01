@@ -17,23 +17,23 @@ def create_blog_post(title, content):
     # Create the blog post template
     blog_template_content = f'''
 {{% extends "base.html" %}}
-{{% block title %}}{{{{ title }}}}{{% endblock %}}
+{{% block title %}}{ title }{{% endblock %}}
 {{% block content %}}
 <div class="box">
-    <h3>{{{{ title }}}}</h3>
+    <h3>{ title }</h3>
     <div class="content">
-        {{{{ content }}}}
+        { content }
     </div>
 </div>
 {{% endblock %}}
 '''
     
-    # Render the template with the provided title and content
-    rendered_blog = render_template_string(blog_template_content, title=title, content=content)
+ 
+    # rendered_blog = render_template_string(blog_template_content, title=title, content=content)
 
     # Write the blog post to file
     with open(filepath, 'w') as f:
-        f.write(rendered_blog)
+        f.write(blog_template_content )
     
     return filename
 

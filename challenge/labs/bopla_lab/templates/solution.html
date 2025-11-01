@@ -1,0 +1,231 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>BOPLA Lab - Solution Guide</title>
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <div class="box">
+        <h3>BOPLA Lab Solution Guide</h3>
+        
+        <div class="bp">
+            This guide explains the Broken Object Property Level Authorization (BOPLA) vulnerability
+            and how to identify and fix it.
+        </div>
+
+        <div class="solution-section">
+            <h4>What is BOPLA?</h4>
+            <div class="bp">
+                <strong>Broken Object Property Level Authorization (BOPLA)</strong> is a security vulnerability where
+                an API returns object properties that the requesting user should not have access to. Unlike broken
+                object level authorization (which deals with access to entire objects), BOPLA focuses on unauthorized
+                access to specific properties within objects.
+            </div>
+            
+            <div class="bp">
+                This vulnerability occurs when:
+                <ul>
+                    <li>APIs return complete object data regardless of user permissions</li>
+                    <li>Frontend applications filter sensitive data but APIs don't</li>
+                    <li>Authorization is implemented only at the UI level, not at the API level</li>
+                    <li>Different user roles should see different object properties</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="solution-section">
+            <h4>Vulnerability Demonstration</h4>
+            <div class="bp">
+                In this lab, the vulnerable endpoint is:
+            </div>
+            <pre>GET /api/project/{id}/details</pre>
+            
+            <div class="bp">
+                This endpoint returns ALL project properties including sensitive data:
+            </div>
+            <pre>{
+  "id": 12,
+  "name": "Secret Launch",
+  "description": "Top secret work",
+  "budget": "₹2,00,00,000",              ← Sensitive!
+  "client_credentials": "XYZ-12345",     ← Very Sensitive!
+  "internal_notes": "NDA signed...",     ← Internal only!
+  "team_members": ["ceo@company.com"]    ← Sensitive!
+}</pre>
+
+            <div class="bp">
+                Even though the frontend only displays <code>name</code> and <code>description</code>,
+                the API response contains sensitive information that can be accessed by:
+                <ul>
+                    <li>Inspecting browser developer tools</li>
+                    <li>Using tools like Burp Suite or OWASP ZAP</li>
+                    <li>Making direct API calls with tools like curl or Postman</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="solution-section">
+            <h4>How to Identify BOPLA</h4>
+            <ol>
+                <li><strong>Inspect API Responses:</strong>
+                    <ul>
+                        <li>Use browser developer tools (F12 → Network tab)</li>
+                        <li>Look for API calls when viewing objects</li>
+                        <li>Examine the response payload</li>
+                    </ul>
+                </li>
+                <li><strong>Compare Frontend vs API:</strong>
+                    <ul>
+                        <li>Note what the frontend displays</li>
+                        <li>Compare with what the API returns</li>
+                        <li>Look for extra fields in API responses</li>
+                    </ul>
+                </li>
+                <li><strong>Test with Different Roles:</strong>
+                    <ul>
+                        <li>Access the same endpoint with different user accounts</li>
+                        <li>Check if responses contain the same sensitive data</li>
+                        <li>Verify if authorization varies by role</li>
+                    </ul>
+                </li>
+                <li><strong>Direct API Testing:</strong>
+                    <ul>
+                        <li>Use tools like Postman, curl, or Burp Suite</li>
+                        <li>Make direct requests to API endpoints</li>
+                        <li>Analyze response structure</li>
+                    </ul>
+                </li>
+            </ol>
+        </div>
+
+        <div class="solution-section">
+            <h4>Testing Commands</h4>
+            <div class="bp">
+                Here are some curl commands to test the vulnerability:
+            </div>
+            
+            <pre># Login and get session
+curl -X POST http://localhost:8080/login \
+  -d "username=user1&password=password123" \
+  -c cookies.txt
+
+# Test vulnerable endpoint
+curl -X GET http://localhost:8080/api/project/12/details \
+  -b cookies.txt
+
+# Test secure endpoint
+curl -X GET http://localhost:8080/api/project/12/safe \
+  -b cookies.txt</pre>
+        </div>
+
+        <div class="solution-section">
+            <h4>How to Fix BOPLA</h4>
+            
+            <div class="bp">
+                <strong>1. Implement Property-Level Authorization:</strong>
+            </div>
+            <pre>def get_project_safe(project_id, user_role):
+    project = get_project_by_id(project_id)
+    
+    # Base fields for all authenticated users
+    safe_data = {
+        "id": project.id,
+        "name": project.name,
+        "description": project.description
+    }
+    
+    # Role-based property access (limited)
+    if user_role in ['manager', 'admin']:
+        safe_data["team_members"] = project.team_members
+    
+    # Sensitive data like budget, credentials, and internal notes
+    # should NEVER be exposed via general API endpoints
+    # Use separate, more secure endpoints with additional authorization
+    
+    return safe_data</pre>
+
+            <div class="bp">
+                <strong>2. Use Data Transfer Objects (DTOs):</strong>
+            </div>
+            <pre>class ProjectPublicDTO:
+    def __init__(self, project):
+        self.id = project.id
+        self.name = project.name
+        self.description = project.description
+
+class ProjectManagerDTO(ProjectPublicDTO):
+    def __init__(self, project):
+        super().__init__(project)
+        self.team_members = project.team_members
+
+class ProjectAdminDTO(ProjectManagerDTO):
+    def __init__(self, project):
+        super().__init__(project)
+        self.budget = project.budget
+        self.internal_notes = project.internal_notes</pre>
+
+            <div class="bp">
+                <strong>3. Implement Field-Level Serialization:</strong>
+            </div>
+            <pre># Using serialization with field filtering
+def serialize_project(project, user_role):
+    allowed_fields = ['id', 'name', 'description']
+    
+    if user_role in ['manager', 'admin']:
+        allowed_fields.extend(['team_members'])
+    
+    if user_role == 'admin':
+        allowed_fields.extend(['budget', 'internal_notes'])
+    
+    return {field: getattr(project, field) 
+            for field in allowed_fields 
+            if hasattr(project, field)}</pre>
+        </div>
+
+        <div class="solution-section">
+            <h4>Best Practices</h4>
+            <ul>
+                <li><strong>Principle of Least Privilege:</strong> Only return data that users need and are authorized to see</li>
+                <li><strong>Server-Side Authorization:</strong> Never rely on frontend filtering for security</li>
+                <li><strong>Role-Based Access Control:</strong> Implement proper RBAC at the API level</li>
+                <li><strong>Data Classification:</strong> Classify data sensitivity and implement appropriate controls</li>
+                <li><strong>API Documentation:</strong> Document what fields each role can access</li>
+                <li><strong>Regular Testing:</strong> Regularly test APIs for over-exposure of data</li>
+                <li><strong>Logging and Monitoring:</strong> Log access to sensitive data fields</li>
+            </ul>
+        </div>
+
+        <div class="solution-section">
+            <h4>Common Mistakes</h4>
+            <ul>
+                <li>Relying on frontend to filter sensitive data</li>
+                <li>Using the same endpoint for different user roles without filtering</li>
+                <li>Returning complete database objects directly as JSON</li>
+                <li>Not implementing field-level authorization</li>
+                <li>Exposing internal system information in error responses</li>
+                <li>Not considering data sensitivity when designing APIs</li>
+            </ul>
+        </div>
+
+        <div class="solution-section">
+            <h4>Lab Summary</h4>
+            <div class="bp">
+                In this lab, you learned:
+                <ul>
+                    <li>How to identify BOPLA vulnerabilities using browser tools and testing techniques</li>
+                    <li>The difference between frontend data filtering and backend authorization</li>
+                    <li>How sensitive data can be exposed through API over-sharing</li>
+                    <li>Proper implementation of property-level authorization</li>
+                    <li>Best practices for secure API design</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="navigation">
+            <a href="/lab">← Back to Lab</a>
+            <a href="/">← Back to Home</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

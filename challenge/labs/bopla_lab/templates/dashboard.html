@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>Dashboard - Project Management System</title>
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <div class="box">
+        <h3>📊 Project Dashboard</h3>
+        
+        <div class="user-info">
+            <strong>Logged in as:</strong> {{ user.username }} ({{ user.role }})<br>
+            <a href="/logout">Logout</a>
+        </div>
+
+        <div class="navigation">
+            <a href="/lab">← Back to Lab</a>
+            <a href="/solution" target="_blank">View Solution</a>
+        </div>
+
+        <div class="section">
+            <h4>Your Projects</h4>
+            <div class="bp">
+                Below are the projects you have access to. Click on any project to view its details.
+                <strong>Note:</strong> Pay attention to the network requests in your browser's developer tools!
+            </div>
+
+            <div class="projects-grid">
+                {% for project in projects %}
+                <div class="project-card" onclick="loadProjectDetails({{ project.id }})">
+                    <h4>{{ project.name }}</h4>
+                    <p>{{ project.description }}</p>
+                    <button onclick="event.stopPropagation(); testAPI({{ project.id }})">Test API Call</button>
+                    <button onclick="event.stopPropagation(); testAPI({{ project.id }}, 'safe')" class="secondary">Test Safe API</button>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+                <div class="section">
+            <h4>API Testing</h4>
+            <div class="bp">
+                Use the buttons above to test different API endpoints:
+                <ul>
+                    <li><strong>Test API Call:</strong> Tests the vulnerable endpoint that exposes ALL project data (check browser console)</li>
+                    <li><strong>Test Safe API:</strong> Tests the secure endpoint that properly filters data based on your role</li>
+                </ul>
+                Open browser Developer Tools (F12) and check the Console tab to see API responses.
+            </div>
+            
+            <div id="api-response" class="api-response" style="display: none;"></div>
+        </div>
+
+        <div class="vulnerability-hint">
+            <strong>Investigation Tips:</strong>
+            <ul>
+                <li>Open Browser Developer Tools (F12) and go to the Network tab</li>
+                <li>Click on projects and observe the API calls being made</li>
+                <li>Look at the response data - does it contain more than what's displayed?</li>
+                <li>Try the "Test API Call" button and check the <strong>Console tab</strong> (F12) to see exposed sensitive data</li>
+                <li>Compare "Test API Call" vs "Test Safe API" responses</li>
+                <li>Try different user roles to see if authorization differs</li>
+                <li>Look for sensitive data like budgets, credentials, or internal notes</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script>
+async function loadProjectDetails(projectId) {
+    // This simulates what the frontend typically does - only show safe data
+    try {
+        const response = await fetch(`/api/project/${projectId}/details`);
+        const data = await response.json();
+        
+        // Frontend only displays these "safe" fields
+        alert(`Project: ${data.name}\nDescription: ${data.description}\n\n(Check developer tools for full API response!)`);
+        
+    } catch (error) {
+        alert('Error loading project details');
+    }
+}
+</script>
+{% endblock %}
