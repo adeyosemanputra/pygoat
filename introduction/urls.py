@@ -120,4 +120,9 @@ urlpatterns = [
     path("mitre/25/lab", mitre.mitre_lab_25, name="mitre_lab_25"),
     path("mitre/17/lab", mitre.mitre_lab_17, name="mitre_lab_17"),
     path("mitre/17/lab/api",mitre.mitre_lab_17_api,name="mitre_lab_17_api"),
+    path("payment_system", views.payment_system, name="payment_system"),
+    path("payment/dashboard", views.payment_dashboard, name="payment_dashboard"),
+    path("payment/transfer", views.payment_transfer, name="payment_transfer"),
+    path("payment/api", views.payment_api, name="payment_api"),
+    path("payment/generate_key", views.payment_generate_api_key, name="payment_generate_key"),
 ]

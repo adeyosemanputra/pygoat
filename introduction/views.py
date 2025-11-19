@@ -36,7 +36,8 @@ from requests.structures import CaseInsensitiveDict
 
 from .forms import NewUserForm
 from .models import (FAANG, AF_admin, AF_session_id, Blogs, CF_user, authLogin,
-                     comments, info, login, otp, sql_lab_table, tickits)
+                     comments, info, login, otp, sql_lab_table, tickits,
+                     PaymentAccount, PaymentTransaction, PaymentAPIKey)
 from .utility import customHash, filter_blog
 
 #*****************************************Lab Requirements****************************************************#
@@ -72,7 +73,7 @@ def home(request):
     else:
         return redirect('login')
 
-## authentication check decurator function 
+## authentication check decurator function
 def authentication_decorator(func):
     def function(*args, **kwargs):
         if args[0].user.is_authenticated:
@@ -101,11 +102,11 @@ def xss_lab(request):
             return render(request,'Lab/XSS/xss_lab.html', {'query': q})
     else:
         return redirect('login')
-        
+
 
 def xss_lab2(request):
     if request.user.is_authenticated:
-        
+
         username = request.POST.get('username', '')
         if username:
             username = username.strip()
@@ -118,7 +119,7 @@ def xss_lab2(request):
         return render(request, 'Lab/XSS/xss_lab_2.html', context)
     else:
         return redirect('login')
-    
+
 def xss_lab3(request):
     if request.user.is_authenticated:
         if request.method == 'POST':
@@ -130,8 +131,8 @@ def xss_lab3(request):
             return render(request, 'Lab/XSS/xss_lab_3.html',context)
         else:
             return render(request, 'Lab/XSS/xss_lab_3.html')
-            
-    else:        
+
+    else:
         return redirect('login')
 
 #***********************************SQL****************************************************************#
@@ -162,7 +163,7 @@ def sql_lab(request):
                 except:
                     print("\nin except\n")
                     return render(
-                        request, 
+                        request,
                         'Lab/SQL/sql_lab.html',
                         {
                             "wrongpass":password,
@@ -174,7 +175,7 @@ def sql_lab(request):
                     return render(request, 'Lab/SQL/sql_lab.html',{"user1":user})
                 else:
                     return render(
-                        request, 
+                        request,
                         'Lab/SQL/sql_lab.html',
                         {
                             "wrongpass":password,
@@ -320,7 +321,7 @@ def auth_lab_login(request):
 
 def auth_lab_logout(request):
     rendered = render_to_string('Lab/AUTH/auth_lab.html',context={'err_msg':'Logout successful'})
-    response = HttpResponse(rendered)    
+    response = HttpResponse(rendered)
     response.delete_cookie('userid')
     return response
 
@@ -340,16 +341,16 @@ def ba_lab(request):
         if name:
             if request.COOKIES.get('admin') == "1":
                 return render(
-                    request, 
-                    'Lab/BrokenAccess/ba_lab.html', 
+                    request,
+                    'Lab/BrokenAccess/ba_lab.html',
                     {
                         "data":"0NLY_F0R_4DM1N5",
                         "username": "admin"
                     })
             elif login.objects.filter(user='admin',password=password):
                 html = render(
-                    request, 
-                    'Lab/BrokenAccess/ba_lab.html', 
+                    request,
+                    'Lab/BrokenAccess/ba_lab.html',
                     {
                         "data":"0NLY_F0R_4DM1N5",
                         "username": "admin"
@@ -358,8 +359,8 @@ def ba_lab(request):
                 return html
             elif login.objects.filter(user=name,password=password):
                 html = render(
-                request, 
-                'Lab/BrokenAccess/ba_lab.html', 
+                request,
+                'Lab/BrokenAccess/ba_lab.html',
                 {
                     "not_admin":"No Secret key for this User",
                     "username": name
@@ -395,7 +396,7 @@ def robots(request):
         return response
 
 def error(request):
-    return 
+    return
 
 
 #******************************************************  Command Injection  ***********************************************************************#
@@ -417,13 +418,13 @@ def cmd_lab(request):
                 command="nslookup {}".format(domain)
             else:
                 command = "dig {}".format(domain)
-            
+
             try:
                 # output=subprocess.check_output(command,shell=True,encoding="UTF-8")
                 process = subprocess.Popen(
                     command,
                     shell=True,
-                    stdout=subprocess.PIPE, 
+                    stdout=subprocess.PIPE,
                     stderr=subprocess.PIPE)
                 stdout, stderr = process.communicate()
                 data = stdout.decode('utf-8')
@@ -447,7 +448,7 @@ def cmd_lab2(request):
     if request.user.is_authenticated:
         if (request.method=="POST"):
             val=request.POST.get('val')
-            
+
             print(val)
             try:
                 output = eval(val)
@@ -551,7 +552,7 @@ def a9_lab(request):
                 file=request.FILES["file"]
                 try :
                     data = yaml.load(file,yaml.Loader)
-                    
+
                     return render(request,"Lab/A9/a9_lab.html",{"data":data})
                 except:
                     return render(request, "Lab/A9/a9_lab.html", {"data": "Error"})
@@ -567,7 +568,7 @@ def get_version(request):
 def a9_lab2(request):
     if not request.user.is_authenticated:
         return redirect('login')
-    
+
     if request.method == "GET":
         return render (request,"Lab/A9/a9_lab2.html")
     elif request.method == "POST":
@@ -580,7 +581,7 @@ def a9_lab2(request):
             # function_str = "convert(r+g, '1')"
             output = ImageMath.eval(function_str,img = img, b=b, r=r, g=g)
 
-            # saving the image 
+            # saving the image
             buffered = BytesIO()
             output.save(buffered, format="JPEG")
             img_str = base64.b64encode(buffered.getvalue()).decode("utf-8")
@@ -664,7 +665,7 @@ def a10_lab2(request):
         else:
             logging.error(f"{now}:{ip}:{user}")
             return render(request, "Lab/A10/a10_lab2.html", {"error": " Wrong username or Password"})
-        
+
 
 
 #*********************************************************A11*************************************************#
@@ -699,7 +700,7 @@ def insec_desgine_lab(request):
                         Tickets.append(ticket_code)
                         T = tickits(user = request.user, tickit = ticket_code)
                         T.save()
-                    
+
                     return render(request,"Lab/A11/a11_lab.html",{"tickets":Tickets})
                 else:
                     return render(request,"Lab/A11/a11_lab.html",{"error":"You can have atmost 5 tickits","tickets":Tickets})
@@ -732,7 +733,7 @@ def insec_desgine_lab(request):
 def a1_broken_access(request):
     if not request.user.is_authenticated:
         return redirect('login')
-    
+
     return render(request,"Lab_2021/A1_BrokenAccessControl/broken_access.html")
 
 
@@ -742,7 +743,7 @@ def a1_broken_access_lab_1(request):
         pass
     else:
         return redirect('login')
-    
+
     name = request.POST.get('name')
     password = request.POST.get('pass')
     print(password)
@@ -750,16 +751,16 @@ def a1_broken_access_lab_1(request):
     if name:
         if request.COOKIES.get('admin') == "1":
             return render(
-                request, 
-                'Lab_2021/A1_BrokenAccessControl/broken_access_lab_1.html', 
+                request,
+                'Lab_2021/A1_BrokenAccessControl/broken_access_lab_1.html',
                 {
                     "data":"0NLY_F0R_4DM1N5",
                     "username": "admin"
                 })
         elif (name=='jack' and password=='jacktheripper'): # Will implement hashing here
             html = render(
-            request, 
-            'Lab_2021/A1_BrokenAccessControl/broken_access_lab_1.html', 
+            request,
+            'Lab_2021/A1_BrokenAccessControl/broken_access_lab_1.html',
             {
                 "not_admin":"No Secret key for this User",
                 "username": name
@@ -778,7 +779,7 @@ def a1_broken_access_lab_2(request):
         pass
     else:
         return redirect('login')
-    
+
     name = request.POST.get('name')
     password = request.POST.get('pass')
     user_agent = request.META['HTTP_USER_AGENT']
@@ -786,11 +787,11 @@ def a1_broken_access_lab_2(request):
     # print(name)
     # print(password)
     print(user_agent)
-    if name :  
+    if name :
         if (user_agent == "pygoat_admin"):
             return render(
-                request, 
-                'Lab_2021/A1_BrokenAccessControl/broken_access_lab_2.html', 
+                request,
+                'Lab_2021/A1_BrokenAccessControl/broken_access_lab_2.html',
                 {
                     "data":"0NLY_F0R_4DM1N5",
                     "username": "admin",
@@ -798,8 +799,8 @@ def a1_broken_access_lab_2(request):
                 })
         elif ( name=='jack' and password=='jacktheripper'): # Will implement hashing here
             html = render(
-            request, 
-            'Lab_2021/A1_BrokenAccessControl/broken_access_lab_2.html', 
+            request,
+            'Lab_2021/A1_BrokenAccessControl/broken_access_lab_2.html',
             {
                 "not_admin":"No Secret key for this User",
                 "username": name,
@@ -840,7 +841,7 @@ def a1_broken_access_lab3_secret(request):
 def injection(request):
     if not request.user.is_authenticated:
         return redirect('login')
-    
+
     return render(request,"Lab_2021/A3_Injection/injection.html")
 
 
@@ -874,7 +875,7 @@ def injection_sql_lab(request):
 
             except:
                 return render(
-                    request, 
+                    request,
                     'Lab_2021/A3_Injection/sql_lab.html',
                     {
                         "wrongpass":password,
@@ -885,7 +886,7 @@ def injection_sql_lab(request):
                 return render(request, 'Lab_2021/A3_Injection/sql_lab.html',{"user1":user})
             else:
                 return render(
-                    request, 
+                    request,
                     'Lab_2021/A3_Injection/sql_lab.html',
                     {
                         "wrongpass":password,
@@ -979,13 +980,13 @@ def ssti_lab(request):
                 {% block content %}{% block title %}\
                 <title>SSTI-Blogs</title>\
                 {% endblock %}"
-            
+
             blog = prepend_code + blog + "{% endblock %}"
             new_blog = Blogs.objects.create(author = request.user, blog_id = id)
-            new_blog.save() 
+            new_blog.save()
             dirname = os.path.dirname(__file__)
             filename = os.path.join(dirname, f"templates/Lab_2021/A3_Injection/Blogs/{id}.html")
-            file = open(filename, "w+") 
+            file = open(filename, "w+")
             file.write(blog)
             file.close()
             return redirect(f'blog/{id}')
@@ -1104,13 +1105,13 @@ def sec_misconfig_lab3(request):
 
 # - ------------------------Identification and Authentication Failures--------------------------------
 @authentication_decorator
-def auth_failure(request):    
+def auth_failure(request):
     if request.method == "GET":
         return render(request,"Lab_2021/A7_auth_failure/a7.html")
 
 
-## used admin password --> 2022_in_pygoat@pygoat.com  
-# ## not a easy password to be brute forced 
+## used admin password --> 2022_in_pygoat@pygoat.com
+# ## not a easy password to be brute forced
 @authentication_decorator
 def auth_failure_lab2(request):
     if request.method == "GET":
@@ -1124,7 +1125,7 @@ def auth_failure_lab2(request):
             print(type(user.lockout_cooldown))
             if user.is_locked == True and user.lockout_cooldown > datetime.datetime.now():
                 return render(request,"Lab_2021/A7_auth_failure/lab2.html", {"is_locked":True})
-            
+
             try:
                 ph = PasswordHasher()
                 ph.verify(user.password, password)
@@ -1201,7 +1202,7 @@ def auth_failure_lab3(request):
 @authentication_decorator
 def A7_discussion(request):
     return render(request,"playground/A7/index.html")
-        
+
 ## ---------------------Software and Data Integrity Failures-------------------------------------------
 @authentication_decorator
 def software_and_data_integrity_failure(request):
@@ -1227,5 +1228,259 @@ def software_and_data_integrity_failure_lab3(request):
 
 @authentication_decorator
 def A6_discussion(request):
-    
+
     return render(request,"playground/A6/index.html")
+
+@authentication_decorator
+def payment_system(request):
+    """Main page for the complex vulnerability lab"""
+    return render(request, "Lab/Payment/payment_system.html")
+
+@authentication_decorator
+def payment_dashboard(request):
+    if request.method == "GET":
+        account_id = request.GET.get('account_id')
+
+        if account_id:
+            try:
+                account = PaymentAccount.objects.get(id=account_id)
+                transactions = PaymentTransaction.objects.filter(from_account=account)[:10]
+                return render(request, "Lab/Payment/payment_dashboard.html", {
+                    "account": account,
+                    "transactions": transactions,
+                    "message": f"Viewing account {account.account_number}"
+                })
+            except PaymentAccount.DoesNotExist:
+                return render(request, "Lab/Payment/payment_dashboard.html", {
+                    "error": "Account not found"
+                })
+        else:
+            # Get or create account for current user
+            account, created = PaymentAccount.objects.get_or_create(
+                user=request.user,
+                defaults={
+                    'account_number': f"ACC{request.user.id:06d}",
+                    'balance': 1000.00
+                }
+            )
+            transactions = PaymentTransaction.objects.filter(from_account=account)[:10]
+            return render(request, "Lab/Payment/payment_dashboard.html", {
+                "account": account,
+                "transactions": transactions
+            })
+
+    elif request.method == "POST":
+        account_id = request.POST.get('account_id')
+        try:
+            account = PaymentAccount.objects.get(id=account_id)
+
+            for key, value in request.POST.items():
+                if key not in ['csrfmiddlewaretoken', 'account_id']:
+                    if hasattr(account, key):
+                        if key in ['is_premium', 'credit_limit', 'balance']:
+                            if key == 'is_premium':
+                                account.is_premium = value.lower() == 'true'
+                            elif key in ['credit_limit', 'balance']:
+                                account.__dict__[key] = float(value)
+
+            account.save()
+            return render(request, "Lab/Payment/payment_dashboard.html", {
+                "account": account,
+                "success": "Account updated successfully"
+            })
+        except Exception as e:
+            return render(request, "Lab/Payment/payment_dashboard.html", {
+                "error": str(e)
+            })
+
+@csrf_exempt
+@authentication_decorator
+def payment_transfer(request):
+    """
+    Payment transfer with race condition vulnerability
+    Allows double-spending if multiple requests are made simultaneously
+    """
+    if request.method == "POST":
+        from_account_id = request.POST.get('from_account')
+        to_account_number = request.POST.get('to_account')
+        amount = request.POST.get('amount')
+
+        try:
+            amount = float(amount)
+            from_account = PaymentAccount.objects.get(id=from_account_id)
+
+            if from_account.balance >= amount:
+                import time
+                time.sleep(0.1)
+
+                transaction = PaymentTransaction.objects.create(
+                    from_account=from_account,
+                    to_account_number=to_account_number,
+                    amount=amount,
+                    status='pending'
+                )
+
+                from_account.balance -= amount
+                from_account.save()
+
+                transaction.status = 'completed'
+                transaction.save()
+
+                return JsonResponse({
+                    "success": True,
+                    "transaction_id": transaction.id,
+                    "new_balance": float(from_account.balance),
+                    "message": f"Transfer of ${amount} completed"
+                })
+            else:
+                return JsonResponse({
+                    "success": False,
+                    "error": "Insufficient funds"
+                })
+        except Exception as e:
+            return JsonResponse({
+                "success": False,
+                "error": str(e)
+            })
+
+    return JsonResponse({"error": "POST request required"})
+
+@csrf_exempt
+def payment_api(request):
+    """
+    API endpoint with multiple vulnerabilities:
+    1. Weak authentication (predictable API keys)
+    2. IDOR in transaction lookup
+    3. No rate limiting
+    4. Verbose error messages exposing system info
+    """
+    api_key = request.headers.get('X-API-Key') or request.GET.get('api_key')
+
+    if not api_key:
+        return JsonResponse({
+            "error": "API key required",
+            "hint": "Use X-API-Key header or api_key parameter"
+        }, status=401)
+
+    try:
+        # Vulnerable: Predictable API keys (user_id based)
+        api_key_obj = PaymentAPIKey.objects.get(api_key=api_key)
+    except PaymentAPIKey.DoesNotExist:
+        return JsonResponse({
+            "error": "Invalid API key",
+            "system_info": "PyGoat Payment System v1.0 - Django",
+            "db_error": "No matching PaymentAPIKey found in database"
+        }, status=401)
+
+    action = request.GET.get('action', 'list')
+
+    if action == 'list':
+        # IDOR: Can access all transactions by iterating transaction_id
+        transaction_id = request.GET.get('transaction_id')
+        if transaction_id:
+            try:
+                # No authorization check
+                transaction = PaymentTransaction.objects.get(id=transaction_id)
+                return JsonResponse({
+                    "transaction": {
+                        "id": transaction.id,
+                        "from_account": transaction.from_account.account_number,
+                        "to_account": transaction.to_account_number,
+                        "amount": float(transaction.amount),
+                        "status": transaction.status,
+                        "timestamp": transaction.timestamp.isoformat(),
+                        "notes": transaction.notes,
+                        "from_user": transaction.from_account.user.username
+                    }
+                })
+            except PaymentTransaction.DoesNotExist:
+                return JsonResponse({
+                    "error": f"Transaction {transaction_id} not found",
+                    "sql_query": f"SELECT * FROM PaymentTransaction WHERE id={transaction_id}"
+                }, status=404)
+        else:
+            # Return all transactions (data leak)
+            transactions = PaymentTransaction.objects.all()[:100]
+            return JsonResponse({
+                "transactions": [{
+                    "id": t.id,
+                    "amount": float(t.amount),
+                    "from": t.from_account.account_number,
+                    "to": t.to_account_number
+                } for t in transactions]
+            })
+
+    elif action == 'verify':
+        # Business logic flaw: Can verify any transaction with weak verification
+        transaction_id = request.GET.get('transaction_id')
+        verification_code = request.GET.get('code', '000000')
+
+        try:
+            transaction = PaymentTransaction.objects.get(id=transaction_id)
+            # Weak verification: accepts default code or any 6-digit code
+            if len(verification_code) == 6 and verification_code.isdigit():
+                transaction.is_verified = True
+                transaction.verification_code = verification_code
+                transaction.save()
+                return JsonResponse({
+                    "success": True,
+                    "message": "Transaction verified"
+                })
+        except Exception as e:
+            return JsonResponse({
+                "error": str(e),
+                "traceback": "Full traceback would be here in debug mode"
+            })
+
+    elif action == 'admin':
+        # Privilege escalation: Check if admin via easily manipulated field
+        if api_key_obj.is_admin:
+            all_accounts = PaymentAccount.objects.all()
+            return JsonResponse({
+                "admin": True,
+                "accounts": [{
+                    "id": acc.id,
+                    "user": acc.user.username,
+                    "account_number": acc.account_number,
+                    "balance": float(acc.balance),
+                    "is_premium": acc.is_premium,
+                    "credit_limit": float(acc.credit_limit)
+                } for acc in all_accounts]
+            })
+        else:
+            return JsonResponse({
+                "error": "Admin access required",
+                "current_privileges": {
+                    "is_admin": api_key_obj.is_admin,
+                    "user_id": api_key_obj.user.id,
+                    "hint": "Try modifying your API key object"
+                }
+            }, status=403)
+
+    return JsonResponse({"error": "Invalid action"})
+
+@authentication_decorator
+def payment_generate_api_key(request):
+    """Generate API key - uses predictable generation"""
+    if request.method == "POST":
+        # Vulnerable: Predictable API key generation
+        api_key = f"PYGOAT_{request.user.id:05d}_{hashlib.md5(request.user.username.encode()).hexdigest()[:20]}"
+
+        api_key_obj, created = PaymentAPIKey.objects.get_or_create(
+            user=request.user,
+            defaults={
+                'api_key': api_key,
+                'is_admin': False
+            }
+        )
+
+        if not created:
+            api_key = api_key_obj.api_key
+
+        return JsonResponse({
+            "api_key": api_key,
+            "message": "API key generated successfully",
+            "hint": "You can now use this to access the payment API"
+        })
+
+    return render(request, "Lab/Payment/payment_api.html")
