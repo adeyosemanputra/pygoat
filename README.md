@@ -35,6 +35,8 @@ First, Clone the repository using GitHub website or git in Terminal
   git clone -b <branch_name> https://github.com/adeyosemanputra/pygoat.git
 ```
 
+Just testing
+
 #### Method 1
 
 1. Install all app and python requirements using installer file - `bash installer.sh`
