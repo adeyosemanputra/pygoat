@@ -1,25 +1,23 @@
-# Use a modern Python 3.11 image
 FROM python:3.11-slim
 
 # set work directory
 WORKDIR /app
 
-# dependencies for psycopg2 and other system libs
-RUN apt-get update && \
-    apt-get install --no-install-recommends -y dnsutils libpq-dev python3-dev build-essential && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+# dependencies for psycopg2 and system libs
+RUN apt-get update \
+    && apt-get install --no-install-recommends -y dnsutils libpq-dev python3-dev build-essential \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
-# Install pip
-RUN python -m pip install --upgrade pip
-
-# Copy and install Python dependencies
+# Copy dependency file first
 COPY requirements.txt requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
+
+# Install Python dependencies (version pinning handled inside requirements.txt)
+RUN pip install --no-cache-dir --requirement requirements.txt
 
 # Copy project
 COPY . /app/
