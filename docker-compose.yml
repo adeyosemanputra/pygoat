@@ -1,4 +1,14 @@
+version: "3.9"
+
 services:
+  migration:
+    build: .
+    command: python manage.py migrate --noinput
+    volumes:
+      - .:/app
+    networks:
+      - my_network
+
   web:
     build: .
     command: gunicorn --bind 0.0.0.0:8000 --workers 6 pygoat.wsgi
@@ -7,16 +17,13 @@ services:
     volumes:
       - .:/app
     depends_on:
-      - migration
-  migration:
-    image: pygoat/pygoat:latest
-    command: python manage.py migrate --noinput
-    volumes:
-      - .:/app
+      migration:
+        condition: service_completed_successfully
+    networks:
+      - my_network
 
   bopla_lab:
-    # image: pygoat/bopla_lab
-    build: 
+    build:
       context: challenge/labs/bopla_lab/
     depends_on:
       - web
@@ -27,8 +34,7 @@ services:
       - "7018:8080"
 
   business_logic_lab:
-    # image: pygoat/business_logic_lab
-    build: 
+    build:
       context: challenge/labs/business_logic_lab/
     depends_on:
       - web
@@ -39,8 +45,7 @@ services:
       - "7019:5010"
 
   security_headers_lab:
-    # image: pygoat/security_headers_lab
-    build: 
+    build:
       context: challenge/labs/security_headers_lab/
     depends_on:
       - web
@@ -50,7 +55,6 @@ services:
     ports:
       - "7020:5011"
 
-  
 networks:
   my_network:
     driver: bridge
