@@ -31,7 +31,7 @@ jobs:
         uses: zaproxy/action-baseline@v0.12.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          target: "http://ec2-3-144-240-17.us-east-2.compute.amazonaws.com"
+          target: "http://3.144.240.17"
           #rules_file_name: ""
           #cmd_options: '-a'
       
