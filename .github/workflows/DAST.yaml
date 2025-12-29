@@ -8,7 +8,7 @@ jobs:
     steps:
       - name: Get GitHub runner ip
         id: ip
-        uses: haythem/public-ip
+        uses: haythem/public-ip@v1.3
       - name: Set environment variables
         run: |
           echo "AWS_DEFAULT_REGION=us-east-2" >> "$GITHUB_ENV"
