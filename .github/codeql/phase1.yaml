@@ -1,0 +1,11 @@
+name: "Custom CodeQL Config for high/very-high precision and >= High severity only"
+disable-default-queries: true
+queries:
+  - uses: security-extended
+query-filters:
+  - include:
+      precision:
+      - high
+      - very-high
+      tags contain: security
+      security-severity: /([7-9]|10)\.(\d)+/
