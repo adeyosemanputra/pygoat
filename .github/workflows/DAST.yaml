@@ -1,0 +1,45 @@
+name: DAST
+on:
+  workflow_dispatch:
+jobs:
+  zap_basline_scan:
+    runs-on: ubuntu-latest
+    name: ZAP Baseline Scan
+    steps:
+      - name: Get GitHub runner ip
+        id: ip
+        uses: haythem/public-ip
+      - name: Set environment variables
+        run: |
+          echo "AWS_DEFAULT_REGION=us-east-2" >> "$GITHUB_ENV"
+          echo "AWS_SG_NAME=PyGoatSG" >> "$GITHUB_ENV"
+      - name: Add GH runner IP to AWS SG
+        run: |
+          aws ec2 authorize-security-group-ingress --group-name ${{ env.AWS_SG_NAME }} --protocol tcp --port 22 --cidr ${{ steps.ip.outputs.ipv4 }}/32
+        env:
+                AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+                AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+                AWS_DEFAULT_REGION: ${{ env.AWS_DEFAULT_REGION }}
+      
+      - name: Checkout
+        uses: actions/checkout@v4
+        with: 
+          ref: master
+      
+      - name: Run ZAP baseline scan
+        continue-on-error: true
+        uses: zaproxy/action-baseline@v0.12.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          target: "http://ec2-3-144-240-17.us-east-2.compute.amazonaws.com"
+          #rules_file_name: ""
+          #cmd_options: '-a'
+      
+      - name: Remove GitHub action runner IP from AWS Security Group
+        if: always()
+        run: |
+          aws ec2 revoke-security-group-ingress --group-name ${{ env.AWS_SG_NAME }} --protocol tcp --port 22 --cidr ${{ steps.ip.outputs.ipv4 }}/32
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ env.AWS_DEFAULT_REGION }}
