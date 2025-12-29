@@ -34,8 +34,8 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           target: "http://3.144.240.17"
-          #rules_file_name: ""
-          #cmd_options: '-a'
+          rules_file_name: ".zap/rules.tsv"
+          cmd_options: '-m 5'
       
       - name: Remove GitHub action runner IP from AWS Security Group
         if: always()
