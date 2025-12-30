@@ -21,7 +21,7 @@ jobs:
           fetch-depth: 2
 
       - name: TruffleHog Scan
-        uses: trufflesecurity/trufflehog@v3
+        uses: trufflesecurity/trufflehog@main
         with:
           scanArguments: >
             --github 
