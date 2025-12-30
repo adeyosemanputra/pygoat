@@ -19,10 +19,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 2
+          fetch-depth: 0
 
       - name: TruffleHog Scan
         if: github.event_name == 'pull_request'
+        timeout-minutes: 5
         uses: trufflesecurity/trufflehog@main
         continue-on-error: true
         with:
@@ -33,6 +34,7 @@ jobs:
 
       - name: TruffleHog Scan (push / manual)
         if: github.event_name != 'pull_request'
+        timeout-minutes: 5
         uses: trufflesecurity/trufflehog@main
         continue-on-error: true
         with:
