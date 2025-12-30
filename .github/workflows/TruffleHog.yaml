@@ -1,0 +1,35 @@
+name: TruffleHog - Scan For Secrets
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  scan_for_secrets:
+    runs-on: ubuntu-latest
+     # Needed for GitHub’s dependency-submission API later
+    permissions:
+      contents: read
+      security-events: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: TruffleHog Scan
+        uses: trufflesecurity/trufflehog@v3
+        with:
+          scanArguments: >
+            --github 
+            --repo ${{ github.repository }} 
+            --sarif
+            --output trufflehog.sarif
+
+      - name: Upload SARIF
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: trufflehog.sarif
