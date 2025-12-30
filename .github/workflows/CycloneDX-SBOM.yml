@@ -1,0 +1,48 @@
+name: Generate CycloneDX SBOM
+
+on:
+  push:
+    branches: [ master ]
+  workflow_dispatch:
+
+jobs:
+  build-sbom:
+    runs-on: ubuntu-latest
+
+    # Needed for GitHub’s dependency-submission API later
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      # Grab the code
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Set up Python the same way PyGoat runs
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'          # match runtime
+          cache: pip
+
+      # Install project deps & the OWASP SBOM generator
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install cyclonedx-bom            # OWASP-maintained CLI  [oai_citation:0‡PyPI](https://pypi.org/project/cyclonedx-bom/)
+
+      # Build the CycloneDX SBOM (JSON)
+      - name: Generate SBOM
+        run: |
+          cyclonedx-py requirements --output-file sbom.cdx.json
+
+      # -------------- STORAGE / DISTRIBUTION OPTIONS --------------
+
+      # Give engineers something to download
+      - name: Upload as workflow artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: pygoat-sbom
+          path: sbom.cdx.json
+          retention-days: 30      # tunable
