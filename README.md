@@ -61,6 +61,56 @@ First, Clone the repository using GitHub website or git in Terminal
 4. Browse to <http://127.0.0.1:8000> 
 5. Remove existing image using `docker image rm pygoat/pygoat` and pull again incase of any error
 
+### macOS Apple Silicon (M1 / M2 / M3) Notes
+
+On macOS Apple Silicon (M1 / M2 / M3), building PyGoat locally using
+`docker-compose up --build` or `docker build` may fail due to the base
+Docker image relying on Debian **buster**, which has reached end-of-life (EOL).
+
+This causes `apt-get update` to return `404 Not Found` errors during the
+image build process.
+
+#### Observed Issue
+
+* `apt-get update` fails with `404 Not Found`
+* Error occurs while building from the local `Dockerfile`
+* Caused by deprecated Debian **buster** repositories
+* Reproduced on macOS Apple Silicon (M2, latest macOS)
+
+#### Recommended Workaround (Verified on macOS M2)
+
+Use the prebuilt official Docker image and explicitly specify the platform.
+
+```bash
+docker run --rm \
+  --platform=linux/amd64 \
+  -p 8000:8000 \
+  pygoat/pygoat:latest
+```
+
+Alternatively, using Docker Compose:
+
+Create or edit the `docker-compose.yml` file in the project root directory and use the following configuration:
+
+```yaml
+services:
+  pygoat:
+    image: pygoat/pygoat:latest
+    platform: linux/amd64
+    ports:
+      - "8000:8000"
+```
+
+Then
+
+```bash
+docker compose up
+```
+
+This approach allows PyGoat to run successfully on macOS Apple Silicon
+without modifying the existing `Dockerfile`.
+
+
 ### From Docker-Compose 
 1. Install [Docker](https://www.docker.com)
 2. Run `docker-compose up` or `docker-compose up -d`
