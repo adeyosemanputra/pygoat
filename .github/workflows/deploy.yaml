@@ -1,7 +1,5 @@
 name: Pygoat Deploy CD
 on:
-    push:
-        branches: [main, aws-deployment]
     workflow_dispatch:
 
 jobs:
