@@ -1,6 +1,7 @@
 services:
   web:
     build: .
+    image: pygoat-web
     command: gunicorn --bind 0.0.0.0:8000 --workers 6 pygoat.wsgi
     ports:
       - "8000:8000"
@@ -8,8 +9,9 @@ services:
       - .:/app
     depends_on:
       - migration
+
   migration:
-    image: pygoat/pygoat:latest
+    image: pygoat-web
     command: python manage.py migrate --noinput
     volumes:
       - .:/app
