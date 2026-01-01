@@ -65,6 +65,18 @@ First, Clone the repository using GitHub website or git in Terminal
 1. Install [Docker](https://www.docker.com)
 2. Run `docker-compose up` or `docker-compose up -d`
 
+## Populate Challenge Data
+
+PyGoat stores challenge definitions in `challenge/challenge.json`.
+To populate the `Challenge` table in the database from this file, use the
+built-in Django management command:
+
+### Using Docker Compose
+
+```bash
+docker compose exec web python manage.py populate_challenges
+
+
 ### Build Docker Image and Run
 1. Clone the repository  &ensp; `git clone https://github.com/adeyosemanputra/pygoat.git` 
 2. Build the docker image from Dockerfile using &ensp; `docker build -f Dockerfile -t pygoat .`
