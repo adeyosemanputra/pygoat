@@ -1,4 +1,10 @@
 services:
+  migration:
+    build: .
+    command: python manage.py migrate --noinput
+    volumes:
+      - .:/app
+
   web:
     build: .
     command: gunicorn --bind 0.0.0.0:8000 --workers 6 pygoat.wsgi
@@ -8,9 +14,3 @@ services:
       - .:/app
     depends_on:
       - migration
-
-  migration:
-    image: pygoat/pygoat:latest
-    command: python manage.py migrate --noinput
-    volumes:
-      - .:/app
