@@ -3,7 +3,9 @@ version: "3.9"
 services:
   migration:
     build: .
-    command: python manage.py migrate --noinput
+    command: >
+      sh -c "python manage.py migrate --noinput &&
+             python manage.py populate_challenges"
     volumes:
       - .:/app
     networks:
