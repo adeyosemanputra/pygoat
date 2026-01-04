@@ -104,9 +104,14 @@
         <button class="coll btn btn-info">Lab Details</button>
         <div class="lab">
             <p class="bp">
-                This lab is a demonstration of a Reflected XSS
+                This lab is a demonstration of a Reflected XSS with alphanumeric filter bypass.
             </p>
-            <p class="bp">The goal of this challenge is to trigger an alert, User input is being Reflected on script Tag, but the real challenge lies in the fact that all alphanumeric characters are escaped. Can you find way to pop an alert ?
+            <p class="bp">
+                The goal of this challenge is to trigger an alert. User input is being reflected in a script tag, but all alphanumeric characters (letters A-Z, a-z, and digits 0-9) are removed from your input.
+                Can you find a way to execute JavaScript using only special characters?
+            </p>
+            <p class="bp">
+                <b>Hint:</b> Research "JSFuck" - a technique to write JavaScript using only these 6 characters: <code>[]()!+</code>
             </p> 
          
 
