@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h2>XSS Lab - Comment Section</h2>
+
+    <!-- Form for posting comments -->
+    <div class="form-section">
+        <h3>Post a Comment</h3>
+        <form method="POST">
+            <div style="margin-bottom: 15px;">
+                <label for="comment" style="display: block; margin-bottom: 5px; font-weight: bold;">Comment:</label>
+                <textarea id="comment" name="comment" rows="4" required></textarea>
+            </div>
+            <button type="submit">Post Comment</button>
+        </form>
+    </div>
+
+    <!-- Display comments -->
+    <div class="comments-section">
+        <h3>Comments ({{ comments|length }})</h3>
+        
+        {% if comments %}
+            {% for comment in comments %}
+                <div style="border: 1px solid #ddd; padding: 15px; margin-bottom: 10px; background-color: #f9f9f9; border-radius: 4px;">
+                    <!-- VULNERABLE: Using |safe allows HTML/JavaScript execution -->
+                    <p>{{ comment|safe }}</p>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p style="color: #999; font-style: italic;">No comments yet. Be the first to post!</p>
+        {% endif %}
+    </div>
+
+    <hr>
+    <h3>🔓 Why This Is Vulnerable</h3>
+    <div style="background-color: #ffebee; padding: 15px; border-left: 4px solid #d32f2f; border-radius: 4px;">
+        <p>
+            The comments are displayed using the <code>|safe</code> filter in Jinja2.
+            This tells Flask: "Trust this content, don't escape it."
+        </p>
+        <p>
+            Since user input is directly marked as safe without sanitization,
+            malicious JavaScript is executed in the browser.
+        </p>
+    </div>
+
+    <hr>
+    <p><a href="/">← Back to Home</a></p>
+</div>
+{% endblock %}
