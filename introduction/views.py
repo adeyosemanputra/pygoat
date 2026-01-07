@@ -109,7 +109,8 @@ def xss_lab2(request):
         username = request.POST.get('username', '')
         if username:
             username = username.strip()
-            username = username.replace("<script>", "").replace("</script>", "")
+            # Use case-insensitive regex to remove script tags and their content
+            username = re.sub(r'<script\b[^>]*>.*?</script>', '', username, flags=re.IGNORECASE | re.DOTALL)
         else:
             username = "Guest"
         context = {
