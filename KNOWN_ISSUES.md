@@ -68,8 +68,8 @@ For production deployments, consider using a named Docker volume instead of a bi
 services:
   migration:
     volumes:
-      - db_data:/app/db.sqlite3
       - .:/app
+      - db_data:/app/db.sqlite3
 
 volumes:
   db_data:
