@@ -123,7 +123,6 @@ def xss_lab3(request):
     if request.user.is_authenticated:
         if request.method == 'POST':
             username = request.POST.get('username', '')
-            print(type(username))
             # Remove only alphanumeric characters (letters and digits)
             # This allows special characters like []()!+ for JSFuck-style payloads
             pattern = r'[a-zA-Z0-9]'
