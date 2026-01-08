@@ -16,6 +16,12 @@ def test_xss_lab2_filter():
         ("<SCRIPT SRC='evil.js'></SCRIPT>", "", "Uppercase script with attributes"),
         ("<img src=x onerror=alert('XSS')>", "<img src=x onerror=alert('XSS')>", "Other XSS vectors should work"),
         ("Hello <script>bad()</script> World", "Hello  World", "Script in middle of text"),
+        # Edge cases suggested by Copilot
+        ("<script>alert('XSS')", "<script>alert('XSS')", "Script tags without closing tags"),
+        ("<script/>", "<script/>", "Self-closing script tags"),
+        ("<script>\nalert('XSS')\n</script>", "", "Script tags with newlines"),
+        ("<script>alert(1)</script>text<SCRIPT>alert(2)</SCRIPT>", "text", "Multiple script tags in one input"),
+        ("< script >alert('XSS')</ script >", "< script >alert('XSS')</ script >", "Script tags with unusual spacing"),
     ]
     
     print("Testing XSS Lab 2 Filter Fix\n" + "="*50)
@@ -29,7 +35,7 @@ def test_xss_lab2_filter():
         passed = username == expected
         all_passed = all_passed and passed
         
-        status = "✓ PASS" if passed else "✗ FAIL"
+        status = "PASS" if passed else "FAIL"
         print(f"\n{status}: {description}")
         print(f"  Input:    {input_str}")
         print(f"  Expected: {expected}")
@@ -37,10 +43,10 @@ def test_xss_lab2_filter():
     
     print("\n" + "="*50)
     if all_passed:
-        print("✓ All tests passed!")
+        print("All tests passed!")
         return 0
     else:
-        print("✗ Some tests failed!")
+        print("Some tests failed!")
         return 1
 
 if __name__ == "__main__":
