@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  xss-lab:
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=development
+    volumes:
+      - .:/app
