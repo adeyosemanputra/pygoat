@@ -3,6 +3,8 @@
 [![All Contributors](https://img.shields.io/badge/all_contributors-9-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/brownphan0505/pygoat_luan/badge)](https://scorecard.dev/viewer/?uri=github.com/brownphan0505/pygoat_luan)
+
 intentionally vuln web Application Security in django.
 our roadmap build intentionally vuln web Application in django. The Vulnerability can based on OWASP top ten
 <br>
@@ -32,6 +34,8 @@ First, Clone the repository using GitHub website or git in Terminal
   ### To Download a specific branch
   git clone -b <branch_name> https://github.com/adeyosemanputra/pygoat.git
 ```
+
+Just testing
 
 #### Method 1
 
@@ -139,5 +143,8 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- prettier-ignore-end -->
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
+
+Test 1
+
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
