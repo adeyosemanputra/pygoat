@@ -122,9 +122,10 @@ def xss_lab2(request):
 def xss_lab3(request):
     if request.user.is_authenticated:
         if request.method == 'POST':
-            username = request.POST.get('username')
-            print(type(username))
-            pattern = r'\w'
+            username = request.POST.get('username', '')
+            # Remove only alphanumeric characters (letters and digits)
+            # This allows special characters like []()!+ for JSFuck-style payloads
+            pattern = r'[a-zA-Z0-9]'
             result = re.sub(pattern, '', username)
             context = {'code':result}
             return render(request, 'Lab/XSS/xss_lab_3.html',context)
