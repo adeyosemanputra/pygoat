@@ -32,6 +32,25 @@ First, Clone the repository using GitHub website or git in Terminal
   ### To Download a specific branch
   git clone -b <branch_name> https://github.com/adeyosemanputra/pygoat.git
 ```
+## Python Version Compatibility
+
+⚠️ **Important**
+
+PyGoat is currently **not compatible with Python 3.12** due to dependency incompatibilities.
+
+### Supported Python Versions
+- Python **3.9**
+- Python **3.10**
+- Python **3.11**
+
+### Recommended Setup
+- Use **Docker (recommended)** for a consistent environment
+- Or create a virtual environment with Python 3.9 / 3.10
+
+Example:
+```bash
+python3.10 -m venv venv
+source venv/bin/activate
 
 #### Method 1
 
