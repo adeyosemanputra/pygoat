@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Insecure Design Lab</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-5 mb-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>🎟️ Insecure Design Lab</h2>
+        <a href="/logout" class="btn btn-outline-danger">🚪 Logout</a>
+    </div>
+
+    {% if error %}
+        <div class="alert alert-info">{{ error|safe }}</div>
+    {% endif %}
+
+    <!-- User's Tickets -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-secondary text-white">
+            Your Tickets ({{ tickets|length }}/5)
+        </div>
+        <div class="card-body">
+            {% if tickets %}
+                <ul class="list-group">
+                    {% for ticket in tickets %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            🎫 {{ ticket }}
+                            <span class="badge bg-success">Valid</span>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="text-muted">No tickets claimed yet.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Claim Tickets -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-info text-white">
+            Claim Tickets
+        </div>
+        <div class="card-body">
+            <form method="POST" action="/insecure-design_lab">
+                <div class="row g-2">
+                    <div class="col-md-6">
+                        <input type="number" name="count" placeholder="e.g., 2" class="form-control" required min="1" max="5">
+                    </div>
+                    <div class="col-md-6">
+                        <button type="submit" class="btn btn-success w-100">🎟️ Claim Ticket(s)</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Watch Movie -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-warning">
+            Watch Movie
+        </div>
+        <div class="card-body">
+            <form method="POST" action="/insecure-design_lab">
+                <div class="row g-2">
+                    <div class="col-md-8">
+                        <input type="text" name="ticket" placeholder="Enter your ticket code" class="form-control" required>
+                    </div>
+                    <div class="col-md-4">
+                        <button type="submit" class="btn btn-primary w-100">🎬 Watch Movie</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-between">
+        <a href="/insecure-design" class="btn btn-outline-secondary">🔙 Back to Lab Info</a>
+        <small class="text-muted align-self-center">Designed for OWASP A04: Insecure Design</small>
+    </div>
+
+</div>
+</body>
+</html>
