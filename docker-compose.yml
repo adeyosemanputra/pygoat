@@ -1,4 +1,16 @@
+version: "3.9"
+
 services:
+  # Run migrations first
+  migration:
+    build: .
+    command: python manage.py migrate --noinput
+    volumes:
+      - .:/app
+    networks:
+      - my_network
+
+  # Web service (Gunicorn) waits for migration to finish
   web:
     build: .
     command: gunicorn --bind 0.0.0.0:8000 --workers 6 pygoat.wsgi
@@ -7,9 +19,45 @@ services:
     volumes:
       - .:/app
     depends_on:
-      - migration
-  migration:
-    image: pygoat/pygoat:latest
-    command: python manage.py migrate --noinput
-    volumes:
-      - .:/app
+      migration:
+        condition: service_completed_successfully
+    networks:
+      - my_network
+
+  # Labs (optional, if you want them running)
+  bopla_lab:
+    build:
+      context: dockerized_labs/broken_auth_lab/
+    depends_on:
+      - web
+    networks:
+      - my_network
+    container_name: bopla_lab
+    ports:
+      - "7018:8080"
+
+  business_logic_lab:
+    build:
+      context: dockerized_labs/insec_des_lab/
+    depends_on:
+      - web
+    networks:
+      - my_network
+    container_name: business_logic_lab
+    ports:
+      - "7019:5010"
+
+  security_headers_lab:
+    build:
+      context: dockerized_labs/sensitive_data_exposure/
+    depends_on:
+      - web
+    networks:
+      - my_network
+    container_name: security_headers_lab
+    ports:
+      - "7020:5011"
+
+networks:
+  my_network:
+    driver: bridge
