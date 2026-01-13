@@ -126,7 +126,5 @@ class PaymentAPIKey(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     api_key = models.CharField(max_length=40, unique=True)
     is_admin = models.BooleanField(default=False)
-    rate_limit = models.IntegerField(default=100)
-
-    def __str__(self):
-        return f"{self.user.username} - {self.api_key}"
+def __str__(self):
+        return f"{self.user.username} - ****{self.api_key[-4:]}"
