@@ -1122,7 +1122,6 @@ def auth_failure_lab2(request):
         password = request.POST["password"]
         try:
             user = AF_admin.objects.get(username=username)
-            print(type(user.lockout_cooldown))
             if user.is_locked == True and user.lockout_cooldown > datetime.datetime.now():
                 return render(request,"Lab_2021/A7_auth_failure/lab2.html", {"is_locked":True})
 
