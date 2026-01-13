@@ -1,4 +1,5 @@
-FROM python:3.11.0b1-buster
+FROM python:3.11-slim-bookworm
+
 
 
 # set work directory
@@ -6,7 +7,7 @@ WORKDIR /app
 
 
 # dependencies for psycopg2
-RUN apt-get update && apt-get install --no-install-recommends -y dnsutils=1:9.11.5.P4+dfsg-5.1+deb10u11 libpq-dev=11.16-0+deb10u1 python3-dev=3.7.3-1 && apt-get clean && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install --no-install-recommends -y dnsutils libpq-dev python3-dev && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 
 # Set environment variables
