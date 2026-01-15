@@ -23,6 +23,7 @@
     <link rel="stylesheet" href="{% static 'Lab/ssrf.css'%}" />
     <link rel="stylesheet" href="{% static 'Lab/ssti.css'%}" />
     <link rel="stylesheet" href="{% static 'css/playground.css'%}" />
+    <link rel="stylesheet" href="{% static 'css/supply_chain.css'%}" />
     <link rel="icon" href="{% static 'Lab/icons/pygoat-mini.png' %}" />
     <!-- Font Awesome JS -->
     <script
@@ -105,6 +106,29 @@
                   <i class="fas fa-bug"></i>
                   A2: Cryptographic Failures
                 </a>
+              </li>
+              <li>
+                <a
+                  href="#supplyChainSubmenu"
+                  data-toggle="collapse"
+                  aria-expanded="false"
+                  class="dropdown-toggle sidebar-list-items"
+                >
+                  <i class="fas fa-bug"></i>
+                  A03:2025 - Software Supply Chain Failures
+                </a>
+                <ul class="collapse list-unstyled" id="supplyChainSubmenu">
+                  <li>
+                    <a href="{% url 'supply_chain_failures' %}" class="sidebar-list-items">
+                      Overview
+                    </a>
+                  </li>
+                  <li>
+                    <a href="{% url 'dependency_attack_lab' %}" class="sidebar-list-items">
+                      Dependency Attack Lab
+                    </a>
+                  </li>
+                </ul>
               </li>
               <li>
                 <a
