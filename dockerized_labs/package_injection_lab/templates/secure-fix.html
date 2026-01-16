@@ -1,0 +1,166 @@
+<div id="secureFixModal" class="custom-modal">
+    <div class="modal-overlay"></div>
+    <div class="modal-container">
+        <div class="modal-header">
+            <h2 class="modal-title">
+                Security Fix for Package Injection / Typosquatting
+            </h2>
+            <button type="button" class="close-btn" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="tabs-container">
+                <div class="tab-buttons">
+                    <button class="tab-btn active" style="font-weight: bold; font-size: 18px;" onclick="showTab('secure-code')">Secure Code</button>
+                    <button class="tab-btn" style="font-weight: bold; font-size: 18px;" onclick="showTab('prevention')">Solution</button>
+                </div>
+
+                <div class="tab-content">
+                    <div id="secure-code" class="tab-panel active">
+                        <h4>Secure Implementation for Typosquatting Prevention</h4>
+                        
+                        <h4>1. Verify Package Names Before Installation</h4>
+                        <pre class="code-block"><code>import subprocess
+import json
+from typing import Dict, List
+
+KNOWN_TYPOSQUATTING_PACKAGES = {
+    'requets': 'requests',
+    'pythn-dotenv': 'python-dotenv',
+    'urllib3': 'urllib3',  # Sometimes typosquatting uses similar names
+}
+
+def verify_package_name(package_name: str) -> Dict:
+    """Verify if package name is legitimate or typosquatting"""
+    package_lower = package_name.lower()
+    
+    # Check against known typosquatting packages
+    if package_lower in KNOWN_TYPOSQUATTING_PACKAGES:
+        correct_name = KNOWN_TYPOSQUATTING_PACKAGES[package_lower]
+        if correct_name != package_lower:
+            return {
+                'status': 'typosquatting',
+                'correct_name': correct_name,
+                'safe': False
+            }
+    
+    # Check package metadata from PyPI
+    try:
+        result = subprocess.run(
+            ['pip', 'index', 'versions', package_name],
+            capture_output=True,
+            text=True,
+            timeout=10
+        )
+        
+        if result.returncode != 0:
+            return {
+                'status': 'not_found',
+                'safe': False,
+                'message': 'Package not found on PyPI'
+            }
+        
+        return {
+            'status': 'verified',
+            'safe': True
+        }
+    except Exception as e:
+        return {
+            'status': 'error',
+            'safe': False,
+            'error': str(e)
+        }</code></pre>
+
+                        <h4>2. Use Requirements Files with Verification</h4>
+                        <pre class="code-block"><code># requirements.txt - Always verify before committing
+# Use pip-tools to generate locked versions
+requests==2.28.1
+python-dotenv==0.19.0
+flask==2.0.1
+
+# Install with verification
+# pip install -r requirements.txt --require-hashes
+
+# Use pip-audit to check for vulnerabilities
+# pip-audit -r requirements.txt
+
+# Use safety to check for known security issues
+# safety check -r requirements.txt</code></pre>
+
+                        <h4>3. CI/CD Checks for Typosquatting</h4>
+                        <pre class="code-block"><code># .github/workflows/dependency-check.yml
+name: Dependency Security Check
+
+on:
+  pull_request:
+    paths:
+      - 'requirements.txt'
+      - 'setup.py'
+      - 'pyproject.toml'
+
+jobs:
+  check-typosquatting:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Check for typosquatting
+        run: |
+          python scripts/check_typosquatting.py
+      
+      - name: Run pip-audit
+        run: |
+          pip install pip-audit
+          pip-audit -r requirements.txt
+      
+      - name: Run safety check
+        run: |
+          pip install safety
+          safety check -r requirements.txt</code></pre>
+                    </div>
+
+                    <div id="prevention" class="tab-panel">
+                        <h4>Solution</h4>
+                        <p>
+                            The lab demonstrates how typosquatting attacks work by tricking developers into installing 
+                            malicious packages. To solve this challenge:
+                        </p>
+                        <ol>
+                            <li>
+                                <strong>Check Installed Packages:</strong> Click "Check Packages" to see that the application 
+                                uses packages like <code>requets</code> (typo) and <code>pythn-dotenv</code> (typo). These are 
+                                typosquatting packages mimicking <code>requests</code> and <code>python-dotenv</code>.
+                            </li><br>
+                            <li>
+                                <strong>Use Package Features:</strong> Click "Make API Call" or "Execute Function" buttons. 
+                                Notice that the malicious packages execute code and collect sensitive information including API 
+                                keys, database credentials, and configuration data.
+                            </li><br>
+                            <li>
+                                <strong>Check Malicious Activity:</strong> Click "Check Malicious Activity" to see all the 
+                                malicious actions that have been performed by the typosquatting packages.
+                            </li><br>
+                            <li>
+                                <strong>Verify Packages:</strong> Use the "Package Verification API" to check if packages are 
+                                legitimate. Enter "requets" and you'll see it's flagged as typosquatting, suggesting the 
+                                correct name "requests".
+                            </li>
+                        </ol>
+                        
+                        <h4>Key Takeaways</h4>
+                        <ul>
+                            <li>Always double-check package names before installation</li>
+                            <li>Use requirements.txt files and pin exact versions</li>
+                            <li>Verify packages against PyPI and check download statistics</li>
+                            <li>Implement automated checks in CI/CD pipelines</li>
+                            <li>Use tools like pip-audit and safety to detect vulnerabilities</li>
+                            <li>Review package maintainers and repository information</li>
+                            <li>Be cautious of packages with similar names to popular libraries</li>
+                            <li>Monitor for suspicious package behavior in your applications</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>

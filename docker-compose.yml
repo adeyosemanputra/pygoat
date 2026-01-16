@@ -34,6 +34,17 @@ services:
     container_name: dependency_attack_lab
     ports:
       - "5020:5020"
+  
+  package_injection_lab:
+    build:
+      context: dockerized_labs/package_injection_lab/
+    depends_on:
+      - web
+    networks:
+      - my_network
+    container_name: package_injection_lab
+    ports:
+      - "5021:5021"
 
   bopla_lab:
     build:
