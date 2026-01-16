@@ -408,6 +408,17 @@ h2 {
   text-align: center;
   padding: 13% 0 0 0;
 }
+#owasp10_2025 {
+  width: 90%;
+  background: #283036;
+  margin-top: 15px;
+  left: 5%;
+  height: 110px;
+  padding: 17px;
+  border-radius: 10px;
+  text-align: center;
+  padding: 13% 0 0 0;
+}
 #owasp10_2017 {
   width: 90%;
   margin-top: 15px;
@@ -425,6 +436,10 @@ h2 {
 }
 
 #OWASP10_2021 {
+  width: 95%;
+  padding-left: 5%;
+}
+#OWASP10_2025 {
   width: 95%;
   padding-left: 5%;
 }
