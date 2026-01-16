@@ -10,7 +10,9 @@ COPY . .
 
 # Add script to make sure migrations run properly
 COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+
+# Fix Windows line endings (CRLF -> LF) and make executable
+RUN sed -i 's/\r$//' /entrypoint.sh && chmod +x /entrypoint.sh
 
 EXPOSE 8000
 

@@ -3,8 +3,9 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 import string
 import random
+import os
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/labs/insecure-design/static')
 app.secret_key = 'your-secret-key-here'  # Change in production
 
 # Database config

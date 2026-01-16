@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash
 import os
 import requests
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/labs/ssrf/static')
 app.secret_key = "your_secret_key_here"  # Required for flash messages
 
 @app.route('/')

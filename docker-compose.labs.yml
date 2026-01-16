@@ -125,7 +125,7 @@ services:
 
   sec-misconfig-lab:
     build:
-      context: dockerized_labs/sec_misconfig_lab/
+      context: dockerized_labs/sec_misconfig/
     container_name: sec-misconfig-lab
     networks:
       - my_network
@@ -135,13 +135,14 @@ services:
 
   sensitive-data-exposure-lab:
     build:
-      context: dockerized_labs/sensitive_data_exposure_lab/
+      context: dockerized_labs/sensitive_data_exposure/
     container_name: sensitive-data-exposure-lab
+    command: python manage.py runserver 0.0.0.0:8000
     networks:
       - my_network
     profiles:
       - labs
-      - sensitive-data
+      - sensitive-data-exposure
 
   auth-failure-lab:
     build:
@@ -175,7 +176,7 @@ services:
 
   sde-lab:
     build:
-      context: dockerized_labs/sde_lab/
+      context: dockerized_labs/sde/
     container_name: sde-lab
     networks:
       - my_network

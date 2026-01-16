@@ -1,7 +1,8 @@
 from flask import Flask, render_template, request, redirect, make_response
 import re
+import os
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/labs/xss/static')
 
 # Mock FAANG data
 FAANG_DATA = {

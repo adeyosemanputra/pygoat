@@ -2,8 +2,9 @@ from flask import Flask, render_template, request, make_response, redirect, url_
 import hashlib
 import datetime
 import base64
+import os
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/labs/crypto-failure/static')
 app.secret_key = "crypto_failure_lab_secret_key"
 
 # Lab 1 user data with MD5 hashes

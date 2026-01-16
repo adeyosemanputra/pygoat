@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, make_response, redirect, url_
 from dataclasses import dataclass
 import os
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/labs/broken-access/static')
 app.secret_key = os.urandom(24)
 
 @dataclass

@@ -1,7 +1,8 @@
 from flask import Flask, render_template, request, session, redirect, url_for, jsonify
 import uuid
+import os
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/labs/business-logic/static')
 app.secret_key = 'business_logic_secret_key_2024'
 
 PRODUCTS = [

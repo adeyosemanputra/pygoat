@@ -1,11 +1,11 @@
-from flask import Flask, render_template, request, make_response, send_from_directory
+from flask import Flask, render_template, request, make_response
 import base64
 import pickle
 import os
 from dataclasses import dataclass
 from pathlib import Path
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/labs/software-integrity/static')
 app.config['SECRET_KEY'] = 'your-secret-key-here'
 
 # For Lab 1 - Pickle Deserialization

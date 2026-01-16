@@ -3,8 +3,9 @@ import hashlib
 import json
 from datetime import datetime, timedelta
 import base64
+import os
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/labs/broken-auth/static')
 app.secret_key = 'your-secret-key-here'  # Vulnerable: Hardcoded secret key
 
 # Vulnerable: Storing user data in memory

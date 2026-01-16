@@ -1,8 +1,9 @@
 from flask import Flask, render_template, request, session, redirect, url_for, jsonify, make_response
 import uuid
 from datetime import datetime
+import os
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/labs/security-headers/static')
 app.secret_key = 'security_headers_secret_key_2024'
 
 USERS = {

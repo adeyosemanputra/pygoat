@@ -3,7 +3,7 @@ import logging
 from datetime import datetime
 import os
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/labs/insufficient-logging/static')
 app.secret_key = 'your-secret-key-here'  # For flash messages
 
 # Set up basic logging (intentionally insufficient)

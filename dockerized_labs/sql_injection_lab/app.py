@@ -3,7 +3,7 @@ import sqlite3
 import os
 from pathlib import Path
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/labs/sql-injection/static')
 app.config['SECRET_KEY'] = 'your-secret-key-here'
 
 def init_db():

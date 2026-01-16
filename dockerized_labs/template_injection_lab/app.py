@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, render_tem
 import os
 import uuid
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/labs/template-injection/static')
 
 # Directory to store blog posts
 BLOG_DIR = os.path.join(app.root_path, 'templates', 'blogs')

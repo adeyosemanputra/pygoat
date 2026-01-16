@@ -1,6 +1,7 @@
 from flask import Flask, render_template
+import os
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/labs/sde/static')
 
 # Sensitive config data
 app.config['SECRET_KEY'] = 'your-secret-key-here-not-very-secure'

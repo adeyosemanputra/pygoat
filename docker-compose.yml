@@ -28,6 +28,8 @@ services:
     build: .
     command: gunicorn --bind 0.0.0.0:8000 --workers 6 pygoat.wsgi
     container_name: pygoat-web
+    ports:
+      - "8000"
     volumes:
       - .:/app
     depends_on:

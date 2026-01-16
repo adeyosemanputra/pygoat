@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, jsonify, redirect, url_for
 import os
 import json
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/labs/bopla/static')
 app.secret_key = os.urandom(24)
 
 projects_data = {

@@ -4,7 +4,7 @@ import traceback
 import jwt
 from datetime import datetime, timedelta
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/labs/sec-misconfig/static')
 app.debug = True  # Intentionally enabled for Lab 2
 
 # Sensitive data for Lab 2

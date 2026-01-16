@@ -3,8 +3,9 @@ from flask_sqlalchemy import SQLAlchemy
 from xml.dom.pulldom import START_ELEMENT, parseString
 from xml.sax import make_parser
 from xml.sax.handler import feature_external_ges
+import os
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/labs/xxe/static')
 app.config['SECRET_KEY'] = 'your-secret-key-here'  
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///comments.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False

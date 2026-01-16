@@ -2,8 +2,9 @@ from flask import Flask, render_template, request, make_response
 import pickle
 import base64
 from dataclasses import dataclass
+import os
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/labs/insec-des/static')
 
 @dataclass
 class User:

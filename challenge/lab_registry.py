@@ -84,7 +84,7 @@ LAB_REGISTRY = {
     "sensitive_data_exposure": {
         "service_name": "sensitive-data-exposure-lab",
         "internal_port": 8000,
-        "path_prefix": "/labs/sensitive-data",
+        "path_prefix": "/labs/sensitive-data-exposure",
         "container_name": "sensitive-data-exposure-lab"
     },
     "auth_failure": {
