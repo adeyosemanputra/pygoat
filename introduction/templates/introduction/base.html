@@ -23,6 +23,7 @@
     <link rel="stylesheet" href="{% static 'Lab/ssrf.css'%}" />
     <link rel="stylesheet" href="{% static 'Lab/ssti.css'%}" />
     <link rel="stylesheet" href="{% static 'css/playground.css'%}" />
+    <link rel="stylesheet" href="{% static 'css/supply_chain.css'%}" />
     <link rel="icon" href="{% static 'Lab/icons/pygoat-mini.png' %}" />
     <!-- Font Awesome JS -->
     <script
@@ -83,6 +84,42 @@
           </li>
           <li>
             <a
+              href="#OWASP10_2025"
+              data-toggle="collapse"
+              aria-expanded="false"
+              class="dropdown-toggle"
+              id="owasp10_2025"
+              style="padding: 13% 10% 0 0"
+            >
+              <i class="fas fa-flag"></i>
+              OWASP TOP 10 2025
+            </a>
+            <ul class="collapse list-unstyled" id="OWASP10_2025">
+              <li>
+                <a
+                  href="#supplyChain2025"
+                  data-toggle="collapse"
+                  aria-expanded="false"
+                  class="dropdown-toggle sidebar-list-items"
+                >
+                  <i class="fas fa-bug"></i>
+                  A03:2025 - Software Supply Chain Failures
+                </a>
+                <ul class="collapse list-unstyled" id="supplyChain2025">
+                  <li>
+                    <a href="{% url 'supply_chain_failures' %}" class="sidebar-list-items">
+                      Overview
+                    </a>
+                  </li>
+                  <li>
+                    <a href="{% url 'dependency_attack_lab' %}" class="sidebar-list-items">
+                      Dependency Attack Lab
+                    </a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+            <a
               href="#OWASP10_2021"
               data-toggle="collapse"
               aria-expanded="false"
@@ -105,6 +142,29 @@
                   <i class="fas fa-bug"></i>
                   A2: Cryptographic Failures
                 </a>
+              </li>
+              <li>
+                <a
+                  href="#supplyChainSubmenu"
+                  data-toggle="collapse"
+                  aria-expanded="false"
+                  class="dropdown-toggle sidebar-list-items"
+                >
+                  <i class="fas fa-bug"></i>
+                  A03:2025 - Software Supply Chain Failures
+                </a>
+                <ul class="collapse list-unstyled" id="supplyChainSubmenu">
+                  <li>
+                    <a href="{% url 'supply_chain_failures' %}" class="sidebar-list-items">
+                      Overview
+                    </a>
+                  </li>
+                  <li>
+                    <a href="{% url 'dependency_attack_lab' %}" class="sidebar-list-items">
+                      Dependency Attack Lab
+                    </a>
+                  </li>
+                </ul>
               </li>
               <li>
                 <a

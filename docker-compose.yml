@@ -24,6 +24,17 @@ services:
     networks:
       - my_network
 
+  dependency_attack_lab:
+    build:
+      context: dockerized_labs/dependency_attack_lab/
+    depends_on:
+      - web
+    networks:
+      - my_network
+    container_name: dependency_attack_lab
+    ports:
+      - "5020:5020"
+
   bopla_lab:
     build:
       context: challenge/labs/bopla_lab/
