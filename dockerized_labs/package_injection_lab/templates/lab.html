@@ -1,0 +1,306 @@
+{% extends "base.html" %}
+
+{% block title %}<title>Typosquatting Lab Challenge</title>{% endblock %}
+
+{% block content %}
+<div class="box">
+    <h3>Package Injection / Typosquatting Challenge</h3>
+    
+    <div class="section hidden" id="activity-monitor">
+        <h4>🔍 Real-time Activity Monitor</h4>
+        <div id="activity-log" class="activity-log">
+            <p class="activity-item">Waiting for activity...</p>
+        </div>
+    </div>
+    
+    <div class="section">
+        <h4>Check Installed Packages</h4>
+        <p class="bp">View the packages currently installed in this application. Look carefully for typos!</p>
+        <button type="button" onclick="checkPackages()" id="check-packages-btn">Check Packages</button>
+        <div id="packages-result" class="result-container hidden"></div>
+    </div>
+
+    <div class="section">
+        <h4>Use Package Features</h4>
+        <p class="bp">These actions use the installed packages. Try them and observe what happens.</p>
+        
+        <div class="button-group">
+            <button type="button" onclick="usePackage('api_call')" id="api-call-btn" class="feature-button">
+                <span class="btn-text">Make API Call</span>
+                <span class="btn-loader">⏳ Processing...</span>
+            </button>
+            
+            <button type="button" onclick="usePackage('backdoor')" id="backdoor-btn" class="feature-button">
+                <span class="btn-text">Execute Function</span>
+                <span class="btn-loader">⏳ Executing...</span>
+            </button>
+        </div>
+        
+        <div id="package-result" class="feature-result-container hidden"></div>
+    </div>
+
+    <div class="section">
+        <h4>Check Malicious Activity</h4>
+        <p class="bp">See what malicious actions the typosquatting packages have performed.</p>
+        <button type="button" onclick="checkMaliciousActivity()" id="check-malicious-btn">Check Malicious Activity</button>
+        <div id="malicious-activity" class="exfiltrated-data-container hidden">
+            <div class="data-stats">
+                <span id="activity-count" class="stat-badge">0 actions</span>
+            </div>
+            <pre id="malicious-content" class="exfiltrated-content"></pre>
+        </div>
+    </div>
+
+    <div class="section">
+        <h4>Package Verification API</h4>
+        <p class="bp">Test the package verification endpoint to check if packages are legitimate</p>
+        <div class="package-input-container">
+            <input type="text" id="package-name" placeholder="Enter package name (e.g., requets, requests)" 
+                   class="package-name-input" onkeypress="if(event.key==='Enter') verifyPackage()">
+            <button type="button" onclick="verifyPackage()" id="verify-pkg-btn">Verify Package</button>
+        </div>
+        <div id="verify-result" class="package-result-container"></div>
+    </div>
+
+    <div class="button-container">
+        <button type="button" onclick="navigateToIndex()" class="nav-button">Back to Lab Details</button>
+    </div>
+</div>
+
+<script>
+    let activityCount = 0;
+
+    function addActivityLog(message, type = 'info') {
+        const monitor = document.getElementById('activity-monitor');
+        const log = document.getElementById('activity-log');
+        
+        monitor.classList.remove('hidden');
+        activityCount++;
+        
+        const timestamp = new Date().toLocaleTimeString();
+        const activityItem = document.createElement('div');
+        activityItem.className = `activity-item activity-${type}`;
+        activityItem.innerHTML = `<span class="activity-time">[${timestamp}]</span> ${message}`;
+        
+        log.insertBefore(activityItem, log.firstChild);
+        
+        while (log.children.length > 10) {
+            log.removeChild(log.lastChild);
+        }
+        log.scrollTop = 0;
+    }
+
+    function setButtonLoading(buttonId, isLoading) {
+        const btn = document.getElementById(buttonId);
+        const text = btn.querySelector('.btn-text');
+        const loader = btn.querySelector('.btn-loader');
+        
+        if (isLoading) {
+            btn.disabled = true;
+            if (text) text.classList.add('hide');
+            if (loader) loader.classList.add('show');
+        } else {
+            btn.disabled = false;
+            if (text) text.classList.remove('hide');
+            if (loader) loader.classList.remove('show');
+        }
+    }
+
+    async function checkPackages() {
+        setButtonLoading('check-packages-btn', true);
+        addActivityLog('🔍 Checking installed packages...', 'info');
+        
+        try {
+            const response = await fetch('/api/check-packages');
+            const data = await response.json();
+            
+            const resultDiv = document.getElementById('packages-result');
+            let html = `
+                <div class="section result-section slide-in">
+                    <h4>Installed Packages:</h4>
+                    <div class="dependency-list">
+            `;
+            
+            for (const [package, version] of Object.entries(data.packages)) {
+                const isTyposquatting = package === 'requets' || package === 'pythn-dotenv';
+                html += `
+                    <div class="dependency-item ${isTyposquatting ? 'malicious' : ''}">
+                        <span class="package-name">${package}</span>
+                        <span class="package-version">${version}</span>
+                        ${isTyposquatting ? '<span class="malicious-badge">⚠️ Typosquatting!</span>' : ''}
+                    </div>
+                `;
+            }
+            
+            html += `
+                    </div>
+                    <p class="bp note-text">
+                        <strong>Note:</strong> ${data.note || 'Look carefully at the package names. Do you notice anything suspicious?'}
+                    </p>
+                </div>
+            `;
+            
+            resultDiv.innerHTML = html;
+            resultDiv.classList.remove('hidden');
+            resultDiv.classList.add('show');
+            addActivityLog(`✓ Found ${data.total} installed packages`, 'success');
+            addActivityLog('⚠️ Warning: Typosquatting packages detected!', 'warning');
+            
+        } catch (error) {
+            addActivityLog(`✗ Error: ${error.message}`, 'error');
+        } finally {
+            setButtonLoading('check-packages-btn', false);
+        }
+    }
+
+    async function usePackage(actionType) {
+        const buttonId = actionType === 'api_call' ? 'api-call-btn' : 'backdoor-btn';
+        setButtonLoading(buttonId, true);
+        
+        const actionName = actionType === 'api_call' ? 'API Call' : 'Function Execution';
+        addActivityLog(`Using package feature: ${actionName}...`, 'info');
+        
+        try {
+            const response = await fetch('/api/use-package', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ 
+                    action_type: actionType,
+                    command: 'example_command'
+                })
+            });
+            
+            const data = await response.json();
+            const resultDiv = document.getElementById('package-result');
+            
+            if (data.success) {
+                let html = `
+                    <div class="section result-section slide-in">
+                        <h4>Result:</h4>
+                        <p class="bp success-message">✓ ${data.message}</p>
+                `;
+                
+                if (data.malicious_action) {
+                    html += `
+                        <div class="data-collection-warning">
+                            <h4 class="warning-message">${data.warning}</h4>
+                            <p class="bp">The malicious package has performed the following action:</p>
+                            <pre class="data-collection-pre">${JSON.stringify(data.malicious_action, null, 2)}</pre>
+                        </div>
+                    `;
+                }
+                
+                html += `</div>`;
+                resultDiv.innerHTML = html;
+                resultDiv.classList.remove('hidden');
+                
+                addActivityLog(`⚠️ ${data.warning}`, 'warning');
+                addActivityLog(`✓ Feature executed successfully`, 'success');
+            }
+            
+        } catch (error) {
+            addActivityLog(`✗ Error: ${error.message}`, 'error');
+        } finally {
+            setButtonLoading(buttonId, false);
+        }
+    }
+
+    async function checkMaliciousActivity() {
+        setButtonLoading('check-malicious-btn', true);
+        addActivityLog('🔍 Checking malicious activity...', 'info');
+        
+        try {
+            const response = await fetch('/api/malicious-activity');
+            const data = await response.json();
+            
+            const div = document.getElementById('malicious-activity');
+            const pre = document.getElementById('malicious-content');
+            const countSpan = document.getElementById('activity-count');
+            
+            if (data.malicious_actions && data.malicious_actions.length > 0) {
+                pre.textContent = JSON.stringify(data, null, 2);
+                countSpan.textContent = `${data.total_actions} malicious action(s) detected`;
+                countSpan.className = 'stat-badge warning';
+                div.classList.remove('hidden');
+                addActivityLog(`⚠️ Found ${data.total_actions} malicious action(s)!`, 'warning');
+            } else {
+                pre.textContent = JSON.stringify(data, null, 2);
+                countSpan.textContent = 'No malicious activity detected yet';
+                countSpan.className = 'stat-badge info';
+                div.classList.remove('hidden');
+                addActivityLog('ℹ️ No malicious activity detected yet. Try using the features first!', 'info');
+            }
+            
+        } catch (error) {
+            addActivityLog(`✗ Error: ${error.message}`, 'error');
+        } finally {
+            setButtonLoading('check-malicious-btn', false);
+        }
+    }
+
+    async function verifyPackage() {
+        const packageName = document.getElementById('package-name').value.trim();
+        if (!packageName) {
+            alert('Please enter a package name');
+            return;
+        }
+        
+        setButtonLoading('verify-pkg-btn', true);
+        addActivityLog(`🔍 Verifying package: ${packageName}...`, 'info');
+        
+        try {
+            const response = await fetch(`/api/verify-package?name=${encodeURIComponent(packageName)}`);
+            const data = await response.json();
+            
+            const resultDiv = document.getElementById('verify-result');
+            const statusClass = data.status === 'typosquatting' ? 'status-untrusted' : 
+                              data.status === 'legitimate' ? 'status-trusted' : 'status-untrusted';
+            
+            resultDiv.innerHTML = `
+                <div class="section result-section slide-in">
+                    <h4>Package Verification Result:</h4>
+                    <p><strong>Package:</strong> <code>${data.package || 'N/A'}</code></p>
+                    <p><strong>Status:</strong> <span class="${statusClass}"><strong>${data.status || 'unknown'}</strong></span></p>
+                    ${data.correct_name ? `<p><strong>Correct Name:</strong> <code>${data.correct_name}</code></p>` : ''}
+                    <p><strong>Version:</strong> ${data.version || 'N/A'}</p>
+                    <p><strong>Message:</strong> ${data.message || data.error || 'N/A'}</p>
+                    ${data.risk ? `<p class="warning-text"><strong>Risk Level:</strong> ${data.risk}</p>` : ''}
+                </div>
+            `;
+            
+            if (data.status === 'typosquatting') {
+                addActivityLog(`⚠️ TYPOSQUATTING DETECTED: ${data.package} should be ${data.correct_name}!`, 'warning');
+            } else if (data.status === 'legitimate') {
+                addActivityLog(`✓ Package verified as legitimate`, 'success');
+            } else {
+                addActivityLog(`⚠️ Package status unknown - proceed with caution`, 'warning');
+            }
+            
+        } catch (error) {
+            const resultDiv = document.getElementById('verify-result');
+            resultDiv.innerHTML = `<p class="warning-message">Error: ${error.message}</p>`;
+            addActivityLog(`✗ Error: ${error.message}`, 'error');
+        } finally {
+            setButtonLoading('verify-pkg-btn', false);
+        }
+    }
+
+    function navigateToIndex() {
+        document.body.style.opacity = '0';
+        document.body.style.transition = 'opacity 0.2s ease-out';
+        setTimeout(() => {
+            window.location.href = '/';
+        }, 200);
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        document.body.style.opacity = '0';
+        document.body.style.transition = 'opacity 0.3s ease-in';
+        setTimeout(() => {
+            document.body.style.opacity = '1';
+        }, 10);
+    });
+</script>
+{% endblock %}
