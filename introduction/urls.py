@@ -74,6 +74,7 @@ urlpatterns = [
     path("A03", views.supply_chain_failures, name="supply_chain_failures"),
     path("dependency_attack_lab", views.dependency_attack_lab_page, name="dependency_attack_lab"),
     path("package_injection_lab", views.package_injection_lab_page, name="package_injection_lab"),
+    path("open_source_library_attack_lab", views.open_source_library_lab_page, name="open_source_library_attack_lab"),
     path("cryptographic_failure/lab2",views.crypto_failure_lab2,name="cryptographic_failure_lab2"),
     path("cryptographic_failure/lab3",views.crypto_failure_lab3,name="cryptographic_failure_lab3"),
     path("auth_failure",views.auth_failure,name="auth_failure"),

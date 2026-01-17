@@ -46,6 +46,17 @@ services:
     ports:
       - "5021:5021"
 
+  open_source_library_attack_lab:
+    build:
+      context: dockerized_labs/open_source_library_attack_lab/
+    depends_on:
+      - web
+    networks:
+      - my_network
+    container_name: open_source_library_attack_lab
+    ports:
+      - "5022:5022"
+
   bopla_lab:
     build:
       context: challenge/labs/bopla_lab/
