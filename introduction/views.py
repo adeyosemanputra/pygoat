@@ -1014,6 +1014,12 @@ def package_injection_lab_page(request):
         return redirect('login')
     return render(request, "Lab_2021/A03_Supply_Chain_Failures/package_injection_lab.html")
 
+def open_source_library_lab_page(request):
+    """Embed the open source library attack lab within the PyGoat page using an iframe."""
+    if not request.user.is_authenticated:
+        return redirect('login')
+    return render(request, "Lab_2021/A03_Supply_Chain_Failures/open_source_library_attack_lab.html")
+
 def supply_chain_failures(request):
     """In-page theory view for A03:2025 - Software Supply Chain Failures"""
     if request.user.is_authenticated:
