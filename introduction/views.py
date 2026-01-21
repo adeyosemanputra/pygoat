@@ -239,10 +239,12 @@ def xxe_lab(request):
 def xxe_see(request):
     if request.user.is_authenticated:
         # Get first comment or create a default one if none exist
-        comment_obj, created = comments.objects.get_or_create(
-            id=1,
-            defaults={'name': 'System', 'comment': 'Default comment for XXE lab'}
-        )
+        comment_obj = comments.objects.first()
+        if comment_obj is None:
+            comment_obj = comments.objects.create(
+                name='System',
+                comment='Default comment for XXE lab',
+            )
         com = comment_obj.comment
         return render(request,'Lab/XXE/xxe_lab.html',{"com":com})
     else:
