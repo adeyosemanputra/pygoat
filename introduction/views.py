@@ -238,9 +238,12 @@ def xxe_lab(request):
 @csrf_exempt
 def xxe_see(request):
     if request.user.is_authenticated:
-
-        data=comments.objects.all()
-        com=data[0].comment
+        # Get first comment or create a default one if none exist
+        comment_obj, created = comments.objects.get_or_create(
+            id=1,
+            defaults={'name': 'System', 'comment': 'Default comment for XXE lab'}
+        )
+        com = comment_obj.comment
         return render(request,'Lab/XXE/xxe_lab.html',{"com":com})
     else:
         return redirect('login')
