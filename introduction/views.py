@@ -415,7 +415,8 @@ def cmd_lab(request):
     if request.user.is_authenticated:
         if(request.method=="POST"):
             domain=request.POST.get('domain')
-            domain=domain.replace("https://www.",'')
+            # Remove all common protocols (case-insensitive) and www prefix
+            domain = re.sub(r'^(https?|ftp)://(www\.)?', '', domain, flags=re.IGNORECASE)
             os=request.POST.get('os')
             print(os)
             if(os=='win'):
