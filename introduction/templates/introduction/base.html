@@ -614,7 +614,8 @@
             <ul class="collapse list-unstyled" id="challengeSubmenu">
               <li>
                 <a href="{% url 'bopla' %}" class="sidebar-list-items">Challenge 1</a>
-                <a href="{% url 'business_logic' %}" class="sidebar-list-items">Challenge 2</a>
+                <button onclick="launchLab('business_logic_lab')" class="sidebar-list-items">Challenge 2</button>
+                <!-- <a href="{% url 'business_logic' %}" class="sidebar-list-items">Challenge 2</a> -->
                 <a href="{% url 'security_headers' %}" class="sidebar-list-items">Challenge 3</a>
               </li>
             </ul>
@@ -685,6 +686,31 @@
       </div>
     </div>
 
+    <!-- Status Modal -->
+    <div class="modal fade" id="statusModal" tabindex="-1" role="dialog" aria-labelledby="statusModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="statusModalLabel">Lab Status</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="text-center">
+              <div id="status-spinner" class="spinner-border text-primary" role="status" style="display: none;">
+                <span class="sr-only">Loading...</span>
+              </div>
+              <p id="status-msg" class="mt-3"></p>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-close" data-dismiss="modal" id="modal-close-btn">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- jQuery CDN - Slim version (=without AJAX) -->
     <script
       src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
@@ -741,5 +767,59 @@
       }
       
     </script>
+<script>
+    function applyModalTheme() {
+        const isDark = localStorage.getItem('theme') === 'dark' || localStorage.getItem('theme') === null;
+        const modal = document.getElementById('statusModal');
+        
+        if (isDark) {
+            modal.className = 'modal fade modal-dark';
+        } else {
+            modal.className = 'modal fade modal-light';
+        }
+    }
+    
+    async function launchLab(imageName) {
+        const statusMsg = document.getElementById('status-msg');
+        const statusSpinner = document.getElementById('status-spinner');
+        const modal = $('#statusModal');
+        const closeBtn = document.getElementById('modal-close-btn');
+        
+        applyModalTheme();
+        
+        modal.modal('show');
+        statusSpinner.style.display = 'inline-block';
+        statusMsg.innerText = "Provisioning your environment... (this may take 10s)";
+        statusMsg.className = "mt-3 text-info";
+        closeBtn.style.display = 'none';
+        
+        try {
+            const response = await fetch(`/challenge/start-lab/${imageName}/`);
+            const data = await response.json();
+            
+            statusSpinner.style.display = 'none';
+            
+            if (data.status === 'ready' || data.status === 'created') {
+                statusMsg.innerText = "Lab Ready! Opening in new tab...";
+                statusMsg.className = "mt-3 text-success";
+                
+                setTimeout(() => {
+                    window.open(data.url, '_blank');
+                    modal.modal('hide');
+                }, 3000);
+            } else {
+                statusMsg.innerText = "Error: " + data.message;
+                statusMsg.className = "mt-3 text-danger";
+                closeBtn.style.display = 'inline-block';
+            }
+        } catch (error) {
+            console.error(error);
+            statusSpinner.style.display = 'none';
+            statusMsg.innerText = "Connection failed. Check console for details.";
+            statusMsg.className = "mt-3 text-danger";
+            closeBtn.style.display = 'inline-block';
+        }
+    }
+</script>
   </body>
 </html>

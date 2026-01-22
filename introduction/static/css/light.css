@@ -17,6 +17,35 @@ body {
   scrollbar-width: none; /* Firefox */
 }
 
+/* Modal Light Theme */
+.modal-light .modal-content {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+.modal-light .modal-header {
+  border-color: #dee2e6;
+}
+
+.modal-light .modal-footer {
+  border-color: #dee2e6;
+}
+
+.modal-light .close {
+  color: #000000;
+}
+
+.modal-light .btn-close {
+  background-color: #6c757d;
+  border: 1px solid #6c757d;
+  color: #ffffff;
+}
+
+.modal-light .btn-close:hover {
+  background-color: #5a6268;
+  border-color: #545b62;
+}
+
 p{
   font-family: "Poppins", sans-serif;
   font-size: 1.1em;

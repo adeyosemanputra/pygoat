@@ -8,6 +8,7 @@ services:
              python manage.py populate_challenges"
     volumes:
       - .:/app
+      - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - my_network
 
@@ -18,45 +19,65 @@ services:
       - "8000:8000"
     volumes:
       - .:/app
+      - /var/run/docker.sock:/var/run/docker.sock
+    labels:
+      - "traefik.enable=true"
     depends_on:
       migration:
         condition: service_completed_successfully
     networks:
       - my_network
 
-  bopla_lab:
-    build:
-      context: challenge/labs/bopla_lab/
-    depends_on:
-      - web
-    networks:
-      - my_network
-    container_name: bopla_lab
-    ports:
-      - "7018:8080"
+  # bopla_lab:
+  #   build:
+  #     context: challenge/labs/bopla_lab/
+  #   depends_on:
+  #     - web
+  #   networks:
+  #     - my_network
+  #   container_name: bopla_lab
+  #   ports:
+  #     - "7018:8080"
 
-  business_logic_lab:
-    build:
-      context: challenge/labs/business_logic_lab/
-    depends_on:
-      - web
-    networks:
-      - my_network
-    container_name: business_logic_lab
-    ports:
-      - "7019:5010"
+  # business_logic_lab:
+  #   build:
+  #     context: challenge/labs/business_logic_lab/
+  #   depends_on:
+  #     - web
+  #   networks:
+  #     - my_network
+  #   container_name: business_logic_lab
+  #   ports:
+  #     - "7019:5010"
 
-  security_headers_lab:
-    build:
-      context: challenge/labs/security_headers_lab/
-    depends_on:
-      - web
+  # security_headers_lab:
+  #   build:
+  #     context: challenge/labs/security_headers_lab/
+  #   depends_on:
+  #     - web
+  #   networks:
+  #     - my_network
+  #   container_name: security_headers_lab
+  #   ports:
+  #     - "7020:5011"
+
+  traefik:
+    image: traefik:latest
+    container_name: traefik_proxy
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
     networks:
       - my_network
-    container_name: security_headers_lab
-    ports:
-      - "7020:5011"
 
 networks:
   my_network:
+    name: my_network
     driver: bridge

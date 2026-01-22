@@ -5,9 +5,11 @@ from django.views.decorators.csrf import csrf_exempt
 import subprocess
 from .utility import get_free_port
 from .models import Challenge, UserChallenge
-from django.http import HttpResponse
-# Create your views here.
+import docker
+from django.conf import settings
 
+# Create your views here.
+client = docker.from_env()
 
 class DoItFast(View):
     def get(self, request, challenge):
@@ -86,6 +88,55 @@ class DoItFast(View):
     def put(self, request, challange):
         # TODO : implement flag checking
         return "not implemented"
+
+def start_lab(request, lab_image_name):
+    username = request.user.username
+    safe_username = "".join(x for x in username if x.isalnum())
+    safe_image = "".join(x for x in lab_image_name if x.isalnum() or x in "-_")  
+    container_name = f"lab-{safe_username}-{safe_image}"
+    domain = getattr(settings, 'LAB_DOMAIN', 'localhost')
+    lab_url = f"http://{container_name}.{domain}"
+    print(lab_url)
+    try:
+        try:
+            container = client.containers.get(container_name)
+            print(container)
+            if container.status != 'running':
+                container.start()
+            return JsonResponse({'status': 'ready', 'url': lab_url})
+        except docker.errors.NotFound:
+            try:
+                client.images.get(safe_image)
+            except docker.errors.ImageNotFound:
+                print(f"Building {safe_image}...") 
+            try:
+                client.images.build(path=f"./challenge/labs/{safe_image}/", tag=safe_image)
+                # client.images.build(path=f"./dockerized_labs/{safe_image}/", tag=safe_image)
+            except e:
+                print(e)
+
+
+        
+        labels = {
+            "traefik.enable": "true",
+            f"traefik.http.routers.{container_name}.rule": f"Host(`{container_name}.{domain}`)",
+            f"traefik.http.services.{container_name}.loadbalancer.server.port": "5010",
+        }
+        
+        client.containers.run(
+            image=safe_image,
+            name=container_name,
+            detach=True,
+            labels=labels,
+            network="my_network",
+            mem_limit="512m",
+            remove=True
+        )
+
+        return JsonResponse({'status': 'created', 'url': lab_url})
+
+    except Exception as e:
+        return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
 
 
 def bopla_lab(request):
