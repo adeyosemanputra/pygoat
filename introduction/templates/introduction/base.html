@@ -95,16 +95,16 @@
             </a>
             <ul class="collapse list-unstyled" id="OWASP10_2021">
               <li>
-                <a href="/broken_access_control" class="sidebar-list-items">
+                <button onclick="launchLab('broken_access_lab')" class="sidebar-list-items lab-button">
                   <i class="fas fa-bug"></i>
                   A1: Broken Access Control
-                </a>
+                </button>
               </li>
               <li>
-                <a href="/cryptographic_failure" class="sidebar-list-items">
+                <button onclick="launchLab('crypto_failure_lab')" class="sidebar-list-items lab-button">
                   <i class="fas fa-bug"></i>
                   A2: Cryptographic Failures
-                </a>
+                </button>
               </li>
               <li>
                 <a
@@ -118,63 +118,63 @@
                 </a>
                 <ul class="collapse list-unstyled" id="sqlSubmenu2">
                   <li>
-                    <a href="/injection" class="sidebar-list-items"
+                    <button onclick="launchLab('sql_injection_lab')" class="sidebar-list-items lab-button"
                       >SQl Injection
-                    </a>
+                    </button>
                   </li>
                   <li>
-                    <a href="/cmd" class="sidebar-list-items"
-                      >Command Injection</a
+                    <button onclick="launchLab('command_injection_lab')" class="sidebar-list-items lab-button"
+                      >Command Injection</button
                     >
                   </li>
                   <li>
-                    <a href="/ssti" class="sidebar-list-items"
-                      >Template Injection</a
+                    <button onclick="launchLab('template_injection_lab')" class="sidebar-list-items lab-button"
+                      >Template Injection</button
                     >
                   </li>
                 </ul>
               </li>
               <li>
-                <a href="/insecure-design" class="sidebar-list-items">
+                <button onclick="launchLab('insecure_design_lab')" class="sidebar-list-items lab-button">
                   <i class="fas fa-bug"></i>
                   A4: Insecure Design
-                </a>
+                </button>
               </li>
               <li>
-                <a href="/sec_mis" class="sidebar-list-items">
+                <button onclick="launchLab('sec_misconfig')" class="sidebar-list-items lab-button">
                   <i class="fas fa-bug"></i>
                   A5: Security Misconfiguration
-                </a>
+                </button>
               </li>
               <li>
-                <a href="/a9" class="sidebar-list-items">
+                <button onclick="launchLab('a9_uckv_lab')" class="sidebar-list-items lab-button">
                   <i class="fas fa-bug"></i>
                   A6: Vulnerable and Outdated Components
-                </a>
+                </button>
               </li>
               <li>
-                <a href="/auth_failure" class="sidebar-list-items">
+                <button onclick="launchLab('auth_failure_lab')" class="sidebar-list-items lab-button">
                   <i class="fas fa-bug"></i>
                   A7: Identification and Authentication Failures
-                </a>
+                </button>
               </li>
               <li>
-                <a href="/2021/A8" class="sidebar-list-items">
+                <button onclick="launchLab('software_integrity_lab')" class="sidebar-list-items lab-button">
                   <i class="fas fa-bug"></i>
                   A8: Software and Data Integrity Failures
-                </a>
+                </button>
               </li>
               <li>
-                <a href="/a10" class="sidebar-list-items">
+                <button onclick="launchLab('insufficient_logging_lab')" class="sidebar-list-items lab-button">
                   <i class="fas fa-bug"></i>
                   A9: Security Logging and Monitoring Failures
-                </a>
+                </button>
               </li>
               <li>
-                <a href="/ssrf" class="sidebar-list-items">
+                <button onclick="launchLab('ssrf_lab')" class="sidebar-list-items lab-button">
                   <i class="fas fa-bug"></i>
                   A10: Server-Side Request Forgery
-                </a>
+                </button>
               </li>
             </ul>
 
@@ -532,71 +532,71 @@
               </li>
               <ul class="collapse list-unstyled" id="sqlSubmenu">
                 <li>
-                  <a href="/sql" class="sidebar-list-items">SQl Injection </a>
+                  <button onclick="launchLab('sql_injection_lab')" class="sidebar-list-items lab-button">SQl Injection </button>
                 </li>
                 <li>
-                  <a href="/cmd" class="sidebar-list-items"
-                    >Command Injection</a
+                  <button onclick="launchLab('command_injection_lab')" class="sidebar-list-items lab-button"
+                    >Command Injection</button
                   >
                 </li>
               </ul>
               <li>
-                <a href="/bau" class="sidebar-list-items">
+                <button onclick="launchLab('broken_auth_lab')" class="sidebar-list-items lab-button">
                   <i class="fas fa-bug"></i>
                   A2: Broken Authentication
-                </a>
+                </button>
               </li>
               <li>
-                <a
-                  href="/data_exp"
+                <button
+                  onclick="launchLab('sensitive_data_exposure')"
                   
-                  class="sidebar-list-items"
+                  class="sidebar-list-items lab-button"
                 >
                   <i class="fas fa-bug"></i>
                   A3: Sensitive Data Exposure
-                </a>
+                </button>
               </li>
               <li>
-                <a href="/xxe" class="sidebar-list-items">
+                <button onclick="launchLab('xxe_lab')" class="sidebar-list-items lab-button">
                   <i class="fas fa-bug"></i>
                   A4: XML External Entities (XXE)
-                </a>
+                </button>
               </li>
               <li>
-                <a href="/ba" class="sidebar-list-items">
+                <button onclick="launchLab('broken_access_lab')" class="sidebar-list-items lab-button">
                   <i class="fas fa-bug"></i>
                   A5: Broken Access Control
-                </a>
+                </button>
               </li>
               <li>
-                <a href="/sec_mis" class="sidebar-list-items">
+                <button onclick="launchLab('sec_misconfig')" class="sidebar-list-items lab-button">
                   <i class="fas fa-bug"></i>
                   A6: Security Misconfiguration
-                </a>
+                </button>
               </li>
               <li>
-                <a href="/xss" class="sidebar-list-items">
+                <button onclick="launchLab('xss_lab')" class="sidebar-list-items lab-button">
                   <i class="fas fa-bug"></i>
                   A7: Cross Site Scripting
-                </a>
+                </button>
               </li>
               <li>
-                <a href="/insec_des" class="sidebar-list-items">
+                <button onclick="launchLab('insec_des_lab')" class="sidebar-list-items lab-button">
                   <i class="fas fa-bug"></i>
                   A8: Insecure Deserialization
-                </a>
+                </button>
               </li>
               <li>
-                <a href="/a9" class="sidebar-list-items">
+                <button onclick="launchLab('a9_uckv_lab')" class="sidebar-list-items lab-button">
                   <i class="fas fa-bug"></i>
                   A9: Using Components with Known Vulnerabilities
-                </a>
+                </button>
               </li>
               <li>
-                <a href="/a10" class="sidebar-list-items">
+                <button onclick="launchLab('insufficient_logging_lab')" class="sidebar-list-items lab-button">
                   <i class="fas fa-bug"></i>
                   A10: Insufficient Logging & Monitoring
-                </a>
+                </button>
               </li>
             </ul>
 
@@ -613,10 +613,9 @@
             </a>
             <ul class="collapse list-unstyled" id="challengeSubmenu">
               <li>
-                <a href="{% url 'bopla' %}" class="sidebar-list-items">Challenge 1</a>
-                <button onclick="launchLab('business_logic_lab')" class="sidebar-list-items">Challenge 2</button>
-                <!-- <a href="{% url 'business_logic' %}" class="sidebar-list-items">Challenge 2</a> -->
-                <a href="{% url 'security_headers' %}" class="sidebar-list-items">Challenge 3</a>
+                <button onclick="launchLab('bopla_lab')" class="sidebar-list-items lab-button">Challenge 1</button>
+                <button onclick="launchLab('business_logic_lab')" class="sidebar-list-items lab-button">Challenge 2</button>
+                <button onclick="launchLab('security_headers_lab')" class="sidebar-list-items lab-button">Challenge 3</button>
               </li>
             </ul>
             <a

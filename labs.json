@@ -1,0 +1,109 @@
+{
+  "labs": [
+    {
+      "name": "bopla_lab",
+      "build_location": "challenge/labs/bopla_lab",
+      "port": 8080
+    },
+    {
+      "name": "business_logic_lab",
+      "build_location": "challenge/labs/business_logic_lab",
+      "port": 5010
+    },
+    {
+      "name": "security_headers_lab",
+      "build_location": "challenge/labs/security_headers_lab",
+      "port": 5011
+    },
+    {
+      "name": "a9_uckv_lab",
+      "build_location": "dockerized_labs/a9_uckv_lab",
+      "port": 9000
+    },
+    {
+      "name": "auth_failure_lab",
+      "build_location": "dockerized_labs/auth_failure_lab",
+      "port": 5007
+    },
+    {
+      "name": "broken_access_lab",
+      "build_location": "dockerized_labs/broken_access_lab",
+      "port": 8080
+    },
+    {
+      "name": "broken_auth_lab",
+      "build_location": "dockerized_labs/broken_auth_lab",
+      "port": 5000
+    },
+    {
+      "name": "command_injection_lab",
+      "build_location": "dockerized_labs/command_injection_lab",
+      "port": 5013
+    },
+    {
+      "name": "crypto_failure_lab",
+      "build_location": "dockerized_labs/crypto_failure_lab",
+      "port": 5000
+    },
+    {
+      "name": "insec_des_lab",
+      "build_location": "dockerized_labs/insec_des_lab",
+      "port": 8080
+    },
+    {
+      "name": "insecure_design_lab",
+      "build_location": "dockerized_labs/insecure_design_lab",
+      "port": 5008
+    },
+    {
+      "name": "insufficient_logging_lab",
+      "build_location": "dockerized_labs/insufficient_logging_lab",
+      "port": 5014
+    },
+    {
+      "name": "sde",
+      "build_location": "dockerized_labs/sde",
+      "port": 5100
+    },
+    {
+      "name": "sec_misconfig",
+      "build_location": "dockerized_labs/sec_misconfig",
+      "port": 5009
+    },
+    {
+      "name": "sensitive_data_exposure",
+      "build_location": "dockerized_labs/sensitive_data_exposure",
+      "port": 8000
+    },
+    {
+      "name": "software_integrity_lab",
+      "build_location": "dockerized_labs/software_integrity_lab",
+      "port": 5011
+    },
+    {
+      "name": "sql_injection_lab",
+      "build_location": "dockerized_labs/sql_injection_lab",
+      "port": 5012
+    },
+    {
+      "name": "ssrf_lab",
+      "build_location": "dockerized_labs/ssrf_lab",
+      "port": 5000
+    },
+    {
+      "name": "template_injection_lab",
+      "build_location": "dockerized_labs/template_injection_lab",
+      "port": 5015
+    },
+    {
+      "name": "xss_lab",
+      "build_location": "dockerized_labs/xss_lab",
+      "port": 5006
+    },
+    {
+      "name": "xxe_lab",
+      "build_location": "dockerized_labs/xxe_lab",
+      "port": 5010
+    }
+  ]
+}

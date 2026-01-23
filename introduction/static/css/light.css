@@ -103,6 +103,35 @@ span {
   background-color: #79a9cf40;
   color : #0b446e;
 }
+
+.lab-button {
+  background-color: #79a9cf40;
+  border: none;
+  color: #0b446e;
+  padding: 10px 15px;
+  text-align: left;
+  text-decoration: none;
+  display: block;
+  width: 100%;
+  font-family: inherit;
+  font-size: inherit;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.lab-button:hover {
+  background-color: #79a9cf60;
+  color: #0b446e;
+}
+
+.lab-button:focus {
+  outline: none;
+  background-color: #79a9cf60;
+}
+
+.lab-button i {
+  margin-right: 10px;
+}
 .wrapper {
   display: flex;
   align-items: stretch;

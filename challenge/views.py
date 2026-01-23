@@ -6,6 +6,8 @@ import subprocess
 from .utility import get_free_port
 from .models import Challenge, UserChallenge
 import docker
+import json
+import os
 from django.conf import settings
 
 # Create your views here.
@@ -97,6 +99,28 @@ def start_lab(request, lab_image_name):
     domain = getattr(settings, 'LAB_DOMAIN', 'localhost')
     lab_url = f"http://{container_name}.{domain}"
     print(lab_url)
+    
+    
+    try:
+        labs_json_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'labs.json')
+        with open(labs_json_path, 'r') as f:
+            labs_data = json.load(f)
+        
+        lab_config = None
+        for lab in labs_data['labs']:
+            if lab['name'] == safe_image:
+                lab_config = lab
+                break
+        
+        if not lab_config:
+            return JsonResponse({'status': 'error', 'message': f'Lab configuration not found for {safe_image}'}, status=404)
+        
+        build_location = lab_config['build_location']
+        lab_port = str(lab_config['port'])
+        
+    except (FileNotFoundError, json.JSONDecodeError, KeyError) as e:
+        return JsonResponse({'status': 'error', 'message': f'Error loading lab configuration: {str(e)}'}, status=500)
+    
     try:
         try:
             container = client.containers.get(container_name)
@@ -110,17 +134,16 @@ def start_lab(request, lab_image_name):
             except docker.errors.ImageNotFound:
                 print(f"Building {safe_image}...") 
             try:
-                client.images.build(path=f"./challenge/labs/{safe_image}/", tag=safe_image)
-                # client.images.build(path=f"./dockerized_labs/{safe_image}/", tag=safe_image)
-            except e:
+                client.images.build(path=f"./{build_location}/", tag=safe_image)
+            except Exception as e:
                 print(e)
-
+                return JsonResponse({'status': 'error', 'message': f'Error building image: {str(e)}'}, status=500)
 
         
         labels = {
             "traefik.enable": "true",
             f"traefik.http.routers.{container_name}.rule": f"Host(`{container_name}.{domain}`)",
-            f"traefik.http.services.{container_name}.loadbalancer.server.port": "5010",
+            f"traefik.http.services.{container_name}.loadbalancer.server.port": lab_port,
         }
         
         client.containers.run(
