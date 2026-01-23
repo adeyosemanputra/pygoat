@@ -153,11 +153,43 @@ def start_lab(request, lab_image_name):
             labels=labels,
             network="my_network",
             mem_limit="512m",
-            remove=True
         )
 
         return JsonResponse({'status': 'created', 'url': lab_url})
 
+    except Exception as e:
+        return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+
+
+def stop_user_labs(request):
+    if not request.user.is_authenticated:
+        return JsonResponse({'status': 'error', 'message': 'Authentication required'}, status=401)
+    
+    username = request.user.username
+    safe_username = "".join(x for x in username if x.isalnum())
+    container_prefix = f"lab-{safe_username}-"
+    
+    try:
+        containers = client.containers.list(all=True)
+        user_containers = [c for c in containers if c.name.startswith(container_prefix)]
+        print(user_containers)
+        
+        stopped_count = 0
+        for container in user_containers:
+            try:
+                if container.status == 'running':
+                    container.stop()
+                container.remove()
+                stopped_count += 1
+            except Exception as e:
+                print(f"Error stopping container {container.name}: {e}")
+        
+        return JsonResponse({
+            'status': 'success', 
+            'message': f'Stopped and removed {stopped_count} lab container(s)',
+            'count': stopped_count
+        })
+        
     except Exception as e:
         return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
 

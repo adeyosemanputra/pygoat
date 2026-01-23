@@ -7,4 +7,5 @@ urlpatterns = [
     path('business_logic_lab/', business_logic_lab, name='business_logic'),
     path('security_headers_lab/', security_headers_lab, name='security_headers'),
     path('start-lab/<str:lab_image_name>/', start_lab, name='start_lab'),
+    path('stop-labs/', stop_user_labs, name='stop_labs'),
 ]

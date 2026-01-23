@@ -661,8 +661,12 @@
                   >
                 </li>
 
-
                 {% if user.is_authenticated %}
+                <li class="nav-item">
+                  <button class="nav-link btn-danger" onclick="stopAllLabs()" id="stop-labs-btn" style="background: none; border: none; color: #dc3545;">
+                    Stop All Labs
+                  </button>
+                </li>
                 <li class="nav-item">
                   <a class="nav-link" href='{% url "logout" %}?next=/'
                     >Logout</a
@@ -816,6 +820,83 @@
             statusSpinner.style.display = 'none';
             statusMsg.innerText = "Connection failed. Check console for details.";
             statusMsg.className = "mt-3 text-danger";
+            closeBtn.style.display = 'inline-block';
+        }
+    }
+    
+    async function stopAllLabs() {
+        const stopBtn = document.getElementById('stop-labs-btn');
+        const originalText = stopBtn.innerText;
+        const statusMsg = document.getElementById('status-msg');
+        const statusSpinner = document.getElementById('status-spinner');
+        const modal = $('#statusModal');
+        const closeBtn = document.getElementById('modal-close-btn');
+        const modalTitle = document.getElementById('statusModalLabel');
+        
+        applyModalTheme();
+        modalTitle.innerText = "Stop Labs";
+        modal.modal('show');
+        statusSpinner.style.display = 'inline-block';
+        statusMsg.innerText = "Stopping all running labs...";
+        statusMsg.className = "mt-3 text-info";
+        closeBtn.style.display = 'none';
+        
+        stopBtn.innerText = "Stopping...";
+        stopBtn.disabled = true;
+        
+        try {
+            function getCookie(name) {
+                let cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    const cookies = document.cookie.split(';');
+                    for (let i = 0; i < cookies.length; i++) {
+                        const cookie = cookies[i].trim();
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+            
+            const csrftoken = getCookie('csrftoken');
+            
+            const response = await fetch('/challenge/stop-labs/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrftoken
+                }
+            });
+            const data = await response.json();
+            
+            statusSpinner.style.display = 'none';
+            
+            if (data.status === 'success') {
+                statusMsg.innerText = data.message;
+                statusMsg.className = "mt-3 text-success";
+                stopBtn.innerText = "Stopped!";
+                
+                setTimeout(() => {
+                    stopBtn.innerText = originalText;
+                    stopBtn.disabled = false;
+                    modal.modal('hide');
+                }, 3000);
+            } else {
+                statusMsg.innerText = `Error: ${data.message}`;
+                statusMsg.className = "mt-3 text-danger";
+                stopBtn.innerText = originalText;
+                stopBtn.disabled = false;
+                closeBtn.style.display = 'inline-block';
+            }
+        } catch (error) {
+            console.error(error);
+            statusSpinner.style.display = 'none';
+            statusMsg.innerText = "Failed to stop labs. Check console for details.";
+            statusMsg.className = "mt-3 text-danger";
+            stopBtn.innerText = originalText;
+            stopBtn.disabled = false;
             closeBtn.style.display = 'inline-block';
         }
     }
