@@ -3,6 +3,17 @@ import uuid
 import os
 
 app = Flask(__name__, static_url_path='/labs/business-logic/static')
+BASE_PATH = '/labs/business-logic'
+
+def redirect_bp(path):
+    """Redirect with BASE_PATH prefix"""
+    return redirect(f"{BASE_PATH}{path}")
+
+@app.context_processor
+def inject_base_path():
+    """Make BASE_PATH available in all templates"""
+    return {'base_path': BASE_PATH}
+
 app.secret_key = 'business_logic_secret_key_2024'
 
 PRODUCTS = [
@@ -64,7 +75,7 @@ def add_to_cart(product_id):
             })
         session.modified = True
     
-    return redirect(url_for('cart'))
+    return redirect_bp('/cart')
 
 @app.route('/cart')
 def cart():
@@ -135,7 +146,7 @@ def remove_coupon(coupon_code):
         session['applied_coupons'] = [c for c in session['applied_coupons'] if c != coupon_code]
         session.modified = True
     
-    return redirect(url_for('cart'))
+    return redirect_bp('/cart')
 
 @app.route('/clear_cart')
 def clear_cart():
@@ -143,7 +154,7 @@ def clear_cart():
     session['applied_coupons'] = []
     session['order_id'] = str(uuid.uuid4())
     session.modified = True
-    return redirect(url_for('store'))
+    return redirect_bp('/store')
 
 @app.route('/toggle_secure_mode')
 def toggle_secure_mode():
@@ -153,8 +164,8 @@ def toggle_secure_mode():
     
     session['applied_coupons'] = []
     session.modified = True
-    
-    return redirect(url_for('cart'))
+
+    return redirect_bp('/cart')
 
 @app.route('/lab')
 def lab():

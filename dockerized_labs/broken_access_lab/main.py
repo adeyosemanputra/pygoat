@@ -3,6 +3,17 @@ from dataclasses import dataclass
 import os
 
 app = Flask(__name__, static_url_path='/labs/broken-access/static')
+BASE_PATH = '/labs/broken-access'
+
+def redirect_bp(path):
+    """Redirect with BASE_PATH prefix"""
+    return redirect(f"{BASE_PATH}{path}")
+
+@app.context_processor
+def inject_base_path():
+    """Make BASE_PATH available in all templates"""
+    return {'base_path': BASE_PATH}
+
 app.secret_key = os.urandom(24)
 
 @dataclass

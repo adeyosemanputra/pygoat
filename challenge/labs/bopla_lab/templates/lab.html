@@ -10,10 +10,10 @@
         <h3>Project Management System</h3>
         
         <div class="navigation">
-            <a href="/login">Login</a>
-            <a href="/dashboard">Dashboard</a>
-            <a href="/logout">Logout</a>
-            <a href="/">← Back to Lab Info</a>
+            <a href="{{ base_path }}/login">Login</a>
+            <a href="{{ base_path }}/dashboard">Dashboard</a>
+            <a href="{{ base_path }}/logout">Logout</a>
+            <a href="{{ base_path }}/lab">← Back to Lab Info</a>
         </div>
 
         <div class="section">
@@ -38,7 +38,7 @@
                     Password: admin123
                 </div>
                 
-                <button onclick="window.location.href='/login'">Go to Login</button>
+                <button onclick="window.location.href='{{ base_path }}/login'">Go to Login</button>
             </div>
         </div>
 

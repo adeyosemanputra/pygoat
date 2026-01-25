@@ -6,6 +6,17 @@ from xml.sax.handler import feature_external_ges
 import os
 
 app = Flask(__name__, static_url_path='/labs/xxe/static')
+BASE_PATH = '/labs/xxe'
+
+def redirect_bp(path):
+    """Redirect with BASE_PATH prefix"""
+    return redirect(f"{BASE_PATH}{path}")
+
+@app.context_processor
+def inject_base_path():
+    """Make BASE_PATH available in all templates"""
+    return {'base_path': BASE_PATH}
+
 app.config['SECRET_KEY'] = 'your-secret-key-here'  
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///comments.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False

@@ -21,6 +21,7 @@ services:
              python manage.py populate_challenges"
     volumes:
       - .:/app
+      - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - my_network
 
@@ -28,10 +29,10 @@ services:
     build: .
     command: gunicorn --bind 0.0.0.0:8000 --workers 6 pygoat.wsgi
     container_name: pygoat-web
-    ports:
-      - "8000"
+    ports: []
     volumes:
       - .:/app
+      - /var/run/docker.sock:/var/run/docker.sock
     depends_on:
       migration:
         condition: service_completed_successfully

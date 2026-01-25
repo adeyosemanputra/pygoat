@@ -15,3 +15,10 @@ bin
 # vscode
 .vscode/
 
+# Django static files (auto-generated)
+staticfiles/
+static_root/
+
+# Backup files
+*.backup
+*.backup_*

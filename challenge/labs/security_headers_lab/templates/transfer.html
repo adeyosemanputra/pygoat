@@ -9,8 +9,8 @@
     <div class="banking-nav">
         <h3>🏦 SecureBank - Money Transfer</h3>
         <div class="nav-buttons">
-            <button onclick="window.location.href='/dashboard'">Dashboard</button>
-            <button onclick="window.location.href='/logout'" style="background: #6c757d;">Logout</button>
+            <button onclick="window.location.href='{{ base_path }}/dashboard'">Dashboard</button>
+            <button onclick="window.location.href='{{ base_path }}/logout'" style="background: #6c757d;">Logout</button>
         </div>
     </div>
     
@@ -104,10 +104,10 @@
                 <button onclick="testIframe()" style="background: #ffc107; color: #212529;">
                     🧪 Test Iframe Embedding
                 </button>
-                <button onclick="window.open('/malicious', '_blank')" style="background: #dc3545;">
+                <button onclick="window.open(''{{ base_path }}/malicious''), '_blank')" style="background: #dc3545;">
                     🚨 View Malicious Demo
                 </button>
-                <button onclick="window.location.href='/toggle_secure_mode'">
+                <button onclick="window.location.href='{{ base_path }}/toggle_secure_mode'">
                     {% if session.secure_mode %}
                         Disable Security Headers
                     {% else %}

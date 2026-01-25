@@ -15,7 +15,7 @@
         </div>
     {% else %}
         {% if otp_form %}
-            <form method="post" action="/lab1/verify">
+            <form method="post" action="{{ base_path }}/lab1/verify">
                 <div class="form-group">
                     <input type="text" name="otp" placeholder="Enter OTP" maxlength="3" required>
                 </div>
@@ -27,7 +27,7 @@
                 </div>
             {% endif %}
         {% else %}
-            <form method="post" action="/lab1">
+            <form method="post" action="{{ base_path }}/lab1">
                 <div class="form-group">
                     <input type="email" name="email" placeholder="Email Address" required>
                 </div>

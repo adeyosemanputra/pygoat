@@ -4,6 +4,17 @@ from datetime import datetime
 import os
 
 app = Flask(__name__, static_url_path='/labs/security-headers/static')
+BASE_PATH = '/labs/security-headers'
+
+def redirect_bp(path):
+    """Redirect with BASE_PATH prefix"""
+    return redirect(f"{BASE_PATH}{path}")
+
+@app.context_processor
+def inject_base_path():
+    """Make BASE_PATH available in all templates"""
+    return {'base_path': BASE_PATH}
+
 app.secret_key = 'security_headers_secret_key_2024'
 
 USERS = {
@@ -65,7 +76,7 @@ def login():
         if username in USERS and USERS[username]['password'] == password:
             session['user'] = username
             session.modified = True
-            return redirect(url_for('dashboard'))
+            return redirect_bp('/dashboard')
         else:
             return render_template('login.html', error='Invalid username or password')
     
@@ -74,14 +85,14 @@ def login():
 @app.route('/logout')
 def logout():
     session.clear()
-    return redirect(url_for('index'))
+    return redirect_bp('/')
 
 @app.route('/dashboard')
 def dashboard():
     init_session()
     
     if not session.get('user'):
-        return redirect(url_for('login'))
+        return redirect_bp('/login')
     
     user_data = USERS[session['user']]
     user_transactions = [t for t in TRANSACTIONS if t.get('from_user') == session['user']][-5:]
@@ -93,7 +104,7 @@ def transfer():
     init_session()
     
     if not session.get('user'):
-        return redirect(url_for('login'))
+        return redirect_bp('/login')
     
     if request.method == 'POST':
         amount = request.form.get('amount', '0')
@@ -157,8 +168,13 @@ def toggle_secure_mode():
     init_session()
     session['secure_mode'] = not session.get('secure_mode', False)
     session.modified = True
-    
-    return redirect(request.referrer or url_for('index'))
+
+    ref = request.referrer or ''
+    if ref.startswith(BASE_PATH):
+        return redirect(ref)
+
+    return redirect_bp('/')
+
 
 @app.route('/check_headers')
 def check_headers():

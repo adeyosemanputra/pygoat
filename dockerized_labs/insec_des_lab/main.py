@@ -5,6 +5,17 @@ from dataclasses import dataclass
 import os
 
 app = Flask(__name__, static_url_path='/labs/insec-des/static')
+BASE_PATH = '/labs/insec-des'
+
+def redirect_bp(path):
+    """Redirect with BASE_PATH prefix"""
+    return redirect(f"{BASE_PATH}{path}")
+
+@app.context_processor
+def inject_base_path():
+    """Make BASE_PATH available in all templates"""
+    return {'base_path': BASE_PATH}
+
 
 @dataclass
 class User:

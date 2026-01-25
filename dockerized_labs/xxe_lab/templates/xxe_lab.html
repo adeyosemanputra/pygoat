@@ -27,7 +27,7 @@
 
         <div class="view-comments">
             <h4>View Comments</h4>
-            <button class="btn btn-info" type="button" onclick="window.location.href='/see'">Click Here</button>
+            <button class="btn btn-info" type="button" onclick="window.location.href='{{ base_path }}/see'">Click Here</button>
             
             {% if com %}
             <div class="comments-display">
@@ -60,7 +60,7 @@ function sendToServer(event) {
     // Optional: Add success/error handling
     xhr.onload = function() {
         if (xhr.status === 200) {
-            window.location.href = '/see';
+            window.location.href='{{ base_path }}/see';
         } else {
             console.error('Error submitting comment');
         }

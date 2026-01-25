@@ -80,14 +80,14 @@
                 <button onclick="showIframeDetails()">
                     🔍 Inspect Hidden Iframe
                 </button>
-                <button onclick="window.location.href='/toggle_secure_mode'">
+                <button onclick="window.location.href='{{ base_path }}/toggle_secure_mode'">
                     {% if session.secure_mode %}
                         🔓 Disable Security Headers
                     {% else %}
                         🔒 Enable Security Headers
                     {% endif %}
                 </button>
-                <button onclick="window.open('/transfer', '_blank')" style="background: #28a745;">
+                <button onclick="window.open(''{{ base_path }}/transfer''), '_blank')" style="background: #28a745;">
                     🏦 Open Banking Page
                 </button>
             </div>
@@ -134,8 +134,8 @@ Content-Security-Policy: frame-ancestors 'none'</code></pre>
 
         <div class="lab-navigation">
             <button onclick="window.location.href='/'" style="margin-right: 10px;">Back to Lab Overview</button>
-            <button onclick="window.location.href='/login'" style="margin-right: 10px;">Access Banking</button>
-            <button onclick="window.location.href='/solution'">View Solution</button>
+            <button onclick="window.location.href='{{ base_path }}/login'" style="margin-right: 10px;">Access Banking</button>
+            <button onclick="window.location.href='{{ base_path }}/solution'">View Solution</button>
         </div>
     </div>
 </div>

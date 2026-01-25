@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
   # Challenge Labs
   bopla-lab:
@@ -216,4 +214,5 @@ services:
 
 networks:
   my_network:
-    driver: bridge
+    external: true
+    name: pygoat_my_network
