@@ -21,6 +21,19 @@ Table of Contents
 
 ## Installation
 
+
+## Python Version Compatibility
+
+PyGoat is tested and works reliably with the following Python versions:
+
+- Python 3.9
+- Python 3.10
+- Python 3.11
+
+Python 3.12 may have dependency compatibility limitations at the moment.
+For a consistent development environment, using Docker is recommended.
+
+
 ### From Sources
 
 To setup the project on your local machine:
