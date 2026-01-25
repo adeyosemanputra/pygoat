@@ -1,0 +1,218 @@
+services:
+  # Challenge Labs
+  bopla-lab:
+    build:
+      context: challenge/labs/bopla_lab/
+    container_name: bopla-lab
+    networks:
+      - my_network
+    profiles:
+      - labs
+      - bopla
+
+  business-logic-lab:
+    build:
+      context: challenge/labs/business_logic_lab/
+    container_name: business-logic-lab
+    networks:
+      - my_network
+    profiles:
+      - labs
+      - business-logic
+
+  security-headers-lab:
+    build:
+      context: challenge/labs/security_headers_lab/
+    container_name: security-headers-lab
+    networks:
+      - my_network
+    profiles:
+      - labs
+      - security-headers
+
+  # Dockerized Labs
+  xss-lab:
+    build:
+      context: dockerized_labs/xss_lab/
+    container_name: xss-lab
+    networks:
+      - my_network
+    profiles:
+      - labs
+      - xss
+
+  ssrf-lab:
+    build:
+      context: dockerized_labs/ssrf_lab/
+    container_name: ssrf-lab
+    networks:
+      - my_network
+    profiles:
+      - labs
+      - ssrf
+
+  sql-injection-lab:
+    build:
+      context: dockerized_labs/sql_injection_lab/
+    container_name: sql-injection-lab
+    networks:
+      - my_network
+    profiles:
+      - labs
+      - sql-injection
+
+  command-injection-lab:
+    build:
+      context: dockerized_labs/command_injection_lab/
+    container_name: command-injection-lab
+    networks:
+      - my_network
+    profiles:
+      - labs
+      - command-injection
+
+  broken-auth-lab:
+    build:
+      context: dockerized_labs/broken_auth_lab/
+    container_name: broken-auth-lab
+    networks:
+      - my_network
+    profiles:
+      - labs
+      - broken-auth
+
+  broken-access-lab:
+    build:
+      context: dockerized_labs/broken_access_lab/
+    container_name: broken-access-lab
+    networks:
+      - my_network
+    profiles:
+      - labs
+      - broken-access
+
+  crypto-failure-lab:
+    build:
+      context: dockerized_labs/crypto_failure_lab/
+    container_name: crypto-failure-lab
+    networks:
+      - my_network
+    profiles:
+      - labs
+      - crypto-failure
+
+  insecure-design-lab:
+    build:
+      context: dockerized_labs/insecure_design_lab/
+    container_name: insecure-design-lab
+    networks:
+      - my_network
+    profiles:
+      - labs
+      - insecure-design
+
+  insec-des-lab:
+    build:
+      context: dockerized_labs/insec_des_lab/
+    container_name: insec-des-lab
+    networks:
+      - my_network
+    profiles:
+      - labs
+      - insec-des
+
+  sec-misconfig-lab:
+    build:
+      context: dockerized_labs/sec_misconfig/
+    container_name: sec-misconfig-lab
+    networks:
+      - my_network
+    profiles:
+      - labs
+      - sec-misconfig
+
+  sensitive-data-exposure-lab:
+    build:
+      context: dockerized_labs/sensitive_data_exposure/
+    container_name: sensitive-data-exposure-lab
+    command: python manage.py runserver 0.0.0.0:8000
+    networks:
+      - my_network
+    profiles:
+      - labs
+      - sensitive-data-exposure
+
+  auth-failure-lab:
+    build:
+      context: dockerized_labs/auth_failure_lab/
+    container_name: auth-failure-lab
+    networks:
+      - my_network
+    profiles:
+      - labs
+      - auth-failure
+
+  software-integrity-lab:
+    build:
+      context: dockerized_labs/software_integrity_lab/
+    container_name: software-integrity-lab
+    networks:
+      - my_network
+    profiles:
+      - labs
+      - software-integrity
+
+  insufficient-logging-lab:
+    build:
+      context: dockerized_labs/insufficient_logging_lab/
+    container_name: insufficient-logging-lab
+    networks:
+      - my_network
+    profiles:
+      - labs
+      - insufficient-logging
+
+  sde-lab:
+    build:
+      context: dockerized_labs/sde/
+    container_name: sde-lab
+    networks:
+      - my_network
+    profiles:
+      - labs
+      - sde
+
+  template-injection-lab:
+    build:
+      context: dockerized_labs/template_injection_lab/
+    container_name: template-injection-lab
+    networks:
+      - my_network
+    profiles:
+      - labs
+      - template-injection
+
+  xxe-lab:
+    build:
+      context: dockerized_labs/xxe_lab/
+    container_name: xxe-lab
+    networks:
+      - my_network
+    profiles:
+      - labs
+      - xxe
+
+  a9-uckv-lab:
+    build:
+      context: dockerized_labs/a9_uckv_lab/
+    container_name: a9-uckv-lab
+    networks:
+      - my_network
+    profiles:
+      - labs
+      - a9-uckv
+
+networks:
+  my_network:
+    external: true
+    name: pygoat_my_network

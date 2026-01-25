@@ -1,6 +1,19 @@
 version: "3.9"
 
 services:
+  nginx:
+    image: nginx:alpine
+    container_name: nginx-proxy
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    networks:
+      - my_network
+    depends_on:
+      - web
+    restart: unless-stopped
+
   migration:
     build: .
     command: >
@@ -8,54 +21,24 @@ services:
              python manage.py populate_challenges"
     volumes:
       - .:/app
+      - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - my_network
 
   web:
     build: .
     command: gunicorn --bind 0.0.0.0:8000 --workers 6 pygoat.wsgi
-    ports:
-      - "8000:8000"
+    container_name: pygoat-web
+    ports: []
     volumes:
       - .:/app
+      - /var/run/docker.sock:/var/run/docker.sock
     depends_on:
       migration:
         condition: service_completed_successfully
     networks:
       - my_network
-
-  bopla_lab:
-    build:
-      context: challenge/labs/bopla_lab/
-    depends_on:
-      - web
-    networks:
-      - my_network
-    container_name: bopla_lab
-    ports:
-      - "7018:8080"
-
-  business_logic_lab:
-    build:
-      context: challenge/labs/business_logic_lab/
-    depends_on:
-      - web
-    networks:
-      - my_network
-    container_name: business_logic_lab
-    ports:
-      - "7019:5010"
-
-  security_headers_lab:
-    build:
-      context: challenge/labs/security_headers_lab/
-    depends_on:
-      - web
-    networks:
-      - my_network
-    container_name: security_headers_lab
-    ports:
-      - "7020:5011"
+    restart: unless-stopped
 
 networks:
   my_network:

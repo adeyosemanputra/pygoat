@@ -163,9 +163,9 @@ curl -I http://localhost:5011/transfer
         </div>
 
         <div style="text-align: center; margin-top: 30px;">
-            <button onclick="window.location.href='/login'" style="margin-right: 10px;">Start Lab</button>
-            <button onclick="window.location.href='/'" style="margin-right: 10px;">Back to Overview</button>
-            <button onclick="window.location.href='/solution'">View Solution</button>
+            <button onclick="window.location.href='{{ base_path }}/login'" style="margin-right: 10px;">Start Lab</button>
+            <button onclick="window.location.href='{{ base_path }}/lab'" style="margin-right: 10px;">Back to Overview</button>
+            <button onclick="window.location.href='{{ base_path }}/solution'">View Solution</button>
         </div>
     </div>
 </div>

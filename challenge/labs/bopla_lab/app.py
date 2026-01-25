@@ -2,7 +2,18 @@ from flask import Flask, render_template, request, jsonify, redirect, url_for
 import os
 import json
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/labs/bopla/static')
+BASE_PATH = '/labs/bopla'
+
+def redirect_bp(path):
+    """Redirect with BASE_PATH prefix"""
+    return redirect(f"{BASE_PATH}{path}")
+
+@app.context_processor
+def inject_base_path():
+    """Make BASE_PATH available in all templates"""
+    return {'base_path': BASE_PATH}
+
 app.secret_key = os.urandom(24)
 
 projects_data = {
@@ -69,7 +80,7 @@ def login():
         
         if username in users and users[username]['password'] == password:
             current_user = {"username": username, "role": users[username]['role']}
-            return redirect(url_for('dashboard'))
+            return redirect_bp('/dashboard')
         else:
             return render_template('login.html', error="Invalid credentials")
     
@@ -78,7 +89,7 @@ def login():
 @app.route('/dashboard')
 def dashboard():
     if not current_user:
-        return redirect(url_for('login'))
+        return redirect_bp('/login')
     
     project_list = []
     for project_id, project in projects_data.items():
@@ -129,7 +140,7 @@ def get_project_safe(project_id):
 def logout():
     global current_user
     current_user = None
-    return redirect(url_for('index'))
+    return redirect_bp('/')
 
 @app.route('/solution')
 def solution():

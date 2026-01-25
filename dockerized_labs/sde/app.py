@@ -1,6 +1,18 @@
 from flask import Flask, render_template
+import os
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/labs/sde/static')
+BASE_PATH = '/labs/sde'
+
+def redirect_bp(path):
+    """Redirect with BASE_PATH prefix"""
+    return redirect(f"{BASE_PATH}{path}")
+
+@app.context_processor
+def inject_base_path():
+    """Make BASE_PATH available in all templates"""
+    return {'base_path': BASE_PATH}
+
 
 # Sensitive config data
 app.config['SECRET_KEY'] = 'your-secret-key-here-not-very-secure'

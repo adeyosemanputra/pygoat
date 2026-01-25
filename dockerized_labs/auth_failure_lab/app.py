@@ -7,8 +7,20 @@ import uuid
 import random
 import base64
 import json
+import os
 
-app = Flask("app")
+app = Flask("app", static_url_path='/labs/auth-failure/static')
+BASE_PATH = '/labs/auth-failure'
+
+def redirect_bp(path):
+    """Redirect with BASE_PATH prefix"""
+    return redirect(f"{BASE_PATH}{path}")
+
+@app.context_processor
+def inject_base_path():
+    """Make BASE_PATH available in all templates"""
+    return {'base_path': BASE_PATH}
+
 app.config['SECRET_KEY'] = 'insecure-secret-key'  # Intentionally weak secret key
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///auth.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False

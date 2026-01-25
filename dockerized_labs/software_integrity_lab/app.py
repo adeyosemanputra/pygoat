@@ -1,11 +1,22 @@
-from flask import Flask, render_template, request, make_response, send_from_directory
+from flask import Flask, render_template, request, make_response
 import base64
 import pickle
 import os
 from dataclasses import dataclass
 from pathlib import Path
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/labs/software-integrity/static')
+BASE_PATH = '/labs/software-integrity'
+
+def redirect_bp(path):
+    """Redirect with BASE_PATH prefix"""
+    return redirect(f"{BASE_PATH}{path}")
+
+@app.context_processor
+def inject_base_path():
+    """Make BASE_PATH available in all templates"""
+    return {'base_path': BASE_PATH}
+
 app.config['SECRET_KEY'] = 'your-secret-key-here'
 
 # For Lab 1 - Pickle Deserialization

@@ -6,6 +6,8 @@ import subprocess
 from .utility import get_free_port
 from .models import Challenge, UserChallenge
 from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
+from .lab_control import start_lab, stop_lab, lab_status
 # Create your views here.
 
 
@@ -103,3 +105,25 @@ def security_headers_lab(request):
         return redirect('login')
     return redirect("http://localhost:7020")
     
+    #lab control views
+@login_required
+def control_lab(request, lab_name, action):
+    """Start, stop, or check status of a lab"""
+    if action == 'status':
+        return JsonResponse({
+            'success': True,
+            'status': lab_status(lab_name)
+        })
+
+    if action == 'start':
+        success, msg = start_lab(lab_name)
+    elif action == 'stop':
+        success, msg = stop_lab(lab_name)
+    else:
+        return JsonResponse({'error': 'Invalid action'}, status=400)
+
+    return JsonResponse({
+        'success': success,
+        'message': msg,
+        'status': lab_status(lab_name)
+    })    

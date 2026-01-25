@@ -11,12 +11,12 @@
         
         <div class="user-info">
             <strong>Logged in as:</strong> {{ user.username }} ({{ user.role }})<br>
-            <a href="/logout">Logout</a>
+            <a href="{{ base_path }}/logout">Logout</a>
         </div>
 
         <div class="navigation">
-            <a href="/lab">← Back to Lab</a>
-            <a href="/solution" target="_blank">View Solution</a>
+            <a href="{{ base_path }}/lab">← Back to Lab</a>
+            <a href="{{ base_path }}/solution" target="_blank">View Solution</a>
         </div>
 
         <div class="section">
@@ -69,17 +69,43 @@
 
 <script>
 async function loadProjectDetails(projectId) {
-    // This simulates what the frontend typically does - only show safe data
     try {
-        const response = await fetch(`/api/project/${projectId}/details`);
+        const response = await fetch(
+            "{{ base_path }}/api/project/" + projectId + "/details"
+        );
+
         const data = await response.json();
-        
-        // Frontend only displays these "safe" fields
-        alert(`Project: ${data.name}\nDescription: ${data.description}\n\n(Check developer tools for full API response!)`);
-        
+
+        alert(
+            "Project: " + data.name +
+            "\nDescription: " + data.description +
+            "\n\n(Check Network tab for full response)"
+        );
+
     } catch (error) {
-        alert('Error loading project details');
+        console.error("Error:", error);
+        alert("Error loading project details");
     }
 }
-</script>
+
+    async function testAPI(projectId, endpoint = 'details') {
+        try {
+            const response = await fetch(
+                "{{ base_path }}/api/project/" + projectId + "/" + endpoint
+            );
+
+            const data = await response.json();
+            console.log("API Response:", data);
+
+            document.getElementById("api-response").style.display = "block";
+            document.getElementById("api-response").innerText =
+                JSON.stringify(data, null, 2);
+
+        } catch (error) {
+            console.error("Error calling API:", error);
+            alert("Error calling API");
+        }
+    }
+    </script>
+
 {% endblock %}

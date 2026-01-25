@@ -247,9 +247,9 @@ curl -I https://yoursite.com/sensitive-page
         </div>
 
         <div style="text-align: center; margin-top: 30px;">
-            <button onclick="window.location.href='/lab'" style="margin-right: 10px;">Back to Lab Details</button>
-            <button onclick="window.location.href='/malicious'" style="margin-right: 10px;">Try Attack Demo</button>
-            <button onclick="window.location.href='/'">Back to Overview</button>
+            <button onclick="window.location.href='{{ base_path }}/lab'" style="margin-right: 10px;">Back to Lab Details</button>
+            <button onclick="window.location.href='{{ base_path }}/malicious'" style="margin-right: 10px;">Try Attack Demo</button>
+            <button onclick="window.location.href='{{ base_path }}/lab'">Back to Overview</button>
         </div>
     </div>
 </div>

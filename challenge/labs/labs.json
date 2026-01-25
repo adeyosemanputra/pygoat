@@ -1,0 +1,107 @@
+{
+  "bopla": {
+    "name": "BOPLA Lab",
+    "profile": "bopla",
+    "url": "/labs/bopla/"
+  },
+  "business-logic": {
+    "name": "Business Logic Lab",
+    "profile": "business-logic",
+    "url": "/labs/business-logic/"
+  },
+  "security-headers": {
+    "name": "Security Headers Lab",
+    "profile": "security-headers",
+    "url": "/labs/security-headers/"
+  },
+  "xss": {
+    "name": "XSS Lab",
+    "profile": "xss",
+    "url": "/labs/xss/"
+  },
+  "ssrf": {
+    "name": "SSRF Lab",
+    "profile": "ssrf",
+    "url": "/labs/ssrf/"
+  },
+  "sql-injection": {
+    "name": "SQL Injection Lab",
+    "profile": "sql-injection",
+    "url": "/labs/sql-injection/"
+  },
+  "command-injection": {
+    "name": "Command Injection Lab",
+    "profile": "command-injection",
+    "url": "/labs/command-injection/"
+  },
+  "broken-auth": {
+    "name": "Broken Authentication Lab",
+    "profile": "broken-auth",
+    "url": "/labs/broken-auth/"
+  },
+  "broken-access": {
+    "name": "Broken Access Control Lab",
+    "profile": "broken-access",
+    "url": "/labs/broken-access/"
+  },
+  "crypto-failure": {
+    "name": "Cryptographic Failure Lab",
+    "profile": "crypto-failure",
+    "url": "/labs/crypto-failure/"
+  },
+  "insecure-design": {
+    "name": "Insecure Design Lab",
+    "profile": "insecure-design",
+    "url": "/labs/insecure-design/"
+  },
+  "insec-des": {
+    "name": "Insec Des Lab",
+    "profile": "insec-des",
+    "url": "/labs/insec-des/"
+  },
+  "sec-misconfig": {
+    "name": "Security Misconfiguration Lab",
+    "profile": "sec-misconfig",
+    "url": "/labs/sec-misconfig/"
+  },
+  "sensitive-data-exposure": {
+    "name": "Sensitive Data Exposure Lab",
+    "profile": "sensitive-data-exposure",
+    "url": "/labs/sensitive-data-exposure/"
+  },
+  "auth-failure": {
+    "name": "Authentication Failure Lab",
+    "profile": "auth-failure",
+    "url": "/labs/auth-failure/"
+  },
+  "software-integrity": {
+    "name": "Software Integrity Lab",
+    "profile": "software-integrity",
+    "url": "/labs/software-integrity/"
+  },
+  "insufficient-logging": {
+    "name": "Insufficient Logging Lab",
+    "profile": "insufficient-logging",
+    "url": "/labs/insufficient-logging/"
+  },
+  "sde": {
+    "name": "SDE Lab",
+    "profile": "sde",
+    "url": "/labs/sde/"
+  },
+  "template-injection": {
+    "name": "Template Injection Lab",
+    "profile": "template-injection",
+    "url": "/labs/template-injection/"
+  },
+  "xxe": {
+    "name": "XXE Lab",
+    "profile": "xxe",
+    "url": "/labs/xxe/"
+  },
+  "a9-uckv": {
+    "name": "A9 UCKV Lab",
+    "profile": "a9-uckv",
+    "url": "/labs/a9-uckv/"
+  }
+}

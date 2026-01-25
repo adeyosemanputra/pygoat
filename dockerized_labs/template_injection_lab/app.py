@@ -2,7 +2,18 @@ from flask import Flask, render_template, request, redirect, url_for, render_tem
 import os
 import uuid
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/labs/template-injection/static')
+BASE_PATH = '/labs/template-injection'
+
+def redirect_bp(path):
+    """Redirect with BASE_PATH prefix"""
+    return redirect(f"{BASE_PATH}{path}")
+
+@app.context_processor
+def inject_base_path():
+    """Make BASE_PATH available in all templates"""
+    return {'base_path': BASE_PATH}
+
 
 # Directory to store blog posts
 BLOG_DIR = os.path.join(app.root_path, 'templates', 'blogs')
