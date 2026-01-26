@@ -26,10 +26,12 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import UserCreationForm
 from django.core import serializers
+from django.db import connection
 from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
 from django.shortcuts import redirect, render
 from django.template import loader
 from django.template.loader import render_to_string
+from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 from PIL import Image, ImageMath
 from requests.structures import CaseInsensitiveDict
@@ -1230,10 +1232,6 @@ def software_and_data_integrity_failure_lab3(request):
 def A6_discussion(request):
     
     return render(request,"playground/A6/index.html")
-
-
-from django.views import View
-from django.db import connection
 
 class A10ExceptionLab(View):
     def get(self, request):

@@ -27,7 +27,7 @@
   {% if error_msg %}
   <div class="alert alert-danger mt-3">
     <strong>Error Response:</strong> {{ error_msg }} {% if 'syntax' in
-    error_msg.lower or 'database' in error_msg.lower %}
+    error_msg|lower or 'database' in error_msg|lower %}
     <hr />
     <small class="text-muted"
       >⚠️ This error message reveals database implementation details!</small
