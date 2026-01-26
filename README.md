@@ -112,6 +112,9 @@ $ python3 uninstaller.py
 ## Solutions 
 <a href="/Solutions/solution.md">Solutions to all challenges</a>
 
+## Scenarios
+* A10: Mishandling of Exceptional Conditions (2025)
+
 ## Contributors ✨
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):

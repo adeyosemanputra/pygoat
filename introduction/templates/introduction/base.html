@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 {% load static %}
 
 <html lang="en">
@@ -18,7 +18,11 @@
       crossorigin="anonymous"
     />
     <!-- Our Custom CSS -->
-    <link id="pagestyle" rel="stylesheet" href="{% static 'css/dark-theme.css'%}" />
+    <link
+      id="pagestyle"
+      rel="stylesheet"
+      href="{% static 'css/dark-theme.css'%}"
+    />
     <link rel="stylesheet" href="{% static 'css/home.css'%}" />
     <link rel="stylesheet" href="{% static 'Lab/ssrf.css'%}" />
     <link rel="stylesheet" href="{% static 'Lab/ssti.css'%}" />
@@ -37,8 +41,8 @@
       integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY"
       crossorigin="anonymous"
     ></script>
-    <script defer src="{% static 'Lab/xss.js' %}"> </script>
-    <script defer src="{% static 'Lab/ssrf.js' %}"> </script>
+    <script defer src="{% static 'Lab/xss.js' %}"></script>
+    <script defer src="{% static 'Lab/ssrf.js' %}"></script>
   </head>
 
   <body>
@@ -62,8 +66,8 @@
           <strong>PG</strong>
         </div>
 
-        <ul class="list-unstyled components" style="margin-bottom: 0px;">
-          <li >
+        <ul class="list-unstyled components" style="margin-bottom: 0px">
+          <li>
             <a
               href="#homeSubmenu"
               data-toggle="collapse"
@@ -176,6 +180,12 @@
                   A10: Server-Side Request Forgery
                 </a>
               </li>
+              <li>
+                <a href="/2025/a10" class="sidebar-list-items">
+                  <i class="fas fa-bug"></i>
+                  A10: Exception Handling (2025)
+                </a>
+              </li>
             </ul>
 
             <a
@@ -193,13 +203,14 @@
               <li>
                 <a href="/mitre/1" class="sidebar-list-items">
                   <i class="fas fa-bug"></i>
-                   S1 : Out-of-bounds Write
+                  S1 : Out-of-bounds Write
                 </a>
               </li>
               <li>
                 <a href="/mitre/2" class="sidebar-list-items">
                   <i class="fas fa-bug"></i>
-                   S2 : Improper Neutralization of Input During Web Page Generation 
+                  S2 : Improper Neutralization of Input During Web Page
+                  Generation
                 </a>
               </li>
               <li>
@@ -211,25 +222,25 @@
               <li>
                 <a href="/mitre/4" class="sidebar-list-items">
                   <i class="fas fa-bug"></i>
-                  S4 : Improper Input Validation 
+                  S4 : Improper Input Validation
                 </a>
               </li>
               <li>
                 <a href="/mitre/5" class="sidebar-list-items">
                   <i class="fas fa-bug"></i>
-                S5 : Out of bounds write
+                  S5 : Out of bounds write
                 </a>
               </li>
               <li>
                 <a href="/mitre/6" class="sidebar-list-items">
                   <i class="fas fa-bug"></i>
-                  S6 : OS Command Injection 
+                  S6 : OS Command Injection
                 </a>
               </li>
               <li>
                 <a href="/mitre/7" class="sidebar-list-items">
                   <i class="fas fa-bug"></i>
-                  S7 : Use After Free 
+                  S7 : Use After Free
                 </a>
               </li>
               <li>
@@ -265,86 +276,88 @@
               <li>
                 <a href="/mitre/13" class="sidebar-list-items">
                   <i class="fas fa-bug"></i>
-                  S13 : Interger Overflow or  Wraparround
+                  S13 : Interger Overflow or Wraparround
                 </a>
               </li>
               <li>
                 <a href="/mitre/14" class="sidebar-list-items">
                   <i class="fas fa-bug"></i>
-                 S14 : Improper Authentication 
+                  S14 : Improper Authentication
                 </a>
               </li>
-              
+
               <li>
                 <a href="/mitre/15" class="sidebar-list-items">
                   <i class="fas fa-bug"></i>
-                 S15 : User of Hardcoded credential 
+                  S15 : User of Hardcoded credential
                 </a>
               </li>
 
               <li>
                 <a href="/mitre/16" class="sidebar-list-items">
                   <i class="fas fa-bug"></i>
-                S16 : Missing Autherization 
+                  S16 : Missing Autherization
                 </a>
               </li>
-              
+
               <li>
                 <a href="/mitre/17" class="sidebar-list-items">
                   <i class="fas fa-bug"></i>
-                S17 : Command Injection 
+                  S17 : Command Injection
                 </a>
               </li>
               <li>
                 <a href="/mitre/18" class="sidebar-list-items">
                   <i class="fas fa-bug"></i>
-                S18 : Missing Authentication for Critical Function 
+                  S18 : Missing Authentication for Critical Function
                 </a>
               </li>
               <li>
                 <a href="/mitre/19" class="sidebar-list-items">
                   <i class="fas fa-bug"></i>
-                 S19 : 	Improper Restriction of Operations within the Bounds of a Memory Buffer
+                  S19 : Improper Restriction of Operations within the Bounds of
+                  a Memory Buffer
                 </a>
               </li>
 
               <li>
                 <a href="/mitre/20" class="sidebar-list-items">
                   <i class="fas fa-bug"></i>
-                S20 : Incorrect Default Permission
+                  S20 : Incorrect Default Permission
                 </a>
               </li>
               <li>
                 <a href="/mitre/21" class="sidebar-list-items">
                   <i class="fas fa-bug"></i>
-                S21 : Server Side Request Forgery 
+                  S21 : Server Side Request Forgery
                 </a>
               </li>
               <li>
                 <a href="/mitre/22" class="sidebar-list-items">
                   <i class="fas fa-bug"></i>
-                S22 : Concurrent Execution using Shared Resource with Improper Synchronization  
+                  S22 : Concurrent Execution using Shared Resource with Improper
+                  Synchronization
                 </a>
               </li>
               <li>
                 <a href="/mitre/23" class="sidebar-list-items">
                   <i class="fas fa-bug"></i>
-                S23 : Uncontrolled Resource Comsumption
+                  S23 : Uncontrolled Resource Comsumption
                 </a>
               </li>
               <li>
                 <a href="/mitre/24" class="sidebar-list-items">
                   <i class="fas fa-bug"></i>
-                S24 : Improper Restriction of XML External Entity Reference
+                  S24 : Improper Restriction of XML External Entity Reference
                 </a>
               </li>
               <li>
                 <a href="/mitre/25" class="sidebar-list-items">
                   <i class="fas fa-bug"></i>
-                S25 : Code Injection  
+                  S25 : Code Injection
                 </a>
               </li>
-          </ul>
+            </ul>
             <a
               href="#Mitre25"
               data-toggle="collapse"
@@ -357,160 +370,163 @@
               Mitre top 25 Vulns
             </a>
             <ul class="collapse list-unstyled" id="Mitre25">
-                <li>
-                  <a href="/mitre/1" class="sidebar-list-items">
-                    <i class="fas fa-bug"></i>
-                     M1 : Out-of-bounds Write
-                  </a>
-                </li>
-                <li>
-                  <a href="/mitre/2" class="sidebar-list-items">
-                    <i class="fas fa-bug"></i>
-                     M2 : Improper Neutralization of Input During Web Page Generation 
-                  </a>
-                </li>
-                <li>
-                  <a href="/mitre/3" class="sidebar-list-items">
-                    <i class="fas fa-bug"></i>
-                    M3 : SQL Injection
-                  </a>
-                </li>
-                <li>
-                  <a href="/mitre/4" class="sidebar-list-items">
-                    <i class="fas fa-bug"></i>
-                    M4 : Improper Input Validation 
-                  </a>
-                </li>
-                <li>
-                  <a href="/mitre/5" class="sidebar-list-items">
-                    <i class="fas fa-bug"></i>
+              <li>
+                <a href="/mitre/1" class="sidebar-list-items">
+                  <i class="fas fa-bug"></i>
+                  M1 : Out-of-bounds Write
+                </a>
+              </li>
+              <li>
+                <a href="/mitre/2" class="sidebar-list-items">
+                  <i class="fas fa-bug"></i>
+                  M2 : Improper Neutralization of Input During Web Page
+                  Generation
+                </a>
+              </li>
+              <li>
+                <a href="/mitre/3" class="sidebar-list-items">
+                  <i class="fas fa-bug"></i>
+                  M3 : SQL Injection
+                </a>
+              </li>
+              <li>
+                <a href="/mitre/4" class="sidebar-list-items">
+                  <i class="fas fa-bug"></i>
+                  M4 : Improper Input Validation
+                </a>
+              </li>
+              <li>
+                <a href="/mitre/5" class="sidebar-list-items">
+                  <i class="fas fa-bug"></i>
                   M5 : Out of bounds write
-                  </a>
-                </li>
-                <li>
-                  <a href="/mitre/6" class="sidebar-list-items">
-                    <i class="fas fa-bug"></i>
-                    M6 : OS Command Injection 
-                  </a>
-                </li>
-                <li>
-                  <a href="/mitre/7" class="sidebar-list-items">
-                    <i class="fas fa-bug"></i>
-                    M7 : Use After Free 
-                  </a>
-                </li>
-                <li>
-                  <a href="/mitre/8" class="sidebar-list-items">
-                    <i class="fas fa-bug"></i>
-                    M8 : Path Traversal
-                  </a>
-                </li>
-                <li>
-                  <a href="/mitre/9" class="sidebar-list-items">
-                    <i class="fas fa-bug"></i>
-                    M9 : CSRF
-                  </a>
-                </li>
-                <li>
-                  <a href="/mitre/10" class="sidebar-list-items">
-                    <i class="fas fa-bug"></i>
-                    M10 : Unrestricted Upload of File with Dangerous Type
-                  </a>
-                </li>
-                <li>
-                  <a href="/mitre/11" class="sidebar-list-items">
-                    <i class="fas fa-bug"></i>
-                    M11 : Null Pointer Referernece
-                  </a>
-                </li>
-                <li>
-                  <a href="/mitre/12" class="sidebar-list-items">
-                    <i class="fas fa-bug"></i>
-                    M12 : Deserialization of Untrusted Data
-                  </a>
-                </li>
-                <li>
-                  <a href="/mitre/13" class="sidebar-list-items">
-                    <i class="fas fa-bug"></i>
-                    M13 : Interger Overflow or  Wraparround
-                  </a>
-                </li>
-                <li>
-                  <a href="/mitre/14" class="sidebar-list-items">
-                    <i class="fas fa-bug"></i>
-                   M14 : Improper Authentication 
-                  </a>
-                </li>
-                
-                <li>
-                  <a href="/mitre/15" class="sidebar-list-items">
-                    <i class="fas fa-bug"></i>
-                   M15 : User of Hardcoded credential 
-                  </a>
-                </li>
+                </a>
+              </li>
+              <li>
+                <a href="/mitre/6" class="sidebar-list-items">
+                  <i class="fas fa-bug"></i>
+                  M6 : OS Command Injection
+                </a>
+              </li>
+              <li>
+                <a href="/mitre/7" class="sidebar-list-items">
+                  <i class="fas fa-bug"></i>
+                  M7 : Use After Free
+                </a>
+              </li>
+              <li>
+                <a href="/mitre/8" class="sidebar-list-items">
+                  <i class="fas fa-bug"></i>
+                  M8 : Path Traversal
+                </a>
+              </li>
+              <li>
+                <a href="/mitre/9" class="sidebar-list-items">
+                  <i class="fas fa-bug"></i>
+                  M9 : CSRF
+                </a>
+              </li>
+              <li>
+                <a href="/mitre/10" class="sidebar-list-items">
+                  <i class="fas fa-bug"></i>
+                  M10 : Unrestricted Upload of File with Dangerous Type
+                </a>
+              </li>
+              <li>
+                <a href="/mitre/11" class="sidebar-list-items">
+                  <i class="fas fa-bug"></i>
+                  M11 : Null Pointer Referernece
+                </a>
+              </li>
+              <li>
+                <a href="/mitre/12" class="sidebar-list-items">
+                  <i class="fas fa-bug"></i>
+                  M12 : Deserialization of Untrusted Data
+                </a>
+              </li>
+              <li>
+                <a href="/mitre/13" class="sidebar-list-items">
+                  <i class="fas fa-bug"></i>
+                  M13 : Interger Overflow or Wraparround
+                </a>
+              </li>
+              <li>
+                <a href="/mitre/14" class="sidebar-list-items">
+                  <i class="fas fa-bug"></i>
+                  M14 : Improper Authentication
+                </a>
+              </li>
 
-                <li>
-                  <a href="/mitre/16" class="sidebar-list-items">
-                    <i class="fas fa-bug"></i>
-                  M16 : Missing Autherization 
-                  </a>
-                </li>
-                
-                <li>
-                  <a href="/mitre/17" class="sidebar-list-items">
-                    <i class="fas fa-bug"></i>
-                  M17 : Command Injection 
-                  </a>
-                </li>
-                <li>
-                  <a href="/mitre/18" class="sidebar-list-items">
-                    <i class="fas fa-bug"></i>
-                  M18 : Missing Authentication for Critical Function 
-                  </a>
-                </li>
-                <li>
-                  <a href="/mitre/19" class="sidebar-list-items">
-                    <i class="fas fa-bug"></i>
-                   M19 : 	Improper Restriction of Operations within the Bounds of a Memory Buffer
-                  </a>
-                </li>
+              <li>
+                <a href="/mitre/15" class="sidebar-list-items">
+                  <i class="fas fa-bug"></i>
+                  M15 : User of Hardcoded credential
+                </a>
+              </li>
 
-                <li>
-                  <a href="/mitre/20" class="sidebar-list-items">
-                    <i class="fas fa-bug"></i>
+              <li>
+                <a href="/mitre/16" class="sidebar-list-items">
+                  <i class="fas fa-bug"></i>
+                  M16 : Missing Autherization
+                </a>
+              </li>
+
+              <li>
+                <a href="/mitre/17" class="sidebar-list-items">
+                  <i class="fas fa-bug"></i>
+                  M17 : Command Injection
+                </a>
+              </li>
+              <li>
+                <a href="/mitre/18" class="sidebar-list-items">
+                  <i class="fas fa-bug"></i>
+                  M18 : Missing Authentication for Critical Function
+                </a>
+              </li>
+              <li>
+                <a href="/mitre/19" class="sidebar-list-items">
+                  <i class="fas fa-bug"></i>
+                  M19 : Improper Restriction of Operations within the Bounds of
+                  a Memory Buffer
+                </a>
+              </li>
+
+              <li>
+                <a href="/mitre/20" class="sidebar-list-items">
+                  <i class="fas fa-bug"></i>
                   M20 : Incorrect Default Permission
-                  </a>
-                </li>
-                <li>
-                  <a href="/mitre/21" class="sidebar-list-items">
-                    <i class="fas fa-bug"></i>
-                  M21 : Server Side Request Forgery 
-                  </a>
-                </li>
-                <li>
-                  <a href="/mitre/22" class="sidebar-list-items">
-                    <i class="fas fa-bug"></i>
-                  M22 : Concurrent Execution using Shared Resource with Improper Synchronization  
-                  </a>
-                </li>
-                <li>
-                  <a href="/mitre/23" class="sidebar-list-items">
-                    <i class="fas fa-bug"></i>
+                </a>
+              </li>
+              <li>
+                <a href="/mitre/21" class="sidebar-list-items">
+                  <i class="fas fa-bug"></i>
+                  M21 : Server Side Request Forgery
+                </a>
+              </li>
+              <li>
+                <a href="/mitre/22" class="sidebar-list-items">
+                  <i class="fas fa-bug"></i>
+                  M22 : Concurrent Execution using Shared Resource with Improper
+                  Synchronization
+                </a>
+              </li>
+              <li>
+                <a href="/mitre/23" class="sidebar-list-items">
+                  <i class="fas fa-bug"></i>
                   M23 : Uncontrolled Resource Comsumption
-                  </a>
-                </li>
-                <li>
-                  <a href="/mitre/24" class="sidebar-list-items">
-                    <i class="fas fa-bug"></i>
+                </a>
+              </li>
+              <li>
+                <a href="/mitre/24" class="sidebar-list-items">
+                  <i class="fas fa-bug"></i>
                   M24 : Improper Restriction of XML External Entity Reference
-                  </a>
-                </li>
-                <li>
-                  <a href="/mitre/25" class="sidebar-list-items">
-                    <i class="fas fa-bug"></i>
-                  M25 : Code Injection  
-                  </a>
-                </li>
+                </a>
+              </li>
+              <li>
+                <a href="/mitre/25" class="sidebar-list-items">
+                  <i class="fas fa-bug"></i>
+                  M25 : Code Injection
+                </a>
+              </li>
             </ul>
             <a
               href="#OWASP10_2017"
@@ -525,7 +541,12 @@
             </a>
             <ul class="collapse list-unstyled" id="OWASP10_2017">
               <li>
-                <a href="#sqlSubmenu" class="sidebar-list-items dropdown-toggle" aria-expanded="false" data-toggle="collapse">
+                <a
+                  href="#sqlSubmenu"
+                  class="sidebar-list-items dropdown-toggle"
+                  aria-expanded="false"
+                  data-toggle="collapse"
+                >
                   <i class="fas fa-bug"></i>
                   A1: Injection
                 </a>
@@ -547,11 +568,7 @@
                 </a>
               </li>
               <li>
-                <a
-                  href="/data_exp"
-                  
-                  class="sidebar-list-items"
-                >
+                <a href="/data_exp" class="sidebar-list-items">
                   <i class="fas fa-bug"></i>
                   A3: Sensitive Data Exposure
                 </a>
@@ -613,7 +630,9 @@
             </a>
             <ul class="collapse list-unstyled" id="challengeSubmenu">
               <li>
-                <a href="/challenge/do-it-fast" class="sidebar-list-items">Do It Fast</a>
+                <a href="/challenge/do-it-fast" class="sidebar-list-items"
+                  >Do It Fast</a
+                >
               </li>
             </ul>
             <a
@@ -654,11 +673,15 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
               <ul class="nav navbar-nav ml-auto">
                 <li class="nav-item">
-                  <button class="nav-link dark" href='{% url "logout" %}?next=/' id="stylesheet-toggle" onclick="swapStyleSheet()"
-                    >Theme</button
+                  <button
+                    class="nav-link dark"
+                    href='{% url "logout" %}?next=/'
+                    id="stylesheet-toggle"
+                    onclick="swapStyleSheet()"
                   >
+                    Theme
+                  </button>
                 </li>
-
 
                 {% if user.is_authenticated %}
                 <li class="nav-item">
@@ -673,7 +696,6 @@
                   <a class="nav-link" href="/login">Login</a>
                 </li>
                 {% endif %}
-
               </ul>
             </div>
           </div>
@@ -718,26 +740,31 @@
       });
 
       function swapStyleSheet() {
-        var elem = document.getElementById('stylesheet-toggle');
-        if(elem.classList.contains('dark')){
-            elem.classList.remove('dark');
-            elem.classList.add('light');
-            localStorage.setItem('theme','light');
-            document.getElementById("pagestyle").setAttribute("href", "/static/css/light.css");
+        var elem = document.getElementById("stylesheet-toggle");
+        if (elem.classList.contains("dark")) {
+          elem.classList.remove("dark");
+          elem.classList.add("light");
+          localStorage.setItem("theme", "light");
+          document
+            .getElementById("pagestyle")
+            .setAttribute("href", "/static/css/light.css");
         } else {
-            elem.classList.remove('light');
-            elem.classList.add('dark');
-            localStorage.setItem('theme','dark');
-            document.getElementById("pagestyle").setAttribute("href", "/static/css/dark-theme.css");
-        } 
+          elem.classList.remove("light");
+          elem.classList.add("dark");
+          localStorage.setItem("theme", "dark");
+          document
+            .getElementById("pagestyle")
+            .setAttribute("href", "/static/css/dark-theme.css");
+        }
       }
-      var elem3 = document.getElementById('stylesheet-toggle');
-      if(localStorage.getItem('theme')=='light') {
-        elem3.classList.remove('dark');
-        elem3.classList.add('light');
-        document.getElementById("pagestyle").setAttribute("href", "/static/css/light.css");
+      var elem3 = document.getElementById("stylesheet-toggle");
+      if (localStorage.getItem("theme") == "light") {
+        elem3.classList.remove("dark");
+        elem3.classList.add("light");
+        document
+          .getElementById("pagestyle")
+          .setAttribute("href", "/static/css/light.css");
       }
-      
     </script>
   </body>
 </html>

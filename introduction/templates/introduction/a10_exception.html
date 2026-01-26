@@ -1,0 +1,46 @@
+{% extends 'introduction/base.html' %} {% block content %}
+<div class="container mt-4">
+  <h3>A10:2025 - Mishandling of Exceptional Conditions</h3>
+
+  <div class="alert alert-info">
+    <strong>Vulnerability:</strong> CWE-209 (Information Exposure Through Error
+    Messages)<br />
+    <strong>Scenario:</strong> Try malformed input like <code>1'</code> or
+    <code>abc</code> to trigger database exceptions. The vulnerable version
+    exposes raw error details that leak architectural information.
+  </div>
+
+  <form method="GET" class="form-inline">
+    <input
+      type="text"
+      name="id"
+      class="form-control mr-2"
+      placeholder="User ID"
+      value="{{ request.GET.id }}"
+    />
+    <button type="submit" class="btn btn-primary">Search</button>
+    <a href="?secure=true&id={{ request.GET.id }}" class="btn btn-success ml-2"
+      >Try Secure Mode</a
+    >
+  </form>
+
+  {% if error_msg %}
+  <div class="alert alert-danger mt-3">
+    <strong>Error Response:</strong> {{ error_msg }} {% if 'syntax' in
+    error_msg.lower or 'database' in error_msg.lower %}
+    <hr />
+    <small class="text-muted"
+      >⚠️ This error message reveals database implementation details!</small
+    >
+    {% endif %}
+  </div>
+  {% endif %} {% if output %}
+  <div class="alert alert-success mt-3">{{ output }}</div>
+  {% endif %} {% if request.GET.secure == 'true' %}
+  <div class="alert alert-warning mt-3">
+    <strong>🔒 Secure Mode Active:</strong> Exceptions are logged server-side
+    but not exposed to users.
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

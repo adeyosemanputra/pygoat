@@ -1230,3 +1230,39 @@ def software_and_data_integrity_failure_lab3(request):
 def A6_discussion(request):
     
     return render(request,"playground/A6/index.html")
+
+
+from django.views import View
+from django.db import connection
+
+class A10ExceptionLab(View):
+    def get(self, request):
+        user_input = request.GET.get('id', '')
+        secure_mode = request.GET.get('secure', 'false') == 'true'
+        output = None
+        error_msg = None
+
+        if user_input:
+            try:
+                with connection.cursor() as cursor:
+                    # Intentionally using f-string to allow SQL syntax errors to propagate
+                    cursor.execute(f"SELECT username FROM auth_user WHERE id = {user_input}")
+                    row = cursor.fetchone()
+                
+                if row:
+                    output = f"User found: {row[0]}"
+                else:
+                    output = "User not found"
+
+            except Exception as e:
+                if secure_mode:
+                    logging.error(f"A10 Lab Error: {e}")
+                    error_msg = "An internal error occurred."
+                else:
+                    # Vulnerable: Exposing the raw exception string to the UI
+                    error_msg = str(e)
+
+        return render(request, 'introduction/a10_exception.html', {
+            'output': output,
+            'error_msg': error_msg
+        })
