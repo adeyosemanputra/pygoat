@@ -690,7 +690,7 @@
     </div>
 
     <!-- Status Modal -->
-    <div class="modal fade" id="statusModal" tabindex="-1" role="dialog" aria-labelledby="statusModalLabel" aria-hidden="true">
+    <div class="modal fade" id="statusModal" tabindex="-1" role="dialog" aria-labelledby="statusModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="true">
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -771,6 +771,11 @@
       
     </script>
 <script>
+    {% if user.is_authenticated %}
+    const isAuthenticated = true;
+    {% else %}
+    const isAuthenticated = false;
+    {% endif %}
     function applyModalTheme() {
         const isDark = localStorage.getItem('theme') === 'dark' || localStorage.getItem('theme') === null;
         const modal = document.getElementById('statusModal');
@@ -787,40 +792,100 @@
         const statusSpinner = document.getElementById('status-spinner');
         const modal = $('#statusModal');
         const closeBtn = document.getElementById('modal-close-btn');
+      const modalTitle = document.getElementById('statusModalLabel');
+      modalTitle.innerText = 'Lab Status';
         
         applyModalTheme();
         
         modal.modal('show');
         statusSpinner.style.display = 'inline-block';
-        statusMsg.innerText = "Provisioning your environment... (this may take 10s)";
+        statusMsg.innerText = "Provisioning your environment... (this may take a little while)";
         statusMsg.className = "mt-3 text-info";
         closeBtn.style.display = 'none';
         
+      if (!isAuthenticated) {
+        statusSpinner.style.display = 'none';
+        statusMsg.innerText = "You must be logged in to start labs. Please log in first.";
+        statusMsg.className = "mt-3 text-danger";
+        closeBtn.style.display = 'inline-block';
+        return;
+      }
+        
         try {
-            const response = await fetch(`/challenge/start-lab/${imageName}/`);
-            const data = await response.json();
-            
+          const response = await fetch(`/challenge/start-lab/${imageName}/`);
+
+          if (response.status === 401) {
             statusSpinner.style.display = 'none';
-            
-            if (data.status === 'ready' || data.status === 'created') {
-                statusMsg.innerText = "Lab Ready! Opening in new tab...";
-                statusMsg.className = "mt-3 text-success";
-                
-                setTimeout(() => {
-                    window.open(data.url, '_blank');
-                    modal.modal('hide');
-                }, 3000);
-            } else {
-                statusMsg.innerText = "Error: " + data.message;
-                statusMsg.className = "mt-3 text-danger";
-                closeBtn.style.display = 'inline-block';
-            }
-        } catch (error) {
-            console.error(error);
-            statusSpinner.style.display = 'none';
-            statusMsg.innerText = "Connection failed. Check console for details.";
+            statusMsg.innerText = "You are not authenticated. Please log in to start labs.";
             statusMsg.className = "mt-3 text-danger";
             closeBtn.style.display = 'inline-block';
+            return;
+          }
+
+          if (!response.ok) {
+            statusSpinner.style.display = 'none';
+            let errMsg = `Request failed with status ${response.status}.`;
+            if (response.status === 403) errMsg = "Forbidden: you don't have permission to start this lab (403).";
+            else if (response.status === 404) errMsg = "Lab not found (404).";
+            else if (response.status === 429) errMsg = "Too many requests. Please try again later (429).";
+            else if (response.status >= 500) errMsg = "Server error. Please try again later.";
+
+            try {
+              const maybeJson = await response.json();
+              if (maybeJson && maybeJson.message) errMsg = maybeJson.message;
+            } catch (e) {
+              // ignore JSON parse errors
+            }
+
+            statusMsg.innerText = "Error: " + errMsg;
+            statusMsg.className = "mt-3 text-danger";
+            closeBtn.style.display = 'inline-block';
+            return;
+          }
+
+          let data = {};
+          if (response.headers.get('content-type') && response.headers.get('content-type').includes('application/json')) {
+            data = await response.json();
+          }
+
+          statusSpinner.style.display = 'none';
+
+          if (data.status === 'ready' || data.status === 'created') {
+              const labWindow = window.open(data.url);
+            
+            if (labWindow) {
+              statusMsg.innerHTML = `
+                Lab Ready! Opening in new tab... <br>
+                <small class="text-success">✓ Lab opened successfully</small>
+              `;
+              statusMsg.className = "mt-3 text-success";
+              modalTitle.innerText = 'Lab Status';
+            } else {
+              statusMsg.innerHTML = `
+                Lab Ready! <br>
+                <small class="text-warning">⚠ Unable to redirect to the lab</small><br>
+                <a href="${data.url}" target="_blank" class="btn btn-primary btn-sm mt-2">
+                  <i class="fas fa-external-link-alt"></i> Open this lab in a new tab
+                </a>
+              `;
+              statusMsg.className = "mt-3 text-success";
+            }
+          } else {
+            const msg = data && data.message ? data.message : 'Failed to start lab.';
+            statusMsg.innerText = "Error: " + msg;
+            statusMsg.className = "mt-3 text-danger";
+            closeBtn.style.display = 'inline-block';
+          }
+        } catch (error) {
+          console.error(error);
+          statusSpinner.style.display = 'none';
+          if (error instanceof TypeError) {
+            statusMsg.innerText = "Network error: unable to reach server. Check your connection.";
+          } else {
+            statusMsg.innerText = `Unexpected error: ${error && error.message ? error.message : error}`;
+          }
+          statusMsg.className = "mt-3 text-danger";
+          closeBtn.style.display = 'inline-block';
         }
     }
     
@@ -881,8 +946,8 @@
                 setTimeout(() => {
                     stopBtn.innerText = originalText;
                     stopBtn.disabled = false;
-                    modal.modal('hide');
-                }, 3000);
+                modalTitle.innerText = 'Lab Status';
+                }, 10000);
             } else {
                 statusMsg.innerText = `Error: ${data.message}`;
                 statusMsg.className = "mt-3 text-danger";

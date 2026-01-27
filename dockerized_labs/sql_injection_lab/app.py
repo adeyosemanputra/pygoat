@@ -29,6 +29,10 @@ def index():
     """Main page with SQL injection lab description"""
     return render_template('index.html')
 
+@app.route('/health')
+def health_check():
+    return "OK", 200
+
 @app.route('/lab', methods=['GET', 'POST'])
 def lab():
     """Lab page with the vulnerable login form"""

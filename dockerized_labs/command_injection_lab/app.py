@@ -53,5 +53,9 @@ def lab2():
     
     return render_template('lab2.html')
 
+@app.route('/health')
+def health_check():
+    return "OK", 200
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5013, debug=True)

@@ -57,6 +57,10 @@ def serve_file(filename):
     """Serve static files with forced download"""
     return send_from_directory('static', filename, as_attachment=True, download_name=filename)
 
+@app.route('/health')
+def health_check():
+    return "OK", 200
+
 if __name__ == '__main__':
     # Ensure static files exist
     static_dir = Path('./static')

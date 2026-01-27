@@ -114,6 +114,10 @@ def process_image():
     flash('Invalid file type')
     return redirect(url_for('lab2'))
 
+@app.route('/health')
+def health_check():
+    return "OK", 200
+
 if __name__ == '__main__':
     # Ensure we're binding to all interfaces
     app.run(

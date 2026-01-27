@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.contrib import messages
 from .models import UserData
 from .forms import UserLoginForm, UserRegisterForm
@@ -140,3 +140,6 @@ def logout_view(request):
 def sensitive_data_exposure_lesson(request):
     # lessons page
     return render(request, 'lesson.html')
+
+def health_check(request):
+    return HttpResponse("OK", status=200)

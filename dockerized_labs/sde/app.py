@@ -40,6 +40,9 @@ def handle_404(e):
     sensitive_dump += f"\nFLAG = {SENSITIVE_DATA}"
     raise RuntimeError(f"Invalid Route \n\n{sensitive_dump}")
 
+@app.route('/health')
+def health_check():
+    return "OK", 200
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5100, debug=True)
