@@ -1,0 +1,10 @@
+version: '3'
+services:
+  dependency_attack_lab:
+    build: .
+    ports:
+      - "5020:5020"
+    volumes:
+      - .:/app
+    environment:
+      - FLASK_ENV=development

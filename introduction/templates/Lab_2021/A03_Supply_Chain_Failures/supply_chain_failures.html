@@ -1,0 +1,50 @@
+{% extends 'introduction/base.html' %}
+{% block content %}
+{% block title %}
+<title>A03:2025 - Software Supply Chain Failures</title>
+{% endblock %}
+<div class="content">
+  <h3>Software Supply Chain Failures</h3>
+  <div class="box">
+    <h4>What are Software Supply Chain Failures?</h4>
+
+    <p class="bp">
+        Software Supply Chain Failures occur when attackers compromise the software development pipeline by abusing 
+        third-party dependencies, build tools, package managers, or distribution channels.
+        Instead of attacking the application directly, attackers target the components it depends on.
+    </p>
+
+    <p class="bp">
+        Modern applications rely heavily on open-source libraries and external packages. If even one of these 
+        dependencies is malicious or vulnerable, the entire application can be compromised.
+    </p>
+
+    <h4>Why are these attacks dangerous?</h4>
+    <ul>
+        <li>They execute malicious code automatically when the package is installed or imported</li>
+        <li>They affect thousands of applications using the same dependency</li>
+        <li>They are difficult to detect during normal development</li>
+        <li>They bypass traditional security controls</li>
+    </ul>
+
+    <h4>Common Types of Supply Chain Attacks</h4>
+    <ul>
+        <li><strong>Dependency Confusion</strong> – Tricking systems into installing attacker-controlled packages</li>
+        <li><strong>Typosquatting</strong> – Publishing fake packages with names similar to popular libraries</li>
+        <li><strong>Compromised Open-Source Libraries</strong> – Hijacking trusted packages and injecting malware</li>
+        <li><strong>Malicious Packages</strong> – Packages that execute backdoors, steal data, or open remote shells</li>
+    </ul>
+
+    <h4>Real-World Impact</h4>
+    <p class="bp">
+        A single malicious dependency can:
+    </p>
+    <ul>
+        <li>Steal API keys, passwords, and credentials</li>
+        <li>Exfiltrate database and configuration data</li>
+        <li>Install persistent backdoors</li>
+        <li>Turn applications into botnet nodes</li>
+    </ul>
+  </div>
+</div>
+{% endblock %}

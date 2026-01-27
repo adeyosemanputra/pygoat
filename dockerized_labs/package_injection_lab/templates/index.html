@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+
+{% block title %}<title>Package Injection / Typosquatting Lab</title>{% endblock %}
+
+{% block content %}
+
+    <div class="header-container">
+        <h1 style="border-bottom: 2px solid #474646; padding-bottom: 10px;">Package Injection / Typosquatting</h1>
+        <button class="notebook-btn" onclick="openModal()" title="View Secure Implementation">Solution
+        </button>
+    </div>
+    {% include 'secure-fix.html' %}
+    <div class="section">
+        <h4>What is Package Injection / Typosquatting?</h4>
+        <p class="bp">
+            Typosquatting is a type of cyber attack where malicious actors create packages with names very similar 
+            to popular, legitimate packages. Developers who make typos when installing packages may accidentally 
+            install these malicious packages instead.
+        </p>
+        <ul>
+            <li>Packages with similar names to popular libraries (e.g., <code>requets</code> vs <code>requests</code>)</li>
+            <li>Malicious code executes automatically when the package is imported</li>
+            <li>Sensitive data is exfiltrated without the developer's knowledge</li>
+            <li>Backdoors are installed that can execute arbitrary commands</li>
+            <li>Supply chain compromise through trusted package repositories</li>
+        </ul>
+        <div class="info">
+            <h4>Typosquatting occurs when:</h4>
+            <ul>
+                <li>Developers mistype package names during installation</li>
+                <li>Package repositories don't verify package authenticity</li>
+                <li>No automated checks prevent installation of suspicious packages</li>
+                <li>Package names aren't verified against known legitimate packages</li>
+                <li>CI/CD pipelines don't scan for typosquatting attacks</li>
+            </ul>
+        </div>
+        <button class="coll btn btn-info" onclick="toggleLabDetails('lab1')">Lab Details</button>
+    </div>
+
+        
+        <div id="lab1" class="section" style="display: none;">
+            <h4>Lab Challenge</h4>
+            <p class="bp">
+                This lab demonstrates how typosquatting attacks work. The application uses packages that look 
+                legitimate but are actually malicious. The developer meant to install <code>requests</code> but 
+                accidentally installed <code>requets</code> (typo), and similarly <code>pythn-dotenv</code> 
+                instead of <code>python-dotenv</code>.
+            </p>
+
+            <div class="info">
+                <h4>Steps to identify Typosquatting attacks:</h4>
+                <ul>
+                    <li>Check the installed packages and look for misspellings</li>
+                    <li>Use the application features that rely on these packages</li>
+                    <li>Observe what happens when the packages are used</li>
+                    <li>Check the malicious activity endpoint to see what was collected</li>
+                    <li>Notice that sensitive data is being accessed and exfiltrated</li>
+                    <li>Verify packages against legitimate package names</li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <h4>Understanding the Exploit</h4>
+                <p class="bp">
+                    The application imports packages that appear legitimate but are actually typosquatting packages:
+                </p>
+                <ul>
+                    <li><code>requets</code> - malicious package mimicking <code>requests</code></li>
+                    <li><code>pythn-dotenv</code> - malicious package mimicking <code>python-dotenv</code></li>
+                </ul>
+                <p class="bp">
+                    When these packages are imported, they:
+                </p>
+                <ul>
+                    <li>Execute malicious code immediately upon import</li>
+                    <li>Collect sensitive application data (API keys, credentials, config)</li>
+                    <li>Exfiltrate data without the developer's knowledge</li>
+                    <li>Can execute backdoor commands</li>
+                    <li>Operate silently in the background</li>
+                </ul>
+                <p class="bp">
+                    In this lab, you'll see how a simple typo when installing a package can lead to a complete 
+                    compromise of sensitive data and system security.
+                </p>
+            </div>
+
+            <div class="button-container">
+                <button type="button" onclick="navigateToLab()" class="nav-button">Access Lab</button>
+            </div>
+    </div>
+
+<script>
+    function toggleLabDetails(id) {
+        const el = document.getElementById(id);
+        if (el.style.display === "none" || el.style.display === "") {
+            el.style.display = "block";
+        } else {
+            el.style.display = "none";
+        }
+    }
+
+    function openModal() {
+        document.getElementById('secureFixModal').style.display = 'block';
+        document.body.style.overflow = 'hidden'; 
+    }
+
+    function closeModal() {
+        document.getElementById('secureFixModal').style.display = 'none';
+        document.body.style.overflow = 'auto'; 
+    }
+    
+    function showTab(tabName) {
+        const panels = document.querySelectorAll('.tab-panel');
+        panels.forEach(panel => panel.classList.remove('active'));
+        
+        const buttons = document.querySelectorAll('.tab-btn');
+        buttons.forEach(btn => btn.classList.remove('active'));
+        
+        document.getElementById(tabName).classList.add('active');
+        
+        event.target.classList.add('active');
+    }
+
+    document.addEventListener('click', function(event) {
+        const modal = document.getElementById('secureFixModal');
+        const overlay = event.target.classList.contains('modal-overlay');
+        if (overlay) {
+            closeModal();
+        }
+    });
+
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            closeModal();
+        }
+    });
+
+    function navigateToLab() {
+        document.body.style.opacity = '0';
+        document.body.style.transition = 'opacity 0.2s ease-out';
+        setTimeout(() => {
+            window.location.href = '/lab';
+        }, 200);
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        document.body.style.opacity = '0';
+        document.body.style.transition = 'opacity 0.3s ease-in';
+        setTimeout(() => {
+            document.body.style.opacity = '1';
+        }, 10);
+    });
+</script>
+{% endblock %}

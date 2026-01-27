@@ -1,0 +1,11 @@
+version: '3'
+services:
+  package_injection_lab:
+    build: .
+    ports:
+      - "5021:5021"
+    volumes:
+      - .:/app
+    environment:
+      - FLASK_ENV=development
+      - FLASK_DEBUG=True

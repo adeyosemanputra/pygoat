@@ -1,0 +1,143 @@
+<!-- Custom CSS Modal for Security Fix -->
+<div id="secureFixModal" class="custom-modal">
+    <div class="modal-overlay"></div>
+    <div class="modal-container">
+        <div class="modal-header">
+            <h2 class="modal-title">
+                Security Fix for Dependency Attacks
+            </h2>
+            <button type="button" class="close-btn" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="tabs-container">
+                <div class="tab-buttons">
+                    <button class="tab-btn active" style="font-weight: bold; font-size: 18px;" onclick="showTab('secure-code', event)">Secure Code</button>
+                    <button class="tab-btn" style="font-weight: bold; font-size: 18px;" onclick="showTab('prevention', event)">Solution</button>
+                </div>
+
+                <div class="tab-content">
+                    <div id="secure-code" class="tab-panel active">
+                        <h4>Secure Implementation for Dependency Attack Prevention</h4>
+                        
+                        <h4>1. Verify Package Integrity</h4>
+                        <pre class="code-block"><code>
+import hashlib
+import requests
+from cryptography.hazmat.primitives import hashes
+from cryptography.hazmat.primitives.asymmetric import padding
+from cryptography.hazmat.primitives.serialization import load_pem_public_key
+
+def verify_package_checksum(package_file, expected_hash):
+    """Verify package integrity using SHA-256 checksum"""
+    sha256_hash = hashlib.sha256()
+    with open(package_file, "rb") as f:
+        for byte_block in iter(lambda: f.read(4096), b""):
+            sha256_hash.update(byte_block)
+    
+    calculated_hash = sha256_hash.hexdigest()
+    if calculated_hash != expected_hash:
+        raise ValueError("Package checksum mismatch!")
+    return True
+
+def verify_package_signature(package_file, signature_file, public_key):
+    """Verify package signature"""
+    with open(package_file, 'rb') as f:
+        package_data = f.read()
+    
+    with open(signature_file, 'rb') as f:
+        signature = f.read()
+    
+    public_key_obj = load_pem_public_key(public_key)
+    try:
+        public_key_obj.verify(
+            signature,
+            package_data,
+            padding.PSS(
+                mgf=padding.MGF1(hashes.SHA256()),
+                salt_length=padding.PSS.MAX_LENGTH
+            ),
+            hashes.SHA256()
+        )
+        return True
+    except:
+        raise ValueError("Package signature verification failed!")</code></pre>
+
+                        <h4>2. Use Dependency Scanning</h4>
+                        <pre class="code-block"><code># Use tools like pip-audit, safety, or Snyk
+import subprocess
+import json
+
+def scan_dependencies():
+    """Scan dependencies for known vulnerabilities"""
+    try:
+        # Using pip-audit
+        result = subprocess.run(
+            ['pip-audit', '--format', 'json'],
+            capture_output=True,
+            text=True,
+            check=True
+        )
+        vulnerabilities = json.loads(result.stdout)
+        
+        if vulnerabilities.get('vulnerabilities'):
+            raise SecurityError("Vulnerable dependencies detected!")
+        
+        return True
+    except subprocess.CalledProcessError:
+        raise SecurityError("Dependency scan failed!")
+    except FileNotFoundError:
+        raise SecurityError("pip-audit not installed!")
+
+# Alternative: Use safety
+def check_with_safety():
+    result = subprocess.run(
+        ['safety', 'check', '--json'],
+        capture_output=True,
+        text=True
+    )
+    return json.loads(result.stdout)</code></pre>
+                    </div>
+
+                    <div id="prevention" class="tab-panel">
+                        <h4>Solution</h4>
+                        <p>
+                            The lab demonstrates how a malicious dependency can execute unauthorized code and exfiltrate 
+                            sensitive data. To solve this challenge:
+                        </p>
+                        <ol>
+                            <li>
+                                <strong>Check Dependencies:</strong> Click "Check Dependencies" to see that the application 
+                                uses a package called <code>data-utils</code>. This appears legitimate but is actually malicious.
+                            </li><br>
+                            <li>
+                                <strong>Use Application Features:</strong> Click "Process Data" or "Get Configuration" buttons. 
+                                Notice that the dependency collects sensitive information including API keys, database credentials, 
+                                and configuration data.
+                            </li><br>
+                            <li>
+                                <strong>Check Exfiltrated Data:</strong> Click "Check Exfiltrated Data" to see all the sensitive 
+                                information that has been collected by the malicious dependency.
+                            </li><br>
+                            <li>
+                                <strong>Test Package Verification:</strong> Use the "Package Safety Check API" to see that the 
+                                application trusts packages without proper verification. Enter "data-utils" and see that it's 
+                                marked as "trusted" even though it's malicious.
+                            </li>
+                        </ol>
+                        
+                        <h4>Key Takeaways</h4>
+                        <ul>
+                            <li>Dependencies can execute code when imported</li>
+                            <li>Malicious packages can exfiltrate sensitive data silently</li>
+                            <li>Trusting package names without verification is dangerous</li>
+                            <li>Always verify package integrity, source and maintainers</li>
+                            <li>Use dependency scanning tools to detect vulnerabilities</li>
+                            <li>Implement least privilege and sandboxing for dependencies</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>

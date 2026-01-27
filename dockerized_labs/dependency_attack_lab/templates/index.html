@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+
+{% block title %}<title>Software Supply Chain Failures - Dependency Attack Lab </title>{% endblock %}
+
+{% block content %}
+
+    <div class="header-container">
+        <h1 style="border-bottom: 2px solid #474646; padding-bottom: 10px;">Dependency Attacks</h1>
+        <button class="notebook-btn" onclick="openModal()" title="View Secure Implementation">Solution
+        </button>
+    </div>
+    {% include 'secure-fix.html' %}
+    <div class="section">
+        <h4>What are Dependency Attacks?</h4>
+        <p class="bp">
+            Dependency attacks occur when malicious or vulnerable third-party packages are introduced into an application's 
+            dependency tree. These attacks exploit the trust developers place in package repositories and can lead to:
+        </p>
+        <ul>
+            <li>Unauthorized code execution</li>
+            <li>Data exfiltration</li>
+            <li>Backdoor installation</li>
+            <li>Credential theft</li>
+            <li>Supply chain compromise</li>
+        </ul>
+        <div class="info">
+            <h4>Dependency Attacks occur when:</h4>
+            <ul>
+                <li>Applications trust dependencies without proper verification</li>
+                <li>Package repositories are compromised or contain malicious packages</li>
+                <li>Developers install packages with similar names (typosquatting)</li>
+                <li>Dependencies are not regularly updated or audited</li>
+                <li>Package integrity is not verified (checksums, signatures)</li>
+            </ul>
+        </div>
+        <button class="coll btn btn-info" onclick="toggleLabDetails('lab1')">Lab Details</button>
+    </div>
+
+        
+        <div id="lab1" class="section" style="display: none;">
+            <h4>Lab Challenge</h4>
+            <p class="bp">
+                This lab demonstrates how a malicious dependency can execute unauthorized code and exfiltrate sensitive data 
+                when imported into an application. The application uses a "trusted" package called <code>data-utils</code> 
+                that appears legitimate but contains malicious functionality.
+            </p>
+
+            <div class="info">
+                <h4>Steps to identify Dependency Attacks:</h4>
+                <ul>
+                    <li>Check the installed dependencies in the application</li>
+                    <li>Use the application features that rely on the dependency</li>
+                    <li>Observe what happens when the dependency is used</li>
+                    <li>Check the exfiltrated data endpoint to see what was collected</li>
+                    <li>Notice that sensitive data (API keys, credentials) is being accessed</li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <h4>Understanding the Exploit</h4>
+                <p class="bp">
+                    The application imports a package called <code>data-utils</code> which appears to be a legitimate 
+                    utility library. However, this package:
+                </p>
+                <ul>
+                    <li>Executes malicious code when imported</li>
+                    <li>Collects sensitive application data (API keys, credentials, config)</li>
+                    <li>Exfiltrates data without the developer's knowledge</li>
+                    <li>Operates silently in the background</li>
+                </ul>
+                <p class="bp">
+                    When you use features that call this dependency, it secretly collects and stores sensitive information 
+                    that could be sent to an attacker's server in a real scenario.
+                </p>
+            </div>
+
+            <div class="button-container">
+                <button type="button" onclick="navigateToLab()" class="nav-button">Access Lab</button>
+            </div>
+    </div>
+
+<script>
+    function toggleLabDetails(id) {
+        const el = document.getElementById(id);
+        if (el.style.display === "none" || el.style.display === "") {
+            el.style.display = "block";
+        } else {
+            el.style.display = "none";
+        }
+    }
+
+    function openModal() {
+        document.getElementById('secureFixModal').style.display = 'block';
+        document.body.style.overflow = 'hidden'; 
+    }
+
+    function closeModal() {
+        document.getElementById('secureFixModal').style.display = 'none';
+        document.body.style.overflow = 'auto'; 
+    }
+    
+    function showTab(tabName,event) {
+        const panels = document.querySelectorAll('.tab-panel');
+        panels.forEach(panel => panel.classList.remove('active'));
+        
+        const buttons = document.querySelectorAll('.tab-btn');
+        buttons.forEach(btn => btn.classList.remove('active'));
+        
+        document.getElementById(tabName).classList.add('active');
+        
+        event.target.classList.add('active');
+    }
+
+    document.addEventListener('click', function(event) {
+        const modal = document.getElementById('secureFixModal');
+        const overlay = event.target.classList.contains('modal-overlay');
+        if (overlay) {
+            closeModal();
+        }
+    });
+
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            closeModal();
+        }
+    });
+
+    function navigateToLab() {
+        document.body.style.opacity = '0';
+        document.body.style.transition = 'opacity 0.2s ease-out';
+        setTimeout(() => {
+            window.location.href = '/lab';
+        }, 200);
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        document.body.style.opacity = '0';
+        document.body.style.transition = 'opacity 0.3s ease-in';
+        setTimeout(() => {
+            document.body.style.opacity = '1';
+        }, 10);
+    });
+</script>
+{% endblock %}
