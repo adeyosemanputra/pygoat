@@ -7,7 +7,25 @@
 <div class="content">
   <h3>A03:2025 - Package Injection / Typosquatting Lab</h3>
   <div class="box" style="padding:0">
-    <iframe src="http://127.0.0.1:5021" style="width:100%; height:80vh; border:none; background:#121212;"></iframe>
+    <iframe id="pkg-typo-iframe" title="Package Injection / Typosquatting Lab" style="width:100%; height:80vh; border:none; background:#121212;"></iframe>
   </div>
+  <div style="margin-top:0.5rem; font-size:0.9em">
+    If the iframe does not load (e.g., due to HTTPS mixed content),
+    <a id="pkg-typo-direct" target="_blank" rel="noopener">open the lab directly</a>.
+  </div>
+  <script>
+    (function () {
+      try {
+        var port = window.LAB_PACKAGE_INJECTION_PORT || '5021';
+        var url = location.protocol + '//' + location.hostname + ':' + port;
+        var f = document.getElementById('pkg-typo-iframe');
+        var a = document.getElementById('pkg-typo-direct');
+        if (f) f.src = url;
+        if (a) a.href = url;
+      } catch (e) {
+        throw Error;
+      }
+    })();
+  </script>
 </div>
 {% endblock %}

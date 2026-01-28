@@ -65,7 +65,7 @@
 <script>
 let timelineData = null;
 
-async function showTab(tabName) {
+async function showTab(tabName,event) {
     document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
     document.querySelectorAll('.tab-nav-btn').forEach(btn => btn.classList.remove('active'));
     
@@ -76,8 +76,6 @@ async function showTab(tabName) {
         await loadTimeline();
     } else if (tabName === 'investigate') {
         await loadClues();
-    } else if (tabName === 'impact') {
-        await loadImpact();
     }
 }
 
@@ -140,7 +138,7 @@ async function showVersionDetails(version) {
                 <p><strong>Status:</strong> <span class="status-badge ${data.status}">${data.status.toUpperCase()}</span></p>
                 <p><strong>Code Snippet:</strong></p>
                 <pre class="code-preview">${data.code_snippet}</pre>
-                <button onclick="scanVersionCode('${data.version}', \`${data.code_snippet.replace(/`/g, '\\`').replace(/\$/g, '\\$')}\`)">Scan This Code</button>
+                <button onclick="scanVersionCode('${data.version}', ${JSON.stringify(data.code_snippet)})">Scan This Code</button>
                 <button onclick="this.closest('.version-modal').remove()">Close</button>
             </div>
         `;

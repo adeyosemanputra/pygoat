@@ -13,7 +13,7 @@ This lab demonstrates how legitimate open-source packages can be compromised thr
 1. Build and run using Docker Compose:
 docker-compose up --build
 
-2. Access the lab at http://127.0.0.1:5020
+2. Access the lab at http://127.0.0.1:5022
 
 ### Manual Setup
 

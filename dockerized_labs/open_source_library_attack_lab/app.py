@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request, jsonify
-from datetime import datetime, timedelta
-import json
+from datetime import datetime
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your-secret-key-here'

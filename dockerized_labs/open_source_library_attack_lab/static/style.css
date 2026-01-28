@@ -757,7 +757,6 @@ button:disabled {
 .story-box {
     background: var(--section-bg);
     border: 1px solid rgb(175, 175, 175);
-    /* padding: 20px; */
     padding-left: 20px;
     padding-right: 20px;
     border-radius: 4px;
@@ -868,21 +867,6 @@ button:disabled {
     font-size: 0.85rem;
     font-weight: bold;
 }
-
-/* .status-badge.legitimate {
-    background: #28a745;
-    color: white;
-}
-
-.status-badge.suspicious {
-    background: #ffc107;
-    color: #000;
-}
-
-.status-badge.compromised {
-    background: #dc3545;
-    color: white;
-} */
 
 .compare-controls {
     display: flex;

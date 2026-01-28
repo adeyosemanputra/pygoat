@@ -109,7 +109,7 @@
         document.body.style.overflow = 'auto'; 
     }
     
-    function showTab(tabName) {
+    function showTab(tabName,event) {
         const panels = document.querySelectorAll('.tab-panel');
         panels.forEach(panel => panel.classList.remove('active'));
         
