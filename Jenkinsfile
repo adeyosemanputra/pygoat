@@ -7,8 +7,8 @@ pipeline {
         DD_URL = 'http://django-defectdojo-nginx-1:8080'
         
         // Credenciales
-        DD_API_KEY = credentials('44192fb03e90c6e2a80fce1bbbb9115b4df2ee91')
-        DT_API_KEY = credentials('odt_NEUrAfmM_KtGgvx2ZRioxa7QJcfOObPExjJo5vyJB')
+        DD_API_KEY = credentials('dd-api-key')
+        DT_API_KEY = credentials('dt-api-key')
         DD_ENGAGEMENT_ID = '1' // <--- TU ID AQUÍ
         
         // Configuración común de Docker para no repetir
