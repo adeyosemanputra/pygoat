@@ -1,0 +1,170 @@
+{% extends "base.html" %}
+
+{% block title %}<title>IDOR Lab - Broken Access Control (A01)</title>{% endblock %}
+
+{% block content %}
+<div class="content">
+    <div class="header-container">
+        <h1 style="border-bottom: 2px solid #474646; padding-bottom: 10px;">
+            Insecure Direct Object Reference (IDOR)
+        </h1>
+        <button class="notebook-btn" onclick="openModal()" title="View Secure Implementation">
+            Solution
+        </button>
+    </div>
+    
+    {% include 'secure-fix.html' %}
+    
+    <div class="box">
+        <h4>What is IDOR?</h4>
+        <p class="bp">
+            <strong>Insecure Direct Object Reference (IDOR)</strong> is a type of access control 
+            vulnerability that occurs when an application uses user-supplied input to directly 
+            access objects (like database records, files, or user profiles).
+        </p>
+        <p class="bp">
+            The vulnerability exists when the application fails to verify that the user is 
+            <em>authorized</em> to access the specific object they're requesting.
+        </p>
+        
+        <div class="section">
+            <h4>Common IDOR Patterns</h4>
+            <ul>
+                <li><code>/api/user/123</code> - Sequential user IDs</li>
+                <li><code>/download?file=report_456.pdf</code> - Document IDs</li>
+                <li><code>/order/789/details</code> - Order numbers</li>
+                <li><code>/account/balance?id=101</code> - Account references</li>
+            </ul>
+        </div>
+        
+        <div class="info">
+            <h4>Why is IDOR Dangerous?</h4>
+            <ul>
+                <li><strong>Data Breach:</strong> Access to other users' personal information</li>
+                <li><strong>Privacy Violation:</strong> Exposure of sensitive data (SSN, salary, medical records)</li>
+                <li><strong>Horizontal Privilege Escalation:</strong> Acting as another user</li>
+                <li><strong>Mass Harvesting:</strong> Attackers can iterate through IDs to collect all data</li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="box">
+        <h4>Lab Challenge</h4>
+        <div class="lab">
+            <p class="bp">
+                This lab simulates a company's employee directory system. Each employee can view 
+                their own profile through the API endpoint <code>/api/user/{user_id}</code>.
+            </p>
+            <p class="bp">
+                <strong>Your Mission:</strong> Access the admin user's sensitive data 
+                (SSN and salary) without having admin credentials.
+            </p>
+        </div>
+        
+        <button class="coll btn btn-info" onclick="toggleLabDetails('lab-details')">
+            Show Lab Details & Credentials
+        </button>
+        
+        <div id="lab-details" class="section" style="display: none; margin-top: 15px;">
+            <h4>Available Credentials</h4>
+            <table style="width: 100%; border-collapse: collapse; margin: 15px 0;">
+                <thead>
+                    <tr style="background: var(--section-bg);">
+                        <th style="padding: 10px; border: 1px solid var(--border-color);">Username</th>
+                        <th style="padding: 10px; border: 1px solid var(--border-color);">Password</th>
+                        <th style="padding: 10px; border: 1px solid var(--border-color);">User ID</th>
+                        <th style="padding: 10px; border: 1px solid var(--border-color);">Role</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="padding: 10px; border: 1px solid var(--border-color);"><code>john</code></td>
+                        <td style="padding: 10px; border: 1px solid var(--border-color);"><code>john123</code></td>
+                        <td style="padding: 10px; border: 1px solid var(--border-color);">1</td>
+                        <td style="padding: 10px; border: 1px solid var(--border-color);">User</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px; border: 1px solid var(--border-color);"><code>jane</code></td>
+                        <td style="padding: 10px; border: 1px solid var(--border-color);"><code>jane123</code></td>
+                        <td style="padding: 10px; border: 1px solid var(--border-color);">2</td>
+                        <td style="padding: 10px; border: 1px solid var(--border-color);">User</td>
+                    </tr>
+                    <tr style="background: var(--section-bg);">
+                        <td style="padding: 10px; border: 1px solid var(--border-color);"><code>admin</code></td>
+                        <td style="padding: 10px; border: 1px solid var(--border-color);">???</td>
+                        <td style="padding: 10px; border: 1px solid var(--border-color);">3</td>
+                        <td style="padding: 10px; border: 1px solid var(--border-color);">Admin</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>Hints</h4>
+            <ol>
+                <li>Login as <code>john</code> using the credentials above</li>
+                <li>Notice your User ID is shown after login</li>
+                <li>The API endpoint is <code>/api/user/{user_id}</code></li>
+                <li>What happens if you change the user_id to a different number?</li>
+                <li>Can you access <code>/api/user/3</code> while logged in as john?</li>
+            </ol>
+            
+            <div class="button-container" style="margin-top: 20px;">
+                <button type="button" onclick="navigateToLab()" class="nav-button">
+                    Access Lab
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="box">
+        <div class="section">
+            <h4>Mitigation Strategies</h4>
+            <ul>
+                <li><strong>Authorization Checks:</strong> Always verify the user has permission to access the requested resource</li>
+                <li><strong>Indirect References:</strong> Use random tokens instead of sequential IDs</li>
+                <li><strong>Access Control Lists:</strong> Implement proper ACLs for resource access</li>
+                <li><strong>Session Validation:</strong> Compare session user with requested resource owner</li>
+                <li><strong>Logging:</strong> Log access attempts for security monitoring</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script>
+    function toggleLabDetails(id) {
+        const el = document.getElementById(id);
+        el.style.display = el.style.display === "none" ? "block" : "none";
+    }
+
+    function openModal() {
+        document.getElementById('secureFixModal').style.display = 'block';
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+        document.getElementById('secureFixModal').style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+
+    document.addEventListener('click', function(event) {
+        if (event.target.classList.contains('modal-overlay')) {
+            closeModal();
+        }
+    });
+
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') closeModal();
+    });
+
+    function navigateToLab() {
+        document.body.style.opacity = '0';
+        document.body.style.transition = 'opacity 0.2s ease-out';
+        setTimeout(() => { window.location.href = '/lab'; }, 200);
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        document.body.style.opacity = '0';
+        document.body.style.transition = 'opacity 0.3s ease-in';
+        setTimeout(() => { document.body.style.opacity = '1'; }, 10);
+    });
+</script>
+{% endblock %}

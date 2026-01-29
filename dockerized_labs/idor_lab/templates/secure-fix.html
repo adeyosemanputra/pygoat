@@ -1,0 +1,147 @@
+<div id="secureFixModal" class="custom-modal">
+    <div class="modal-overlay"></div>
+    
+    <div class="modal-container">
+        <div class="modal-header">
+            <h2 class="modal-title">🛡️ Security Fix for IDOR Vulnerability</h2>
+            <button type="button" class="close-btn" onclick="closeModal()">&times;</button>
+        </div>
+        
+        <div class="modal-body">
+            <div class="tabs-container">
+                <div class="tab-buttons">
+                    <button class="tab-btn active" onclick="showTab('secure-code', event)">Secure Code</button>
+                    <button class="tab-btn" onclick="showTab('solution', event)">Solution</button>
+                    <button class="tab-btn" onclick="showTab('references', event)">References</button>
+                </div>
+                
+                <div class="tab-content">
+                    <div id="secure-code" class="tab-panel active">
+                        <h4>Vulnerable Code (Current)</h4>
+                        <pre class="code-block"><code>@app.route('/api/user/&lt;int:user_id&gt;')
+def get_user_profile(user_id):
+    if 'user_id' not in session:
+        return jsonify({"error": "Not authenticated"}), 401
+    
+    # NO authorization check - any user can access any data!
+    
+    if user_id not in USERS:
+        return jsonify({"error": "User not found"}), 404
+    
+    user_data = USERS[user_id].copy()
+    del user_data['password']
+    return jsonify(user_data)</code></pre>
+                        
+                        <h4 style="margin-top: 30px;">Secure Code (Fixed)</h4>
+                        <pre class="code-block"><code>@app.route('/api/user/&lt;int:user_id&gt;')
+def get_user_profile(user_id):
+    if 'user_id' not in session:
+        return jsonify({"error": "Not authenticated"}), 401
+    
+    # AUTHORIZATION CHECK - users can only access their own data
+    if session['user_id'] != user_id:
+        if session.get('role') != 'admin':
+            return jsonify({"error": "Forbidden"}), 403
+    
+    if user_id not in USERS:
+        return jsonify({"error": "User not found"}), 404
+    
+    user_data = USERS[user_id].copy()
+    del user_data['password']
+    return jsonify(user_data)</code></pre>
+                        
+                        <h4 style="margin-top: 30px;">Key Differences</h4>
+                        <ul>
+                            <li><strong>Authorization Check:</strong> Verifies <code>session['user_id'] == user_id</code></li>
+                            <li><strong>Role-Based Access:</strong> Admins have elevated privileges</li>
+                            <li><strong>403 Forbidden:</strong> Proper HTTP status for unauthorized access</li>
+                        </ul>
+                    </div>
+                    
+                    <div id="solution" class="tab-panel">
+                        <h4>Exploitation Walkthrough</h4>
+                        
+                        <div class="step">
+                            <h5>Step 1: Login as a Regular User</h5>
+                            <p>Use credentials: <code>john:john123</code></p>
+                            <p>Note your User ID is <strong>1</strong>.</p>
+                        </div>
+                        
+                        <div class="step">
+                            <h5>Step 2: Access Your Own Profile</h5>
+                            <p>Enter <code>1</code> in the User ID field - this is legitimate.</p>
+                        </div>
+                        
+                        <div class="step">
+                            <h5>Step 3: Access Another User's Profile (IDOR!)</h5>
+                            <p>Change User ID to <code>2</code> (Jane) - you can see her SSN and salary!</p>
+                        </div>
+                        
+                        <div class="step">
+                            <h5>Step 4: Access Admin's Profile (Critical!)</h5>
+                            <p>Change User ID to <code>3</code> (Admin) - full access to:</p>
+                            <ul>
+                                <li>Admin's SSN: <code>111-22-3333</code></li>
+                                <li>Admin's Salary: <code>$150,000</code></li>
+                                <li>Admin's Email: <code>admin@company.com</code></li>
+                            </ul>
+                        </div>
+                        
+                        <div class="step" style="background: rgba(231, 76, 60, 0.1); padding: 15px; border-radius: 8px; margin-top: 20px;">
+                            <h5 style="color: #e74c3c;">Real-World Impact</h5>
+                            <ul>
+                                <li>Harvest all user data by iterating IDs</li>
+                                <li>Steal PII (Personal Identifiable Information)</li>
+                                <li>Identity theft or fraud</li>
+                                <li>GDPR, HIPAA violations</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div id="references" class="tab-panel">
+                        <h4>OWASP Resources</h4>
+                        <ul>
+                            <li><a href="https://owasp.org/Top10/A01_2021-Broken_Access_Control/" target="_blank">OWASP Top 10 - A01:2021 Broken Access Control</a></li>
+                            <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Insecure_Direct_Object_Reference_Prevention_Cheat_Sheet.html" target="_blank">IDOR Prevention Cheat Sheet</a></li>
+                            <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html" target="_blank">Authorization Cheat Sheet</a></li>
+                        </ul>
+                        
+                        <h4 style="margin-top: 30px;">Related CWEs</h4>
+                        <ul>
+                            <li><a href="https://cwe.mitre.org/data/definitions/639.html" target="_blank">CWE-639: Authorization Bypass Through User-Controlled Key</a></li>
+                            <li><a href="https://cwe.mitre.org/data/definitions/284.html" target="_blank">CWE-284: Improper Access Control</a></li>
+                        </ul>
+                        
+                        <h4 style="margin-top: 30px;">Prevention Checklist</h4>
+                        <ul>
+                            <li>✅ Always verify user authorization for each resource access</li>
+                            <li>✅ Use indirect references (UUIDs) instead of sequential IDs</li>
+                            <li>✅ Implement role-based access control (RBAC)</li>
+                            <li>✅ Log access attempts for security monitoring</li>
+                            <li>✅ Deny by default - only allow explicitly permitted actions</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="modal-footer">
+            <button class="close-btn-footer" onclick="closeModal()">Close</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function showTab(tabName, event) {
+        document.querySelectorAll('.tab-panel').forEach(panel => panel.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        document.getElementById(tabName).classList.add('active');
+        event.target.classList.add('active');
+    }
+</script>
+
+<style>
+    .step { margin: 20px 0; padding: 15px; background: var(--section-bg); border-radius: 8px; border-left: 4px solid var(--button-bg); }
+    .step h5 { margin: 0 0 10px 0; color: var(--button-bg); }
+    .step p, .step ul { margin: 10px 0; }
+</style>
