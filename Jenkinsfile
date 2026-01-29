@@ -68,7 +68,7 @@ pipeline {
             agent {
                 docker { 
                     image 'python:3.10-slim'
-                    args '--network devsecops-net'
+                    args '-u root:root --network devsecops-net'
                 }
             }
             steps {
