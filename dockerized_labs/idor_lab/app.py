@@ -1,10 +1,9 @@
-from flask import Flask, render_template, request, jsonify, session, redirect, url_for
-import os
+from flask import Flask, render_template, request, jsonify, redirect, url_for
+import secrets
 
 app = Flask(__name__)
-app.secret_key = os.urandom(24)
+app.secret_key = 'idor_lab_secret_key_12345'
 
-# Simulated user database
 USERS = {
     1: {
         "id": 1,
@@ -38,6 +37,8 @@ USERS = {
     },
 }
 
+TOKENS = {}
+
 
 @app.route('/')
 def index():
@@ -52,10 +53,9 @@ def login():
         
         for user_id, user in USERS.items():
             if user['username'] == username and user['password'] == password:
-                session['user_id'] = user_id
-                session['username'] = username
-                session['role'] = user['role']
-                return redirect(url_for('lab'))
+                token = secrets.token_urlsafe(16)
+                TOKENS[token] = user_id
+                return redirect(url_for('lab', token=token))
         
         return render_template('lab.html', error="Invalid credentials", show_login=True)
     
@@ -64,30 +64,37 @@ def login():
 
 @app.route('/lab')
 def lab():
-    if 'user_id' not in session:
+    token = request.args.get('token')
+    
+    if not token or token not in TOKENS:
         return redirect(url_for('login'))
     
+    user_id = TOKENS[token]
+    user = USERS[user_id]
+    
     return render_template('lab.html', 
-                          current_user_id=session['user_id'],
-                          current_username=session['username'])
+                          current_user_id=user_id,
+                          current_username=user['username'],
+                          auth_token=token)
 
 
 @app.route('/logout')
 def logout():
-    session.clear()
+    token = request.args.get('token')
+    if token and token in TOKENS:
+        del TOKENS[token]
     return redirect(url_for('index'))
 
 
 @app.route('/api/user/<int:user_id>')
 def get_user_profile(user_id):
-    """
-    VULNERABLE: Missing authorization check!
-    Any authenticated user can access any user's data.
-    """
-    if 'user_id' not in session:
+    """VULNERABLE: No authorization check - any authenticated user can access any data"""
+    token = request.args.get('token') or request.headers.get('X-Auth-Token')
+    
+    if not token or token not in TOKENS:
         return jsonify({"error": "Not authenticated. Please login first."}), 401
     
-    # BUG: Should check if session['user_id'] == user_id
+    # BUG: Should verify TOKENS[token] == user_id
     
     if user_id not in USERS:
         return jsonify({"error": "User not found"}), 404
@@ -99,7 +106,9 @@ def get_user_profile(user_id):
 
 @app.route('/api/users')
 def list_users():
-    if 'user_id' not in session:
+    token = request.args.get('token') or request.headers.get('X-Auth-Token')
+    
+    if not token or token not in TOKENS:
         return jsonify({"error": "Not authenticated"}), 401
     
     users_list = []

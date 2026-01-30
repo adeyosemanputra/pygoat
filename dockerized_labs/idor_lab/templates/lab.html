@@ -36,7 +36,7 @@
                 &nbsp;|&nbsp;
                 <strong>Your User ID:</strong> <code>{{ current_user_id }}</code>
                 &nbsp;|&nbsp;
-                <a href="/logout" style="color: var(--button-bg);">Logout</a>
+                <a href="/logout?token={{ auth_token }}" style="color: var(--button-bg);">Logout</a>
             </p>
         </div>
         
@@ -94,6 +94,7 @@
 
 <script>
     const currentUserId = {{ current_user_id if current_user_id else 'null' }};
+    const authToken = '{{ auth_token if auth_token else '' }}';
     
     function addToLog(message, type = 'info') {
         const log = document.getElementById('activity-log');
@@ -125,7 +126,7 @@
         addToLog(`Requesting: GET /api/user/${userId}`, 'info');
         
         try {
-            const response = await fetch(`/api/user/${userId}`);
+            const response = await fetch(`/api/user/${userId}?token=${authToken}`);
             const data = await response.json();
             
             resultDiv.style.display = 'block';
@@ -178,7 +179,7 @@
         addToLog('Requesting: GET /api/users', 'info');
         
         try {
-            const response = await fetch('/api/users');
+            const response = await fetch(`/api/users?token=${authToken}`);
             const data = await response.json();
             
             if (response.ok && data.users) {
