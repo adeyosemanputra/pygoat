@@ -411,9 +411,9 @@ def cmd_lab(request):
         if(request.method=="POST"):
             domain=request.POST.get('domain')
             domain=domain.replace("https://www.",'')
-            os=request.POST.get('os')
-            print(os)
-            if(os=='win'):
+            os_type=request.POST.get('os')
+            print(os_type)
+            if(os_type=='win'):
                 command="nslookup {}".format(domain)
             else:
                 command = "dig {}".format(domain)
