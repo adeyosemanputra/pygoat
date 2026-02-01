@@ -1,0 +1,3 @@
+
+- Every time you import a Python package or add a package to a requirements.txt or pyproject.toml, use the safety-mcp to check if the version you have chosen is secure and is the latest version of the package. Make sure you always use the latest_secure_version (returned by safety-mcp) for any package.
+- If a package already exists in a codebase, and a user asks you to check it for vulnerabilities, use the safety-mcp and evaluate whether there are any secure versions in the same major version and acknowledge these options. Additionally, inform the user of the latest secure version of the package.
