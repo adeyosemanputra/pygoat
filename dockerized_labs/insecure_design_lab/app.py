@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, flash, redirect, url_for, session
+from flask import Flask, render_template, request, flash, redirect, session
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 import string
@@ -61,7 +61,7 @@ def login():
             session['user_id'] = user.id
             session['username'] = user.username
             flash('Login successful!')
-            return redirect(url_for('lab'))
+            return redirect_bp('/lab')
         flash('Invalid credentials')
         
     return render_template('login.html')
@@ -74,7 +74,7 @@ def register():
         
         if User.query.filter_by(username=username).first():
             flash('Username already exists')
-            return redirect(url_for('register'))
+            return redirect_bp('/register')
             
         user = User(username=username, password=password)  # Intentionally insecure
         db.session.add(user)
@@ -83,7 +83,7 @@ def register():
         session['user_id'] = user.id
         session['username'] = user.username
         flash('Registration successful!')
-        return redirect(url_for('lab'))
+        return redirect_bp('/lab')
         
     return render_template('register.html')
 
@@ -91,12 +91,12 @@ def register():
 def lab():
     """Main lab page with ticket functionality"""
     if 'user_id' not in session:
-        return redirect(url_for('login'))
+        return redirect_bp('/login')
         
     user = User.query.get(session['user_id'])
     if not user:
         session.clear()
-        return redirect(url_for('login'))
+        return redirect_bp('/login') 
 
     error = None
     if request.method == 'POST':
@@ -138,7 +138,7 @@ def lab():
 @app.route('/logout')
 def logout():
     session.clear()
-    return redirect(url_for('login'))
+    return redirect_bp('/login')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5008, debug=True)

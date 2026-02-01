@@ -2,14 +2,30 @@
 <title>Cryptographic Failure</title>
 {% endblock %}
 <div class="content">
-  <h3>Cryptographic Failure</h3>
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 15px;">
+    <div style="flex: 1;">
+      <h3 style="margin: 0;">Cryptographic Failure</h3>
+      <span id="lab-status-badge-crypto-failure" class="badge badge-secondary" style="margin-top: 8px; font-size: 13px;">
+        <i class="fas fa-spinner fa-spin"></i> Checking...
+      </span>
+    </div>
+    <div>
+      <button id="toggle-lab-btn-crypto-failure" 
+              class="btn btn-sm btn-success" 
+              data-lab="crypto-failure"
+              data-status="stopped"
+              style="font-weight: 600; padding: 6px 16px; font-size: 14px;">
+        <i class="fas fa-play"></i> Start Lab
+      </button>
+    </div>
+  </div>
+
   <div class="box">
     <h4>What is  Cryptographic Failure</h4>
     <p class="bp">
         Cryptograpphic failure is the root cause of Sensitive Data Exposure.
         Enumerations (CWEs) included are CWE-259: Use of Hard-coded Password, CWE-327: Broken or Risky Crypto Algorithm, and CWE-331 Insufficient Entropy.
         The first thing is to determine the protection needs of data in transit and at rest. For example, passwords, credit card numbers, health records, personal information, and business secrets require extra protection, mainly if that data falls under privacy laws, e.g., EU's General Data Protection Regulation (GDPR), or regulations, e.g., financial data protection such as PCI Data Security Standard (PCI DSS).
-        
     </p>
     <button class="coll btn btn-info">Lab 1 Details</button>
     <div class="lab">
@@ -24,8 +40,15 @@
         </code>
 
         <br>
-        <div align="right"> <button class="btn btn-info" type="button" onclick="window.location.href='/cryptographic_failure/lab'">Access
-            Lab</button></div>
+        <div align="right">
+          <button class="btn btn-info access-lab-detail-btn" 
+                  data-lab="crypto-failure" 
+                  onclick="window.open('/labs/crypto-failure/lab1', '_blank')" 
+                  disabled 
+                  style="opacity: 0.5;">
+            <i class="fas fa-lock"></i> Access Lab
+          </button>
+        </div>
         </p>
     </div>
 
@@ -43,8 +66,15 @@
         </code>
 
         <br>
-        <div align="right"> <button class="btn btn-info" type="button" onclick="window.location.href='/cryptographic_failure/lab2'">Access
-            Lab</button></div>
+        <div align="right">
+          <button class="btn btn-info access-lab-detail-btn" 
+                  data-lab="crypto-failure" 
+                  onclick="window.open('/labs/crypto-failure/lab2', '_blank')" 
+                  disabled 
+                  style="opacity: 0.5;">
+            <i class="fas fa-lock"></i> Access Lab
+          </button>
+        </div>
         </p>
     </div>
     <button class="coll btn btn-info">Lab 3 Details</button>
@@ -58,8 +88,15 @@
         </code>
 
         <br>
-        <div align="right"> <button class="btn btn-info" type="button" onclick="window.location.href='/cryptographic_failure/lab3'">Access
-            Lab</button></div>
+        <div align="right">
+          <button class="btn btn-info access-lab-detail-btn" 
+                  data-lab="crypto-failure" 
+                  onclick="window.open('/labs/crypto-failure/lab3', '_blank')" 
+                  disabled 
+                  style="opacity: 0.5;">
+            <i class="fas fa-lock"></i> Access Lab
+          </button>
+        </div>
         </p>
     </div>
   <div>

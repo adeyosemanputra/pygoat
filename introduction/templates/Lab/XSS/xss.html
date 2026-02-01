@@ -2,7 +2,23 @@
 {% block content %}
 
 <div class="content">
-    <h3>Cross Site Scripting</h3>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 15px;">
+  <div style="flex: 1;">
+    <h3 style="margin: 0;">Cross Site Scripting</h3>
+    <span id="lab-status-badge-xss" class="badge badge-secondary" style="margin-top: 8px; font-size: 13px;">
+      <i class="fas fa-spinner fa-spin"></i> Checking...
+    </span>
+  </div>
+  <div>
+    <button id="toggle-lab-btn-xss" 
+            class="btn btn-sm btn-success" 
+            data-lab="xss"
+            data-status="stopped"
+            style="font-weight: 600; padding: 6px 16px; font-size: 14px;">
+      <i class="fas fa-play"></i> Start Lab
+    </button>
+  </div>
+</div>
     <div class="box">
 
         <h4>What is Cross Site Scripting or XSS?</h4>

@@ -1,56 +1,74 @@
-{% extends 'introduction/base.html' %} {% block content %} {% block title %}
+{% extends 'introduction/base.html' %}
+{% block content %}
+{% block title %}
 <title>Insecure Design</title>
 {% endblock %}
+
 <div class="content">
-  <h3>Insecure Design</h3>
+
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 15px;">
+    <div style="flex: 1;">
+      <h3 style="margin: 0;">Insecure Design</h3>
+      <span id="lab-status-badge-insecure-design"
+            class="badge badge-secondary"
+            style="margin-top: 8px; font-size: 13px;">
+        <i class="fas fa-spinner fa-spin"></i> Checking...
+      </span>
+    </div>
+    <div>
+      <button id="toggle-lab-btn-insecure-design"
+              class="btn btn-sm btn-success"
+              data-lab="insecure-design"
+              data-status="stopped"
+              style="font-weight: 600; padding: 6px 16px; font-size: 14px;">
+        <i class="fas fa-play"></i> Start Lab
+      </button>
+    </div>
+  </div>
+
   <div class="box">
     <h4>What is Insecure Design</h4>
     <p class="bp">
       Insecure design is a broad category representing different weaknesses,
-      expressed as “missing or ineffective control design.” Insecure design is
-      not the source for all other Top 10 risk categories. There is a difference
-      between insecure design and insecure implementation. We differentiate
-      between design flaws and implementation defects for a reason, they have
-      different root causes and remediation. A secure design can still have
-      implementation defects leading to vulnerabilities that may be exploited.
-      An insecure design cannot be fixed by a perfect implementation as by
-      definition, needed security controls were never created to defend against
-      specific attacks. One of the factors that contribute to insecure design is
-      the lack of business risk profiling inherent in the software or system
-      being developed, and thus the failure to determine what level of security
-      design is required.
+      expressed as “missing or ineffective control design.” A secure design can
+      still have implementation defects, but an insecure design can never be
+      fixed by implementation alone.
     </p>
+
+    <!-- LAB -->
     <button class="coll btn btn-info">Lab Details</button>
     <div class="lab">
-        <p class="bp">
-        This lab helps you to get an idea of how Insecure Design can result in major Security flaw.
+      <p class="bp">
+        This lab demonstrates how insecure business logic can lead to a major flaw.
 
-        In the next page,user can get 5 free tickets for a Movie. But he/she have to wait untill all the tickets are sold out.
-        For this particular situation, we can get advantage of the Insecure Design and somehow get all the tickets for the movie.
+        The user can get 5 free tickets for a movie, but must wait until all tickets
+        are sold out. Due to insecure design, this logic can be bypassed.
 
-        <ul><code>Hint</code></ul>
-        <ul> Logout and then think.</ul>
-        
+        <ul><b>Hint</b></ul>
+        <ul>Logout and then think.</ul>
+
         <br>
-        <div align="right"> <button class="btn btn-info" type="button" onclick="window.location.href='/insecure-design_lab'">Access
-            Lab</button></div>
+        <div align="right">
+          <button class="btn btn-info access-lab-detail-btn"
+                  data-lab="insecure-design"
+                  onclick="window.open('/labs/insecure-design/lab','_blank')"
+                  disabled
+                  style="opacity: 0.5;">
+            <i class="fas fa-lock"></i> Access Lab
+          </button>
+        </div>
+      </p>
     </div>
-  <div>
+
     <br>
     <h4>Mitigation</h4>
-    <p class="bp">
-    <ul>
-      <li>Establish and use a secure development lifecycle with AppSec professionals to help evaluate and design security and privacy-related controls</li>
-      <li>Establish and use a library of secure design patterns or paved road ready to use components</li>
-      <li>Use threat modeling for critical authentication, access control, business logic, and key flows</li>
-      <li>Integrate security language and controls into user stories</li>
-      <li>Integrate plausibility checks at each tier of your application (from frontend to backend)</li>
-      <li>Write unit and integration tests to validate that all critical flows are resistant to the threat model. Compile use-cases and misuse-cases for each tier of your application.s</li>
-      <li>Segregate tier layers on the system and network layers depending on the exposure and protection needs</li>
-      <li>Segregate tenants robustly by design throughout all tiers</li>
-      <li>Limit resource consumption by user or service</li>
+    <ul class="Mitigation">
+      <li>Use a secure SDLC</li>
+      <li>Apply threat modeling</li>
+      <li>Validate business logic</li>
+      <li>Limit resource usage</li>
+      <li>Segregate tenants and tiers</li>
     </ul>
-    </p>
   </div>
 </div>
 

@@ -91,19 +91,21 @@
               style="padding: 13% 10% 0 0"
             >
               <i class="fas fa-flag"></i>
-              OWASP TOP 10 2021
+            OWASP TOP 10 2021
             </a>
             <ul class="collapse list-unstyled" id="OWASP10_2021">
               <li>
                 <a href="/broken_access_control" class="sidebar-list-items">
                   <i class="fas fa-bug"></i>
                   A1: Broken Access Control
+                  <span class="lab-status-dot" data-lab="broken-access"></span>
                 </a>
               </li>
               <li>
                 <a href="/cryptographic_failure" class="sidebar-list-items">
                   <i class="fas fa-bug"></i>
                   A2: Cryptographic Failures
+                  <span class="lab-status-dot" data-lab="crypto-failure"></span>
                 </a>
               </li>
               <li>
@@ -118,83 +120,78 @@
                 </a>
                 <ul class="collapse list-unstyled" id="sqlSubmenu2">
                   <li>
-                    <a href="/injection" class="sidebar-list-items"
-                      >SQl Injection
+                    <a href="/injection" class="sidebar-list-items">
+                      <i class="fas fa-bug"></i>
+                      SQL Injection
+                      <span class="lab-status-dot" data-lab="sql-injection"></span>
                     </a>
-                        <button class="btn btn-sm btn-success start-lab" data-lab="sql-injection">Start</button>
-                        <button class="btn btn-sm btn-danger stop-lab" data-lab="sql-injection">Stop</button>
                   </li>
                   <li>
-                    <a href="/cmd" class="sidebar-list-items"
-                      >Command Injection</a>
-                          <button class="btn btn-sm btn-success start-lab" data-lab="command-injection">Start</button>
-                          <button class="btn btn-sm btn-danger stop-lab" data-lab="command-injection">Stop</button>
+                    <a href="/cmd" class="sidebar-list-items">
+                      <i class="fas fa-terminal"></i>
+                      Command Injection
+                      <span class="lab-status-dot" data-lab="command-injection"></span>
+                    </a>
                   </li>
                   <li>
-                    <a href="/ssti" class="sidebar-list-items"
-                      >Template Injection</a>
-                        <button class="btn btn-sm btn-success start-lab" data-lab="template-injection">Start</button>
-                        <button class="btn btn-sm btn-danger stop-lab" data-lab="template-injection">Stop</button>
+                    <a href="/ssti" class="sidebar-list-items">
+                      <i class="fas fa-code"></i>
+                      Template Injection
+                      <span class="lab-status-dot" data-lab="template-injection"></span>
+                    </a>
                   </li>
                 </ul>
-              </li>
-              <li>
-                <a href="/insecure-design" class="sidebar-list-items">
-                  <i class="fas fa-bug"></i>
-                  A4: Insecure Design
-                </a>
-                        <button class="btn btn-sm btn-success start-lab" data-lab="insecure-design">Start</button>
-                        <button class="btn btn-sm btn-danger stop-lab" data-lab="insecure-design">Stop</button>
-              </li>
-              <li>
-                <a href="/sec_mis" class="sidebar-list-items">
-                  <i class="fas fa-bug"></i>
-                  A5: Security Misconfiguration
-                </a>
-                        <button class="btn btn-sm btn-success start-lab" data-lab="sec-misconfig">Start</button>
-                        <button class="btn btn-sm btn-danger stop-lab" data-lab="sec-misconfig">Stop</button>                
-              </li>
-              <li>
-                <a href="/a9" class="sidebar-list-items">
-                  <i class="fas fa-bug"></i>
-                  A6: Vulnerable and Outdated Components
-                </a>
-                        <button class="btn btn-sm btn-success start-lab" data-lab="a9-uckv">Start</button>
-                        <button class="btn btn-sm btn-danger stop-lab" data-lab="a9-uckv">Stop</button>                
-              </li>
-              <li>
-                <a href="/auth_failure" class="sidebar-list-items">
-                  <i class="fas fa-bug"></i>
-                  A7: Identification and Authentication Failures
-                </a>
-                        <button class="btn btn-sm btn-success start-lab" data-lab="auth-failure">Start</button>
-                        <button class="btn btn-sm btn-danger stop-lab" data-lab="auth-failure">Stop</button>                
-              </li>
-              <li>
-                <a href="/2021/A8" class="sidebar-list-items">
-                  <i class="fas fa-bug"></i>
-                  A8: Software and Data Integrity Failures
-                </a>
-                        <button class="btn btn-sm btn-success start-lab" data-lab="software-integrity">Start</button>
-                        <button class="btn btn-sm btn-danger stop-lab" data-lab="software-integrity">Stop</button>                
-              </li>
-              <li>
-                <a href="/a10" class="sidebar-list-items">
-                  <i class="fas fa-bug"></i>
-                  A9: Security Logging and Monitoring Failures
-                </a>
-                        <button class="btn btn-sm btn-success start-lab" data-lab="insufficient-logging">Start</button>
-                        <button class="btn btn-sm btn-danger stop-lab" data-lab="insufficient-logging">Stop</button>
-              </li>
-              <li>
-                <a href="/ssrf" class="sidebar-list-items">
-                  <i class="fas fa-bug"></i>
-                  A10: Server-Side Request Forgery
-                </a>
-                        <button class="btn btn-sm btn-success start-lab" data-lab="ssrf">Start</button>
-                        <button class="btn btn-sm btn-danger stop-lab" data-lab="ssrf">Stop</button>
-              </li>
-            </ul>
+                </li>
+                <li>
+                  <a href="/insecure-design" class="sidebar-list-items">
+                    <i class="fas fa-bug"></i>
+                    A4: Insecure Design
+                    <span class="lab-status-dot" data-lab="insecure-design"></span>
+                  </a>
+                </li>
+                <li>
+                  <a href="/sec_mis" class="sidebar-list-items">
+                    <i class="fas fa-bug"></i>
+                    A5: Security Misconfiguration
+                    <span class="lab-status-dot" data-lab="sec-misconfig"></span>
+                  </a>
+                </li>
+                <li>
+                  <a href="/a9" class="sidebar-list-items">
+                    <i class="fas fa-bug"></i>
+                    A6: Vulnerable and Outdated Components
+                    <span class="lab-status-dot" data-lab="a9-uckv"></span>
+                  </a>
+                </li>
+                <li>
+                  <a href="/auth_failure" class="sidebar-list-items">
+                    <i class="fas fa-bug"></i>
+                    A7: Identification and Authentication Failures
+                    <span class="lab-status-dot" data-lab="auth-failure"></span>
+                  </a>
+                </li>
+                <li>
+                  <a href="/2021/A8" class="sidebar-list-items">
+                    <i class="fas fa-bug"></i>
+                    A8: Software and Data Integrity Failures
+                    <span class="lab-status-dot" data-lab="software-integrity"></span>
+                  </a>
+                </li>
+                <li>
+                  <a href="/a10" class="sidebar-list-items">
+                    <i class="fas fa-bug"></i>
+                    A9: Security Logging and Monitoring Failures
+                    <span class="lab-status-dot" data-lab="insufficient-logging"></span>
+                  </a>
+                </li>
+                <li>
+                  <a href="/ssrf" class="sidebar-list-items">
+                    <i class="fas fa-bug"></i>
+                    A10: Server-Side Request Forgery
+                    <span class="lab-status-dot" data-lab="ssrf"></span>
+                  </a>
+                </li>
+                </ul>
 
             <a
               href="#sans25"
@@ -783,9 +780,7 @@
   'business-logic',
   'security-headers'
 ];
-
-
-    // update button state based on lab status
+// Update lab status 
     async function updateLabStatus(lab) {
       try {
         const res = await fetch(`/challenge/control/${lab}/status/`, {
@@ -793,48 +788,158 @@
           credentials: 'same-origin'
         });
         const data = await res.json();
-        const startBtn = document.querySelector(`.start-lab[data-lab="${lab}"]`);
-        const stopBtn = document.querySelector(`.stop-lab[data-lab="${lab}"]`);
         
-        if (data.status) { // running
-          startBtn.disabled = true;
-          stopBtn.disabled = false;
-        } else { // stopped
-          startBtn.disabled = false;
-          stopBtn.disabled = true;
-        }
+        // Update all UI components
+        updateLabDetailPageUI(lab, data.status);
+        updateSidebarDot(lab, data.status);
+        
       } catch(err) {
         console.error(`Failed to get status for ${lab}`, err);
       }
     }
 
-    // status for all labs
-    labs.forEach(updateLabStatus);
-
-    // handle start buttons
-    document.querySelectorAll(".start-lab").forEach(button => {
-      button.addEventListener("click", async function() {
-        const lab = this.dataset.lab;
-        try {
-          const res = await fetch(`/challenge/control/${lab}/start/`, {
-            method: 'GET',
-            headers: {'X-Requested-With': 'XMLHttpRequest'},
-            credentials: 'same-origin'
-          });
-          const data = await res.json();
-          alert(`Lab ${lab} start: ${data.message}`);
-          await updateLabStatus(lab);
-        } catch(err) {
-          console.error(err);
-          alert("Error starting lab " + lab);
+    // Update lab detail page UI 
+    function updateLabDetailPageUI(lab, isRunning) {
+      const toggleBtn = document.getElementById(`toggle-lab-btn-${lab}`);
+      const statusBadge = document.getElementById(`lab-status-badge-${lab}`);
+      const detailAccessBtns = document.querySelectorAll(`.access-lab-detail-btn[data-lab="${lab}"]`);
+      
+      if (!toggleBtn) return;
+      
+      if (isRunning) {
+        toggleBtn.className = 'btn btn-sm btn-danger';
+        toggleBtn.innerHTML = '<i class="fas fa-stop"></i> Stop Lab';
+        toggleBtn.disabled = false;
+        toggleBtn.dataset.status = 'running';
+        
+        if (statusBadge) {
+          statusBadge.className = 'badge badge-success';
+          statusBadge.innerHTML = '<i class="fas fa-circle"></i> Running';
         }
-      });
-    });
+        
+        detailAccessBtns.forEach(btn => {
+          btn.disabled = false;
+          btn.style.opacity = '1';
+          btn.innerHTML = btn.innerHTML.replace('fa-lock', 'fa-external-link-alt');
+        });
+        
+      } else {
+        toggleBtn.className = 'btn btn-sm btn-success';
+        toggleBtn.innerHTML = '<i class="fas fa-play"></i> Start Lab';
+        toggleBtn.disabled = false;
+        toggleBtn.dataset.status = 'stopped';
+        
+        if (statusBadge) {
+          statusBadge.className = 'badge badge-secondary';
+          statusBadge.innerHTML = '<i class="fas fa-circle"></i> Stopped';
+        }
+        
+        detailAccessBtns.forEach(btn => {
+          btn.disabled = true;
+          btn.style.opacity = '0.5';
+          btn.innerHTML = btn.innerHTML.replace('fa-external-link-alt', 'fa-lock');
+        });
+      }
+    }
 
-    // handle stop buttons
-      document.querySelectorAll(".stop-lab").forEach(button => {
-        button.addEventListener("click", async function() {
-          const lab = this.dataset.lab;
+    // update sidebar status dots
+    function updateSidebarDot(lab, isRunning) {
+      const dot = document.querySelector(`.lab-status-dot[data-lab="${lab}"]`);
+      
+      if (dot) {
+        if (isRunning) {
+          dot.classList.add('running');
+        } else {
+          dot.classList.remove('running');
+        }
+      }
+    }
+
+    function setLabLoadingState(lab, isStarting) {
+      const toggleBtn = document.getElementById(`toggle-lab-btn-${lab}`);
+      const statusBadge = document.getElementById(`lab-status-badge-${lab}`);
+      
+      if (!toggleBtn) return;
+      
+      if (isStarting) {
+        toggleBtn.className = 'btn btn-sm btn-warning';
+        toggleBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Starting...';
+        toggleBtn.disabled = true;
+        
+        if (statusBadge) {
+          statusBadge.className = 'badge badge-warning';
+          statusBadge.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Starting...';
+        }
+      } else {
+        toggleBtn.className = 'btn btn-sm btn-warning';
+        toggleBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Stopping...';
+        toggleBtn.disabled = true;
+        
+        if (statusBadge) {
+          statusBadge.className = 'badge badge-warning';
+          statusBadge.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Stopping...';
+        }
+      }
+    }
+
+    async function pollUntilStateReached(lab, targetState) {
+      let attempts = 0;
+      const maxAttempts = 30;
+      
+      return new Promise((resolve) => {
+        const interval = setInterval(async () => {
+          attempts++;
+          
+          try {
+            const res = await fetch(`/challenge/control/${lab}/status/`, {
+              method: 'GET',
+              credentials: 'same-origin'
+            });
+            const data = await res.json();
+            
+            await updateLabStatus(lab);
+
+            if (data.status === targetState || attempts >= maxAttempts) {
+              clearInterval(interval);
+              resolve(data.status === targetState);
+            }
+          } catch(err) {
+            clearInterval(interval);
+            resolve(false);
+          }
+        }, 2000);
+      });
+    }
+
+
+    // Handle toggle button clicks
+    document.querySelectorAll('[id^="toggle-lab-btn-"]').forEach(toggleBtn => {
+      toggleBtn.addEventListener('click', async function() {
+        const lab = this.dataset.lab;
+        const currentStatus = this.dataset.status;
+        
+        if (currentStatus === 'stopped') {
+          setLabLoadingState(lab, true);
+          
+          try {
+            const res = await fetch(`/challenge/control/${lab}/start/`, {
+              method: 'GET',
+              headers: {'X-Requested-With': 'XMLHttpRequest'},
+              credentials: 'same-origin'
+            });
+            const data = await res.json();
+
+            await pollUntilStateReached(lab, true);
+            
+          } catch(err) {
+            console.error(err);
+            alert("Error starting lab " + lab);
+            await updateLabStatus(lab);
+          }
+          
+        } else if (currentStatus === 'running') {
+          setLabLoadingState(lab, false);
+          
           try {
             const res = await fetch(`/challenge/control/${lab}/stop/`, {
               method: 'GET',
@@ -842,15 +947,85 @@
               credentials: 'same-origin'
             });
             const data = await res.json();
-            alert(`Lab ${lab} stop: ${data.message}`);
-            await updateLabStatus(lab);
+            
+            await pollUntilStateReached(lab, false);
+            
           } catch(err) {
             console.error(err);
             alert("Error stopping lab " + lab);
+            await updateLabStatus(lab);
           }
-        });
+        }
       });
     });
-   </script>
+
+    labs.forEach(updateLabStatus);
+
+    document.querySelectorAll('[id^="toggle-lab-btn-"]').forEach(toggleBtn => {
+      const lab = toggleBtn.dataset.lab;
+      if (lab) {
+        updateLabStatus(lab);
+      }
+    });
+  });
+</script>
+
+<!-- styles for lab control UI -->
+<style>
+  .badge {
+    transition: all 0.3s ease;
+  }
+  
+  .badge-success {
+    background-color: #28a745 !important;
+    animation: pulse-green 2s infinite;
+  }
+  
+  .badge-warning {
+    background-color: #ffc107 !important;
+  }
+  
+  @keyframes pulse-green {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+  }
+  
+
+  .btn {
+    transition: all 0.3s ease;
+  }
+  
+  /* Access lab button */
+  .access-lab-detail-btn {
+    transition: opacity 0.3s ease, transform 0.2s ease;
+  }
+  
+  .access-lab-detail-btn:not(:disabled):hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  }
+  
+  /* Sidebar status dots */
+  .lab-status-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-left: 8px;
+    background-color: #6c757d; /* Gray - stopped */
+    transition: background-color 0.3s ease;
+  }
+
+  .lab-status-dot.running {
+    background-color: #28a745; /* Green - running */
+    animation: pulse-dot 2s infinite;
+  }
+
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+</style>
+
   </body>
 </html>

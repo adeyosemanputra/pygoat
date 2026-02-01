@@ -51,7 +51,7 @@ def login():
     remember_me = request.form.get('remember_me')
 
     if username in users and users[username]['password'] == password:  # Vulnerable: Plain text password comparison
-        response = make_response(redirect(url_for('dashboard')))
+        response = make_response(redirect_bp('/dashboard'))
         
         # Vulnerable: Insecure session management
         session_token = base64.b64encode(f"{username}:{datetime.now()}".encode()).decode()
@@ -65,7 +65,7 @@ def login():
         return response
     
     flash('Invalid username or password')
-    return redirect(url_for('lab'))
+    return redirect_bp('/lab')
 
 @app.route('/register', methods=['POST'])
 def register():
@@ -82,10 +82,10 @@ def register():
                 'role': 'user'
             }
             flash('Registration successful')
-            return redirect(url_for('lab'))
+            return redirect_bp('/lab')
     
     flash('Registration failed')
-    return redirect(url_for('lab'))
+    return redirect_bp('/lab')
 
 @app.route('/reset-password', methods=['POST'])
 def reset_password():
@@ -101,10 +101,10 @@ def reset_password():
             # In a real application, this would send an email
             # Vulnerable: Token exposed in response
             flash(f'Password reset link: /reset/{token}')
-            return redirect(url_for('lab'))
+            return redirect_bp('/lab')
     
     flash('Email not found')
-    return redirect(url_for('lab'))
+    return redirect_bp('/lab')
 
 @app.route('/reset/<token>')
 def reset_form(token):
@@ -116,7 +116,7 @@ def reset_form(token):
 def dashboard():
     session_token = request.cookies.get('session')
     if not session_token:
-        return redirect(url_for('lab'))
+        return redirect_bp('/lab')
     
     try:
         # Vulnerable: Insecure session validation
@@ -128,8 +128,8 @@ def dashboard():
                                 email=users[username]['email'])
     except:
         pass
-    
-    return redirect(url_for('lab'))
+
+    return redirect_bp('/lab')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)  # Vulnerable: Debug mode enabled in production 
