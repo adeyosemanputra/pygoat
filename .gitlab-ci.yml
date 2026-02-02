@@ -1,0 +1,77 @@
+stages:
+  - secrets
+  - sca
+  - sast
+  - dast
+  - build-notify
+
+secrets-linting:
+  stage: secrets
+  image:
+    name: gitleaks/gitleaks:latest
+    entrypoint: [""]
+  script:
+    - gitleaks detect --exit-code=1 --report-format json --report-path=secrets.json
+  artifacts:
+    paths:
+      - secrets.json
+  allow_failure: false
+
+sca-snyk:
+  stage: sca
+  image: node:20
+  script:
+    - npm ci -g snyk
+    - snyk auth $SNYK_TOKEN
+    - snyk test --file=requirements.txt --severity-threshold=high --fail-on=upgradable
+    - snyk monitor --file=requirements.txt
+  artifacts:
+    paths:
+      - snyk-lc-report.html
+  allow_failure: false
+
+sast-sonarqube:
+  stage: sast
+  image: sonarsource/sonar-scanner-cli:latest
+  variables:
+    SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
+    GIT_DEPTH: 0
+    SONAR_TOKEN: $SONAR_TOKEN
+  script:
+    - sonar-scanner
+      -Dsonar.projectKey=pygoat-pipeline
+      -Dsonar.sources=.
+      -Dsonar.host.url=http://10.0.2.15:9000
+      -Dsonar.qualitygate.wait=true
+  allow_failure: false
+
+dast-zap:
+  stage: dast
+  image: python:3.9-slim
+  services:
+    - name: pygoat/pygoat:latest
+      alias: app-target
+  before_script:
+    - pip install python-owasp-zap-v2.4 python-dotenv
+    - apt update && apt install -y wget
+    - wget -O botattack.py tu-script-botattack.py
+    - echo "ZAP_APIKEY=$ZAP_APIKEY" >> .env
+    - echo "TARGET=http://app-target:8000" >> .env
+  script:
+    - python botattack.py
+  artifacts:
+    paths:
+      - zap-report.html
+  timeout: 20m
+  allow_failure: false
+
+build-notify:
+  stage: build-notify
+  image: docker:24.0
+  services:
+    - docker:24.0-dind
+  script:
+    - docker build -t pygoat-secure:latest .
+    - echo "PyGoat v1.x: Despliegue seguro autorizado."
+  when: on_success
+
