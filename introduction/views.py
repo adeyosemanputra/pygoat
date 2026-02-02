@@ -491,7 +491,7 @@ def login_otp(request):
 
 @csrf_exempt
 def Otp(request):
-    otpN=randint(100,103)
+    otpN=randint(100,999)
     if request.method=="GET":
         email=request.GET.get('email')
         
