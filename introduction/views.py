@@ -11,6 +11,8 @@ import re
 import string
 import subprocess
 import uuid
+import importlib.util
+from django.conf import settings
 from dataclasses import dataclass
 from hashlib import md5
 from io import BytesIO
@@ -1244,10 +1246,52 @@ def software_and_data_integrity_failure_lab2(request):
         except:
             return render(request,"Lab_2021/A8_software_and_data_integrity_failure/lab2.html")
 
-
 @authentication_decorator
 def software_and_data_integrity_failure_lab3(request):
-    pass
+    raw_plugin_choice = request.GET.get("plugin")
+    if raw_plugin_choice in ("tampered", "trusted"):
+        plugin_choice = raw_plugin_choice
+    else:
+        plugin_choice = None
+
+    result = None
+
+    if request.method == "GET" and plugin_choice:
+        try:
+            plugin_mapping = {
+                "tampered": "malicious_plugin.py",
+                "trusted": "trusted_plugin.py",
+            }
+            plugin_file = plugin_mapping.get(plugin_choice)
+
+            if plugin_file:
+                plugin_path = os.path.join(
+                    settings.BASE_DIR,
+                    "dockerized_labs",
+                    "software_integrity_lab",
+                    "plugins",
+                    plugin_file
+                )
+
+                spec = importlib.util.spec_from_file_location("plugin", plugin_path)
+                plugin = importlib.util.module_from_spec(spec)
+                spec.loader.exec_module(plugin)
+
+                result = plugin.run(request)
+
+        except Exception as e:
+            result = {"error": str(e)}
+
+    return render(
+        request,
+        "Lab_2021/A8_software_and_data_integrity_failure/lab3.html",
+        {
+            "result": result,
+            "plugin_choice": plugin_choice
+        }
+    )
+
+
 
 ## --------------------------A6_discussion-------------------------------------------------------
 

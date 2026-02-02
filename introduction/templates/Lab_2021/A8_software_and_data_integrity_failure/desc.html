@@ -10,16 +10,19 @@
 		<p class="bp">
 			Exploitation of deserialization is somewhat difficult, as off the shelf exploits rarely work without changes or
 			tweaks to the underlying exploit code.
+			<br>
 			Software and data integrity failures relate to code and infrastructure that does not protect against integrity
-             violations. An example of this is where an application relies upon plugins, libraries, or modules from
-              untrusted sources, repositories, and content delivery networks (CDNs). An insecure CI/CD pipeline can
-               introduce the potential for unauthorized access, malicious code, or system compromise. Lastly, many
-                applications now include auto-update functionality, where updates are downloaded without sufficient
-                 integrity verification and applied to the previously trusted application. Attackers could potentially
-                  upload their own updates to be distributed and run on all installations. Another example is where objects 
-                   or data are encoded or serialized into a structure that an attacker can see and modify is vulnerable to
-                    insecure deserialization.
+			violations. An example of this is where an application relies upon plugins, libraries, or modules from
+			untrusted sources, repositories, and content delivery networks (CDNs). An insecure CI/CD pipeline can
+			introduce the potential for unauthorized access, malicious code, or system compromise.
+			<br>
+			Lastly, many applications now include auto-update functionality, where updates are downloaded without sufficient
+			integrity verification and applied to the previously trusted application. Attackers could potentially
+			upload their own updates to be distributed and run on all installations. Another example is where objects
+			or data are encoded or serialized into a structure that an attacker can see and modify, making the
+			application vulnerable to insecure deserialization.
 		</p>
+
 
 		<button class="coll btn btn-info">Lab 1 Details</button>
 		<div class="lab">
@@ -49,6 +52,30 @@
 				<button class="btn btn-info" type="button" onclick="window.location.href='/2021/A8/lab2'">Access Lab</button>
 			</div>
 		</div>
+		<button class="coll btn btn-info">Lab 3 Details</button>
+		<div class="lab">
+			<p class="bp">
+				This lab demonstrates a Software and Data Integrity Failure caused by
+				loading plugins or updates without verifying their authenticity.
+			</p>
+			<p class="bp">
+				The application supports plugins that extend functionality and loads
+				them dynamically at runtime. No integrity checks such as signatures or
+				hashes are performed before execution.
+			</p>
+			<p class="bp">
+				Can you identify how an attacker could replace a trusted plugin or
+				update and alter application behavior?
+			</p>
+			<br>
+			<div align="right">
+				<button class="btn btn-info" type="button"
+						onclick="window.location.href='/2021/A8/lab3'">
+					Access Lab
+				</button>
+			</div>
+		</div>
+
 		<h4>Insecure Deserialization</h4>
 		<p class="bp">
 			Applications and APIs will be vulnerable if they deserialize hostile or tampered objects supplied by an attacker.

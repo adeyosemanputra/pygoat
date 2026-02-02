@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="box">
+    <h3>Lab 3: Unsigned / Unverified Plugin Loading</h3>
+    
+    <div class="section">
+        <h4>Challenge</h4>
+        <p class="bp">This lab demonstrates loading external code without integrity verification.</p>
+        
+        <div class="section">
+            <h4>Plugin Selection</h4>
+            <p class="bp">Choose which plugin to load:</p>
+            <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                <a href="/lab3?plugin=trusted_plugin.py"><button>Load Trusted Plugin</button></a>
+                <a href="/lab3?plugin=malicious_plugin.py"><button>Load Malicious Plugin</button></a>
+            </div>
+        </div>
+
+        <div class="section">
+            <h4>Plugin Result</h4>
+            <div class="response">
+                <pre>{{ result }}</pre>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h4>Hints</h4>
+        <ul>
+            <li>Plugins are loaded dynamically without verification</li>
+            <li>No digital signatures or checksums are checked</li>
+            <li>Replacing a plugin file changes application behavior</li>
+        </ul>
+    </div>
+</div>
+{% endblock %}
