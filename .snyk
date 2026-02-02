@@ -1,0 +1,8 @@
+version: v1.97
+ignore:
+  - 'cffi==1.17':
+      reason: "Py3.13 compat Kali lab"
+      expires: "2026-12-31"
+  - 'Pillow==12.1.0':
+      reason: "Django pinned, no RCE"
+      expires: "2026-12-31"
