@@ -32,6 +32,16 @@ First, Clone the repository using GitHub website or git in Terminal
   ### To Download a specific branch
   git clone -b <branch_name> https://github.com/adeyosemanputra/pygoat.git
 ```
+### Windows Notes (PowerShell users)
+
+- PyGoat is tested primarily on Linux/macOS. Windows users are recommended to use:
+  - **Docker Desktop** (preferred), or
+  - **WSL2 (Ubuntu)** for smoother setup.
+- On some Windows environments, the `python3` command may not be available by default.
+  - If `python3` is not recognized, try using `python` instead (ensure it points to Python 3.x).
+- Ensure Python version is **3.10 or 3.11** for best compatibility.
+- Some labs rely on Unix-style commands and may behave differently on native Windows shells.
+
 
 #### Method 1
 
