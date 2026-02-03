@@ -20,7 +20,9 @@
                         <h4>Vulnerable Code (Current)</h4>
                         <pre class="code-block"><code>@app.route('/api/user/&lt;int:user_id&gt;')
 def get_user_profile(user_id):
-    if 'user_id' not in session:
+    token = request.args.get('token') or request.headers.get('X-Auth-Token')
+    
+    if not token or token not in TOKENS:
         return jsonify({"error": "Not authenticated"}), 401
     
     # NO authorization check - any user can access any data!
@@ -35,12 +37,15 @@ def get_user_profile(user_id):
                         <h4 style="margin-top: 30px;">Secure Code (Fixed)</h4>
                         <pre class="code-block"><code>@app.route('/api/user/&lt;int:user_id&gt;')
 def get_user_profile(user_id):
-    if 'user_id' not in session:
+    token = request.args.get('token') or request.headers.get('X-Auth-Token')
+    
+    if not token or token not in TOKENS:
         return jsonify({"error": "Not authenticated"}), 401
     
     # AUTHORIZATION CHECK - users can only access their own data
-    if session['user_id'] != user_id:
-        if session.get('role') != 'admin':
+    if TOKENS[token] != user_id:
+        user = USERS[TOKENS[token]]
+        if user.get('role') != 'admin':
             return jsonify({"error": "Forbidden"}), 403
     
     if user_id not in USERS:
@@ -52,7 +57,7 @@ def get_user_profile(user_id):
                         
                         <h4 style="margin-top: 30px;">Key Differences</h4>
                         <ul>
-                            <li><strong>Authorization Check:</strong> Verifies <code>session['user_id'] == user_id</code></li>
+                            <li><strong>Authorization Check:</strong> Verifies <code>TOKENS[token] == user_id</code></li>
                             <li><strong>Role-Based Access:</strong> Admins have elevated privileges</li>
                             <li><strong>403 Forbidden:</strong> Proper HTTP status for unauthorized access</li>
                         </ul>
