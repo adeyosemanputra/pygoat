@@ -216,10 +216,10 @@ def start_lab(request, lab_image_name):
                     ").status == 200 else sys.exit(1)"
                 )
             ],
-            interval=30000000000,  # 30s in nanoseconds
-            timeout=3000000000,     # 3s in nanoseconds
+            interval=5000000000,  # 5s in nanoseconds
+            timeout=2000000000,     # 2s in nanoseconds
             retries=3,
-            start_period=10000000000  # 10s in nanoseconds
+            start_period=2000000000  # 2s in nanoseconds
             )
             container = client.containers.run(
                 image=safe_image,

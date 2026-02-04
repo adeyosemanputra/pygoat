@@ -5,7 +5,10 @@ services:
     build: .
     command: >
       sh -c "python manage.py migrate --noinput &&
-             python manage.py populate_challenges"
+             python manage.py populate_challenges &&
+             python manage.py startuplabs"
+    environment:
+      - PREBUILD_LABS_ON_STARTUP=false
     volumes:
       - .:/app
       - /var/run/docker.sock:/var/run/docker.sock
