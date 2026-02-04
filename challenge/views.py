@@ -97,6 +97,52 @@ class DoItFast(View):
         # TODO : implement flag checking
         return "not implemented"
 
+def _sanitize_username(username: str) -> str:
+    return "".join(ch for ch in username if ch.isalnum() or ch in "-_")
+
+
+def _sanitize_image_name(name: str) -> str:
+    return "".join(ch for ch in name if ch.isalnum() or ch in "-_")
+
+
+def _get_container_name(username: str, lab_image_name: str) -> str:
+    safe_username = _sanitize_username(username)
+    safe_image = _sanitize_image_name(lab_image_name)
+    return f"lab-{safe_username}-{safe_image}"
+
+
+def _get_lab_config(lab_image_name: str) -> dict:
+    labs_json_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'labs.json')
+    with open(labs_json_path, 'r') as f:
+        data = json.load(f)
+    for lab in data.get('labs', []):
+        if lab.get('name') == lab_image_name:
+            return lab
+    raise KeyError(f'Lab config not found: {lab_image_name}')
+
+
+def _ensure_image_built(client, image: str, build_location: str):
+    try:
+        client.images.get(image)
+    except docker.errors.ImageNotFound:
+        build_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), build_location)
+        client.images.build(path=build_path, tag=image)
+
+
+def _container_exists(client, container_name: str) -> bool:
+    try:
+        client.containers.get(container_name)
+        return True
+    except docker.errors.NotFound:
+        return False
+
+
+def _get_user_containers(client, username: str):
+    safe_username = _sanitize_username(username)
+    container_prefix = f"lab-{safe_username}-"
+    containers = client.containers.list(all=True)
+    return [c for c in containers if c.name.startswith(container_prefix)]
+
 def wait_for_health(container, timeout=60):
     print(f"Waiting for {container.name} to become healthy...")
     start_time = time.time()
@@ -127,42 +173,9 @@ def start_lab(request, lab_image_name):
     if client is None:
         return JsonResponse({'status': 'error', 'message': 'Docker daemon unavailable'}, status=503)
 
-    def _sanitize_username(u: str) -> str:
-        return "".join(ch for ch in u if ch.isalnum())
-
-    def _sanitize_image_name(n: str) -> str:
-        return "".join(ch for ch in n if ch.isalnum() or ch in "-_")
-
-    def _load_lab_config(name: str) -> dict:
-        labs_json_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'labs.json')
-        with open(labs_json_path, 'r') as f:
-            data = json.load(f)
-        for lab in data.get('labs', []):
-            if lab.get('name') == name:
-                return lab
-        raise KeyError(f'Lab config not found: {name}')
-
-    def _ensure_image_built(image: str, build_location: str):
-        try:
-            client.images.get(image)
-        except docker.errors.ImageNotFound:
-
-            build_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), build_location)
-            client.images.build(path=build_path, tag=image)
-    
-    def _check_container_existence(container_name):
-        try:
-            client.containers.get(container_name)
-            container_exists = True
-        except docker.errors.NotFound:
-            container_exists = False
-        return container_exists
-
-        
     username = request.user.username
-    safe_username = _sanitize_username(username)
     safe_image = _sanitize_image_name(lab_image_name)
-    container_name = f"lab-{safe_username}-{safe_image}"
+    container_name = _get_container_name(username, lab_image_name)
     domain = getattr(settings, 'LAB_DOMAIN', 'localhost')
     lab_url = f"http://{container_name}.{domain}"
 
@@ -170,9 +183,8 @@ def start_lab(request, lab_image_name):
     
 
     try:
-        if not _check_container_existence(container_name):
-            containers_for_user = client.containers.list(all=True)
-            user_containers = [c for c in containers_for_user if c.name.startswith(f"lab-{safe_username}-")]
+        if not _container_exists(client, container_name):
+            user_containers = _get_user_containers(client, username)
             if len(user_containers) >= per_user_limit:
                 try:
                     client.containers.get(container_name)
@@ -182,7 +194,7 @@ def start_lab(request, lab_image_name):
         return JsonResponse({'status': 'error', 'message': 'Unable to verify user container quota'}, status=503)
 
     try:
-        lab_config = _load_lab_config(safe_image)
+        lab_config = _get_lab_config(safe_image)
         build_location = lab_config['build_location']
         lab_port = str(lab_config['port'])
     except (FileNotFoundError, json.JSONDecodeError, KeyError) as e:
@@ -197,7 +209,7 @@ def start_lab(request, lab_image_name):
             wait_for_health(container)
             return JsonResponse({'status': 'ready', 'url': lab_url})
         except docker.errors.NotFound:
-            _ensure_image_built(safe_image, build_location)
+            _ensure_image_built(client, safe_image, build_location)
 
             labels = {
                 "traefik.enable": "true",
@@ -243,15 +255,12 @@ def stop_user_labs(request):
         return JsonResponse({'status': 'error', 'message': 'Authentication required'}, status=401)
     
     username = request.user.username
-    safe_username = "".join(x for x in username if x.isalnum())
-    container_prefix = f"lab-{safe_username}-"
     client = get_docker_client()
     if client is None:
         return JsonResponse({'status': 'error', 'message': 'Docker daemon unavailable'}, status=503)
 
     try:
-        containers = client.containers.list(all=True)
-        user_containers = [c for c in containers if c.name.startswith(container_prefix)]
+        user_containers = _get_user_containers(client, username)
         
         stopped_count = 0
         for container in user_containers:
@@ -269,5 +278,53 @@ def stop_user_labs(request):
             'count': stopped_count
         })
         
+    except Exception as e:
+        return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+
+
+def list_user_labs(request):
+    if not request.user.is_authenticated:
+        return JsonResponse({'status': 'error', 'message': 'Authentication required'}, status=401)
+
+    username = request.user.username
+    client = get_docker_client()
+    if client is None:
+        return JsonResponse({'status': 'error', 'message': 'Docker daemon unavailable'}, status=503)
+
+    try:
+        user_containers = _get_user_containers(client, username)
+        labs = []
+        for c in user_containers:
+            labs.append({
+                'name': c.name,
+                'status': c.status,
+            })
+        return JsonResponse({'status': 'success', 'labs': labs})
+    except Exception as e:
+        return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+
+
+def stop_lab(request, lab_image_name):
+    if not request.user.is_authenticated:
+        return JsonResponse({'status': 'error', 'message': 'Authentication required'}, status=401)
+
+    username = request.user.username
+    container_name = _get_container_name(username, lab_image_name)
+
+    client = get_docker_client()
+    if client is None:
+        return JsonResponse({'status': 'error', 'message': 'Docker daemon unavailable'}, status=503)
+
+    try:
+        user_containers = _get_user_containers(client, username)
+        container = next((c for c in user_containers if c.name == container_name), None)
+        if container is None:
+            return JsonResponse({'status': 'error', 'message': 'Lab container not found'}, status=404)
+        if container.status == 'running':
+            container.stop()
+        container.remove()
+        return JsonResponse({'status': 'success', 'message': f'Stopped {lab_image_name}'})
+    except docker.errors.NotFound:
+        return JsonResponse({'status': 'error', 'message': 'Lab container not found'}, status=404)
     except Exception as e:
         return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
