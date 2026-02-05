@@ -49,12 +49,12 @@ def init_session():
 @app.route('/')
 def index():
     init_session()
-    return render_template('index.html')
+    return render_template('index.html', base_path=BASE_PATH)
 
 @app.route('/store')
 def store():
     init_session()
-    return render_template('store.html', products=PRODUCTS)
+    return render_template('store.html', products=PRODUCTS, base_path=BASE_PATH)
 
 @app.route('/add_to_cart/<int:product_id>')
 def add_to_cart(product_id):
@@ -92,14 +92,8 @@ def cart():
     
     final_total = max(0, cart_total - discount_amount)
     
-    return render_template('cart.html', 
-                         cart=session['cart'],
-                         cart_total=cart_total,
-                         discount_amount=discount_amount,
-                         final_total=final_total,
-                         applied_coupons=session['applied_coupons'],
                          coupons=COUPONS,
-                         secure_mode=session.get('secure_mode', False))
+                         secure_mode=session.get('secure_mode', False), base_path=BASE_PATH)
 
 @app.route('/apply_coupon', methods=['POST'])
 def apply_coupon():
@@ -170,12 +164,12 @@ def toggle_secure_mode():
 @app.route('/lab')
 def lab():
     init_session()
-    return render_template('lab.html')
+    return render_template('lab.html', base_path=BASE_PATH)
 
 @app.route('/solution')
 def solution():
     init_session()
-    return render_template('solution.html')
+    return render_template('solution.html', base_path=BASE_PATH)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5010, debug=True)

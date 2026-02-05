@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 import sqlite3
 import os
 from pathlib import Path
@@ -57,13 +57,13 @@ def lab():
             conn.close()
             
             if result:
-                return render_template('lab.html', logged_in_user=result[0])
+                return render_template('lab.html', logged_in_user=result[0], base_path=BASE_PATH)
             else:
-                return render_template('lab.html', error='Invalid username or password', sql_query=sql_query)
+                return render_template('lab.html', error='Invalid username or password', sql_query=sql_query, base_path=BASE_PATH)
         except sqlite3.Error as e:
-            return render_template('lab.html', error=str(e), sql_query=sql_query)
+            return render_template('lab.html', error=str(e), sql_query=sql_query, base_path=BASE_PATH)
             
-    return render_template('lab.html')
+    return render_template('lab.html', base_path=BASE_PATH)
 
 if __name__ == '__main__':
     # Initialize database

@@ -48,7 +48,7 @@ def create_tables():
 @app.route('/')
 def index():
     """Description page explaining the insecure design lab"""
-    return render_template('index.html')
+    return render_template('index.html', base_path=BASE_PATH)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -64,7 +64,7 @@ def login():
             return redirect_bp('/lab')
         flash('Invalid credentials')
         
-    return render_template('login.html')
+    return render_template('login.html', base_path=BASE_PATH)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -85,7 +85,7 @@ def register():
         flash('Registration successful!')
         return redirect_bp('/lab')
         
-    return render_template('register.html')
+    return render_template('register.html', base_path=BASE_PATH)
 
 @app.route('/lab', methods=['GET', 'POST'])
 def lab():
@@ -133,7 +133,7 @@ def lab():
             except:
                 error = "Invalid input"
 
-    return render_template('lab.html', tickets=[t.ticket_code for t in user.tickets], error=error)
+    return render_template('lab.html', tickets=[t.ticket_code for t in user.tickets], error=error, base_path=BASE_PATH)
 
 @app.route('/logout')
 def logout():

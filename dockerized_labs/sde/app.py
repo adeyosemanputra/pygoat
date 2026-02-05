@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, redirect
 import os
 
 app = Flask(__name__, static_url_path='/labs/sde/static')
@@ -29,12 +29,12 @@ SENSITIVE_DATA = 'FLAGTHATNEEDSTOBEFOUND'
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index.html', base_path=BASE_PATH)
 
 
 @app.route('/lab')
 def lab():
-    return render_template('lab.html')
+    return render_template('lab.html', base_path=BASE_PATH)
 
 @app.route('/500error')
 def trigger_error():

@@ -35,15 +35,15 @@ def allowed_file(filename):
 @app.route('/')
 def index():
     logger.info("Accessing index page")
-    return render_template('index.html')
+    return render_template('index.html', base_path=BASE_PATH)
 
 @app.route('/lab1')
 def lab1():
-    return render_template('lab1.html')
+    return render_template('lab1.html', base_path=BASE_PATH)
 
 @app.route('/lab2')
 def lab2():
-    return render_template('lab2.html')
+    return render_template('lab2.html', base_path=BASE_PATH)
 
 @app.route('/get_version')
 def get_version():
@@ -57,12 +57,12 @@ def get_version():
 def upload_yaml():
     if 'file' not in request.files:
         flash('No file selected')
-        return redirect(url_for('lab1'))
+        return redirect_bp('/lab1')
     
     file = request.files['file']
     if file.filename == '':
         flash('No file selected')
-        return redirect(url_for('lab1'))
+        return redirect_bp('/lab1')
     
     if file and allowed_file(file.filename):
         try:
@@ -70,27 +70,27 @@ def upload_yaml():
             data = yaml.load(file.stream, Loader=yaml.Loader)
             return render_template('result.html', 
                                 content=data, 
-                                filename=file.filename)
+                                filename=file.filename, base_path=BASE_PATH)
         except Exception as e:
             flash(f'Error processing file: {str(e)}')
             logger.error(f"Error processing YAML file {file.filename}: {str(e)}")
-            return redirect(url_for('lab1'))
+            return redirect_bp('/lab1')
     
     flash('Invalid file type')
-    return redirect(url_for('lab1'))
+    return redirect_bp('/lab1')
 
 @app.route('/process_image', methods=['POST'])
 def process_image():
     if 'image' not in request.files:
         flash('No image file selected')
-        return redirect(url_for('lab2'))
+        return redirect_bp('/lab2')
     
     file = request.files['image']
     expression = request.form.get('expression', '')
     
     if file.filename == '':
         flash('No file selected')
-        return redirect(url_for('lab2'))
+        return redirect_bp('/lab2')
     
     if file and allowed_file(file.filename):
         try:
@@ -116,14 +116,14 @@ def process_image():
                                 image=True,
                                 filename=file.filename,
                                 img_str=img_str,
-                                img_str_ref=img_str_ref)
+                                img_str_ref=img_str_ref, base_path=BASE_PATH)
         except Exception as e:
             flash(f'Error processing image: {str(e)}')
             logger.error(f"Error processing image file {file.filename}: {str(e)}")
-            return redirect(url_for('lab2'))
+            return redirect_bp('/lab2')
     
     flash('Invalid file type')
-    return redirect(url_for('lab2'))
+    return redirect_bp('/lab2')
 
 if __name__ == '__main__':
     # Ensure we're binding to all interfaces

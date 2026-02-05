@@ -11,7 +11,8 @@
         <div class="form-container">
             <form method="post" action="{{ base_path }}/lab3">
                 <div class="section">
-                    <label for="username" class="form-label">Enter your code (alphanumeric characters will be removed):</label>
+                    <label for="username" class="form-label">Enter your code (alphanumeric characters will be
+                        removed):</label>
                     <input type="text" id="username" name="username" required>
                     <button type="submit">Submit</button>
                 </div>
@@ -25,7 +26,7 @@
                 {# Vulnerable: Code is evaluated in script tag #}
                 <script>
                     // LAB 3 JS CODE
-                    {{ code }}
+                    { { code } }
                 </script>
             </div>
             {% endif %}
@@ -36,10 +37,10 @@
         <h4>Lab Instructions</h4>
         <div class="lab">
             <p class="bp">
-                This lab demonstrates DOM-based XSS with a twist: you can't use regular characters. The challenge is to 
+                This lab demonstrates DOM-based XSS with a twist: you can't use regular characters. The challenge is to
                 execute JavaScript using only special characters.
             </p>
-            
+
             <div class="section">
                 <h5>The Challenge:</h5>
                 <ul>
@@ -71,10 +72,11 @@
 +!![]              // becomes 1</code></pre>
             </div>
         </div>
-        
+
         <div style="text-align: right;">
-            <button onclick="window.location.href='{{ base_path }}/lab2'" style="margin-right: 10px;">Previous Lab</button>
-            <button onclick="window.location.href='/'">Back to Home</button>
+            <button onclick="window.location.href='{{ base_path }}/lab2'" style="margin-right: 10px;">Previous
+                Lab</button>
+            <button onclick="window.location.href='{{ base_path }}/'">Back to Home</button>
         </div>
     </div>
 </div>

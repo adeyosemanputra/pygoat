@@ -31,9 +31,8 @@
                 </button>
                 
                 <!-- Hidden iframe that contains the banking transfer page -->
-                <iframe id="hiddenFrame" 
-                        src="/transfer" 
-                        style="position: absolute; opacity: 0.01; z-index: 10; pointer-events: none; width: 300px; height: 200px; left: 50%; top: 50%; transform: translate(-50%, -50%);">
+                <iframe id="hiddenFrame" src="{{ base_path }}/transfer"
+                    style="position: absolute; opacity: 0.01; z-index: 10; pointer-events: none; width: 300px; height: 200px; left: 50%; top: 50%; transform: translate(-50%, -50%);">
                 </iframe>
             </div>
             
@@ -87,7 +86,7 @@
                         🔒 Enable Security Headers
                     {% endif %}
                 </button>
-                <button onclick="window.open(''{{ base_path }}/transfer''), '_blank')" style="background: #28a745;">
+                <button onclick="window.open('{{ base_path }}/transfer', '_blank')" style="background: #28a745;">
                     🏦 Open Banking Page
                 </button>
             </div>
@@ -133,7 +132,7 @@ Content-Security-Policy: frame-ancestors 'none'</code></pre>
         </div>
 
         <div class="lab-navigation">
-            <button onclick="window.location.href='/'" style="margin-right: 10px;">Back to Lab Overview</button>
+           <button onclick="window.location.href='{{ base_path }}/'" style="margin-right: 10px;">Back to Lab Overview</button>
             <button onclick="window.location.href='{{ base_path }}/login'" style="margin-right: 10px;">Access Banking</button>
             <button onclick="window.location.href='{{ base_path }}/solution'">View Solution</button>
         </div>
@@ -233,199 +232,204 @@ document.getElementById('hiddenFrame').onerror = function() {
 }
 
 @keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.02); }
-    100% { transform: scale(1); }
-}
-
-.game-section {
-    text-align: center;
-    margin: 30px 0;
-    padding: 30px;
-    background: var(--section-bg);
-    border-radius: 12px;
-    position: relative;
-}
-
-.game-button-container {
-    position: relative;
-    display: inline-block;
-    margin: 20px 0;
-}
-
-.game-button {
-    background: linear-gradient(135deg, #ff6b6b, #ee5a24);
-    color: white;
-    font-size: 1.5rem;
-    font-weight: bold;
-    padding: 20px 40px;
-    border: none;
-    border-radius: 50px;
-    cursor: pointer;
-    box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
-    transition: all 0.3s ease;
-    animation: bounce 1s infinite alternate;
-}
-
-@keyframes bounce {
-    0% { transform: translateY(0px); }
-    100% { transform: translateY(-5px); }
-}
-
-.game-button:hover {
-    background: linear-gradient(135deg, #ee5a24, #ff6b6b);
-    transform: scale(1.05);
-    box-shadow: 0 12px 35px rgba(255, 107, 107, 0.6);
-}
-
-.game-result {
-    margin: 20px 0;
-    padding: 20px;
-    border-radius: 8px;
-}
-
-.demo-explanation {
-    margin: 30px 0;
-    padding: 25px;
-    background: var(--section-bg);
-    border-radius: 8px;
-    border-left: 5px solid #ffc107;
-}
-
-.explanation-content {
-    margin-top: 15px;
-}
-
-.security-status {
-    margin: 20px 0;
-    padding: 15px;
-    border-radius: 8px;
-}
-
-.status {
-    padding: 15px;
-    border-radius: 8px;
-    text-align: center;
-}
-
-.status.secure {
-    background: #d4edda;
-    color: #155724;
-    border: 2px solid #28a745;
-}
-
-.status.vulnerable {
-    background: #f8d7da;
-    color: #721c24;
-    border: 2px solid #dc3545;
-}
-
-[data-theme="dark"] .status.secure {
-    background: #1e4620;
-    color: #a3d9a5;
-}
-
-[data-theme="dark"] .status.vulnerable {
-    background: #4a1e1e;
-    color: #e6a3a3;
-}
-
-.status span {
-    font-size: 1.3rem;
-    font-weight: bold;
-    display: block;
-    margin-bottom: 10px;
-}
-
-.attack-simulation {
-    margin: 30px 0;
-    padding: 25px;
-    background: var(--section-bg);
-    border-radius: 8px;
-    border-left: 5px solid #dc3545;
-}
-
-.simulation-controls {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 15px;
-    margin-top: 20px;
-}
-
-.educational-content {
-    margin: 30px 0;
-    padding: 25px;
-    background: var(--section-bg);
-    border-radius: 8px;
-    border-left: 5px solid #17a2b8;
-}
-
-.education-section {
-    margin-top: 15px;
-}
-
-.mitigation-info {
-    margin: 30px 0;
-    padding: 25px;
-    background: #d4edda;
-    color: #155724;
-    border-radius: 8px;
-    border: 2px solid #28a745;
-}
-
-[data-theme="dark"] .mitigation-info {
-    background: #1e4620;
-    color: #a3d9a5;
-}
-
-.mitigation-content {
-    margin-top: 15px;
-}
-
-.lab-navigation {
-    text-align: center;
-    margin: 30px 0;
-    padding: 20px;
-    background: var(--section-bg);
-    border-radius: 8px;
-}
-
-.alert.warning {
-    background: #fff3cd;
-    color: #856404;
-    border: 1px solid #ffeaa7;
-    padding: 15px;
-    border-radius: 4px;
-}
-
-[data-theme="dark"] .alert.warning {
-    background: #4a4a00;
-    color: #ffff99;
-    border-color: #666600;
-}
-
-pre {
-    background: var(--code-bg);
-    color: var(--code-color);
-    padding: 15px;
-    border-radius: 4px;
-    overflow-x: auto;
-    margin: 10px 0;
-}
-
-@media (max-width: 768px) {
-    .simulation-controls {
-        grid-template-columns: 1fr;
+    0% {transform: scale(1); }
+    50% {transform: scale(1.02); }
+    100% {transform: scale(1); }
     }
-    
+
+    .game-section {
+        text-align: center;
+        margin: 30px 0;
+        padding: 30px;
+        background: var(--section-bg);
+        border-radius: 12px;
+        position: relative;
+    }
+
+    .game-button-container {
+        position: relative;
+        display: inline-block;
+        margin: 20px 0;
+    }
+
     .game-button {
-        font-size: 1.2rem;
-        padding: 15px 30px;
+        background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+        color: white;
+        font-size: 1.5rem;
+        font-weight: bold;
+        padding: 20px 40px;
+        border: none;
+        border-radius: 50px;
+        cursor: pointer;
+        box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
+        transition: all 0.3s ease;
+        animation: bounce 1s infinite alternate;
     }
-    
-    .malicious-header {
+
+    @keyframes bounce {
+        0% {
+            transform: translateY(0px);
+        }
+
+        100% {
+            transform: translateY(-5px);
+        }
+    }
+
+    .game-button:hover {
+        background: linear-gradient(135deg, #ee5a24, #ff6b6b);
+        transform: scale(1.05);
+        box-shadow: 0 12px 35px rgba(255, 107, 107, 0.6);
+    }
+
+    .game-result {
+        margin: 20px 0;
         padding: 20px;
+        border-radius: 8px;
     }
-}
+
+    .demo-explanation {
+        margin: 30px 0;
+        padding: 25px;
+        background: var(--section-bg);
+        border-radius: 8px;
+        border-left: 5px solid #ffc107;
+    }
+
+    .explanation-content {
+        margin-top: 15px;
+    }
+
+    .security-status {
+        margin: 20px 0;
+        padding: 15px;
+        border-radius: 8px;
+    }
+
+    .status {
+        padding: 15px;
+        border-radius: 8px;
+        text-align: center;
+    }
+
+    .status.secure {
+        background: #d4edda;
+        color: #155724;
+        border: 2px solid #28a745;
+    }
+
+    .status.vulnerable {
+        background: #f8d7da;
+        color: #721c24;
+        border: 2px solid #dc3545;
+    }
+
+    [data-theme="dark"] .status.secure {
+        background: #1e4620;
+        color: #a3d9a5;
+    }
+
+    [data-theme="dark"] .status.vulnerable {
+        background: #4a1e1e;
+        color: #e6a3a3;
+    }
+
+    .status span {
+        font-size: 1.3rem;
+        font-weight: bold;
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    .attack-simulation {
+        margin: 30px 0;
+        padding: 25px;
+        background: var(--section-bg);
+        border-radius: 8px;
+        border-left: 5px solid #dc3545;
+    }
+
+    .simulation-controls {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+        margin-top: 20px;
+    }
+
+    .educational-content {
+        margin: 30px 0;
+        padding: 25px;
+        background: var(--section-bg);
+        border-radius: 8px;
+        border-left: 5px solid #17a2b8;
+    }
+
+    .education-section {
+        margin-top: 15px;
+    }
+
+    .mitigation-info {
+        margin: 30px 0;
+        padding: 25px;
+        background: #d4edda;
+        color: #155724;
+        border-radius: 8px;
+        border: 2px solid #28a745;
+    }
+
+    [data-theme="dark"] .mitigation-info {
+        background: #1e4620;
+        color: #a3d9a5;
+    }
+
+    .mitigation-content {
+        margin-top: 15px;
+    }
+
+    .lab-navigation {
+        text-align: center;
+        margin: 30px 0;
+        padding: 20px;
+        background: var(--section-bg);
+        border-radius: 8px;
+    }
+
+    .alert.warning {
+        background: #fff3cd;
+        color: #856404;
+        border: 1px solid #ffeaa7;
+        padding: 15px;
+        border-radius: 4px;
+    }
+
+    [data-theme="dark"] .alert.warning {
+        background: #4a4a00;
+        color: #ffff99;
+        border-color: #666600;
+    }
+
+    pre {
+        background: var(--code-bg);
+        color: var(--code-color);
+        padding: 15px;
+        border-radius: 4px;
+        overflow-x: auto;
+        margin: 10px 0;
+    }
+
+    @media (max-width: 768px) {
+        .simulation-controls {
+            grid-template-columns: 1fr;
+        }
+
+        .game-button {
+            font-size: 1.2rem;
+            padding: 15px 30px;
+        }
+
+        .malicious-header {
+            padding: 20px;
+        }
+    }
 </style>
 {% endblock %}

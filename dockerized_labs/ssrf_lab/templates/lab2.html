@@ -21,18 +21,20 @@
             </div>
         </form>
     </div>
-    
+
     {% if response %}
-        <div style="width:70%;overflow:scroll;background-color:#000">{{response | safe}}</div>
+    <div style="width:70%;overflow:scroll;background-color:#000">{{response | safe}}</div>
     {% endif %}
 </div>
 
-<button class="coll2 btn btn-info" style="position: fixed; right:330px; bottom: 7px" onclick="toggleHint()">Hint</button>
+<button class="coll2 btn btn-info" style="position: fixed; right:330px; bottom: 7px"
+    onclick="toggleHint()">Hint</button>
 <div id="hint" class="lab code" style="display: none;">
     Try to access the /internal endpoint from localhost
 </div>
 
-<button class="coll2 btn btn-info" style="position: fixed; right:200px; bottom: 7px" onclick="toggleSourceCode()">View Code</button>
+<button class="coll2 btn btn-info" style="position: fixed; right:200px; bottom: 7px" onclick="toggleSourceCode()">View
+    Code</button>
 
 <div id="sourceCode" class="lab code" style="display: none;">
     <pre>
@@ -58,18 +60,19 @@ def internal():
 </div>
 
 <div style="position: fixed; right: 7px; bottom: 7px">
-    <button class="btn btn-info" type="button" onclick="window.location.href='/'">Back to Lab Details</button>
+    <button class="btn btn-info" type="button" onclick="window.location.href='{{ base_path }}/'">Back to Lab
+        Details</button>
 </div>
 
 <script>
-function toggleSourceCode() {
-    const element = document.getElementById('sourceCode');
-    element.style.display = element.style.display === 'none' ? 'block' : 'none';
-}
+    function toggleSourceCode() {
+        const element = document.getElementById('sourceCode');
+        element.style.display = element.style.display === 'none' ? 'block' : 'none';
+    }
 
-function toggleHint() {
-    const element = document.getElementById('hint');
-    element.style.display = element.style.display === 'none' ? 'block' : 'none';
-}
+    function toggleHint() {
+        const element = document.getElementById('hint');
+        element.style.display = element.style.display === 'none' ? 'block' : 'none';
+    }
 </script>
 {% endblock %}

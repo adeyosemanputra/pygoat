@@ -26,7 +26,7 @@
         <ul class="blog-list">
             {% for post in posts %}
             <li>
-                <a href="{{ url_for('view_blog', filename=post.filename) }}">{{ post.title }}</a>
+                <a href="{{ base_path }}/blog/{{ post.filename }}">{{ post.title }}</a>
             </li>
             {% else %}
             <li>No posts yet.</li>
@@ -35,7 +35,7 @@
     </div>
 
     <div class="button-container">
-        <button onclick="window.location.href='/'">Back to Lab Details</button>
+        <button onclick="window.location.href='{{ base_path }}/'">Back to Lab Details</button>
     </div>
 </div>
 

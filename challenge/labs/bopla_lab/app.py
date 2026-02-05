@@ -65,11 +65,11 @@ current_user = None
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index.html', base_path=BASE_PATH)
 
 @app.route('/lab')
 def lab():
-    return render_template('lab.html')
+    return render_template('lab.html', base_path=BASE_PATH)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -82,9 +82,9 @@ def login():
             current_user = {"username": username, "role": users[username]['role']}
             return redirect_bp('/dashboard')
         else:
-            return render_template('login.html', error="Invalid credentials")
+            return render_template('login.html', error="Invalid credentials", base_path=BASE_PATH)
     
-    return render_template('login.html')
+    return render_template('login.html', base_path=BASE_PATH)
 
 @app.route('/dashboard')
 def dashboard():
@@ -99,7 +99,7 @@ def dashboard():
             "description": project["description"]
         })
     
-    return render_template('dashboard.html', projects=project_list, user=current_user)
+    return render_template('dashboard.html', projects=project_list, user=current_user, base_path=BASE_PATH)
 
 @app.route('/api/project/<int:project_id>/details')
 def get_project_details(project_id):
@@ -144,7 +144,7 @@ def logout():
 
 @app.route('/solution')
 def solution():
-    return render_template('solution.html')
+    return render_template('solution.html', base_path=BASE_PATH)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080, debug=True)

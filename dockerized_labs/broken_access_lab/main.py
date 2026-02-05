@@ -30,16 +30,16 @@ users = {
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index.html', base_path=BASE_PATH)
 
 @app.route('/lab')
 def lab():
-    return render_template('lab.html')
+    return render_template('lab.html', base_path=BASE_PATH)
 
 @app.route('/lab/login', methods=['GET', 'POST'])
 def lab_login():
     if request.cookies.get('admin') == '1':
-        return render_template('result.html', username='admin', message="Welcome Admin! Secret key: ADMIN_KEY_123")
+        return render_template('result.html', username='admin', message="Welcome Admin! Secret key: ADMIN_KEY_123", base_path=BASE_PATH)
 
     if request.method == 'POST':
         username = request.form.get('username')
@@ -49,13 +49,14 @@ def lab_login():
         user = users[username]
         response = make_response(render_template('result.html', 
             username=username,
-            message="Welcome back!" if not user.is_admin else "Welcome Admin! Secret key: ADMIN_KEY_123"))
+            message="Welcome back!" if not user.is_admin else "Welcome Admin! Secret key: ADMIN_KEY_123",
+            base_path=BASE_PATH))
         
         # Set admin cookie - intentionally vulnerable
         response.set_cookie('admin', '0' if not user.is_admin else '1', max_age=200)
         return response
     
-    return render_template('result.html', message="Invalid credentials")
+    return render_template('result.html', message="Invalid credentials", base_path=BASE_PATH)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080, debug=True) 

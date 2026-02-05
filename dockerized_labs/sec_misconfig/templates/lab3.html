@@ -11,7 +11,7 @@
         This lab demonstrates how misconfigured JWT tokens can be manipulated.
         Try to modify the token to gain admin access.
     </p>
-    
+
     <div class="section">
         <div class="form-group">
             <label for="username">Username:</label>
@@ -27,7 +27,7 @@
     <div class="section">
         <div class="form-group">
             <label for="token">JWT Token:</label>
-            <textarea id="token" class="form-control" rows="3" ></textarea>
+            <textarea id="token" class="form-control" rows="3"></textarea>
         </div>
         <button class="btn btn-info" onclick="verifyToken()">Verify Token</button>
     </div>
@@ -35,11 +35,11 @@
     <div id="result" class="section"></div>
 </div>
 
-<button class="coll2 btn btn-info"  onclick="toggleSourceCode()">View Code</button>
-<div id="sourceCode" class="lab code" style="display: none;"> 
+<button class="coll2 btn btn-info" onclick="toggleSourceCode()">View Code</button>
+<div id="sourceCode" class="lab code" style="display: none;">
     <!-- <div class="box"> -->
-        <h4>Server Code</h4>
-        <pre class="code">
+    <h4>Server Code</h4>
+    <pre class="code">
     @app.route('/lab3/get-token', methods=['POST'])
     def get_token():
         data = request.get_json()
@@ -84,51 +84,52 @@
 </div>
 
 <script>
-function getToken() {
-    const username = document.getElementById('username').value;
-    const role = document.getElementById('role').value;
-    
-    fetch('/lab3/get-token', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({username, role})
-    })
-    .then(response => response.json())
-    .then(data => {
-        document.getElementById('token').value = data.token;
-    });
-}
+    function getToken() {
+        const username = document.getElementById('username').value;
+        const role = document.getElementById('role').value;
 
-function verifyToken() {
-    const token = document.getElementById('token').value;
-    
-    fetch('/lab3/verify-token', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({token})
-    })
-    .then(response => response.json())
-    .then(data => {
-        document.getElementById('result').innerHTML = `
+        fetch('{{ base_path }}/lab3/get-token', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ username, role })
+        })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('token').value = data.token;
+            });
+    }
+
+    function verifyToken() {
+        const token = document.getElementById('token').value;
+
+        fetch('{{ base_path }}/lab3/verify-token', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ token })
+        })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('result').innerHTML = `
             <div class="alert ${data.error ? 'alert-danger' : 'alert-success'}">
                 ${data.error || data.message}
                 ${data.payload ? '<pre>' + JSON.stringify(data.payload, null, 2) + '</pre>' : ''}
             </div>
         `;
-    });
-}
+            });
+    }
 
-function toggleSourceCode() {
+    function toggleSourceCode() {
         const element = document.getElementById('sourceCode');
         element.style.display = element.style.display === 'none' ? 'block' : 'none';
     }
 </script>
 
 <div class="button-container">
-    <button class="btn btn-info" type="button" onclick="window.location.href='/'">Back to Lab Details</button>
+    <button class="btn btn-info" type="button" onclick="window.location.href='{{ base_path }}/'">Back to Lab
+        Details</button>
 </div>
 {% endblock %}

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 import subprocess
 import os
 
@@ -19,7 +19,7 @@ app.config['SECRET_KEY'] = 'your-secret-key-here'
 @app.route('/')
 def index():
     """Main page with command injection lab description"""
-    return render_template('index.html')
+    return render_template('index.html', base_path=BASE_PATH)
 
 @app.route('/lab1', methods=['GET', 'POST'])
 def lab1():
@@ -46,9 +46,9 @@ def lab1():
         except Exception as e:
             output = str(e)
             
-        return render_template('lab1.html', output=output)
+        return render_template('lab1.html', output=output, base_path=BASE_PATH)
     
-    return render_template('lab1.html')
+    return render_template('lab1.html', base_path=BASE_PATH)
 
 @app.route('/lab2', methods=['GET', 'POST'])
 def lab2():
@@ -58,11 +58,11 @@ def lab2():
             # Intentionally vulnerable eval
             expression = request.form.get('val', '')
             output = eval(expression)
-            return render_template('lab2.html', output=str(output))
+            return render_template('lab2.html', output=str(output), base_path=BASE_PATH)
         except Exception as e:
-            return render_template('lab2.html', output=str(e))
+            return render_template('lab2.html', output=str(e), base_path=BASE_PATH)
     
-    return render_template('lab2.html')
+    return render_template('lab2.html', base_path=BASE_PATH)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5013, debug=True)

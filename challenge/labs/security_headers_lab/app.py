@@ -63,7 +63,7 @@ def after_request(response):
 @app.route('/')
 def index():
     init_session()
-    return render_template('index.html')
+    return render_template('index.html', base_path=BASE_PATH)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -78,9 +78,9 @@ def login():
             session.modified = True
             return redirect_bp('/dashboard')
         else:
-            return render_template('login.html', error='Invalid username or password')
+            return render_template('login.html', error='Invalid username or password', base_path=BASE_PATH)
     
-    return render_template('login.html')
+    return render_template('login.html', base_path=BASE_PATH)
 
 @app.route('/logout')
 def logout():
@@ -97,7 +97,7 @@ def dashboard():
     user_data = USERS[session['user']]
     user_transactions = [t for t in TRANSACTIONS if t.get('from_user') == session['user']][-5:]
     
-    return render_template('dashboard.html', user=user_data, transactions=user_transactions)
+    return render_template('dashboard.html', user=user_data, transactions=user_transactions, base_path=BASE_PATH)
 
 @app.route('/transfer', methods=['GET', 'POST'])
 def transfer():
@@ -118,9 +118,8 @@ def transfer():
             
             user_data = USERS[session['user']]
             if amount > user_data['balance']:
-                return render_template('transfer.html', 
                                      error='Insufficient balance',
-                                     user=user_data)
+                                     user=user_data, base_path=BASE_PATH)
             
             user_data['balance'] -= amount
             
@@ -136,32 +135,29 @@ def transfer():
             }
             TRANSACTIONS.append(transaction)
             
-            return render_template('transfer.html', 
-                                 success=f'Successfully transferred ₹{amount:.2f} to {recipient}',
                                  user=user_data,
-                                 transaction=transaction)
+                                 transaction=transaction, base_path=BASE_PATH)
             
         except ValueError as e:
-            return render_template('transfer.html', 
                                  error=f'Invalid amount: {str(e)}',
-                                 user=USERS[session['user']])
+                                 user=USERS[session['user']], base_path=BASE_PATH)
     
-    return render_template('transfer.html', user=USERS[session['user']])
+    return render_template('transfer.html', user=USERS[session['user']], base_path=BASE_PATH)
 
 @app.route('/malicious')
 def malicious():
     init_session()
-    return render_template('malicious.html')
+    return render_template('malicious.html', base_path=BASE_PATH)
 
 @app.route('/lab')
 def lab():
     init_session()
-    return render_template('lab.html')
+    return render_template('lab.html', base_path=BASE_PATH)
 
 @app.route('/solution')
 def solution():
     init_session()
-    return render_template('solution.html')
+    return render_template('solution.html', base_path=BASE_PATH)
 
 @app.route('/toggle_secure_mode')
 def toggle_secure_mode():
@@ -201,7 +197,7 @@ def check_headers():
 @app.route('/demo_iframe')
 def demo_iframe():
     init_session()
-    return render_template('demo_iframe.html')
+    return render_template('demo_iframe.html', base_path=BASE_PATH)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5011, debug=True)

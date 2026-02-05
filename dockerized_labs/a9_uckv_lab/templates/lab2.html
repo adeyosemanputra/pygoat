@@ -5,14 +5,14 @@
 {% block content %}
 <div class="container">
     <h1>Lab 2: Image Processing Vulnerability</h1>
-    
+
     <div class="box">
         <h2>Description</h2>
         <p>This lab demonstrates vulnerabilities in outdated image processing libraries.
-           The application uses Pillow 8.0.0 which contains known security vulnerabilities.</p><br></br>
+            The application uses Pillow 8.0.0 which contains known security vulnerabilities.</p><br></br>
         <code>img --> actual image file | r --> red chennel | g --> green chennel</code>
         <code>b --> blue chennel | g --> green chennel</code>
-        
+
         <div class="lab-section">
             <h3>Current Versions</h3>
             <button onclick="getVersionInfo()" class="btn">Check Library Versions</button>
@@ -21,7 +21,7 @@
 
         <div class="lab-section">
             <h3>Image Processing</h3>
-            <form action="{{ url_for('process_image') }}" method="post" enctype="multipart/form-data">
+            <form action="{{ base_path }}/process_image" method="post" enctype="multipart/form-data">
                 <div>
                     <label for="image">Select Image:</label>
                     <input type="file" id="image" name="image" accept=".jpg,.png">
@@ -42,7 +42,7 @@
             </form>
         </div>
 
-        
+
 
         <div class="lab-section">
             <h3>Vulnerability Details</h3>
@@ -51,28 +51,29 @@
                     <li>The app uses Pillow 8.0.0 which has known vulnerabilities</li>
                     <li>Vulnerable to command injection through image processing expressions</li>
                     <li>Example vulnerable expression:<br>
-                        <code>image.size[0] if True else exec('import os; os.system("ls")')</code></li>
+                        <code>image.size[0] if True else exec('import os; os.system("ls")')</code>
+                    </li>
                 </ul>
             </div>
         </div>
 
-        
+
     </div>
 </div>
 
 <script>
-function getVersionInfo() {
-    fetch('/get_version')
-        .then(response => response.json())
-        .then(data => {
-            const versionDiv = document.getElementById('versionInfo');
-            versionDiv.innerHTML = `
+    function getVersionInfo() {
+        fetch('/get_version')
+            .then(response => response.json())
+            .then(data => {
+                const versionDiv = document.getElementById('versionInfo');
+                versionDiv.innerHTML = `
                 <div class="alert alert-info">
                     <strong>PyYAML Version:</strong> ${data.pyyaml}<br>
                     <strong>Pillow Version:</strong> ${data.pillow}
                 </div>
             `;
-        });
-}
+            });
+    }
 </script>
 {% endblock %}

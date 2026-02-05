@@ -36,8 +36,9 @@
     <div class="box">
         <h4>Lab Instructions</h4>
         <div class="lab">
-            <p class="bp">This lab demonstrates a reflected XSS vulnerability. The page reflects back user input without proper escaping. Try the following:</p>
-            
+            <p class="bp">This lab demonstrates a reflected XSS vulnerability. The page reflects back user input without
+                proper escaping. Try the following:</p>
+
             <div class="section">
                 <h5>Steps to Try:</h5>
                 <ol>
@@ -51,16 +52,17 @@
             <div class="section">
                 <h5>Vulnerability Details</h5>
                 <p class="bp">
-                    The vulnerability exists because user input is being reflected back with the <code>safe</code> filter in the template:
-                    <pre><code>&lt;h3&gt;The company '{{query|safe}}' You searched for is not Part of FAANG&lt;/h3&gt;</code></pre>
-                    This means any HTML or JavaScript in the input will be executed by the browser instead of being escaped.
+                    The vulnerability exists because user input is being reflected back with the <code>safe</code>
+                    filter in the template:
+                <pre><code>&lt;h3&gt;The company '{{query|safe}}' You searched for is not Part of FAANG&lt;/h3&gt;</code></pre>
+                This means any HTML or JavaScript in the input will be executed by the browser instead of being escaped.
                 </p>
             </div>
         </div>
-        
+
         <div style="text-align: right;">
             <button onclick="window.location.href='{{ base_path }}/lab2'" style="margin-right: 10px;">Next Lab</button>
-            <button onclick="window.location.href='/'">Back to Home</button>
+            <button onclick="window.location.href='{{ base_path }}/'">Back to Home</button>
         </div>
     </div>
 </div>

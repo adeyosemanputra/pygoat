@@ -24,14 +24,15 @@
 </div>
 
 <div class="button-container">
-    <button class="btn btn-info" type="button" onclick="window.location.href='/'">Back to Lab Details</button>
+    <button class="btn btn-info" type="button" onclick="window.location.href='{{ base_path }}/'">Back to Lab
+        Details</button>
 </div>
 
 <script>
     function getSecret() {
         const msgElement = document.getElementById('msg');
 
-        fetch('/lab1/get-secret')
+        fetch('{{ base_path }}/lab1/get-secret')
             .then(response => response.json())
             .then(data => {
                 msgElement.style.display = 'block';

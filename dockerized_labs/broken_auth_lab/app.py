@@ -38,11 +38,11 @@ password_reset_tokens = {}
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index.html', base_path=BASE_PATH)
 
 @app.route('/lab')
 def lab():
-    return render_template('lab.html')
+    return render_template('lab.html', base_path=BASE_PATH)
 
 @app.route('/login', methods=['POST'])
 def login():
@@ -100,7 +100,7 @@ def reset_password():
             
             # In a real application, this would send an email
             # Vulnerable: Token exposed in response
-            flash(f'Password reset link: /reset/{token}')
+            flash(f'Password reset link: {BASE_PATH}/reset/{token}')
             return redirect_bp('/lab')
     
     flash('Email not found')
@@ -109,7 +109,7 @@ def reset_password():
 @app.route('/reset/<token>')
 def reset_form(token):
     if token in password_reset_tokens:
-        return render_template('reset.html', token=token)
+        return render_template('reset.html', token=token, base_path=BASE_PATH)
     return 'Invalid token'
 
 @app.route('/dashboard')
@@ -125,7 +125,8 @@ def dashboard():
             return render_template('dashboard.html', 
                                 username=username, 
                                 role=users[username]['role'],
-                                email=users[username]['email'])
+                                email=users[username]['email'],
+                                base_path=BASE_PATH)
     except:
         pass
 

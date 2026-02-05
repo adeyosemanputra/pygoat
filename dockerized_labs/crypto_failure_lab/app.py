@@ -37,7 +37,7 @@ def custom_hash(password):
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index.html', base_path=BASE_PATH)
 
 @app.route('/lab1', methods=['GET', 'POST'])
 def lab1():
@@ -46,10 +46,10 @@ def lab1():
         password = request.form.get('password')
         password_hash = hashlib.md5(password.encode()).hexdigest()
         if username in LAB1_USERS and LAB1_USERS[username] == password_hash:
-            return render_template('lab1.html', user=username, success=True)
+            return render_template('lab1.html', user=username, success=True, base_path=BASE_PATH)
         else:
-            return render_template('lab1.html', success=False, failure=True)
-    return render_template('lab1.html')
+            return render_template('lab1.html', success=False, failure=True, base_path=BASE_PATH)
+    return render_template('lab1.html', base_path=BASE_PATH)
 
 @app.route('/lab2', methods=['GET', 'POST'])
 def lab2():
@@ -58,10 +58,10 @@ def lab2():
         password = request.form.get('password')
         password_hash = custom_hash(password)
         if username in LAB2_USERS and LAB2_USERS[username] == password_hash:
-            return render_template('lab2.html', user=username, success=True)
+            return render_template('lab2.html', user=username, success=True, base_path=BASE_PATH)
         else:
-            return render_template('lab2.html', success=False, failure=True)
-    return render_template('lab2.html')
+            return render_template('lab2.html', success=False, failure=True, base_path=BASE_PATH)
+    return render_template('lab2.html', base_path=BASE_PATH)
 
 @app.route('/lab3', methods=['GET', 'POST'])
 def lab3():
@@ -76,13 +76,13 @@ def lab3():
                 if now > expire:
                     return render_template('lab3.html', success=False, failure=False)
                 elif username == 'admin':
-                    return render_template('lab3.html', success=True, failure=False, admin=True)
+                    return render_template('lab3.html', success=True, failure=False, admin=True, base_path=BASE_PATH)
                 else:
-                    return render_template('lab3.html', success=True, failure=False, admin=False)
+                    return render_template('lab3.html', success=True, failure=False, admin=False, base_path=BASE_PATH)
         except Exception as e:
             print(e)
             pass
-        return render_template('lab3.html')
+        return render_template('lab3.html', base_path=BASE_PATH)
     
     elif request.method == 'POST':
         username = request.form.get('username')
@@ -92,11 +92,11 @@ def lab3():
             expire = datetime.datetime.now() + datetime.timedelta(minutes=60)
             cookie_data = f"{username}|{expire}"
             encoded_cookie = base64.b64encode(cookie_data.encode()).decode()
-            response = make_response(render_template('lab3.html', success=True, failure=False, admin=False, logged_in=True))
+            response = make_response(render_template('lab3.html', success=True, failure=False, admin=False, logged_in=True, base_path=BASE_PATH))
             response.set_cookie('cookie', encoded_cookie)
             return response
         else:
-            response = make_response(render_template('lab3.html', success=False, failure=True))
+            response = make_response(render_template('lab3.html', success=False, failure=True, base_path=BASE_PATH))
             response.delete_cookie('cookie')
             return response
 

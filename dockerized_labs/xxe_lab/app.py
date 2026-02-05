@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 from xml.dom.pulldom import START_ELEMENT, parseString
 from xml.sax import make_parser
@@ -39,20 +39,20 @@ def create_tables():
 @app.route('/')
 def index():
     """Description page explaining the XXE lab"""
-    return render_template('index.html')
+    return render_template('index.html', base_path=BASE_PATH)
 
 @app.route('/lab')
 def xxe_lab():
     """Main XXE lab page"""
-    return render_template('xxe_lab.html')
+    return render_template('xxe_lab.html', base_path=BASE_PATH)
 
 @app.route('/see')
 def xxe_see():
     """View stored comments"""
     comment = Comment.query.first()
     if comment:
-        return render_template('xxe_lab.html', com=comment.comment)
-    return render_template('xxe_lab.html')
+        return render_template('xxe_lab.html', com=comment.comment, base_path=BASE_PATH)
+    return render_template('xxe_lab.html', base_path=BASE_PATH)
 
 @app.route('/parse', methods=['POST'])
 def xxe_parse():
@@ -86,12 +86,12 @@ def xxe_parse():
                     db.session.commit()
                     break
                     
-            return render_template('xxe_lab.html')
+            return render_template('xxe_lab.html', base_path=BASE_PATH)
         except Exception as e:
             print(f"Error parsing XML: {str(e)}")
-            return render_template('xxe_lab.html', error="Error processing XML data")
+            return render_template('xxe_lab.html', error="Error processing XML data", base_path=BASE_PATH)
 
-    return render_template('xxe_lab.html')
+    return render_template('xxe_lab.html', base_path=BASE_PATH)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5010, debug=True)

@@ -11,14 +11,14 @@
         {% if username %}
         <h2>Logged in as: <code>{{ username }}</code></h2>
         {% endif %}
-        
+
         {% if message %}
         <pre>{{ message }}</pre>
         {% endif %}
-        
+
         <div align="right">
-            <button type="button" onclick="window.location.href='/'">Back</button>
+            <button type="button" onclick="window.location.href='{{ base_path }}/'">Back</button>
         </div>
     </div>
 </div>
-{% endblock %} 
+{% endblock %}

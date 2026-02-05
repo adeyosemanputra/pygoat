@@ -12,6 +12,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+FORCE_SCRIPT_NAME = '/labs/sensitive-data-exposure'
+
 # Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',

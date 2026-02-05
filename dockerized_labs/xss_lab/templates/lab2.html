@@ -31,14 +31,15 @@
         <h4>Lab Instructions</h4>
         <div class="lab">
             <p class="bp">
-                This lab demonstrates a stored XSS vulnerability with a simple filter that attempts to prevent XSS by removing
+                This lab demonstrates a stored XSS vulnerability with a simple filter that attempts to prevent XSS by
+                removing
                 script tags. However, the filter can be bypassed.
             </p>
-            
+
             <div class="section">
                 <h5>Your Challenge:</h5>
                 <p class="bp">Set the <code>flag</code> cookie value to "success" by bypassing the XSS filter.</p>
-                
+
                 <h5>What's Happening:</h5>
                 <ol>
                     <li>The server removes <code>&lt;script&gt;</code> and <code>&lt;/script&gt;</code> tags</li>
@@ -56,11 +57,12 @@
                 </ul>
             </div>
         </div>
-        
+
         <div style="text-align: right;">
-            <button onclick="window.location.href='{{ base_path }}/lab1'" style="margin-right: 10px;">Previous Lab</button>
+            <button onclick="window.location.href='{{ base_path }}/lab1'" style="margin-right: 10px;">Previous
+                Lab</button>
             <button onclick="window.location.href='{{ base_path }}/lab3'" style="margin-right: 10px;">Next Lab</button>
-            <button onclick="window.location.href='/'">Back to Home</button>
+            <button onclick="window.location.href='{{ base_path }}/'">Back to Home</button>
         </div>
     </div>
 </div>

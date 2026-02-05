@@ -40,11 +40,11 @@ def log_to_file(message):
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index.html', base_path=BASE_PATH)
 
 @app.route('/lab1')
 def lab1():
-    return render_template('lab1.html')
+    return render_template('lab1.html', base_path=BASE_PATH)
 
 @app.route('/lab1/login', methods=['POST'])
 def lab1_login():
@@ -54,15 +54,15 @@ def lab1_login():
     # Vulnerable implementation - insufficient logging
     if username in users and users[username]['password'] == password:
         # Success case - no logging at all
-        return redirect(url_for('lab2'))
+        return redirect_bp('/lab2')
     else:
         # Failed case - minimal logging
         log_to_file(f"Login failed for username: {username}")
-        return render_template('lab1.html', error="Invalid credentials")
+        return render_template('lab1.html', error="Invalid credentials", base_path=BASE_PATH)
 
 @app.route('/lab2')
 def lab2():
-    return render_template('lab2.html')
+    return render_template('lab2.html', base_path=BASE_PATH)
 
 @app.route('/lab2/change_password', methods=['POST'])
 def change_password():
@@ -72,8 +72,8 @@ def change_password():
     if username in users:
         # Vulnerable - no logging of password changes
         users[username]['password'] = new_password
-        return render_template('lab2.html', message=f"Password changed for {username}")
-    return render_template('lab2.html', message="User not found")
+        return render_template('lab2.html', message=f"Password changed for {username}", base_path=BASE_PATH)
+    return render_template('lab2.html', message="User not found", base_path=BASE_PATH)
 
 @app.route('/lab2/change_role', methods=['POST'])
 def change_role():
@@ -84,8 +84,8 @@ def change_role():
         # Vulnerable - no logging of role changes
         old_role = users[username]['role']
         users[username]['role'] = new_role
-        return render_template('lab2.html', message=f"Role changed for {username} from {old_role} to {new_role}")
-    return render_template('lab2.html', message="User not found")
+        return render_template('lab2.html', message=f"Role changed for {username} from {old_role} to {new_role}", base_path=BASE_PATH)
+    return render_template('lab2.html', message="User not found", base_path=BASE_PATH)
 
 @app.route('/toggle-theme')
 def toggle_theme():

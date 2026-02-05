@@ -5,34 +5,34 @@
 <h3>Admin Authentication</h3>
 <div class="box login-box">
     {% if success %}
-        <div class="success">
-            <h4>Login Successful</h4>
-            <p>Logged in as: <code>{{user.username}}</code></p>
-        </div>
+    <div class="success">
+        <h4>Login Successful</h4>
+        <p>Logged in as: <code>{{user.username}}</code></p>
+    </div>
     {% else %}
-        <h4 style="text-align:center">Admin Login</h4>
-        <form method="post">
-            <div class="form-group">
-                <input type="text" name="username" placeholder="Username" required>
-            </div>
-            <div class="form-group">
-                <input type="password" name="password" placeholder="Password" required>
-            </div>
-            <button type="submit">Log in</button>
-        </form>
+    <h4 style="text-align:center">Admin Login</h4>
+    <form method="post">
+        <div class="form-group">
+            <input type="text" name="username" placeholder="Username" required>
+        </div>
+        <div class="form-group">
+            <input type="password" name="password" placeholder="Password" required>
+        </div>
+        <button type="submit">Log in</button>
+    </form>
 
-        {% if failure %}
-            <div class="error">Login Failed</div>
-        {% endif %}
+    {% if failure %}
+    <div class="error">Login Failed</div>
+    {% endif %}
 
-        {% if is_locked %}
-            <div class="error">Account is locked due to too many failed attempts. Try again in 24 hours.</div>
-        {% endif %}
+    {% if is_locked %}
+    <div class="error">Account is locked due to too many failed attempts. Try again in 24 hours.</div>
+    {% endif %}
     {% endif %}
 </div>
 
 <button class="code-toggle">View Code</button>
-<button class="back-button" onclick="window.location.href='/'">Back to Lab Details</button>
+<button class="back-button" onclick="window.location.href='{{ base_path }}/'">Back to Lab Details</button>
 
 <div class="lab code">
     <pre>

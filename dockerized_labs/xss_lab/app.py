@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, make_response
+from flask import Flask, render_template, request, redirect, make_response, url_for
 import re
 import os
 
@@ -46,21 +46,21 @@ FAANG_DATA = {
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index.html', base_path=BASE_PATH)
 
 @app.route('/lab1')
 def lab1():
     q = request.args.get('q')
     if not q:
-        return render_template('lab1.html')
+        return render_template('lab1.html', base_path=BASE_PATH)
     
     q_lower = q.lower()
     if q_lower in FAANG_DATA:
         data = FAANG_DATA[q_lower]
-        return render_template('lab1.html', company=data['company'], ceo=data['ceo'], about=data['about'])
+        return render_template('lab1.html', company=data['company'], ceo=data['ceo'], about=data['about'], base_path=BASE_PATH)
     else:
         # Vulnerable: Reflects unescaped user input
-        return render_template('lab1.html', query=q)
+        return render_template('lab1.html', query=q, base_path=BASE_PATH)
 
 @app.route('/lab2', methods=['GET', 'POST'])
 def lab2():
@@ -70,8 +70,8 @@ def lab2():
             # Vulnerable: Simple filter bypass by script tags
             username = username.strip()
             username = username.replace("<script>", "").replace("</script>", "")
-            return render_template('lab2.html', username=username)
-    return render_template('lab2.html', username='Guest')
+            return render_template('lab2.html', username=username, base_path=BASE_PATH)
+    return render_template('lab2.html', username='Guest', base_path=BASE_PATH)
 
 @app.route('/lab3', methods=['GET', 'POST'])
 def lab3():
@@ -81,8 +81,8 @@ def lab3():
             # Vulnerable: Only filters alphanumeric
             pattern = r'\w'
             result = re.sub(pattern, '', username)
-            return render_template('lab3.html', code=result)
-    return render_template('lab3.html')
+            return render_template('lab3.html', code=result, base_path=BASE_PATH)
+    return render_template('lab3.html', base_path=BASE_PATH)
 
 @app.route('/toggle-theme')
 def toggle_theme():

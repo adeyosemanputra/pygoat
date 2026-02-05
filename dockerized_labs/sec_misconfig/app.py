@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, redirect
 import os
 import traceback
 import jwt
@@ -27,11 +27,11 @@ SENSITIVE_DATA = {
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index.html', base_path=BASE_PATH)
 
 @app.route('/lab1')
 def lab1():
-    return render_template('lab1.html')
+    return render_template('lab1.html', base_path=BASE_PATH)
 
 @app.route('/lab1/get-secret')
 def get_secret():
@@ -50,7 +50,7 @@ def check_auth():
 
 @app.route('/lab2')
 def lab2():
-    return render_template('lab2.html')
+    return render_template('lab2.html', base_path=BASE_PATH)
 
 @app.errorhandler(404)
 def page_not_found(e):
@@ -87,7 +87,7 @@ def page_not_found(e):
 
 @app.route('/lab3')
 def lab3():
-    return render_template('lab3.html')
+    return render_template('lab3.html', base_path=BASE_PATH)
 
 @app.route('/lab3/get-token', methods=['POST'])
 def get_token():

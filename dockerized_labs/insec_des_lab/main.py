@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, make_response
+from flask import Flask, render_template, request, make_response, redirect
 import pickle
 import base64
 from dataclasses import dataclass
@@ -28,7 +28,7 @@ class User:
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index.html', base_path=BASE_PATH)
 
 @app.route('/serialize', methods=['POST'])
 def serialize_data():
@@ -37,7 +37,7 @@ def serialize_data():
     user = User(username=username, is_admin=False)
     # Match PyGoat's serialization format
     serialized = base64.b64encode(pickle.dumps(user)).decode()
-    return render_template('result.html', serialized=serialized)
+    return render_template('result.html', serialized=serialized, base_path=BASE_PATH)
 
 @app.route('/deserialize', methods=['POST'])
 def deserialize_data():
@@ -55,9 +55,9 @@ def deserialize_data():
         else:
             message = "Invalid user data"
         
-        return render_template('result.html', message=message)
+        return render_template('result.html', message=message, base_path=BASE_PATH)
     except Exception as e:
-        return render_template('result.html', message=f"Error: {str(e)}")
+        return render_template('result.html', message=f"Error: {str(e)}", base_path=BASE_PATH)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080)
