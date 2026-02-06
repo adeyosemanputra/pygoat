@@ -739,8 +739,8 @@
 
                 {% if user.is_authenticated %}
                 <li class="nav-item">
-                  <button class="nav-link" onclick="stopAllLabs()" id="stop-labs-btn" style="background: #f0f8ff8a; border-radius: 2px; border: none; color: #dc3545;">
-                    Stop Labs
+                  <button class="nav-link dark" onclick="manageLabs()" id="manage-labs-btn" style="background: #f0f8ff8a; border-radius: 2px; border: none;">
+                    Manage Labs
                   </button>
                 </li>
                 <li class="nav-item">
@@ -765,28 +765,55 @@
       </div>
     </div>
 
-    <!-- Status Modal -->
-    <div class="modal fade" id="statusModal" tabindex="-1" role="dialog" aria-labelledby="statusModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="true">
+    <div class="modal fade" id="launchStatusModal" tabindex="-1" role="dialog" aria-labelledby="launchStatusModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="true">
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="statusModalLabel">Lab Status</h5>
+            <h5 class="modal-title" id="launchStatusModalLabel">Lab Status</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
           <div class="modal-body">
             <div class="text-center">
-              <div id="status-spinner" class="spinner-border text-primary" role="status" style="display: none;">
-                <span class="sr-only">Loading...</span>
+              <div class="modal-status">
+                <div id="launch-status-spinner" class="loading-spinner text-primary" role="status" style="display: none;">
+                  <span class="sr-only">Loading...</span>
+                </div>
+                <p id="launch-status-msg" class="mt-3" role="status" aria-live="polite" aria-atomic="true"></p>
               </div>
-              <p id="status-msg" class="mt-3"></p>
-              <div id="lab-list" class="mt-3"></div>
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-danger" id="modal-stop-all-btn" style="display: none;">Stop All Labs</button>
-            <button type="button" class="btn btn-close" data-dismiss="modal" id="modal-close-btn">Close</button>
+            <button type="button" class="btn btn-close" data-dismiss="modal" id="launch-modal-close-btn">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="manageStatusModal" tabindex="-1" role="dialog" aria-labelledby="manageStatusModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="manageStatusModalLabel">Manage Labs</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="text-center">
+              <div class="modal-status">
+                <div id="manage-status-spinner" class="loading-spinner text-primary" role="status" style="display: none;">
+                  <span class="sr-only">Loading...</span>
+                </div>
+                <p id="manage-status-msg" class="mt-3" role="status"></p>
+              </div>
+              <div id="manage-lab-list"></div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" id="manage-modal-stop-all-btn" style="display: none;">Stop All Labs</button>
+            <button type="button" class="btn btn-close" data-dismiss="modal" id="manage-modal-close-btn">Close</button>
           </div>
         </div>
       </div>
@@ -910,36 +937,67 @@
       document.addEventListener('DOMContentLoaded', () => {
         updateLabStatus();
       });
-      function applyModalTheme() {
+      function applyModalTheme(modalElement) {
+        if (!modalElement) return;
         const isDark = localStorage.getItem('theme') === 'dark' || localStorage.getItem('theme') === null;
-        const modal = document.getElementById('statusModal');
 
         if (isDark) {
-          modal.className = 'modal fade modal-dark';
+          modalElement.className = 'modal fade modal-dark';
         } else {
-          modal.className = 'modal fade modal-light';
+          modalElement.className = 'modal fade modal-light';
         }
       }
 
+      function renderManageLabList(labs, labList) {
+        labList.innerHTML = '';
+        labs.forEach(lab => {
+          const nameParts = (lab.name || '').split('-');
+          const labName = nameParts.slice(2).join('-');
+
+          const row = document.createElement('div');
+          row.className = 'd-flex justify-content-between align-items-center border rounded p-2 mb-2';
+
+          const info = document.createElement('div');
+
+          const strong = document.createElement('strong');
+          strong.textContent = labName;
+
+          const status = document.createElement('small');
+          status.className = 'text-muted';
+          status.textContent = `(${lab.status})`;
+
+          info.appendChild(strong);
+          info.appendChild(document.createTextNode(' '));
+          info.appendChild(status);
+
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.className = 'btn btn-sm btn-outline-danger';
+          button.textContent = 'Stop';
+          button.addEventListener('click', () => stopLab(labName));
+
+          row.appendChild(info);
+          row.appendChild(button);
+          labList.appendChild(row);
+        });
+      }
+
       async function launchLab(imageName) {
-        const statusMsg = document.getElementById('status-msg');
-        const statusSpinner = document.getElementById('status-spinner');
-        const modal = $('#statusModal');
-        const closeBtn = document.getElementById('modal-close-btn');
-        const modalTitle = document.getElementById('statusModalLabel');
-        const labList = document.getElementById('lab-list');
-        const modalStopAllBtn = document.getElementById('modal-stop-all-btn');
+        const statusMsg = document.getElementById('launch-status-msg');
+        const statusSpinner = document.getElementById('launch-status-spinner');
+        const modal = $('#launchStatusModal');
+        const closeBtn = document.getElementById('launch-modal-close-btn');
+        const modalTitle = document.getElementById('launchStatusModalLabel');
+        const modalElement = document.getElementById('launchStatusModal');
         modalTitle.innerText = 'Lab Status';
 
-        applyModalTheme();
+        applyModalTheme(modalElement);
 
         modal.modal('show');
         statusSpinner.style.display = 'inline-block';
-        statusMsg.innerText = "Provisioning your environment... (this may take a little while)";
+        statusMsg.innerText = "Provisioning your lab... (this may take a while)";
         statusMsg.className = "mt-3 text-info";
         closeBtn.style.display = 'none';
-        labList.innerHTML = '';
-        modalStopAllBtn.style.display = 'none';
 
         if (!isAuthenticated) {
           statusSpinner.style.display = 'none';
@@ -1028,19 +1086,20 @@
         }
       }
 
-      async function stopAllLabs() {
-        const stopBtn = document.getElementById('stop-labs-btn');
-        const originalText = stopBtn.innerText;
-        const statusMsg = document.getElementById('status-msg');
-        const statusSpinner = document.getElementById('status-spinner');
-        const modal = $('#statusModal');
-        const closeBtn = document.getElementById('modal-close-btn');
-        const modalTitle = document.getElementById('statusModalLabel');
-        const labList = document.getElementById('lab-list');
-        const modalStopAllBtn = document.getElementById('modal-stop-all-btn');
+      async function manageLabs() {
+        const manageBtn = document.getElementById('manage-labs-btn');
+        const originalText = manageBtn.innerText;
+        const statusMsg = document.getElementById('manage-status-msg');
+        const statusSpinner = document.getElementById('manage-status-spinner');
+        const modal = $('#manageStatusModal');
+        const closeBtn = document.getElementById('manage-modal-close-btn');
+        const modalTitle = document.getElementById('manageStatusModalLabel');
+        const labList = document.getElementById('manage-lab-list');
+        const modalStopAllBtn = document.getElementById('manage-modal-stop-all-btn');
+        const modalElement = document.getElementById('manageStatusModal');
 
-        applyModalTheme();
-        modalTitle.innerText = "Stop Labs";
+        applyModalTheme(modalElement);
+        modalTitle.innerText = "Manage Labs";
         modal.modal('show');
         statusSpinner.style.display = 'inline-block';
         statusMsg.innerText = "Fetching running labs...";
@@ -1048,18 +1107,15 @@
         closeBtn.style.display = 'none';
         labList.innerHTML = '';
         modalStopAllBtn.style.display = 'none';
-
-        stopBtn.innerText = "Loading...";
-        stopBtn.disabled = true;
+        manageBtn.innerText = "Loading...";
+        manageBtn.disabled = true;
 
         try {
           const csrftoken = getCookie('csrftoken');
-
           const listResponse = await fetch('/challenge/list-labs/');
           const listData = await listResponse.json();
-
           statusSpinner.style.display = 'none';
-
+          
           if (listData.status === 'success') {
             const labs = listData.labs || [];
             if (labs.length === 0) {
@@ -1069,20 +1125,7 @@
             } else {
               statusMsg.innerText = "Select a lab to stop or stop all.";
               statusMsg.className = "mt-3 text-info";
-              labList.innerHTML = labs.map(lab => {
-                const nameParts = lab.name.split('-');
-                const labName = nameParts.slice(2).join('-');
-                return `
-                      <div class="d-flex justify-content-between align-items-center border rounded p-2 mb-2">
-                      <div>
-                        <strong>${labName}</strong>
-                        <small class="text-muted">(${lab.status})</small>
-                      </div>
-                      <button class="btn btn-sm btn-outline-danger" onclick="stopSingleLab('${labName}')">Stop</button>
-                      </div>
-                    `;
-              }).join('');
-
+              renderManageLabList(labs, labList);
               modalStopAllBtn.style.display = 'inline-block';
               modalStopAllBtn.onclick = async () => {
                 statusSpinner.style.display = 'inline-block';
@@ -1104,12 +1147,11 @@
                   statusMsg.className = "mt-3 text-success";
                   labList.innerHTML = '';
                   modalStopAllBtn.style.display = 'none';
-                  stopBtn.innerText = "Stopped!";
                   updateLabStatus();
                   setTimeout(() => {
-                    stopBtn.innerText = originalText;
-                    stopBtn.disabled = false;
-                    modalTitle.innerText = 'Lab Status';
+                    manageBtn.innerText = originalText;
+                    manageBtn.disabled = false;
+                    modalTitle.innerText = 'Manage Labs';
                   }, 10000);
                 } else {
                   statusMsg.innerText = `Error: ${data.message}`;
@@ -1124,24 +1166,24 @@
             statusMsg.className = "mt-3 text-danger";
             closeBtn.style.display = 'inline-block';
           }
-          stopBtn.innerText = originalText;
-          stopBtn.disabled = false;
+          manageBtn.innerText = originalText;
+          manageBtn.disabled = false;
         } catch (error) {
           console.error(error);
           statusSpinner.style.display = 'none';
           statusMsg.innerText = "Failed to load labs. Check console for details.";
           statusMsg.className = "mt-3 text-danger";
-          stopBtn.innerText = originalText;
-          stopBtn.disabled = false;
+          manageBtn.innerText = originalText;
+          manageBtn.disabled = false;
           closeBtn.style.display = 'inline-block';
         }
       }
 
-      async function stopSingleLab(labName) {
-        const statusMsg = document.getElementById('status-msg');
-        const statusSpinner = document.getElementById('status-spinner');
-        const labList = document.getElementById('lab-list');
-        const modalStopAllBtn = document.getElementById('modal-stop-all-btn');
+      async function stopLab(labName) {
+        const statusMsg = document.getElementById('manage-status-msg');
+        const statusSpinner = document.getElementById('manage-status-spinner');
+        const labList = document.getElementById('manage-lab-list');
+        const modalStopAllBtn = document.getElementById('manage-modal-stop-all-btn');
 
         try {
           statusMsg.innerText = `Stopping ${labName}...`;
@@ -1163,19 +1205,7 @@
             const listResponse = await fetch('/challenge/list-labs/');
             const listData = await listResponse.json();
             if (listData.status === 'success' && listData.labs.length > 0) {
-              labList.innerHTML = listData.labs.map(lab => {
-                const nameParts = lab.name.split('-');
-                const name = nameParts.slice(2).join('-');
-                return `
-                      <div class="d-flex justify-content-between align-items-center border rounded p-2 mb-2">
-                      <div>
-                        <strong>${name}</strong>
-                        <small class="text-muted">(${lab.status})</small>
-                      </div>
-                      <button class="btn btn-sm btn-outline-danger" onclick="stopSingleLab('${name}')">Stop</button>
-                      </div>
-                    `;
-              }).join('');
+              renderManageLabList(listData.labs, labList);
               modalStopAllBtn.style.display = 'inline-block';
             } else {
               labList.innerHTML = '';
