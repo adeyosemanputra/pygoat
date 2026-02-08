@@ -173,6 +173,11 @@ SOCIALACCOUNT_PROVIDERS = {
 SECRET_COOKIE_KEY = "PYGOAT"
 CSRF_TRUSTED_ORIGINS = ["http://127.0.0.1:8000","http://0.0.0.0:8000","http://172.16.189.10"]
 
+TRAEFIK_URLS = [
+    'http://localhost:8080/api/http/routers',     
+    'http://traefik_proxy:8080/api/http/routers',
+]
+
 # Labs configuration
 # LAB_DOMAIN = "localhost"
 # DOCKER_NETWORK = "my_network"

@@ -10,6 +10,7 @@ import json
 import os
 from django.conf import settings
 import time
+import requests
 
 # Create your views here.
 def get_docker_client():
@@ -18,6 +19,19 @@ def get_docker_client():
     except Exception as e:
         print(f"Failed to connect to Docker daemon: {e}")
         return None
+
+
+def check_traefik_reachable():
+    traefik_urls = getattr(settings, 'TRAEFIK_URLS', [])
+    for traefik_url in traefik_urls:
+        try:
+            response = requests.get(traefik_url, timeout=5)
+            if response.status_code == 200:
+                return True
+        except (requests.RequestException, Exception):
+            continue
+    print(f"Traefik unreachable on all attempted URLs: {traefik_urls}")
+    return False
 
 class DoItFast(View):
     def get(self, request, challenge):
@@ -169,6 +183,10 @@ def wait_for_health(container, timeout=60):
 def start_lab(request, lab_image_name):
     if not request.user.is_authenticated:
         return JsonResponse({'status': 'error', 'message': 'Authentication required'}, status=401)
+    
+    if not check_traefik_reachable():
+        return JsonResponse({'status': 'error', 'message': 'Traefik reverse proxy is not reachable'}, status=503)
+    
     client = get_docker_client()
     if client is None:
         return JsonResponse({'status': 'error', 'message': 'Docker daemon unavailable'}, status=503)
