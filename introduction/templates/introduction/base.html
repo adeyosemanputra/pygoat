@@ -780,6 +780,7 @@
   'business-logic',
   'security-headers'
 ];
+
 // Update lab status 
     async function updateLabStatus(lab) {
       try {
@@ -911,6 +912,10 @@
       });
     }
 
+    // Helper function to reset lab UI
+    function resetLabUI(lab) {
+      updateLabStatus(lab);
+    }
 
     // Handle toggle button clicks
     document.querySelectorAll('[id^="toggle-lab-btn-"]').forEach(toggleBtn => {
@@ -929,35 +934,47 @@
             });
             const data = await res.json();
 
-            await pollUntilStateReached(lab, true);
-            
-          } catch(err) {
-            console.error(err);
-            alert("Error starting lab " + lab);
-            await updateLabStatus(lab);
-          }
+             if (!data.success) {
+              alert(data.message);
+              resetLabUI(lab);
+              return;
+            }
+
+          await pollUntilStateReached(lab, true);
           
-        } else if (currentStatus === 'running') {
-          setLabLoadingState(lab, false);
-          
-          try {
-            const res = await fetch(`/challenge/control/${lab}/stop/`, {
-              method: 'GET',
-              headers: {'X-Requested-With': 'XMLHttpRequest'},
-              credentials: 'same-origin'
-            });
-            const data = await res.json();
-            
-            await pollUntilStateReached(lab, false);
-            
-          } catch(err) {
-            console.error(err);
-            alert("Error stopping lab " + lab);
-            await updateLabStatus(lab);
-          }
+        } catch(err) {
+          console.error(err);
+          alert("Error starting lab " + lab);
+          await updateLabStatus(lab);
         }
-      });
+        
+      } else if (currentStatus === 'running') {
+        setLabLoadingState(lab, false);
+        
+        try {
+          const res = await fetch(`/challenge/control/${lab}/stop/`, {
+            method: 'GET',
+            headers: {'X-Requested-With': 'XMLHttpRequest'},
+            credentials: 'same-origin'
+          });
+          const data = await res.json();
+          
+          if (!data.success) {
+            alert(data.message);
+            resetLabUI(lab);
+            return;
+          }
+
+          await pollUntilStateReached(lab, false);
+          
+        } catch(err) {
+          console.error(err);
+          alert("Error stopping lab " + lab);
+          await updateLabStatus(lab);
+        }
+      }
     });
+  });
 
     labs.forEach(updateLabStatus);
 

@@ -1006,7 +1006,7 @@ def crypto_failure(request):
     if request.user.is_authenticated:
         return render(request,"Lab_2021/A2_Crypto_failur/crypto_failure.html",{"success":False,"failure":False})
     else:
-        redirect('login')
+        return redirect('login')
 
 def crypto_failure_lab(request):
     if request.user.is_authenticated:
@@ -1021,7 +1021,7 @@ def crypto_failure_lab(request):
                 return render(request,"Lab_2021/A2_Crypto_failur/crypto_failure_lab.html",{"user":user, "success":True,"failure":False})
             except Exception as e:
                 return render(request,"Lab_2021/A2_Crypto_failur/crypto_failure_lab.html",{"success":False, "failure":True})
-    else :
+    else:
         return redirect('login')
 
 def crypto_failure_lab2(request):
@@ -1037,6 +1037,8 @@ def crypto_failure_lab2(request):
                 return render(request,"Lab_2021/A2_Crypto_failur/crypto_failure_lab2.html",{"user":user, "success":True,"failure":False})
             except:
                 return render(request,"Lab_2021/A2_Crypto_failur/crypto_failure_lab2.html",{"success":False, "failure":True})
+    else:
+        return redirect('login')
 
 # based on CWE-319
 def crypto_failure_lab3(request):

@@ -1,3 +1,4 @@
+import os
 import subprocess
 
 LAB_PROFILES = {
@@ -25,6 +26,12 @@ LAB_PROFILES = {
 }
 
 BASE_CMD = "docker compose -f docker-compose.labs.yml"
+RUNNING_IN_DOCKER = os.path.exists("/.dockerenv")
+
+
+def _disabled():
+    return False, "Lab control is disabled in local development mode. Use docker-compose to manage labs."
+
 
 def run(cmd):
     return subprocess.run(
@@ -33,40 +40,36 @@ def run(cmd):
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         text=True,
-        cwd="/app"
+        cwd=os.getcwd() if not RUNNING_IN_DOCKER else "/app"
     )
 
+
 def start_lab(lab):
-    print("LAB REQUESTED =", repr(lab))
-    container_name = LAB_PROFILES.get(lab)
-    if not container_name:
+    if not RUNNING_IN_DOCKER:
+        return _disabled()
+
+    if lab not in LAB_PROFILES:
         return False, "Unknown lab"
 
-    cmd = f"{BASE_CMD} --profile {lab} up -d"
-    r = run(cmd)
+    r = run(f"{BASE_CMD} --profile {lab} up -d")
+    return (True, "Lab started") if r.returncode == 0 else (False, r.stderr)
 
-    if r.returncode == 0:
-        return True, "Lab started"
-    return False, r.stderr
 
 def stop_lab(lab):
-    container_name = LAB_PROFILES.get(lab)
-    if not container_name:
+    if not RUNNING_IN_DOCKER:
+        return _disabled()
+
+    if lab not in LAB_PROFILES:
         return False, "Unknown lab"
 
-    cmd = f"{BASE_CMD} --profile {lab} stop"
-    r = run(cmd)
+    r = run(f"{BASE_CMD} --profile {lab} stop")
+    return (True, "Lab stopped") if r.returncode == 0 else (False, r.stderr)
 
-    if r.returncode == 0:
-        return True, "Lab stopped"
-    return False, r.stderr
 
 def lab_status(lab):
-    container_name = LAB_PROFILES.get(lab)
-    if not container_name:
+    """Check if a lab container is running - works in both Docker and local dev"""
+    if lab not in LAB_PROFILES:
         return False
 
-    cmd = f"docker inspect -f '{{{{.State.Running}}}}' {container_name} 2>/dev/null"
-    r = run(cmd)
-
+    r = run(f"docker inspect -f '{{{{.State.Running}}}}' {LAB_PROFILES[lab]}")
     return "true" in r.stdout.lower()

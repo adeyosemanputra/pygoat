@@ -2,6 +2,7 @@ from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.views.generic import View
 from django.views.decorators.csrf import csrf_exempt
+from django.conf import settings
 import subprocess
 from .utility import get_free_port
 from .models import Challenge, UserChallenge
@@ -109,21 +110,33 @@ def security_headers_lab(request):
 @login_required
 def control_lab(request, lab_name, action):
     """Start, stop, or check status of a lab"""
+    
     if action == 'status':
+        is_running = lab_status(lab_name)
         return JsonResponse({
             'success': True,
-            'status': lab_status(lab_name)
+            'status': is_running,
+            'message': ''
+        })
+
+    if settings.LAB_HYBRID_MODE and action in ['start', 'stop']:
+        return JsonResponse({
+            'success': False,
+            'status': lab_status(lab_name),
+            'message': 'Lab control is disabled in local development mode. Use docker-compose to manage labs.'
         })
 
     if action == 'start':
         success, msg = start_lab(lab_name)
+
     elif action == 'stop':
         success, msg = stop_lab(lab_name)
+
     else:
-        return JsonResponse({'error': 'Invalid action'}, status=400)
+        return JsonResponse({'success': False, 'message': 'Invalid action'}, status=400)
 
     return JsonResponse({
         'success': success,
-        'message': msg,
-        'status': lab_status(lab_name)
-    })    
+        'status': lab_status(lab_name),
+        'message': msg
+    })
