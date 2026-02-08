@@ -32,6 +32,7 @@ First, Clone the repository using GitHub website or git in Terminal
   ### To Download a specific branch
   git clone -b <branch_name> https://github.com/adeyosemanputra/pygoat.git
 ```
+Then, Install Traefik on your local machine (if not using docker compose) using these [steps](https://doc.traefik.io/traefik/getting-started/install-traefik/)
 
 #### Method 1
 
@@ -80,6 +81,75 @@ First, Clone the repository using GitHub website or git in Terminal
 3. Install with Mac M1 (using Virtualenv)
  - [![](http://img.youtube.com/vi/rfzQiMeiwso/0.jpg)](https://youtu.be/a5UV7mUw580 "Install with Mac M1 - using Virtualenv")
 
+## Adding new labs
+
+This section guides you through creating and integrating new vulnerability labs into PyGoat.
+
+### Step 1: Create Lab Directory Structure
+
+1. Navigate to the `dockerized_labs` folder:
+```bash
+cd dockerized_labs
+```
+
+2. Create a new directory for your lab (use descriptive naming):
+```bash
+mkdir your_lab_name
+cd your_lab_name
+```
+
+### Step 2: Create Required Files
+
+Create the standard Flask application structure with a Dockerfile, docker-compose.yml, requirements.txt, app.py with your vulnerable endpoints, templates and static folders for your UI, and a README.md documenting the lab. Refer to existing labs in the dockerized_labs folder for examples.
+
+**Important**: Add a `/health` endpoint in your app.py for container health check.
+
+### Step 3: Register Lab in labs.json
+
+1. Open [labs.json](labs.json) in the project root directory
+
+2. Add a new entry to the `"labs"` array:
+```json
+{
+  "name": "your_lab_name",
+  "build_location": "dockerized_labs/your_lab_name",
+  "port": <PORT_NUMBER>
+}
+```
+
+**Important**: 
+- Check [labs.json](labs.json) for all currently used ports before selecting a new one.
+- Use the same port number in `Dockerfile`, `docker-compose.yml`, `app.py`, and `labs.json`
+
+
+### Step 4: Test Your Lab
+
+1. Navigate back to the project root:
+```bash
+cd /path/to/pygoat
+```
+
+2. Build and test your lab individually:
+```bash
+cd dockerized_labs/your_lab_name
+docker compose up
+```
+
+3. Access your lab at `http://localhost:<PORT_NUMBER>`
+
+4. Verify the vulnerability works as expected
+
+### Step 5: Integrate with PyGoat
+
+1. Stop the individual lab container
+
+2. Add your lab details in [base.html](introduction/templates/introduction/base.html)
+
+2. From the PyGoat root directory, rebuild the entire application:
+```bash
+docker compose down
+docker compose up --build
+```
 
 ## Uninstallation
 
