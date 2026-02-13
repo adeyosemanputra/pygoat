@@ -111,8 +111,11 @@ def security_headers_lab(request):
 def control_lab(request, lab_name, action):
     """Start, stop, or check status of a lab"""
     
+    # get user ID from authenticated user
+    user_id = request.user.id
+    
     if action == 'status':
-        is_running = lab_status(lab_name)
+        is_running = lab_status(lab_name, user_id)
         return JsonResponse({
             'success': True,
             'status': is_running,
@@ -122,21 +125,21 @@ def control_lab(request, lab_name, action):
     if settings.LAB_HYBRID_MODE and action in ['start', 'stop']:
         return JsonResponse({
             'success': False,
-            'status': lab_status(lab_name),
+            'status': lab_status(lab_name, user_id),
             'message': 'Lab control is disabled in local development mode. Use docker-compose to manage labs.'
         })
 
     if action == 'start':
-        success, msg = start_lab(lab_name)
+        success, msg = start_lab(lab_name, user_id)
 
     elif action == 'stop':
-        success, msg = stop_lab(lab_name)
+        success, msg = stop_lab(lab_name, user_id)
 
     else:
         return JsonResponse({'success': False, 'message': 'Invalid action'}, status=400)
 
     return JsonResponse({
         'success': success,
-        'status': lab_status(lab_name),
+        'status': lab_status(lab_name, user_id),
         'message': msg
     })

@@ -756,8 +756,8 @@
       }
       
         // Lab control
-  document.addEventListener("DOMContentLoaded", function() {
-   const labs = [
+document.addEventListener("DOMContentLoaded", function() {
+  const labs = [
   'sql-injection',
   'command-injection',
   'template-injection',
@@ -781,170 +781,191 @@
   'security-headers'
 ];
 
-// Update lab status 
-    async function updateLabStatus(lab) {
-      try {
-        const res = await fetch(`/challenge/control/${lab}/status/`, {
-          method: 'GET',
-          credentials: 'same-origin'
-        });
-        const data = await res.json();
-        
-        // Update all UI components
-        updateLabDetailPageUI(lab, data.status);
-        updateSidebarDot(lab, data.status);
-        
-      } catch(err) {
-        console.error(`Failed to get status for ${lab}`, err);
-      }
+  // Update lab status
+  async function updateLabStatus(lab) {
+    try {
+      const res = await fetch(`/challenge/control/${lab}/status/`, {
+        method: 'GET',
+        credentials: 'same-origin'
+      });
+      const data = await res.json();
+      
+      // Update all UI components
+      updateLabDetailPageUI(lab, data.status);
+      updateSidebarDot(lab, data.status);
+      
+    } catch(err) {
+      console.error(`Failed to get status for ${lab}`, err);
+      // On error, show stopped state to avoid confusion
+      updateLabDetailPageUI(lab, false);
+      updateSidebarDot(lab, false);
     }
+  }
 
-    // Update lab detail page UI 
-    function updateLabDetailPageUI(lab, isRunning) {
-      const toggleBtn = document.getElementById(`toggle-lab-btn-${lab}`);
-      const statusBadge = document.getElementById(`lab-status-badge-${lab}`);
-      const detailAccessBtns = document.querySelectorAll(`.access-lab-detail-btn[data-lab="${lab}"]`);
+  // Update lab detail page UI 
+  function updateLabDetailPageUI(lab, isRunning) {
+    const toggleBtn = document.getElementById(`toggle-lab-btn-${lab}`);
+    const statusBadge = document.getElementById(`lab-status-badge-${lab}`);
+    const detailAccessBtns = document.querySelectorAll(`.access-lab-detail-btn[data-lab="${lab}"]`);
+    
+    if (!toggleBtn) return;
+    
+    if (isRunning) {
+      toggleBtn.className = 'btn btn-sm btn-danger';
+      toggleBtn.innerHTML = '<i class="fas fa-stop"></i> Stop Lab';
+      toggleBtn.disabled = false;
+      toggleBtn.dataset.status = 'running';
       
-      if (!toggleBtn) return;
-      
-      if (isRunning) {
-        toggleBtn.className = 'btn btn-sm btn-danger';
-        toggleBtn.innerHTML = '<i class="fas fa-stop"></i> Stop Lab';
-        toggleBtn.disabled = false;
-        toggleBtn.dataset.status = 'running';
-        
-        if (statusBadge) {
-          statusBadge.className = 'badge badge-success';
-          statusBadge.innerHTML = '<i class="fas fa-circle"></i> Running';
-        }
-        
-        detailAccessBtns.forEach(btn => {
-          btn.disabled = false;
-          btn.style.opacity = '1';
-          btn.innerHTML = btn.innerHTML.replace('fa-lock', 'fa-external-link-alt');
-        });
-        
-      } else {
-        toggleBtn.className = 'btn btn-sm btn-success';
-        toggleBtn.innerHTML = '<i class="fas fa-play"></i> Start Lab';
-        toggleBtn.disabled = false;
-        toggleBtn.dataset.status = 'stopped';
-        
-        if (statusBadge) {
-          statusBadge.className = 'badge badge-secondary';
-          statusBadge.innerHTML = '<i class="fas fa-circle"></i> Stopped';
-        }
-        
-        detailAccessBtns.forEach(btn => {
-          btn.disabled = true;
-          btn.style.opacity = '0.5';
-          btn.innerHTML = btn.innerHTML.replace('fa-external-link-alt', 'fa-lock');
-        });
+      if (statusBadge) {
+        statusBadge.className = 'badge badge-success';
+        statusBadge.innerHTML = '<i class="fas fa-circle"></i> Running';
       }
-    }
-
-    // update sidebar status dots
-    function updateSidebarDot(lab, isRunning) {
-      const dot = document.querySelector(`.lab-status-dot[data-lab="${lab}"]`);
       
-      if (dot) {
-        if (isRunning) {
-          dot.classList.add('running');
-        } else {
-          dot.classList.remove('running');
-        }
+      detailAccessBtns.forEach(btn => {
+        btn.disabled = false;
+        btn.style.opacity = '1';
+        btn.innerHTML = btn.innerHTML.replace('fa-lock', 'fa-external-link-alt');
+        // Update text content while preserving icon
+        const textContent = btn.innerHTML.includes('Access Lab') ? btn.innerHTML : 
+                           '<i class="fas fa-external-link-alt"></i> Access Lab';
+        btn.innerHTML = textContent;
+      });
+      
+    } else {
+      toggleBtn.className = 'btn btn-sm btn-success';
+      toggleBtn.innerHTML = '<i class="fas fa-play"></i> Start Lab';
+      toggleBtn.disabled = false;
+      toggleBtn.dataset.status = 'stopped';
+      
+      if (statusBadge) {
+        statusBadge.className = 'badge badge-secondary';
+        statusBadge.innerHTML = '<i class="fas fa-circle"></i> Stopped';
       }
-    }
-
-    function setLabLoadingState(lab, isStarting) {
-      const toggleBtn = document.getElementById(`toggle-lab-btn-${lab}`);
-      const statusBadge = document.getElementById(`lab-status-badge-${lab}`);
       
-      if (!toggleBtn) return;
-      
-      if (isStarting) {
-        toggleBtn.className = 'btn btn-sm btn-warning';
-        toggleBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Starting...';
-        toggleBtn.disabled = true;
-        
-        if (statusBadge) {
-          statusBadge.className = 'badge badge-warning';
-          statusBadge.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Starting...';
-        }
-      } else {
-        toggleBtn.className = 'btn btn-sm btn-warning';
-        toggleBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Stopping...';
-        toggleBtn.disabled = true;
-        
-        if (statusBadge) {
-          statusBadge.className = 'badge badge-warning';
-          statusBadge.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Stopping...';
-        }
-      }
-    }
-
-    async function pollUntilStateReached(lab, targetState) {
-      let attempts = 0;
-      const maxAttempts = 30;
-      
-      return new Promise((resolve) => {
-        const interval = setInterval(async () => {
-          attempts++;
-          
-          try {
-            const res = await fetch(`/challenge/control/${lab}/status/`, {
-              method: 'GET',
-              credentials: 'same-origin'
-            });
-            const data = await res.json();
-            
-            await updateLabStatus(lab);
-
-            if (data.status === targetState || attempts >= maxAttempts) {
-              clearInterval(interval);
-              resolve(data.status === targetState);
-            }
-          } catch(err) {
-            clearInterval(interval);
-            resolve(false);
-          }
-        }, 2000);
+      detailAccessBtns.forEach(btn => {
+        btn.disabled = true;
+        btn.style.opacity = '0.5';
+        btn.innerHTML = btn.innerHTML.replace('fa-external-link-alt', 'fa-lock');
+        // Update text content while preserving icon
+        const textContent = btn.innerHTML.includes('Access Lab') ? btn.innerHTML : 
+                           '<i class="fas fa-lock"></i> Access Lab';
+        btn.innerHTML = textContent;
       });
     }
+  }
 
-    // Helper function to reset lab UI
-    function resetLabUI(lab) {
-      updateLabStatus(lab);
+  // Update sidebar status dots
+  function updateSidebarDot(lab, isRunning) {
+    const dot = document.querySelector(`.lab-status-dot[data-lab="${lab}"]`);
+    
+    if (dot) {
+      if (isRunning) {
+        dot.classList.add('running');
+      } else {
+        dot.classList.remove('running');
+      }
     }
+  }
 
-    // Handle toggle button clicks
-    document.querySelectorAll('[id^="toggle-lab-btn-"]').forEach(toggleBtn => {
-      toggleBtn.addEventListener('click', async function() {
-        const lab = this.dataset.lab;
-        const currentStatus = this.dataset.status;
+  // Set loading state during start/stop operations
+  function setLabLoadingState(lab, isStarting) {
+    const toggleBtn = document.getElementById(`toggle-lab-btn-${lab}`);
+    const statusBadge = document.getElementById(`lab-status-badge-${lab}`);
+    
+    if (!toggleBtn) return;
+    
+    toggleBtn.className = 'btn btn-sm btn-warning';
+    toggleBtn.disabled = true;
+    
+    if (isStarting) {
+      toggleBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Starting...';
+      
+      if (statusBadge) {
+        statusBadge.className = 'badge badge-warning';
+        statusBadge.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Starting...';
+      }
+    } else {
+      toggleBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Stopping...';
+      
+      if (statusBadge) {
+        statusBadge.className = 'badge badge-warning';
+        statusBadge.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Stopping...';
+      }
+    }
+  }
+
+  // Poll until lab reaches target state
+  async function pollUntilStateReached(lab, targetState) {
+    let attempts = 0;
+    const maxAttempts = 30;
+    
+    return new Promise((resolve) => {
+      const interval = setInterval(async () => {
+        attempts++;
         
-        if (currentStatus === 'stopped') {
-          setLabLoadingState(lab, true);
+        try {
+          const res = await fetch(`/challenge/control/${lab}/status/`, {
+            method: 'GET',
+            credentials: 'same-origin'
+          });
+          const data = await res.json();
           
-          try {
-            const res = await fetch(`/challenge/control/${lab}/start/`, {
-              method: 'GET',
-              headers: {'X-Requested-With': 'XMLHttpRequest'},
-              credentials: 'same-origin'
-            });
-            const data = await res.json();
+          // Update UI with current status
+          updateLabDetailPageUI(lab, data.status);
+          updateSidebarDot(lab, data.status);
 
-             if (!data.success) {
-              alert(data.message);
-              resetLabUI(lab);
-              return;
-            }
+          // Check if target state reached or timeout
+          if (data.status === targetState || attempts >= maxAttempts) {
+            clearInterval(interval);
+            resolve(data.status === targetState);
+          }
+        } catch(err) {
+          console.error('Polling error:', err);
+          clearInterval(interval);
+          resolve(false);
+        }
+      }, 2000);
+    });
+  }
 
-          await pollUntilStateReached(lab, true);
+  // Helper function
+  function resetLabUI(lab) {
+    updateLabStatus(lab);
+  }
+
+  // Handle toggle button clicks
+  document.querySelectorAll('[id^="toggle-lab-btn-"]').forEach(toggleBtn => {
+    toggleBtn.addEventListener('click', async function() {
+      const lab = this.dataset.lab;
+      const currentStatus = this.dataset.status;
+      
+      if (currentStatus === 'stopped') {
+        setLabLoadingState(lab, true);
+        
+        try {
+          const res = await fetch(`/challenge/control/${lab}/start/`, {
+            method: 'GET',
+            headers: {'X-Requested-With': 'XMLHttpRequest'},
+            credentials: 'same-origin'
+          });
+          const data = await res.json();
+
+          if (!data.success) {
+            alert('Failed to start lab: ' + data.message);
+            resetLabUI(lab);
+            return;
+          }
+
+          const started = await pollUntilStateReached(lab, true);
+          
+          if (!started) {
+            alert('Lab took too long to start. Please check status manually.');
+            await updateLabStatus(lab);
+          }
           
         } catch(err) {
-          console.error(err);
-          alert("Error starting lab " + lab);
+          console.error('Start lab error:', err);
+          alert("Error starting lab " + lab + ": " + err.message);
           await updateLabStatus(lab);
         }
         
@@ -960,31 +981,46 @@
           const data = await res.json();
           
           if (!data.success) {
-            alert(data.message);
+            alert('Failed to stop lab: ' + data.message);
             resetLabUI(lab);
             return;
           }
 
-          await pollUntilStateReached(lab, false);
+          const stopped = await pollUntilStateReached(lab, false);
+          
+          if (!stopped) {
+            alert('Lab took too long to stop. Please check status manually.');
+            await updateLabStatus(lab);
+          }
           
         } catch(err) {
-          console.error(err);
-          alert("Error stopping lab " + lab);
+          console.error('Stop lab error:', err);
+          alert("Error stopping lab " + lab + ": " + err.message);
           await updateLabStatus(lab);
         }
       }
     });
   });
 
-    labs.forEach(updateLabStatus);
+  labs.forEach(updateLabStatus);
 
-    document.querySelectorAll('[id^="toggle-lab-btn-"]').forEach(toggleBtn => {
-      const lab = toggleBtn.dataset.lab;
-      if (lab) {
+  document.querySelectorAll('[id^="toggle-lab-btn-"]').forEach(toggleBtn => {
+    const lab = toggleBtn.dataset.lab;
+    if (lab && !labs.includes(lab)) {
+      updateLabStatus(lab);
+    }
+  });
+
+  // Periodic refresh of all lab statuses (15 seconds)
+  setInterval(() => {
+    labs.forEach(lab => {
+      const toggleBtn = document.getElementById(`toggle-lab-btn-${lab}`);
+      if (toggleBtn && !toggleBtn.disabled) {
         updateLabStatus(lab);
       }
     });
-  });
+  }, 15000);
+});
 </script>
 
 <!-- styles for lab control UI -->
@@ -1029,12 +1065,12 @@
     height: 8px;
     border-radius: 50%;
     margin-left: 8px;
-    background-color: #6c757d; /* Gray - stopped */
+    background-color: #6c757d;
     transition: background-color 0.3s ease;
   }
 
   .lab-status-dot.running {
-    background-color: #28a745; /* Green - running */
+    background-color: #28a745;
     animation: pulse-dot 2s infinite;
   }
 

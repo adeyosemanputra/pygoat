@@ -2,106 +2,148 @@
   "bopla": {
     "name": "BOPLA Lab",
     "profile": "bopla",
-    "url": "/labs/bopla/"
+    "url": "/labs/bopla/",
+    "service_name": "bopla-lab",
+    "internal_port": 8080
   },
   "business-logic": {
     "name": "Business Logic Lab",
     "profile": "business-logic",
-    "url": "/labs/business-logic/"
+    "url": "/labs/business-logic/",
+    "service_name": "business-logic-lab",
+    "internal_port": 5010
   },
   "security-headers": {
     "name": "Security Headers Lab",
     "profile": "security-headers",
-    "url": "/labs/security-headers/"
+    "url": "/labs/security-headers/",
+    "service_name": "security-headers-lab",
+    "internal_port": 5011
   },
   "xss": {
     "name": "XSS Lab",
     "profile": "xss",
-    "url": "/labs/xss/"
+    "url": "/labs/xss/",
+    "service_name": "xss-lab",
+    "internal_port": 5006
   },
   "ssrf": {
     "name": "SSRF Lab",
     "profile": "ssrf",
-    "url": "/labs/ssrf/"
+    "url": "/labs/ssrf/",
+    "service_name": "ssrf-lab",
+    "internal_port": 5000
   },
   "sql-injection": {
     "name": "SQL Injection Lab",
     "profile": "sql-injection",
-    "url": "/labs/sql-injection/"
+    "url": "/labs/sql-injection/",
+    "service_name": "sql-injection-lab",
+    "internal_port": 5012
   },
   "command-injection": {
     "name": "Command Injection Lab",
     "profile": "command-injection",
-    "url": "/labs/command-injection/"
-  },
-  "broken-auth": {
-    "name": "Broken Authentication Lab",
-    "profile": "broken-auth",
-    "url": "/labs/broken-auth/"
-  },
-  "broken-access": {
-    "name": "Broken Access Control Lab",
-    "profile": "broken-access",
-    "url": "/labs/broken-access/"
-  },
-  "crypto-failure": {
-    "name": "Cryptographic Failure Lab",
-    "profile": "crypto-failure",
-    "url": "/labs/crypto-failure/"
-  },
-  "insecure-design": {
-    "name": "Insecure Design Lab",
-    "profile": "insecure-design",
-    "url": "/labs/insecure-design/"
-  },
-  "insec-des": {
-    "name": "Insec Des Lab",
-    "profile": "insec-des",
-    "url": "/labs/insec-des/"
-  },
-  "sec-misconfig": {
-    "name": "Security Misconfiguration Lab",
-    "profile": "sec-misconfig",
-    "url": "/labs/sec-misconfig/"
-  },
-  "sensitive-data-exposure": {
-    "name": "Sensitive Data Exposure Lab",
-    "profile": "sensitive-data-exposure",
-    "url": "/labs/sensitive-data-exposure/"
-  },
-  "auth-failure": {
-    "name": "Authentication Failure Lab",
-    "profile": "auth-failure",
-    "url": "/labs/auth-failure/"
-  },
-  "software-integrity": {
-    "name": "Software Integrity Lab",
-    "profile": "software-integrity",
-    "url": "/labs/software-integrity/"
-  },
-  "insufficient-logging": {
-    "name": "Insufficient Logging Lab",
-    "profile": "insufficient-logging",
-    "url": "/labs/insufficient-logging/"
-  },
-  "sde": {
-    "name": "SDE Lab",
-    "profile": "sde",
-    "url": "/labs/sde/"
+    "url": "/labs/command-injection/",
+    "service_name": "command-injection-lab",
+    "internal_port": 5013
   },
   "template-injection": {
-    "name": "Template Injection Lab",
+    "name": "Server-Side Template Injection Lab",
     "profile": "template-injection",
-    "url": "/labs/template-injection/"
+    "url": "/labs/template-injection/",
+    "service_name": "template-injection-lab",
+    "internal_port": 5015
   },
   "xxe": {
     "name": "XXE Lab",
     "profile": "xxe",
-    "url": "/labs/xxe/"
+    "url": "/labs/xxe/",
+    "service_name": "xxe-lab",
+    "internal_port": 5010
+  },
+  "broken-auth": {
+    "name": "Broken Authentication Lab",
+    "profile": "broken-auth",
+    "url": "/labs/broken-auth/",
+    "service_name": "broken-auth-lab",
+    "internal_port": 5000
+  },
+  "broken-access": {
+    "name": "Broken Access Control Lab",
+    "profile": "broken-access",
+    "url": "/labs/broken-access/",
+    "service_name": "broken-access-lab",
+    "internal_port": 8080
+  },
+  "crypto-failure": {
+    "name": "Cryptographic Failures Lab",
+    "profile": "crypto-failure",
+    "url": "/labs/crypto-failure/",
+    "service_name": "crypto-failure-lab",
+    "internal_port": 5000
+  },
+  "insecure-design": {
+    "name": "Insecure Design Lab",
+    "profile": "insecure-design",
+    "url": "/labs/insecure-design/",
+    "service_name": "insecure-design-lab",
+    "internal_port": 5008
+  },
+  "insec-des": {
+    "name": "Insecure Deserialization Lab",
+    "profile": "insec-des",
+    "url": "/labs/insec-des/",
+    "service_name": "insec-des-lab",
+    "internal_port": 8080
+  },
+  "sec-misconfig": {
+    "name": "Security Misconfiguration Lab",
+    "profile": "sec-misconfig",
+    "url": "/labs/sec-misconfig/",
+    "service_name": "sec-misconfig-lab",
+    "internal_port": 5009
+  },
+  "sensitive-data-exposure": {
+    "name": "Sensitive Data Exposure Lab",
+    "profile": "sensitive-data-exposure",
+    "url": "/labs/sensitive-data-exposure/",
+    "service_name": "sensitive-data-exposure-lab",
+    "internal_port": 8000
+  },
+  "auth-failure": {
+    "name": "Authentication Failure Lab",
+    "profile": "auth-failure",
+    "url": "/labs/auth-failure/",
+    "service_name": "auth-failure-lab",
+    "internal_port": 5007
+  },
+  "software-integrity": {
+    "name": "Software and Data Integrity Failures Lab",
+    "profile": "software-integrity",
+    "url": "/labs/software-integrity/",
+    "service_name": "software-integrity-lab",
+    "internal_port": 5011
+  },
+  "insufficient-logging": {
+    "name": "Security Logging and Monitoring Failures Lab",
+    "profile": "insufficient-logging",
+    "url": "/labs/insufficient-logging/",
+    "service_name": "insufficient-logging-lab",
+    "internal_port": 5014
+  },
+  "sde": {
+    "name": "Sensitive Data Exposure Lab (SDE)",
+    "profile": "sde",
+    "url": "/labs/sde/",
+    "service_name": "sde-lab",
+    "internal_port": 5100
   },
   "a9-uckv": {
-    "name": "A9 UCKV Lab",
+    "name": "Using Components with Known Vulnerabilities",
     "profile": "a9-uckv",
-    "url": "/labs/a9-uckv/"
+    "url": "/labs/a9-uckv/",
+    "service_name": "a9-uckv-lab",
+    "internal_port": 9000
   }
 }
