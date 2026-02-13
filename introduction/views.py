@@ -1164,8 +1164,8 @@ def ssrf_lab(request):
             try:
                 dirname = os.path.dirname(__file__)
                 filename = os.path.join(dirname, file)
-                file = open(filename, "r")
-                data = file.read()
+                with open(filename, "r") as f:
+                    data = f.read()
                 return render(request, "Lab/ssrf/ssrf_lab.html", {"blog": data})
             except:
                 return render(
@@ -1248,9 +1248,8 @@ def ssti_lab(request):
             filename = os.path.join(
                 dirname, f"templates/Lab_2021/A3_Injection/Blogs/{id}.html"
             )
-            file = open(filename, "w+")
-            file.write(blog)
-            file.close()
+            with open(filename, "w+") as file:
+                file.write(blog)
             return redirect(f"blog/{id}")
     else:
         return redirect("login")

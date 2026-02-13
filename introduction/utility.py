@@ -32,9 +32,8 @@ def ssrf_code_converter(code):
 
     dirname = os.path.dirname(__file__)
     filename = os.path.join(dirname, "playground/ssrf/main.py")
-    f = open(filename, "w")
-    f.write(output_Code)
-    f.close()
+    with open(filename, "w") as f:
+        f.write(output_Code)
     return 1
 
 
