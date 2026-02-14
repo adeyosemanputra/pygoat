@@ -35,6 +35,10 @@
                     
                     <form method="POST" action="/crypto_weak_random_lab">
                         {% csrf_token %}
+                        <div class="form-group" style="margin-bottom: 10px;">
+                            <label for="seed">Seed (e.g., UNIX timestamp in seconds)</label>
+                            <input type="number" class="form-control" id="seed" name="seed" placeholder="Enter seed value">
+                        </div>
                         <input type="hidden" name="action" value="generate">
                         <button type="submit" class="btn btn-primary">Generate Token</button>
                     </form>
