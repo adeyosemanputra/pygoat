@@ -159,11 +159,11 @@ def flip_bit(cookie_b64, position, flip_value):
 original = "YOUR_COOKIE_HERE"
 
 # To flip 'admin=0' to 'admin=1'
-# Position depends on username length
-# For 4-char username: position ~29
+# Position depends on username length and AES block boundaries (CBC uses the previous block).
+# For a 4-char username, '0' falls at the start of the second block, so flip byte 15 (0-based) in the ciphertext.
 # XOR with: ord('0') ^ ord('1') = 1
 
-modified = flip_bit(original, 29, 1)
+modified = flip_bit(original, 15, 1)
 print(modified)
                     </code></pre>
                     <small>Adjust position based on your username length</small>
