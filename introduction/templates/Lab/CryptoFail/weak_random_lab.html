@@ -110,11 +110,11 @@ def generate_session_token():
                     
                     <form method="POST" action="/crypto_weak_random_lab">
                         {% csrf_token %}
-                        <input type="hidden" name="action" value="access">
+                        <input type="hidden" name="action" value="submit">
                         
                         <div class="form-group">
-                            <label for="token">Session Token:</label>
-                            <input type="text" class="form-control" id="token" name="token" 
+                            <label for="admin_token">Session Token:</label>
+                            <input type="text" class="form-control" id="admin_token" name="admin_token" 
                                    placeholder="Enter predicted admin token" required>
                         </div>
                         
