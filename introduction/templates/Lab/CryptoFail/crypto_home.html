@@ -74,16 +74,29 @@
         </button>
       </div>
 
-      <!-- Scenario 3: Coming Soon -->
-      <div style="margin-bottom: 20px; padding: 15px; border: 1px solid #ddd; border-radius: 5px; opacity: 0.6;">
-        <h5>📌 Scenario 3: Insufficient Randomness (Coming Soon)</h5>
+      <!-- Scenario 3: Insufficient Randomness -->
+      <div style="margin-bottom: 20px; padding: 15px; border: 1px solid #ddd; border-radius: 5px;">
+        <h5>📌 Scenario 3: Insufficient Randomness</h5>
         <p class="bp">
           <strong>Vulnerability:</strong> Using predictable random number generators for tokens/sessions.
           <br>
           <strong>Impact:</strong> Session hijacking, account takeover.
         </p>
-        <button class="btn btn-secondary" type="button" disabled>
-          Coming in Phase 2
+        <button class="btn btn-info" type="button" onclick="window.location.href='/crypto_weak_random'">
+          Launch Lab 3
+        </button>
+      </div>
+
+      <!-- Scenario 4: CBC Bit-Flipping Attack -->
+      <div style="margin-bottom: 20px; padding: 15px; border: 1px solid #ddd; border-radius: 5px;">
+        <h5>📌 Scenario 4: CBC Bit-Flipping Attack</h5>
+        <p class="bp">
+          <strong>Vulnerability:</strong> AES-CBC encryption without HMAC allows ciphertext tampering.
+          <br>
+          <strong>Impact:</strong> Privilege escalation, data manipulation.
+        </p>
+        <button class="btn btn-info" type="button" onclick="window.location.href='/crypto_cbc_bitflip'">
+          Launch Lab 4
         </button>
       </div>
 

@@ -126,5 +126,9 @@ urlpatterns = [
     path("crypto_weak_encryption_lab", views.crypto_weak_encryption_lab, name="crypto_weak_encryption_lab"),
     path("crypto_insecure_storage", views.crypto_insecure_storage, name="crypto_insecure_storage"),
     path("crypto_insecure_storage_lab", views.crypto_insecure_storage_lab, name="crypto_insecure_storage_lab"),
+    path("crypto_weak_random", views.crypto_weak_random, name="crypto_weak_random"),
+    path("crypto_weak_random_lab", views.crypto_weak_random_lab, name="crypto_weak_random_lab"),
+    path("crypto_cbc_bitflip", views.crypto_cbc_bitflip, name="crypto_cbc_bitflip"),
+    path("crypto_cbc_bitflip_lab", views.crypto_cbc_bitflip_lab, name="crypto_cbc_bitflip_lab"),
 ]
 

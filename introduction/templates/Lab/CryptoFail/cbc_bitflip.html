@@ -1,0 +1,267 @@
+{% extends 'introduction/base.html' %}
+{% block content %}
+{% block title %}
+<title>Scenario 4: CBC Bit-Flipping Attack</title>
+{% endblock %}
+<div class="content">
+  <h3>Scenario 4: CBC Bit-Flipping Attack (Advanced)</h3>
+  <div class="box">
+
+    <h4>The Vulnerability</h4>
+    <p class="bp">
+      Using encryption modes like <strong>AES-CBC without integrity protection</strong> (HMAC or authenticated 
+      encryption) makes the ciphertext vulnerable to manipulation. Attackers can flip bits in the ciphertext 
+      to cause predictable changes in the plaintext after decryption, leading to privilege escalation and 
+      unauthorized access.
+    </p>
+    <p class="bp">
+      Common vulnerable patterns:
+    <ul>
+      <li>Encrypting session data/cookies with CBC mode only</li>
+      <li>No HMAC or message authentication code (MAC)</li>
+      <li>Using AES-CBC instead of AES-GCM (authenticated encryption)</li>
+      <li>Storing user roles/permissions in encrypted cookies without integrity checks</li>
+    </ul>
+    </p>
+
+    <button class="coll btn btn-info">How CBC Mode Works</button>
+    <div class="lab">
+      <h5>Cipher Block Chaining (CBC):</h5>
+      <p>In CBC mode, each plaintext block is XORed with the previous ciphertext block before encryption:</p>
+      <pre>
+C[0] = Encrypt(P[0] XOR IV)
+C[1] = Encrypt(P[1] XOR C[0])
+C[2] = Encrypt(P[2] XOR C[1])
+      </pre>
+
+      <p><strong>Decryption process:</strong></p>
+      <pre>
+P[0] = Decrypt(C[0]) XOR IV
+P[1] = Decrypt(C[1]) XOR C[0]
+P[2] = Decrypt(C[2]) XOR C[1]
+      </pre>
+
+      <h5>The Vulnerability:</h5>
+      <p>
+        If we modify C[0], it changes P[1] in a predictable way through the XOR operation. 
+        <strong>Without integrity protection, the attacker can manipulate ciphertext to change plaintext!</strong>
+      </p>
+    </div>
+
+    <button class="coll btn btn-info">How the Attack Works</button>
+    <div class="lab">
+      <h5>Bit-Flipping Attack Steps:</h5>
+      <ol>
+        <li><strong>Obtain encrypted cookie:</strong> Create account with known data (e.g., user=bob;admin=0)</li>
+        <li><strong>Identify target bits:</strong> Know which bytes to flip (admin=0 to admin=1)</li>
+        <li><strong>Calculate flip mask:</strong> XOR manipulation: 0x30 XOR 0x30 XOR 0x31 = 0x01</li>
+        <li><strong>Modify ciphertext:</strong> Flip the corresponding bit in the previous ciphertext block</li>
+        <li><strong>Submit modified cookie:</strong> Server decrypts and processes tampered data</li>
+        <li><strong>Privilege escalation:</strong> Now authenticated as admin!</li>
+      </ol>
+
+      <h5>Example Scenario:</h5>
+      <div class="alert alert-warning">
+        <p><strong>Original plaintext:</strong> <code>{"user":"bob","admin":false}</code></p>
+        <p><strong>After bit-flipping:</strong> <code>{"user":"bob","admin":true}</code></p>
+        <p>The attacker becomes admin without knowing the encryption key!</p>
+      </div>
+    </div>
+
+    <button class="coll btn btn-info">Vulnerable Code Example</button>
+    <div class="lab">
+      <pre><code class="python">
+# VULNERABLE CODE - Encryption without authentication
+from Crypto.Cipher import AES
+from Crypto.Util.Padding import pad, unpad
+import base64
+
+KEY = b'sixteen_byte_key'
+IV = b'sixteen_byte_iv!'
+
+def create_session_cookie(username, is_admin):
+    # Create session data
+    data = f"user={username};admin={1 if is_admin else 0}"
+    
+    # Encrypt with CBC mode (NO HMAC!)
+    cipher = AES.new(KEY, AES.MODE_CBC, IV)
+    ciphertext = cipher.encrypt(pad(data.encode(), AES.block_size))
+    
+    # Return base64 encoded cookie
+    return base64.b64encode(ciphertext).decode()
+
+def validate_session_cookie(cookie):
+    # Decrypt cookie
+    ciphertext = base64.b64decode(cookie)
+    cipher = AES.new(KEY, AES.MODE_CBC, IV)
+    plaintext = unpad(cipher.decrypt(ciphertext), AES.block_size)
+    
+    # Parse session data (vulnerable - no integrity check!)
+    data = plaintext.decode()
+    is_admin = 'admin=1' in data
+    
+    return is_admin  # Attacker can manipulate this!
+      </code></pre>
+
+      <h5>Why This Fails:</h5>
+      <ul>
+        <li>No HMAC or MAC to verify ciphertext integrity</li>
+        <li>Modifications to ciphertext go undetected</li>
+        <li>XOR properties allow predictable bit flips</li>
+        <li>First block (IV) can be manipulated to affect second block plaintext</li>
+      </ul>
+    </div>
+
+    <button class="coll btn btn-info">Secure Code Example</button>
+    <div class="lab">
+      <h5>Option 1: Use Authenticated Encryption (AES-GCM)</h5>
+      <pre><code class="python">
+# SECURE - Using AES-GCM (authenticated encryption)
+from Crypto.Cipher import AES
+import base64
+import os
+
+def create_session_cookie(username, is_admin):
+    data = f"user={username};admin={1 if is_admin else 0}"
+    
+    # Generate random nonce for each encryption
+    nonce = os.urandom(12)
+    
+    # Use GCM mode (provides both encryption and authentication)
+    cipher = AES.new(KEY, AES.MODE_GCM, nonce=nonce)
+    ciphertext, tag = cipher.encrypt_and_digest(data.encode())
+    
+    # Include nonce and tag with ciphertext
+    cookie_data = nonce + tag + ciphertext
+    return base64.b64encode(cookie_data).decode()
+
+def validate_session_cookie(cookie):
+    cookie_data = base64.b64decode(cookie)
+    
+    nonce = cookie_data[:12]
+    tag = cookie_data[12:28]
+    ciphertext = cookie_data[28:]
+    
+    cipher = AES.new(KEY, AES.MODE_GCM, nonce=nonce)
+    
+    try:
+        # Verify AND decrypt (will fail if tampered!)
+        plaintext = cipher.decrypt_and_verify(ciphertext, tag)
+        data = plaintext.decode()
+        return 'admin=1' in data
+    except ValueError:
+        # Tampering detected!
+        return False
+      </code></pre>
+
+      <h5>Option 2: Encrypt-then-MAC</h5>
+      <pre><code class="python">
+# SECURE - CBC with HMAC (Encrypt-then-MAC)
+import hmac
+import hashlib
+
+def create_session_cookie(username, is_admin):
+    data = f"user={username};admin={1 if is_admin else 0}"
+    
+    # Encrypt with CBC
+    cipher = AES.new(KEY, AES.MODE_CBC, IV)
+    ciphertext = cipher.encrypt(pad(data.encode(), AES.block_size))
+    
+    # Create HMAC of ciphertext
+    mac = hmac.new(MAC_KEY, ciphertext, hashlib.sha256).digest()
+    
+    # Return ciphertext + MAC
+    cookie_data = ciphertext + mac
+    return base64.b64encode(cookie_data).decode()
+
+def validate_session_cookie(cookie):
+    cookie_data = base64.b64decode(cookie)
+    
+    ciphertext = cookie_data[:-32]  # All but last 32 bytes
+    received_mac = cookie_data[-32:]  # Last 32 bytes
+    
+    # Verify HMAC first!
+    expected_mac = hmac.new(MAC_KEY, ciphertext, hashlib.sha256).digest()
+    
+    if not hmac.compare_digest(received_mac, expected_mac):
+        raise ValueError("MAC verification failed - tampering detected!")
+    
+    # Only decrypt if MAC is valid
+    cipher = AES.new(KEY, AES.MODE_CBC, IV)
+    plaintext = unpad(cipher.decrypt(ciphertext), AES.block_size)
+    
+    data = plaintext.decode()
+    return 'admin=1' in data
+      </code></pre>
+    </div>
+
+    <h4>Your Mission</h4>
+    <div class="alert alert-warning" style="margin-top: 20px;">
+      <strong>Challenge:</strong> This lab has a vulnerable session cookie system using CBC without authentication.
+      Your tasks:
+      <ol>
+        <li>Create a regular user account</li>
+        <li>Obtain your encrypted session cookie</li>
+        <li>Perform a bit-flipping attack to change <code>admin=0</code> to <code>admin=1</code></li>
+        <li>Submit the modified cookie</li>
+        <li>Access the admin panel and retrieve the flag</li>
+      </ol>
+    </div>
+
+    <br>
+    <div align="right">
+      <button class="btn btn-info" type="button" onclick="window.location.href='/crypto_cbc_bitflip_lab'">
+        Access Lab
+      </button>
+    </div>
+
+    <h4>Mitigation</h4>
+    <p class="bp">
+      <strong>Best Practices:</strong>
+    <ul>
+      <li>Use <strong>AES-GCM</strong> or <strong>ChaCha20-Poly1305</strong> for authenticated encryption</li>
+      <li>If using CBC, always implement <strong>Encrypt-then-MAC</strong> (not MAC-then-Encrypt)</li>
+      <li>Use separate keys for encryption and MAC</li>
+      <li>Validate MAC before decryption</li>
+      <li>Use constant-time comparison for MAC verification</li>
+      <li>Never trust client-side data without cryptographic verification</li>
+      <li>Consider using signed JWTs instead of encrypted cookies</li>
+    </ul>
+    </p>
+
+    <button class="coll btn btn-info">Learning Resources</button>
+    <div class="lab">
+      <ul>
+        <li><a href="https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#CBC" target="_blank">Wikipedia: Cipher Block Chaining</a></li>
+        <li><a href="https://cryptopals.com/sets/2/challenges/16" target="_blank">Cryptopals Challenge 16: CBC Bitflipping</a></li>
+        <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Cryptographic_Storage_Cheat_Sheet.html" target="_blank">OWASP Cryptographic Storage Cheat Sheet</a></li>
+        <li><a href="https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-38a.pdf" target="_blank">NIST SP 800-38A: Block Cipher Modes</a></li>
+      </ul>
+    </div>
+
+    <br>
+    <div align="right">
+      <button class="btn btn-secondary" type="button" onclick="window.location.href='/crypto_home'">
+        Back to Crypto Home
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  var coll = document.getElementsByClassName("coll");
+  for (var i = 0; i < coll.length; i++) {
+    coll[i].addEventListener("click", function() {
+      this.classList.toggle("active");
+      var content = this.nextElementSibling;
+      if (content.style.display === "block") {
+        content.style.display = "none";
+      } else {
+        content.style.display = "block";
+      }
+    });
+  }
+</script>
+
+{% endblock %}

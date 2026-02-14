@@ -9,6 +9,7 @@ import random
 import re
 import string
 import subprocess
+import time
 import uuid
 from dataclasses import dataclass
 from hashlib import md5
@@ -1363,3 +1364,143 @@ def crypto_insecure_storage_lab(request):
                 context['decrypt_error'] = 'Invalid key or ciphertext. Make sure you copied them correctly.'
     
     return render(request, 'Lab/CryptoFail/insecure_storage_lab.html', context)
+
+
+#----- Phase 2: Scenario 3 - Weak Randomness -----#
+
+@authentication_decorator
+def crypto_weak_random(request):
+    return render(request, 'Lab/CryptoFail/weak_random.html')
+
+@authentication_decorator
+def crypto_weak_random_lab(request):
+    # VULNERABLE: Weak PRNG with predictable seed
+    # Admin token was generated at a known timestamp
+    admin_time = 1704063600  # January 1, 2024 00:00:00 UTC
+    
+    # Generate admin token using weak PRNG (same method as in the challenge)
+    random.seed(int(admin_time))
+    admin_token = ''.join(random.choices('0123456789abcdef', k=32))
+    
+    # Reset random seed to show current time
+    current_time = int(time.time())
+    
+    # Generate a user token with current time for demonstration
+    random.seed(current_time)
+    user_token = ''.join(random.choices('0123456789abcdef', k=32))
+    
+    context = {
+        'admin_time': admin_time,
+        'current_time': current_time,
+        'user_token': user_token,
+        'token_generated': False,
+        'flag_found': False,
+    }
+    
+    if request.method == 'POST':
+        # Check if user is generating a token
+        if 'action' in request.POST and request.POST['action'] == 'generate':
+            seed_value = request.POST.get('seed', '').strip()
+            
+            if seed_value:
+                try:
+                    seed_int = int(seed_value)
+                    random.seed(seed_int)
+                    generated_token = ''.join(random.choices('0123456789abcdef', k=32))
+                    
+                    context['token_generated'] = True
+                    context['generated_token'] = generated_token
+                    context['seed_used'] = seed_int
+                    
+                except ValueError:
+                    context['error'] = 'Seed must be an integer'
+        
+        # Check if user is submitting an admin token guess
+        elif 'action' in request.POST and request.POST['action'] == 'submit':
+            submitted_token = request.POST.get('admin_token', '').strip()
+            
+            if submitted_token == admin_token:
+                context['flag_found'] = True
+                context['flag'] = 'FLAG{PREDICTABLE_RANDOM_IS_NOT_RANDOM}'
+            else:
+                context['error'] = 'Incorrect admin token. Try predicting it using the timestamp!'
+    
+    return render(request, 'Lab/CryptoFail/weak_random_lab.html', context)
+
+
+#----- Phase 2: Scenario 4 - CBC Bit-Flipping -----#
+
+@authentication_decorator
+def crypto_cbc_bitflip(request):
+    return render(request, 'Lab/CryptoFail/cbc_bitflip.html')
+
+@authentication_decorator
+def crypto_cbc_bitflip_lab(request):
+    from Crypto.Cipher import AES
+    from Crypto.Util.Padding import pad, unpad
+    
+    # Fixed key and IV for demonstration (in real app, these would be secret)
+    KEY = b'YELLOW_SUBMARINE'  # 16 bytes
+    IV = b'FEDCBA9876543210'   # 16 bytes
+    
+    context = {
+        'encryption_key': KEY.decode('latin-1'),
+        'encryption_iv': IV.decode('latin-1'),
+        'cookie_created': False,
+        'access_granted': False,
+        'access_denied': False,
+    }
+    
+    def encrypt_cookie(plaintext):
+        cipher = AES.new(KEY, AES.MODE_CBC, IV)
+        padded = pad(plaintext.encode(), 16)
+        ciphertext = cipher.encrypt(padded)
+        return base64.b64encode(ciphertext).decode()
+    
+    def decrypt_cookie(cookie_b64):
+        try:
+            ciphertext = base64.b64decode(cookie_b64)
+            cipher = AES.new(KEY, AES.MODE_CBC, IV)
+            plaintext = unpad(cipher.decrypt(ciphertext), 16)
+            return plaintext.decode('latin-1', errors='ignore')
+        except:
+            return None
+    
+    if request.method == 'POST':
+        action = request.POST.get('action', '')
+        
+        # Create new account
+        if action == 'create':
+            username = request.POST.get('username', '').strip()
+            
+            if username and len(username) <= 8:
+                # Create cookie with admin=0
+                cookie_data = f"user={username};admin=0"
+                encrypted = encrypt_cookie(cookie_data)
+                
+                context['cookie_created'] = True
+                context['session_cookie'] = encrypted
+                context['username'] = username
+        
+        # Access admin panel
+        elif action == 'access':
+            cookie = request.POST.get('cookie', '').strip()
+            
+            if cookie:
+                decrypted = decrypt_cookie(cookie)
+                
+                if decrypted:
+                    context['decrypted_data'] = decrypted
+                    
+                    # Check if admin=1 is present
+                    if 'admin=1' in decrypted:
+                        context['access_granted'] = True
+                        context['flag'] = 'FLAG{CBC_WITHOUT_MAC_ALLOWS_TAMPERING}'
+                    else:
+                        context['access_denied'] = True
+                        context['error_message'] = f'Admin access required. Decrypted: {decrypted}'
+                else:
+                    context['access_denied'] = True
+                    context['error_message'] = 'Invalid cookie or padding error'
+    
+    return render(request, 'Lab/CryptoFail/cbc_bitflip_lab.html', context)
