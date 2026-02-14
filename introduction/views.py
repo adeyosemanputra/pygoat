@@ -1255,7 +1255,6 @@ def crypto_weak_encryption(request):
 
 # Scenario 1: Weak Encryption - Lab
 @authentication_decorator
-@csrf_exempt
 def crypto_weak_encryption_lab(request):
     # Pre-populate admin user with MD5 hash (password: "admin123")
     admin_hash = "0192023a7bbd73250516f069df18b500"  # MD5 of "admin123"
