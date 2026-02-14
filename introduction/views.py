@@ -1236,3 +1236,130 @@ def software_and_data_integrity_failure_lab3(request):
 def A6_discussion(request):
     
     return render(request,"playground/A6/index.html")
+
+
+#************************************************* A02:2025 Cryptographic Failures **************************************************#
+
+# Crypto Failures Home Page
+@authentication_decorator
+def crypto_home(request):
+    return render(request, 'Lab/CryptoFail/crypto_home.html')
+
+
+# Scenario 1: Weak Encryption - Info Page
+@authentication_decorator
+def crypto_weak_encryption(request):
+    return render(request, 'Lab/CryptoFail/weak_encryption.html')
+
+
+# Scenario 1: Weak Encryption - Lab
+@authentication_decorator
+@csrf_exempt
+def crypto_weak_encryption_lab(request):
+    # Pre-populate admin user with MD5 hash (password: "admin123")
+    admin_hash = "0192023a7bbd73250516f069df18b500"  # MD5 of "admin123"
+    
+    # Get or create admin user
+    admin_user, _ = CF_user.objects.get_or_create(
+        username='admin',
+        defaults={'password': admin_hash}
+    )
+    
+    context = {
+        'admin_hash': admin_hash,
+        'users': CF_user.objects.all()
+    }
+    
+    if request.method == 'POST':
+        action = request.POST.get('action')
+        username = request.POST.get('username', '').strip()
+        password = request.POST.get('password', '').strip()
+        
+        if action == 'register':
+            # Registration logic with MD5 (VULNERABLE!)
+            if username and password:
+                if CF_user.objects.filter(username=username).exists():
+                    context['register_error'] = f'Username "{username}" already exists!'
+                else:
+                    # VULNERABLE: Using MD5 for password hashing
+                    password_hash = hashlib.md5(password.encode()).hexdigest()
+                    new_user = CF_user.objects.create(
+                        username=username,
+                        password=password_hash
+                    )
+                    context['register_success'] = True
+                    context['user_hash'] = password_hash
+                    context['users'] = CF_user.objects.all()
+            else:
+                context['register_error'] = 'Username and password are required!'
+        
+        elif action == 'login':
+            # Login logic with MD5 (VULNERABLE!)
+            if username and password:
+                password_hash = hashlib.md5(password.encode()).hexdigest()
+                user = CF_user.objects.filter(username=username, password=password_hash).first()
+                
+                if user:
+                    context['login_success'] = True
+                    context['logged_in_user'] = username
+                    if username == 'admin':
+                        context['is_admin'] = True
+                else:
+                    context['login_error'] = 'Invalid username or password!'
+            else:
+                context['login_error'] = 'Username and password are required!'
+    
+    return render(request, 'Lab/CryptoFail/weak_encryption_lab.html', context)
+
+
+# Scenario 2: Insecure Storage - Info Page
+@authentication_decorator
+def crypto_insecure_storage(request):
+    return render(request, 'Lab/CryptoFail/insecure_storage.html')
+
+
+# Scenario 2: Insecure Storage - Lab
+@authentication_decorator
+@csrf_exempt
+def crypto_insecure_storage_lab(request):
+    # VULNERABLE: Hardcoded encryption key (this is what attackers will find)
+    from cryptography.fernet import Fernet
+    
+    # Generate a hardcoded key for demonstration (in real app, this would be in source code)
+    HARDCODED_KEY = b'ZmDfcTF7_60GrrY167zsiPd67pEvs0aGOv2oasOM1Pg='
+    
+    # Create cipher with hardcoded key
+    cipher = Fernet(HARDCODED_KEY)
+    
+    # Pre-encrypted sensitive data (encrypted with the hardcoded key)
+    encrypted_password = cipher.encrypt(b"SuperSecret123!").decode()
+    encrypted_api_key = cipher.encrypt(b"sk-1234567890abcdef").decode()
+    encrypted_flag = cipher.encrypt(b"FLAG{HARDCODED_KEYS_DESTROY_ENCRYPTION}").decode()
+    
+    context = {
+        'encryption_key': HARDCODED_KEY.decode(),
+        'encrypted_password': encrypted_password,
+        'encrypted_api_key': encrypted_api_key,
+        'encrypted_flag': encrypted_flag,
+    }
+    
+    if request.method == 'POST':
+        user_key = request.POST.get('encryption_key', '').strip()
+        ciphertext = request.POST.get('ciphertext', '').strip()
+        
+        if user_key and ciphertext:
+            try:
+                # Try to decrypt with user-provided key
+                user_cipher = Fernet(user_key.encode())
+                decrypted = user_cipher.decrypt(ciphertext.encode()).decode()
+                
+                context['decrypted_data'] = decrypted
+                
+                # Check if it's the flag
+                if 'FLAG{' in decrypted:
+                    context['is_flag'] = True
+                    
+            except Exception as e:
+                context['decrypt_error'] = 'Invalid key or ciphertext. Make sure you copied them correctly.'
+    
+    return render(request, 'Lab/CryptoFail/insecure_storage_lab.html', context)

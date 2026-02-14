@@ -1,0 +1,127 @@
+{% extends 'introduction/base.html' %}
+{% block content %}
+{% block title %}
+<title>A02:2025 Cryptographic Failures</title>
+{% endblock %}
+<div class="content">
+  <h3>A02:2025 Cryptographic Failures</h3>
+  <div class="box">
+
+    <h4>What are Cryptographic Failures?</h4>
+    <p class="bp">
+      <strong>OWASP Top 10:2025 ranks Cryptographic Failures as #2</strong>, evolving from "Sensitive Data Exposure"
+      to focus specifically on cryptographic implementation failures that lead to data breaches.
+    </p>
+    <p class="bp">
+      Cryptographic failures occur when applications improperly protect sensitive data through:
+    <ul>
+      <li><strong>Weak encryption algorithms</strong> - Using deprecated algorithms like DES, 3DES, or MD5</li>
+      <li><strong>Insecure key management</strong> - Hardcoded keys, weak key derivation, or plaintext storage</li>
+      <li><strong>Insufficient randomness</strong> - Using predictable random number generators for security-critical operations</li>
+      <li><strong>Lack of integrity protection</strong> - Encryption without authentication (e.g., CBC without HMAC)</li>
+      <li><strong>Improper algorithm implementation</strong> - Custom crypto, weak parameters, or misuse of libraries</li>
+    </ul>
+    </p>
+
+    <h4>Real-World Impact</h4>
+    <p class="bp">
+      Major breaches involving cryptographic failures:
+    <ul>
+      <li><strong>LinkedIn (2012)</strong> - 117M passwords stolen, hashed with unsalted SHA-1</li>
+      <li><strong>Adobe (2013)</strong> - 150M records encrypted with faulty ECB mode encryption</li>
+      <li><strong>Equifax (2017)</strong> - Weak cryptographic practices contributed to 147M records exposed</li>
+      <li><strong>Marriott (2018)</strong> - Poor encryption key management led to 500M guest records compromised</li>
+    </ul>
+    </p>
+
+    <h4>CWE Mappings</h4>
+    <p class="bp">
+      A02:2025 maps to several Common Weakness Enumerations:
+    <ul>
+      <li><strong>CWE-259</strong> - Use of Hard-coded Password</li>
+      <li><strong>CWE-327</strong> - Use of a Broken or Risky Cryptographic Algorithm</li>
+      <li><strong>CWE-330</strong> - Use of Insufficiently Random Values</li>
+      <li><strong>CWE-338</strong> - Use of Cryptographically Weak Pseudo-Random Number Generator (PRNG)</li>
+    </ul>
+    </p>
+
+    <h4>Lab Scenarios</h4>
+    <div class="lab">
+      
+      <!-- Scenario 1: Weak Encryption -->
+      <div style="margin-bottom: 20px; padding: 15px; border: 1px solid #ddd; border-radius: 5px;">
+        <h5>📌 Scenario 1: Weak Encryption Algorithm</h5>
+        <p class="bp">
+          <strong>Vulnerability:</strong> Application uses MD5 for password hashing instead of modern algorithms.
+          <br>
+          <strong>Impact:</strong> Passwords can be cracked using rainbow tables or brute force.
+        </p>
+        <button class="btn btn-info" type="button" onclick="window.location.href='/crypto_weak_encryption'">
+          Launch Lab 1
+        </button>
+      </div>
+
+      <!-- Scenario 2: Insecure Storage -->
+      <div style="margin-bottom: 20px; padding: 15px; border: 1px solid #ddd; border-radius: 5px;">
+        <h5>📌 Scenario 2: Insecure Cryptographic Storage</h5>
+        <p class="bp">
+          <strong>Vulnerability:</strong> Encryption keys hardcoded in source code or stored in plaintext.
+          <br>
+          <strong>Impact:</strong> Complete compromise of all "encrypted" data.
+        </p>
+        <button class="btn btn-info" type="button" onclick="window.location.href='/crypto_insecure_storage'">
+          Launch Lab 2
+        </button>
+      </div>
+
+      <!-- Scenario 3: Coming Soon -->
+      <div style="margin-bottom: 20px; padding: 15px; border: 1px solid #ddd; border-radius: 5px; opacity: 0.6;">
+        <h5>📌 Scenario 3: Insufficient Randomness (Coming Soon)</h5>
+        <p class="bp">
+          <strong>Vulnerability:</strong> Using predictable random number generators for tokens/sessions.
+          <br>
+          <strong>Impact:</strong> Session hijacking, account takeover.
+        </p>
+        <button class="btn btn-secondary" type="button" disabled>
+          Coming in Phase 2
+        </button>
+      </div>
+
+    </div>
+
+    <h4>Mitigation Best Practices</h4>
+    <p class="bp">
+      Follow these guidelines to prevent cryptographic failures:
+    <ul>
+      <li>✅ Use <strong>bcrypt, Argon2, or PBKDF2</strong> for password hashing (never MD5/SHA-1)</li>
+      <li>✅ Use <strong>AES-256-GCM</strong> for encryption with authenticated encryption</li>
+      <li>✅ Use <strong>secrets module</strong> (Python) for generating cryptographically secure random values</li>
+      <li>✅ <strong>Never hardcode</strong> encryption keys - use environment variables or key vaults</li>
+      <li>✅ Always transmit sensitive data over <strong>TLS 1.2+</strong></li>
+      <li>✅ Implement <strong>proper key rotation</strong> policies</li>
+      <li>✅ Use established crypto libraries - <strong>never roll your own crypto!</strong></li>
+    </ul>
+    </p>
+
+    <h4>Regulatory Requirements</h4>
+    <p class="bp">
+      Proper cryptography is mandated by:
+    <ul>
+      <li><strong>GDPR</strong> (Article 32) - Encryption of personal data</li>
+      <li><strong>PCI-DSS</strong> (Requirement 3) - Protect stored cardholder data</li>
+      <li><strong>HIPAA</strong> - Encryption of ePHI (electronic Protected Health Information)</li>
+      <li><strong>NIST</strong> - Cryptographic standards and guidelines</li>
+    </ul>
+    </p>
+
+    <h4>Resources</h4>
+    <ul>
+      <li><a href="https://owasp.org/Top10/A02_2021-Cryptographic_Failures/" target="_blank">OWASP A02:2021 Cryptographic Failures</a></li>
+      <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Cryptographic_Storage_Cheat_Sheet.html" target="_blank">OWASP Cryptographic Storage Cheat Sheet</a></li>
+      <li><a href="https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-57pt1r5.pdf" target="_blank">NIST Key Management Guidelines</a></li>
+    </ul>
+
+  </div>
+</div>
+
+{% endblock %}

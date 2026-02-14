@@ -1,0 +1,207 @@
+{% extends "introduction/base.html" %}
+{% load static %}
+{% block content %}
+{% block title %}
+<title>Weak Encryption Lab</title>
+{% endblock %}
+
+<div class="jumbotron">
+    <h4 style="text-align:center">🔓 Weak Encryption Lab - MD5 Password Storage</h4>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <!-- Registration Form -->
+            <div class="card" style="margin-bottom: 20px;">
+                <div class="card-header bg-primary text-white">
+                    <h5>Register New User</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="/crypto_weak_encryption_lab">
+                        {% csrf_token %}
+                        <input type="hidden" name="action" value="register">
+                        
+                        <div class="form-group">
+                            <label for="reg_username">Username:</label>
+                            <input type="text" class="form-control" id="reg_username" name="username" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="reg_password">Password:</label>
+                            <input type="password" class="form-control" id="reg_password" name="password" required>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">Register</button>
+                    </form>
+                    
+                    {% if register_success %}
+                    <div class="alert alert-success" style="margin-top: 10px;">
+                        ✅ User registered successfully!<br>
+                        <small><strong>Debug Info:</strong> Password hash (MD5): <code>{{ user_hash }}</code></small>
+                    </div>
+                    {% endif %}
+                    
+                    {% if register_error %}
+                    <div class="alert alert-danger" style="margin-top: 10px;">
+                        ❌ {{ register_error }}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <!-- Login Form -->
+            <div class="card" style="margin-bottom: 20px;">
+                <div class="card-header bg-success text-white">
+                    <h5>Login</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="/crypto_weak_encryption_lab">
+                        {% csrf_token %}
+                        <input type="hidden" name="action" value="login">
+                        
+                        <div class="form-group">
+                            <label for="login_username">Username:</label>
+                            <input type="text" class="form-control" id="login_username" name="username" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="login_password">Password:</label>
+                            <input type="password" class="form-control" id="login_password" name="password" required>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-success">Login</button>
+                    </form>
+                    
+                    {% if login_success %}
+                    <div class="alert alert-success" style="margin-top: 10px;">
+                        ✅ Login successful! Welcome, <strong>{{ logged_in_user }}</strong>!<br>
+                        {% if is_admin %}
+                        <div class="alert alert-warning" style="margin-top: 10px;">
+                            🎯 <strong>FLAG FOUND:</strong> <code>CRYPTO_MD5_IS_BROKEN_2025</code>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                    
+                    {% if login_error %}
+                    <div class="alert alert-danger" style="margin-top: 10px;">
+                        ❌ {{ login_error }}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Vulnerability Explanation -->
+    <div class="card">
+        <div class="card-header bg-warning">
+            <h5>🎯 Lab Challenge</h5>
+        </div>
+        <div class="card-body">
+            <p><strong>Objective:</strong> Crack the admin account password and login to retrieve the flag.</p>
+            
+            <details>
+                <summary><strong>Hint 1: Admin Account</strong> (Click to reveal)</summary>
+                <p>There's a pre-existing admin account: <code>admin</code></p>
+            </details>
+            
+            <details style="margin-top: 10px;">
+                <summary><strong>Hint 2: How to Get the Hash</strong> (Click to reveal)</summary>
+                <p>Register a new user and look at the "Debug Info" that shows the MD5 hash. 
+                   The admin's password hash is also stored in the database using MD5.</p>
+            </details>
+            
+            <details style="margin-top: 10px;">
+                <summary><strong>Hint 3: Typical Admin Password</strong> (Click to reveal)</summary>
+                <p>The admin uses a common password. Try common passwords or use a hash cracking website like:
+                <ul>
+                    <li><a href="https://crackstation.net/" target="_blank">CrackStation</a></li>
+                    <li><a href="https://md5decrypt.net/" target="_blank">MD5 Decrypt</a></li>
+                </ul>
+                </p>
+            </details>
+            
+            <details style="margin-top: 10px;">
+                <summary><strong>Hint 4: Admin Password Hash</strong> (Click to reveal)</summary>
+                <p>Admin's MD5 hash: <code>{{ admin_hash }}</code></p>
+                <p>Copy this hash and paste it into an online MD5 cracking tool.</p>
+            </details>
+        </div>
+    </div>
+
+    <!-- Stored Users Table (for educational purposes) -->
+    {% if users %}
+    <div class="card" style="margin-top: 20px;">
+        <div class="card-header bg-info text-white">
+            <h5>💾 Database Contents (Debug Mode)</h5>
+        </div>
+        <div class="card-body">
+            <p><em>This demonstrates what an attacker might see after gaining database access:</em></p>
+            <table class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Username</th>
+                        <th>Password Hash (MD5)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                    <tr>
+                        <td>{{ user.id }}</td>
+                        <td>{{ user.username }}</td>
+                        <td><code>{{ user.password }}</code></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Why This Is Vulnerable -->
+    <div class="alert alert-danger" style="margin-top: 20px;">
+        <h5>⚠️ Why MD5 is Insecure for Passwords:</h5>
+        <ul>
+            <li><strong>Speed:</strong> Modern GPUs can compute billions of MD5 hashes per second</li>
+            <li><strong>Rainbow tables:</strong> Precomputed hash databases cover common passwords</li>
+            <li><strong>No salt:</strong> Same password = same hash (vulnerable to dictionary attacks)</li>
+            <li><strong>Cryptographically broken:</strong> Collision attacks discovered since 1996</li>
+        </ul>
+        <p><strong>Solution:</strong> Use bcrypt, Argon2, or PBKDF2 with proper salt and work factors.</p>
+    </div>
+
+</div>
+
+<br>
+<div align="right">
+    <button class="btn btn-info" type="button" onclick="window.location.href='/crypto_weak_encryption'">
+        Back to Lab Details
+    </button>
+    <button class="btn btn-secondary" type="button" onclick="window.location.href='/crypto_home'">
+        Back to Crypto Home
+    </button>
+</div>
+
+<style>
+    details {
+        cursor: pointer;
+        padding: 10px;
+        background-color: #f8f9fa;
+        border: 1px solid #dee2e6;
+        border-radius: 4px;
+    }
+    summary {
+        font-weight: bold;
+        user-select: none;
+    }
+    details[open] {
+        background-color: #fff3cd;
+    }
+</style>
+
+{% endblock %}

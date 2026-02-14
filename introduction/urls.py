@@ -120,4 +120,11 @@ urlpatterns = [
     path("mitre/25/lab", mitre.mitre_lab_25, name="mitre_lab_25"),
     path("mitre/17/lab", mitre.mitre_lab_17, name="mitre_lab_17"),
     path("mitre/17/lab/api",mitre.mitre_lab_17_api,name="mitre_lab_17_api"),
+    ##------------------- A02:2025 Cryptographic Failures --------------------------------------------------------------|
+    path("crypto_home", views.crypto_home, name="crypto_home"),
+    path("crypto_weak_encryption", views.crypto_weak_encryption, name="crypto_weak_encryption"),
+    path("crypto_weak_encryption_lab", views.crypto_weak_encryption_lab, name="crypto_weak_encryption_lab"),
+    path("crypto_insecure_storage", views.crypto_insecure_storage, name="crypto_insecure_storage"),
+    path("crypto_insecure_storage_lab", views.crypto_insecure_storage_lab, name="crypto_insecure_storage_lab"),
 ]
+
