@@ -1321,7 +1321,6 @@ def crypto_insecure_storage(request):
 
 # Scenario 2: Insecure Storage - Lab
 @authentication_decorator
-@csrf_exempt
 def crypto_insecure_storage_lab(request):
     # VULNERABLE: Hardcoded encryption key (this is what attackers will find)
     from cryptography.fernet import Fernet
