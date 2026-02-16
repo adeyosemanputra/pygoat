@@ -33,6 +33,11 @@ First, Clone the repository using GitHub website or git in Terminal
   git clone -b <branch_name> https://github.com/adeyosemanputra/pygoat.git
 ```
 Then, Install Traefik on your local machine (if not using docker compose) using these [steps](https://doc.traefik.io/traefik/getting-started/install-traefik/)
+Make sure that Traefik can be accessed globally to manage your local routing.
+Open a separate terminal, navigate to the PyGoat main directory, and run:
+```
+./traefik
+```
 
 #### Method 1
 
@@ -100,7 +105,7 @@ cd your_lab_name
 
 ### Step 2: Create Required Files
 
-Create the standard Flask application structure with a Dockerfile, docker-compose.yml, requirements.txt, app.py with your vulnerable endpoints, templates and static folders for your UI, and a README.md documenting the lab. Refer to existing labs in the dockerized_labs folder for examples.
+Create the standard application structure with a Dockerfile, docker-compose.yml, requirements.txt (if using Python), a main application entry point (e.g., app.py, main.py, or equivalent), vulnerable endpoints or components relevant to the lab, and a README.md documenting the lab. The application does not necessarily have to be a Flask application—it can be any Python project (preferred, since this is part of Pygoat), or even another language if appropriate. Refer to existing labs in the dockerized_labs folder for examples and structure conventions.
 
 **Important**: Add a `/health` endpoint in your app.py for container health check.
 
