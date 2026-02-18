@@ -71,6 +71,26 @@ services:
       - labs
       - command-injection
 
+  template-injection-lab:
+    build:
+      context: dockerized_labs/template_injection_lab/
+    container_name: template-injection-lab
+    networks:
+      - my_network
+    profiles:
+      - labs
+      - template-injection
+
+  xxe-lab:
+    build:
+      context: dockerized_labs/xxe_lab/
+    container_name: xxe-lab
+    networks:
+      - my_network
+    profiles:
+      - labs
+      - xxe
+
   broken-auth-lab:
     build:
       context: dockerized_labs/broken_auth_lab/
@@ -181,26 +201,6 @@ services:
     profiles:
       - labs
       - sde
-
-  template-injection-lab:
-    build:
-      context: dockerized_labs/template_injection_lab/
-    container_name: template-injection-lab
-    networks:
-      - my_network
-    profiles:
-      - labs
-      - template-injection
-
-  xxe-lab:
-    build:
-      context: dockerized_labs/xxe_lab/
-    container_name: xxe-lab
-    networks:
-      - my_network
-    profiles:
-      - labs
-      - xxe
 
   a9-uckv-lab:
     build:

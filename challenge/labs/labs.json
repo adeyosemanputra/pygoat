@@ -4,146 +4,168 @@
     "profile": "bopla",
     "url": "/labs/bopla/",
     "service_name": "bopla-lab",
-    "internal_port": 8080
+    "internal_port": 8080,
+    "build_context": "challenge/labs/bopla_lab/"
   },
   "business-logic": {
     "name": "Business Logic Lab",
     "profile": "business-logic",
     "url": "/labs/business-logic/",
     "service_name": "business-logic-lab",
-    "internal_port": 5010
+    "internal_port": 5010,
+    "build_context": "challenge/labs/business_logic_lab/"
   },
   "security-headers": {
     "name": "Security Headers Lab",
     "profile": "security-headers",
     "url": "/labs/security-headers/",
     "service_name": "security-headers-lab",
-    "internal_port": 5011
+    "internal_port": 5011,
+    "build_context": "challenge/labs/security_headers_lab/"
   },
   "xss": {
     "name": "XSS Lab",
     "profile": "xss",
     "url": "/labs/xss/",
     "service_name": "xss-lab",
-    "internal_port": 5006
+    "internal_port": 5006,
+    "build_context": "dockerized_labs/xss_lab/"
   },
   "ssrf": {
     "name": "SSRF Lab",
     "profile": "ssrf",
     "url": "/labs/ssrf/",
     "service_name": "ssrf-lab",
-    "internal_port": 5000
+    "internal_port": 5000,
+    "build_context": "dockerized_labs/ssrf_lab/"
   },
   "sql-injection": {
     "name": "SQL Injection Lab",
     "profile": "sql-injection",
     "url": "/labs/sql-injection/",
     "service_name": "sql-injection-lab",
-    "internal_port": 5012
+    "internal_port": 5012,
+    "build_context": "dockerized_labs/sql_injection_lab/"
   },
   "command-injection": {
     "name": "Command Injection Lab",
     "profile": "command-injection",
     "url": "/labs/command-injection/",
     "service_name": "command-injection-lab",
-    "internal_port": 5013
+    "internal_port": 5013,
+    "build_context": "dockerized_labs/command_injection_lab/"
   },
   "template-injection": {
     "name": "Server-Side Template Injection Lab",
     "profile": "template-injection",
     "url": "/labs/template-injection/",
     "service_name": "template-injection-lab",
-    "internal_port": 5015
+    "internal_port": 5015,
+    "build_context": "dockerized_labs/template_injection_lab/"
   },
   "xxe": {
     "name": "XXE Lab",
     "profile": "xxe",
     "url": "/labs/xxe/",
     "service_name": "xxe-lab",
-    "internal_port": 5010
+    "internal_port": 5010,
+    "build_context": "dockerized_labs/xxe_lab/"
   },
   "broken-auth": {
     "name": "Broken Authentication Lab",
     "profile": "broken-auth",
     "url": "/labs/broken-auth/",
     "service_name": "broken-auth-lab",
-    "internal_port": 5000
+    "internal_port": 5000,
+    "build_context": "dockerized_labs/broken_auth_lab/"
   },
   "broken-access": {
     "name": "Broken Access Control Lab",
     "profile": "broken-access",
     "url": "/labs/broken-access/",
     "service_name": "broken-access-lab",
-    "internal_port": 8080
+    "internal_port": 8080,
+    "build_context": "dockerized_labs/broken_access_lab/"
   },
   "crypto-failure": {
     "name": "Cryptographic Failures Lab",
     "profile": "crypto-failure",
     "url": "/labs/crypto-failure/",
     "service_name": "crypto-failure-lab",
-    "internal_port": 5000
+    "internal_port": 5000,
+    "build_context": "dockerized_labs/crypto_failure_lab/"
   },
   "insecure-design": {
     "name": "Insecure Design Lab",
     "profile": "insecure-design",
     "url": "/labs/insecure-design/",
     "service_name": "insecure-design-lab",
-    "internal_port": 5008
+    "internal_port": 5008,
+    "build_context": "dockerized_labs/insecure_design_lab/"
   },
   "insec-des": {
     "name": "Insecure Deserialization Lab",
     "profile": "insec-des",
     "url": "/labs/insec-des/",
     "service_name": "insec-des-lab",
-    "internal_port": 8080
+    "internal_port": 8080,
+    "build_context": "dockerized_labs/insec_des_lab/"
   },
   "sec-misconfig": {
     "name": "Security Misconfiguration Lab",
     "profile": "sec-misconfig",
     "url": "/labs/sec-misconfig/",
     "service_name": "sec-misconfig-lab",
-    "internal_port": 5009
+    "internal_port": 5009,
+    "build_context": "dockerized_labs/sec_misconfig/"
   },
   "sensitive-data-exposure": {
     "name": "Sensitive Data Exposure Lab",
     "profile": "sensitive-data-exposure",
     "url": "/labs/sensitive-data-exposure/",
     "service_name": "sensitive-data-exposure-lab",
-    "internal_port": 8000
+    "internal_port": 8000,
+    "build_context": "dockerized_labs/sensitive_data_exposure/",
+    "command": "python manage.py runserver 0.0.0.0:8000"
   },
   "auth-failure": {
     "name": "Authentication Failure Lab",
     "profile": "auth-failure",
     "url": "/labs/auth-failure/",
     "service_name": "auth-failure-lab",
-    "internal_port": 5007
+    "internal_port": 5007,
+    "build_context": "dockerized_labs/auth_failure_lab/"
   },
   "software-integrity": {
     "name": "Software and Data Integrity Failures Lab",
     "profile": "software-integrity",
     "url": "/labs/software-integrity/",
     "service_name": "software-integrity-lab",
-    "internal_port": 5011
+    "internal_port": 5011,
+    "build_context": "dockerized_labs/software_integrity_lab/"
   },
   "insufficient-logging": {
     "name": "Security Logging and Monitoring Failures Lab",
     "profile": "insufficient-logging",
     "url": "/labs/insufficient-logging/",
     "service_name": "insufficient-logging-lab",
-    "internal_port": 5014
+    "internal_port": 5014,
+    "build_context": "dockerized_labs/insufficient_logging_lab/"
   },
   "sde": {
     "name": "Sensitive Data Exposure Lab (SDE)",
     "profile": "sde",
     "url": "/labs/sde/",
     "service_name": "sde-lab",
-    "internal_port": 5100
+    "internal_port": 5100,
+    "build_context": "dockerized_labs/sde/"
   },
   "a9-uckv": {
     "name": "Using Components with Known Vulnerabilities",
     "profile": "a9-uckv",
     "url": "/labs/a9-uckv/",
     "service_name": "a9-uckv-lab",
-    "internal_port": 9000
+    "internal_port": 9000,
+    "build_context": "dockerized_labs/a9_uckv_lab/"
   }
 }
