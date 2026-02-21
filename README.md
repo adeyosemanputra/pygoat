@@ -151,3 +151,32 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
+
+
+
+### WSL2 / Python 3.13+ Troubleshooting
+
+If you are setting up PyGoat on a modern Linux environment (like Kali or Ubuntu) using Python 3.13, you may encounter build errors with packages like cffi, Pillow, or psycopg2. Use the following steps to resolve them:
+
+1. Install Build Essentials:
+A C compiler is required to build project dependencies. Run this in your terminal:
+sudo apt update && sudo apt install build-essential python3-dev libffi-dev -y
+
+2. Automated Dependency Fix:
+Newer Python versions have removed certain internal functions used by older libraries. Run these commands to update your local requirements.txt to use compatible versions:
+
+sed -i 's/Pillow==9.4.0/Pillow/g' requirements.txt
+sed -i 's/cryptography==39.0.1/cryptography/g' requirements.txt
+sed -i 's/cffi==1.15.1/cffi/g' requirements.txt
+sed -i 's/psycopg2==2.9.3/psycopg2-binary/g' requirements.txt
+sed -i '/django-heroku/d' requirements.txt
+
+3. Local Settings Cleanup:
+Since PyGoat is configured for Heroku by default, you must comment out the Heroku imports in pygoat/settings.py for local development:
+
+sed -i 's/import django_heroku/# import django_heroku/g' pygoat/settings.py
+sed -i 's/django_heroku.settings(locals())/# django_heroku.settings(locals())/g' pygoat/settings.py
+
+4. Update Allowed Hosts:
+Ensure Django allows connections from your local machine:
+sed -i "s/^ALLOWED_HOSTS =.*/ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '127.0.0.1:8000']/g" pygoat/settings.py
