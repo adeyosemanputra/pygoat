@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>Path Traversal Lab - File Portal</title>
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <h3>Document Portal</h3>
+    <div class="box">
+        <h4>Shared Files</h4>
+        <p class="bp">
+            Browse and download files from the shared documents folder.
+            Click any filename to download it.
+        </p>
+
+        <div class="file-list">
+            {% for file in files %}
+            <div class="file-item">
+                <span class="file-icon">📄</span>
+                <a href="/download?file={{ file }}">{{ file }}</a>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="section" style="margin-top: 30px;">
+            <h4>Manual Download (Vulnerable)</h4>
+            <p class="bp">Enter just a <strong>filename or relative path</strong> (not a full URL). This endpoint does <strong>no path validation</strong>.</p>
+            <p class="url-preview"><code>/download?file=</code><span class="url-input-hint">your_input_here</span></p>
+            <form class="download-form" action="/download" method="GET">
+                <input type="text" name="file" placeholder="team_roster.txt or ../secret/admin_credentials.txt" required>
+                <button type="submit">Download</button>
+            </form>
+        </div>
+
+        <div class="section secure-section" style="margin-top: 30px;">
+            <h4>Manual Download (Secure)</h4>
+            <p class="bp">
+                This endpoint uses <code>os.path.realpath()</code> to resolve the full path, then
+                verifies it stays inside the uploads directory. Try the same traversal payload here
+                and compare the result.
+            </p>
+            <p class="url-preview"><code>/download/secure?file=</code><span class="url-input-hint">your_input_here</span></p>
+            <form class="download-form" action="/download/secure" method="GET">
+                <input type="text" name="file" placeholder="e.g. ../secret/admin_credentials.txt" required>
+                <button type="submit" class="btn-secure">Download (Secure)</button>
+            </form>
+        </div>
+
+        <div align="right" style="margin-top: 20px;">
+            <button type="button" onclick="window.location.href='/'">Back to Lab Details</button>
+        </div>
+    </div>
+</div>
+{% endblock %}

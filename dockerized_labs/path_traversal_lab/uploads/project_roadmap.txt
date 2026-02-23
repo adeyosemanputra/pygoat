@@ -1,0 +1,6 @@
+Project Roadmap 2025
+
+Q1: Core platform stabilization
+Q2: New API gateway rollout
+Q3: Mobile app beta launch
+Q4: Enterprise feature pack

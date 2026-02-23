@@ -1,0 +1,10 @@
+services:
+  path_traversal_lab:
+    build: .
+    ports:
+      - "5031:5031"
+    volumes:
+      - .:/app
+    environment:
+      - FLASK_ENV=development
+    restart: unless-stopped

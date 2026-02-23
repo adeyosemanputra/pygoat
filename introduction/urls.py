@@ -70,6 +70,7 @@ urlpatterns = [
         views.a1_broken_access_lab3_secret,
         name="broken_access_controle_secret",
     ),
+    path("path_traversal_lab", views.path_traversal_lab_page, name="path_traversal_lab"),
     path("ssrf", views.ssrf, name="SSRF"),
     path("ssrf_discussion", views.ssrf_discussion, name="SSRF Discussion"),
     path("ssrf_lab", views.ssrf_lab, name="SSRF LAB"),

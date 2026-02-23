@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>Path Traversal Lab - Result</title>
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <h3>Download Result</h3>
+    <div class="box">
+        {% if success %}
+            {% if is_traversal and not secure_mode %}
+            <div class="alert alert-danger">
+                <strong>Path Traversal Successful!</strong>
+                <p>You accessed a file outside the uploads directory using <code>../</code> sequences.
+                   In a real application this would expose sensitive server files.</p>
+                <p><strong>FLAG:</strong> Look for it in the file contents below.</p>
+            </div>
+            {% endif %}
+
+            {% if secure_mode %}
+            <div class="alert alert-success">
+                <strong>Secure Mode Active</strong>
+                <p>This endpoint validates the resolved path before serving the file.</p>
+            </div>
+            {% endif %}
+
+            <h4>File: <code>{{ filename }}</code></h4>
+            <pre>{{ content }}</pre>
+        {% else %}
+            <div class="alert alert-danger">
+                <strong>Error</strong>
+                <p>{{ message }}</p>
+            </div>
+        {% endif %}
+
+        <div class="button-row">
+            <button type="button" onclick="window.location.href='/lab'">Back to File Portal</button>
+            <button type="button" onclick="window.location.href='/'">Lab Details</button>
+        </div>
+    </div>
+</div>
+{% endblock %}

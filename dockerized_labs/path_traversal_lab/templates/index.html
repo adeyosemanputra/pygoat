@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>Path Traversal Lab - A01 Broken Access Control</title>
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <div class="header-container">
+        <h1 style="border-bottom: 2px solid #474646; padding-bottom: 10px;">Path Traversal</h1>
+        <button class="notebook-btn" onclick="openModal()" title="View Secure Implementation">
+        🔗
+        </button>
+    </div>
+    {% include 'secure-fix.html' %}
+    <div class="box">
+        <h4>What is Path Traversal?</h4>
+        <p class="bp">
+            Path traversal (also known as directory traversal) is a vulnerability that allows an attacker to
+            read arbitrary files on the server by manipulating file paths. When a web application uses user-supplied
+            input to construct file paths without proper validation, an attacker can inject special characters
+            like <code>../</code> (dot-dot-slash) to escape the intended directory and access files elsewhere
+            on the filesystem.
+        </p>
+        <p class="bp">
+            This is classified under <strong>A01:2021 – Broken Access Control</strong> in the OWASP Top 10
+            because the application fails to enforce proper access boundaries on the files a user can retrieve.
+        </p>
+
+        <div class="lab">
+            <h4>Lab Scenario</h4>
+            <p class="bp">
+                You are a user of a company's internal document portal. The portal lets you browse and
+                download shared files from the <code>/uploads</code> directory on the server.
+            </p>
+            <p class="bp">
+                However, the IT team stored some <strong>admin credentials</strong> in a <code>/secret</code>
+                directory that is supposed to be off-limits. Your goal is to exploit the download feature
+                to read those credentials.
+            </p>
+            <p class="bp">
+                <b>Hint:</b> Look at the URL when you download a file. The <code>file</code> parameter
+                is passed directly to the server. What happens if you replace the filename with a path
+                that includes <code>../</code> sequences?
+            </p>
+            <div align="right">
+                <button type="button" onclick="window.location.href='/lab'">Access Lab</button>
+            </div>
+        </div>
+
+        <div class="section">
+            <h4>Real-World Impact</h4>
+            <ul>
+                <li>Reading sensitive configuration files (<code>/etc/passwd</code>, <code>.env</code>)</li>
+                <li>Accessing application source code and discovering further vulnerabilities</li>
+                <li>Leaking credentials, API keys, and database connection strings</li>
+                <li>In severe cases, writing to arbitrary paths to achieve remote code execution</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h4>Mitigation</h4>
+            <ul>
+                <li>Never use raw user input to build file paths</li>
+                <li>Resolve the canonical/real path and verify it stays within the allowed directory</li>
+                <li>Use an allowlist of permitted filenames or map IDs to files on the server side</li>
+                <li>Strip or reject input containing <code>..</code>, <code>/</code>, or <code>\</code></li>
+                <li>Run the application with least-privilege filesystem permissions</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<script>
+function openModal() {
+    document.getElementById('secureFixModal').style.display = 'block';
+    document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+    document.getElementById('secureFixModal').style.display = 'none';
+    document.body.style.overflow = 'auto';
+}
+
+function showTab(tabName) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(tabName).classList.add('active');
+    event.target.classList.add('active');
+}
+
+document.addEventListener('click', function(event) {
+    if (event.target.classList.contains('modal-overlay')) closeModal();
+});
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') closeModal();
+});
+</script>
+{% endblock %}
