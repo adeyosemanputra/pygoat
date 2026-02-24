@@ -4,3 +4,5 @@ api:
 providers:
   docker:
     exposedByDefault: false
+log:
+  level: info
