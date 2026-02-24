@@ -1,18 +1,10 @@
 from flask import Flask, render_template, request, session, redirect, url_for, jsonify
 import uuid
 import os
+from lab_utils import init_lab
 
-app = Flask(__name__, static_url_path='/labs/business-logic/static')
-BASE_PATH = '/labs/business-logic'
-
-def redirect_bp(path):
-    """Redirect with BASE_PATH prefix"""
-    return redirect(f"{BASE_PATH}{path}")
-
-@app.context_processor
-def inject_base_path():
-    """Make BASE_PATH available in all templates"""
-    return {'base_path': BASE_PATH}
+app = Flask(__name__)
+init_lab(app)
 
 app.secret_key = 'business_logic_secret_key_2024'
 
@@ -49,12 +41,12 @@ def init_session():
 @app.route('/')
 def index():
     init_session()
-    return render_template('index.html', base_path=BASE_PATH)
+    return render_template('index.html')
 
 @app.route('/store')
 def store():
     init_session()
-    return render_template('store.html', products=PRODUCTS, base_path=BASE_PATH)
+    return render_template('store.html', products=PRODUCTS)
 
 @app.route('/add_to_cart/<int:product_id>')
 def add_to_cart(product_id):
@@ -75,7 +67,7 @@ def add_to_cart(product_id):
             })
         session.modified = True
     
-    return redirect_bp('/cart')
+    return redirect('cart')
 
 @app.route('/cart')
 def cart():
@@ -93,7 +85,7 @@ def cart():
     final_total = max(0, cart_total - discount_amount)
     
                          coupons=COUPONS,
-                         secure_mode=session.get('secure_mode', False), base_path=BASE_PATH)
+                         secure_mode=session.get('secure_mode', False))
 
 @app.route('/apply_coupon', methods=['POST'])
 def apply_coupon():
@@ -140,7 +132,7 @@ def remove_coupon(coupon_code):
         session['applied_coupons'] = [c for c in session['applied_coupons'] if c != coupon_code]
         session.modified = True
     
-    return redirect_bp('/cart')
+    return redirect('cart')
 
 @app.route('/clear_cart')
 def clear_cart():
@@ -148,7 +140,7 @@ def clear_cart():
     session['applied_coupons'] = []
     session['order_id'] = str(uuid.uuid4())
     session.modified = True
-    return redirect_bp('/store')
+    return redirect('store')
 
 @app.route('/toggle_secure_mode')
 def toggle_secure_mode():
@@ -159,17 +151,17 @@ def toggle_secure_mode():
     session['applied_coupons'] = []
     session.modified = True
 
-    return redirect_bp('/cart')
+    return redirect('cart')
 
 @app.route('/lab')
 def lab():
     init_session()
-    return render_template('lab.html', base_path=BASE_PATH)
+    return render_template('lab.html')
 
 @app.route('/solution')
 def solution():
     init_session()
-    return render_template('solution.html', base_path=BASE_PATH)
+    return render_template('solution.html')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5010, debug=True)

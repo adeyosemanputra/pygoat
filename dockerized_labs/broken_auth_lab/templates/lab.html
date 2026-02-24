@@ -10,7 +10,7 @@
     <div class="box">
         <div class="section">
             <h4>Login</h4>
-            <form method="POST" action="{{ base_path }}/login">
+            <form method="POST" action="login">
                 <input type="text" name="username" placeholder="Username" required>
                 <input type="password" name="password" placeholder="Password" required>
                 <div style="margin: 10px 0;">
@@ -26,7 +26,7 @@
 
         <div class="section">
             <h4>Register</h4>
-            <form method="POST" action="{{ base_path }}/register">
+            <form method="POST" action="register">
                 <input type="text" name="username" placeholder="Username" required>
                 <input type="email" name="email" placeholder="Email" required>
                 <input type="password" name="password" placeholder="Password" required>
@@ -37,7 +37,7 @@
 
         <div id="resetForm" class="section" style="display: none;">
             <h4>Reset Password</h4>
-            <form method="POST" action="{{ base_path }}/reset-password">
+            <form method="POST" action="reset-password">
                 <input type="email" name="email" placeholder="Email" required>
                 <button type="submit">Send Reset Link</button>
             </form>
@@ -50,4 +50,4 @@ function showResetForm() {
     document.getElementById('resetForm').style.display = 'block';
 }
 </script>
-{% endblock %} 
+{% endblock %}

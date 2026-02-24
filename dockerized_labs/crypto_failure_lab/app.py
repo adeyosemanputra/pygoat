@@ -3,18 +3,10 @@ import hashlib
 import datetime
 import base64
 import os
+from lab_utils import init_lab
 
-app = Flask(__name__, static_url_path='/labs/crypto-failure/static')
-BASE_PATH = '/labs/crypto-failure'
-
-def redirect_bp(path):
-    """Redirect with BASE_PATH prefix"""
-    return redirect(f"{BASE_PATH}{path}")
-
-@app.context_processor
-def inject_base_path():
-    """Make BASE_PATH available in all templates"""
-    return {'base_path': BASE_PATH}
+app = Flask(__name__)
+init_lab(app)
 
 app.secret_key = "crypto_failure_lab_secret_key"
 
@@ -37,7 +29,7 @@ def custom_hash(password):
 
 @app.route('/')
 def index():
-    return render_template('index.html', base_path=BASE_PATH)
+    return render_template('index.html')
 
 @app.route('/lab1', methods=['GET', 'POST'])
 def lab1():
@@ -46,10 +38,10 @@ def lab1():
         password = request.form.get('password')
         password_hash = hashlib.md5(password.encode()).hexdigest()
         if username in LAB1_USERS and LAB1_USERS[username] == password_hash:
-            return render_template('lab1.html', user=username, success=True, base_path=BASE_PATH)
+            return render_template('lab1.html', user=username, success=True)
         else:
-            return render_template('lab1.html', success=False, failure=True, base_path=BASE_PATH)
-    return render_template('lab1.html', base_path=BASE_PATH)
+            return render_template('lab1.html', success=False, failure=True)
+    return render_template('lab1.html')
 
 @app.route('/lab2', methods=['GET', 'POST'])
 def lab2():
@@ -58,10 +50,10 @@ def lab2():
         password = request.form.get('password')
         password_hash = custom_hash(password)
         if username in LAB2_USERS and LAB2_USERS[username] == password_hash:
-            return render_template('lab2.html', user=username, success=True, base_path=BASE_PATH)
+            return render_template('lab2.html', user=username, success=True)
         else:
-            return render_template('lab2.html', success=False, failure=True, base_path=BASE_PATH)
-    return render_template('lab2.html', base_path=BASE_PATH)
+            return render_template('lab2.html', success=False, failure=True)
+    return render_template('lab2.html')
 
 @app.route('/lab3', methods=['GET', 'POST'])
 def lab3():
@@ -76,13 +68,13 @@ def lab3():
                 if now > expire:
                     return render_template('lab3.html', success=False, failure=False)
                 elif username == 'admin':
-                    return render_template('lab3.html', success=True, failure=False, admin=True, base_path=BASE_PATH)
+                    return render_template('lab3.html', success=True, failure=False, admin=True)
                 else:
-                    return render_template('lab3.html', success=True, failure=False, admin=False, base_path=BASE_PATH)
+                    return render_template('lab3.html', success=True, failure=False, admin=False)
         except Exception as e:
             print(e)
             pass
-        return render_template('lab3.html', base_path=BASE_PATH)
+        return render_template('lab3.html')
     
     elif request.method == 'POST':
         username = request.form.get('username')
@@ -92,11 +84,11 @@ def lab3():
             expire = datetime.datetime.now() + datetime.timedelta(minutes=60)
             cookie_data = f"{username}|{expire}"
             encoded_cookie = base64.b64encode(cookie_data.encode()).decode()
-            response = make_response(render_template('lab3.html', success=True, failure=False, admin=False, logged_in=True, base_path=BASE_PATH))
+            response = make_response(render_template('lab3.html', success=True, failure=False, admin=False, logged_in=True))
             response.set_cookie('cookie', encoded_cookie)
             return response
         else:
-            response = make_response(render_template('lab3.html', success=False, failure=True, base_path=BASE_PATH))
+            response = make_response(render_template('lab3.html', success=False, failure=True))
             response.delete_cookie('cookie')
             return response
 

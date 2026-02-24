@@ -27,7 +27,7 @@
 
         <div class="view-comments">
             <h4>View Comments</h4>
-            <button class="btn btn-info" type="button" onclick="window.location.href='{{ base_path }}/see'">Click
+            <button class="btn btn-info" type="button" onclick="window.location.href='see'">Click
                 Here</button>
 
             {% if com %}
@@ -39,8 +39,8 @@
         </div>
 
         <div class="navigation">
-            <button class="btn btn-info back-button" type="button"
-                onclick="window.location.href='{{ base_path }}/'">Back to Lab Details</button>
+            <button class="btn btn-info back-button" type="button" onclick="window.location.href=''">Back to Lab
+                Details</button>
         </div>
     </div>
 </div>
@@ -55,14 +55,14 @@
         // Create XML payload
         const xml = `<?xml version='1.0'?><comm><text>${comment}</text></comm>`;
 
-        xhr.open("POST", "{{ base_path }}/parse", true);
+        xhr.open("POST", "parse", true);
         xhr.setRequestHeader("Content-Type", "text/xml");
         xhr.send(xml);
 
         // Optional: Add success/error handling
         xhr.onload = function () {
             if (xhr.status === 200) {
-                window.location.href = '{{ base_path }}/see';
+                window.location.href = 'see';
             } else {
                 console.error('Error submitting comment');
             }

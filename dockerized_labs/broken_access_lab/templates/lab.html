@@ -16,7 +16,7 @@
                 <b>Regular user credentials:</b> <code>jack:jacktheripper</code>
             </p>
             <div class="login-form">
-                <form action="{{ base_path }}/lab/login" method="POST">
+                <form action="lab/login" method="POST">
                     <input type="text" name="username" placeholder="Username" required>
                     <input type="password" name="password" placeholder="Password" required>
                     <button type="submit">Login</button>
@@ -24,7 +24,7 @@
             </div>
         </div>
         <div align="right">
-            <button type="button" onclick="window.location.href='{{ base_path }}/'">Back to Lab Details</button>
+            <button type="button" onclick="window.location.href='.'">Back to Lab Details</button>
         </div>
     </div>
 </div>

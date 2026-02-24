@@ -13,19 +13,19 @@
                 <h3>Read Blog</h3>
             </div>
             <div style="display:flex;flex-direction:row;align-items:center;margin:15px">
-                <form method="post" action="{{ base_path }}/lab1">
+                <form method="post" action="lab1">
                     <input type="hidden" name="blog" value="blogs/blog1.txt">
                     <button type="submit" class="btn btn-info">Blog 1</button>
                 </form>
-                <form method="post" action="{{ base_path }}/lab1">
+                <form method="post" action="lab1">
                     <input type="hidden" name="blog" value="blogs/blog2.txt">
                     <button type="submit" class="btn btn-info">Blog 2</button>
                 </form>
-                <form method="post" action="{{ base_path }}/lab1">
+                <form method="post" action="lab1">
                     <input type="hidden" name="blog" value="blogs/blog3.txt">
                     <button type="submit" class="btn btn-info">Blog 3</button>
                 </form>
-                <form method="post" action="{{ base_path }}/lab1">
+                <form method="post" action="lab1">
                     <input type="hidden" name="blog" value="blogs/blog4.txt">
                     <button type="submit" class="btn btn-info">Blog 4</button>
                 </form>
@@ -65,7 +65,7 @@ def lab1():
 </div>
 
 <div style="position: fixed; right: 7px; bottom: 7px">
-    <button class="btn btn-info" type="button" onclick="window.location.href='{{ base_path }}/'">Back to Lab
+    <button class="btn btn-info" type="button" onclick="window.location.href=''">Back to Lab
         Details</button>
 </div>
 

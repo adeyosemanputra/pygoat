@@ -32,11 +32,11 @@
         </p>
     </div>
     <!-- <div class="box"> -->
-        <button class="coll btn btn-info" onclick="toggleLabDetails('lab1')">Lab Details</button>
-        <div id="lab1"  style="display: none;">
-            <div class="lab">
-                <p class="bp">
-                    This lab helps you to get an idea of how Insecure Design can result in major Security flaw.
+    <button class="coll btn btn-info" onclick="toggleLabDetails('lab1')">Lab Details</button>
+    <div id="lab1" style="display: none;">
+        <div class="lab">
+            <p class="bp">
+                This lab helps you to get an idea of how Insecure Design can result in major Security flaw.
 
                     In the next page, user can get 5 free tickets for a Movie. But he/she have to wait until all the tickets are sold out.
                     For this particular situation, we can get advantage of the Insecure Design and somehow get all the tickets for the movie.
@@ -45,10 +45,10 @@
                     <ul>Log out and think how you can bypass the ticket limit per user...</ul>
                 </p>
                 <div class="button-container">
-                    <button class="btn btn-info" onclick="window.location.href='{{ base_path }}/lab'">Access Lab</button>
-                </div>
+                <button class="btn btn-info" onclick="window.location.href='lab'">Access Lab</button>
             </div>
         </div>
+    </div>
     <!-- </div> -->
     <div class="box">
         <h3>Mitigation</h3>
@@ -76,7 +76,6 @@
             el.style.display = "none";
         }
     }
-
     
        // Modal functionality
     function openModal() {

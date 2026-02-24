@@ -3,8 +3,9 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <base href="{{ base_path }}/">
     {% block title %}{% endblock %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="static/style.css">
 </head>
 <body>
     <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">🌙</button>

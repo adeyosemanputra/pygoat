@@ -4,18 +4,10 @@ from datetime import datetime
 import string
 import random
 import os
+from lab_utils import init_lab
 
-app = Flask(__name__, static_url_path='/labs/insecure-design/static')
-BASE_PATH = '/labs/insecure-design'
-
-def redirect_bp(path):
-    """Redirect with BASE_PATH prefix"""
-    return redirect(f"{BASE_PATH}{path}")
-
-@app.context_processor
-def inject_base_path():
-    """Make BASE_PATH available in all templates"""
-    return {'base_path': BASE_PATH}
+app = Flask(__name__)
+init_lab(app)
 
 app.secret_key = 'your-secret-key-here'  # Change in production
 
@@ -48,7 +40,7 @@ def create_tables():
 @app.route('/')
 def index():
     """Description page explaining the insecure design lab"""
-    return render_template('index.html', base_path=BASE_PATH)
+    return render_template('index.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -61,10 +53,10 @@ def login():
             session['user_id'] = user.id
             session['username'] = user.username
             flash('Login successful!')
-            return redirect_bp('/lab')
+            return redirect('lab')
         flash('Invalid credentials')
         
-    return render_template('login.html', base_path=BASE_PATH)
+    return render_template('login.html')
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -74,7 +66,7 @@ def register():
         
         if User.query.filter_by(username=username).first():
             flash('Username already exists')
-            return redirect_bp('/register')
+            return redirect('register')
             
         user = User(username=username, password=password)  # Intentionally insecure
         db.session.add(user)
@@ -83,20 +75,20 @@ def register():
         session['user_id'] = user.id
         session['username'] = user.username
         flash('Registration successful!')
-        return redirect_bp('/lab')
+        return redirect('lab')
         
-    return render_template('register.html', base_path=BASE_PATH)
+    return render_template('register.html')
 
 @app.route('/lab', methods=['GET', 'POST'])
 def lab():
     """Main lab page with ticket functionality"""
     if 'user_id' not in session:
-        return redirect_bp('/login')
+        return redirect('login')
         
     user = User.query.get(session['user_id'])
     if not user:
         session.clear()
-        return redirect_bp('/login') 
+        return redirect('login') 
 
     error = None
     if request.method == 'POST':
@@ -133,12 +125,12 @@ def lab():
             except:
                 error = "Invalid input"
 
-    return render_template('lab.html', tickets=[t.ticket_code for t in user.tickets], error=error, base_path=BASE_PATH)
+    return render_template('lab.html', tickets=[t.ticket_code for t in user.tickets], error=error)
 
 @app.route('/logout')
 def logout():
     session.clear()
-    return redirect_bp('/login')
+    return redirect('login')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5008, debug=True)

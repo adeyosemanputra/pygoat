@@ -4,18 +4,10 @@ import json
 from datetime import datetime, timedelta
 import base64
 import os
+from lab_utils import init_lab
 
-app = Flask(__name__, static_url_path='/labs/broken-auth/static')
-BASE_PATH = '/labs/broken-auth'
-
-def redirect_bp(path):
-    """Redirect with BASE_PATH prefix"""
-    return redirect(f"{BASE_PATH}{path}")
-
-@app.context_processor
-def inject_base_path():
-    """Make BASE_PATH available in all templates"""
-    return {'base_path': BASE_PATH}
+app = Flask(__name__)
+init_lab(app)
 
 app.secret_key = 'your-secret-key-here'  # Vulnerable: Hardcoded secret key
 
@@ -38,11 +30,11 @@ password_reset_tokens = {}
 
 @app.route('/')
 def index():
-    return render_template('index.html', base_path=BASE_PATH)
+    return render_template('index.html')
 
 @app.route('/lab')
 def lab():
-    return render_template('lab.html', base_path=BASE_PATH)
+    return render_template('lab.html')
 
 @app.route('/login', methods=['POST'])
 def login():
@@ -51,7 +43,7 @@ def login():
     remember_me = request.form.get('remember_me')
 
     if username in users and users[username]['password'] == password:  # Vulnerable: Plain text password comparison
-        response = make_response(redirect_bp('/dashboard'))
+        response = make_response(redirect('dashboard'))
         
         # Vulnerable: Insecure session management
         session_token = base64.b64encode(f"{username}:{datetime.now()}".encode()).decode()
@@ -65,7 +57,7 @@ def login():
         return response
     
     flash('Invalid username or password')
-    return redirect_bp('/lab')
+    return redirect('lab')
 
 @app.route('/register', methods=['POST'])
 def register():
@@ -82,10 +74,10 @@ def register():
                 'role': 'user'
             }
             flash('Registration successful')
-            return redirect_bp('/lab')
+            return redirect('lab')
     
     flash('Registration failed')
-    return redirect_bp('/lab')
+    return redirect('lab')
 
 @app.route('/reset-password', methods=['POST'])
 def reset_password():
@@ -100,23 +92,23 @@ def reset_password():
             
             # In a real application, this would send an email
             # Vulnerable: Token exposed in response
-            flash(f'Password reset link: {BASE_PATH}/reset/{token}')
-            return redirect_bp('/lab')
+            flash(f'Password reset link: reset/{token}')
+            return redirect('lab')
     
     flash('Email not found')
-    return redirect_bp('/lab')
+    return redirect('lab')
 
 @app.route('/reset/<token>')
 def reset_form(token):
     if token in password_reset_tokens:
-        return render_template('reset.html', token=token, base_path=BASE_PATH)
+        return render_template('reset.html', token=token)
     return 'Invalid token'
 
 @app.route('/dashboard')
 def dashboard():
     session_token = request.cookies.get('session')
     if not session_token:
-        return redirect_bp('/lab')
+        return redirect('lab')
     
     try:
         # Vulnerable: Insecure session validation
@@ -125,12 +117,11 @@ def dashboard():
             return render_template('dashboard.html', 
                                 username=username, 
                                 role=users[username]['role'],
-                                email=users[username]['email'],
-                                base_path=BASE_PATH)
+                                email=users[username]['email'])
     except:
         pass
 
-    return redirect_bp('/lab')
+    return redirect('lab')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)  # Vulnerable: Debug mode enabled in production 

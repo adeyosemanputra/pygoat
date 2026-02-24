@@ -1,25 +1,17 @@
 from flask import Flask, render_template, request, redirect, url_for
 import subprocess
 import os
+from lab_utils import init_lab
 
-app = Flask(__name__, static_url_path='/labs/command-injection/static')
-BASE_PATH = '/labs/command-injection'
-
-def redirect_bp(path):
-    """Redirect with BASE_PATH prefix"""
-    return redirect(f"{BASE_PATH}{path}")
-
-@app.context_processor
-def inject_base_path():
-    """Make BASE_PATH available in all templates"""
-    return {'base_path': BASE_PATH}
+app = Flask(__name__)
+init_lab(app)
 
 app.config['SECRET_KEY'] = 'your-secret-key-here'
 
 @app.route('/')
 def index():
     """Main page with command injection lab description"""
-    return render_template('index.html', base_path=BASE_PATH)
+    return render_template('index.html')
 
 @app.route('/lab1', methods=['GET', 'POST'])
 def lab1():
@@ -46,9 +38,9 @@ def lab1():
         except Exception as e:
             output = str(e)
             
-        return render_template('lab1.html', output=output, base_path=BASE_PATH)
+        return render_template('lab1.html', output=output)
     
-    return render_template('lab1.html', base_path=BASE_PATH)
+    return render_template('lab1.html')
 
 @app.route('/lab2', methods=['GET', 'POST'])
 def lab2():
@@ -58,11 +50,11 @@ def lab2():
             # Intentionally vulnerable eval
             expression = request.form.get('val', '')
             output = eval(expression)
-            return render_template('lab2.html', output=str(output), base_path=BASE_PATH)
+            return render_template('lab2.html', output=str(output))
         except Exception as e:
-            return render_template('lab2.html', output=str(e), base_path=BASE_PATH)
+            return render_template('lab2.html', output=str(e))
     
-    return render_template('lab2.html', base_path=BASE_PATH)
+    return render_template('lab2.html')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5013, debug=True)

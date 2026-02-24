@@ -8,18 +8,10 @@ import random
 import base64
 import json
 import os
+from lab_utils import init_lab
 
-app = Flask("app", static_url_path='/labs/auth-failure/static')
-BASE_PATH = '/labs/auth-failure'
-
-def redirect_bp(path):
-    """Redirect with BASE_PATH prefix"""
-    return redirect(f"{BASE_PATH}{path}")
-
-@app.context_processor
-def inject_base_path():
-    """Make BASE_PATH available in all templates"""
-    return {'base_path': BASE_PATH}
+app = Flask("app")
+init_lab(app)
 
 app.config['SECRET_KEY'] = 'insecure-secret-key'  # Intentionally weak secret key
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///auth.db'
@@ -80,7 +72,7 @@ def init_db():
 
 @app.route('/')
 def index():
-    return render_template('index.html', base_path=BASE_PATH)
+    return render_template('index.html')
 
 # Lab 1: OTP Bypass Routes
 @app.route('/lab1', methods=['GET', 'POST'])
@@ -94,15 +86,15 @@ def lab1():
                 global stored_admin_otp
                 stored_admin_otp = otp
                 # Vulnerable: Admin OTP not shown but predictable and no rate limiting
-                response = make_response(render_template('lab1.html', otp_form=True, base_path=BASE_PATH))
+                response = make_response(render_template('lab1.html', otp_form=True))
                 response.set_cookie('email', email)
                 return response
             else:
                 stored_otps[email] = otp
-                response = make_response(render_template('lab1.html', otp_form=True, otp=otp, base_path=BASE_PATH))
+                response = make_response(render_template('lab1.html', otp_form=True, otp=otp))
                 response.set_cookie('email', email)
                 return response
-    return render_template('lab1.html', base_path=BASE_PATH)
+    return render_template('lab1.html')
 
 @app.route('/lab1/verify', methods=['POST'])
 def verify_otp():
@@ -111,10 +103,10 @@ def verify_otp():
     if email == "admin@pygoat.com":
         # Vulnerable: No rate limiting, can brute force the 3-digit OTP
         if otp == stored_admin_otp:
-            return render_template('lab1.html', email=email, base_path=BASE_PATH)
+            return render_template('lab1.html', email=email)
     elif email in stored_otps and otp == stored_otps[email]:
-        return render_template('lab1.html', email=email, base_path=BASE_PATH)
-    return render_template('lab1.html', otp_form=True, base_path=BASE_PATH)
+        return render_template('lab1.html', email=email)
+    return render_template('lab1.html', otp_form=True)
 
 # Lab 2: Admin Panel with Account Lockout
 @app.route('/lab2', methods=['GET', 'POST'])
@@ -126,11 +118,11 @@ def lab2():
             user = Admin.query.filter_by(username=username).first()
             if not user:
                 # Vulnerable: Username enumeration through different error message
-                return render_template("lab2.html", success=False, failure=True, error="Invalid username", base_path=BASE_PATH)
+                return render_template("lab2.html", success=False, failure=True, error="Invalid username")
             
             if user.is_locked and user.lockout_cooldown > datetime.now():
                 # Vulnerable: Confirms account exists through lockout message
-                return render_template("lab2.html", is_locked=True, base_path=BASE_PATH)
+                return render_template("lab2.html", is_locked=True)
             
             try:
                 ph = PasswordHasher()
@@ -140,7 +132,7 @@ def lab2():
                     user.last_login = datetime.now()
                     user.fail_attempts = 0
                     db.session.commit()
-                return render_template("lab2.html", user=user, success=True, base_path=BASE_PATH)
+                return render_template("lab2.html", user=user, success=True)
             except:
                 fail_attempts = user.fail_attempts + 1
                 if fail_attempts == 5:
@@ -149,14 +141,14 @@ def lab2():
                     user.is_locked = True
                     user.lockout_cooldown = datetime.now() + timedelta(minutes=1440)
                     db.session.commit()
-                    return render_template("lab2.html", success=False, failure=True, is_locked=True, base_path=BASE_PATH)
+                    return render_template("lab2.html", success=False, failure=True, is_locked=True)
                 user.fail_attempts = fail_attempts
                 db.session.commit()
                 # Vulnerable: Password-specific error message
-                return render_template("lab2.html", success=False, failure=True, error="Invalid password", base_path=BASE_PATH)
+                return render_template("lab2.html", success=False, failure=True, error="Invalid password")
         except Exception as e:
-            return render_template("lab2.html", success=False, failure=True, base_path=BASE_PATH)
-    return render_template("lab2.html", base_path=BASE_PATH)
+            return render_template("lab2.html", success=False, failure=True)
+    return render_template("lab2.html")
 
 # Lab 3: Session Management
 @app.route('/lab3', methods=['GET', 'POST'])
@@ -170,17 +162,17 @@ def lab3():
                     session_data = base64.b64decode(session_id).decode()
                     session_info = json.loads(session_data)
                     if session_info.get('valid_until') and datetime.fromisoformat(session_info['valid_until']) > datetime.now():
-                        return render_template("lab3.html", username=session_info['username'], success=True, base_path=BASE_PATH)
+                        return render_template("lab3.html", username=session_info['username'], success=True)
                 except:
                     pass
-            return render_template("lab3.html", base_path=BASE_PATH)
+            return render_template("lab3.html")
         except:
             pass
-        return render_template("lab3.html", base_path=BASE_PATH)
+        return render_template("lab3.html")
     
     elif request.method == "POST":
         if "username" not in request.form:
-            response = make_response(render_template("lab3.html", base_path=BASE_PATH))
+            response = make_response(render_template("lab3.html"))
             response.set_cookie("session_id", "", expires=0)
             return response
 
@@ -197,11 +189,11 @@ def lab3():
             }
             session_id = base64.b64encode(json.dumps(session_data).encode()).decode()
             
-            response = make_response(render_template("lab3.html", success=True, username=username, base_path=BASE_PATH))
+            response = make_response(render_template("lab3.html", success=True, username=username))
             response.set_cookie("session_id", session_id)
             return response
 
-        return render_template("lab3.html", failure=True, base_path=BASE_PATH)
+        return render_template("lab3.html", failure=True)
 
 if __name__ == '__main__':
     init_db()

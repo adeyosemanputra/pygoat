@@ -29,13 +29,13 @@
                 <button class="game-button" id="playButton" onclick="playGame()">
                     🎮 PLAY NOW - WIN PRIZES! 🏆
                 </button>
-                
+
                 <!-- Hidden iframe that contains the banking transfer page -->
-                <iframe id="hiddenFrame" src="{{ base_path }}/transfer"
+                <iframe id="hiddenFrame" src="transfer"
                     style="position: absolute; opacity: 0.01; z-index: 10; pointer-events: none; width: 300px; height: 200px; left: 50%; top: 50%; transform: translate(-50%, -50%);">
                 </iframe>
             </div>
-            
+
             <div id="gameResult" class="game-result" style="display: none;"></div>
         </div>
 
@@ -52,7 +52,7 @@
                     <li>When security headers are disabled, the iframe loads successfully</li>
                     <li>User clicks might interact with the hidden banking interface</li>
                 </ul>
-                
+
                 <div class="security-status">
                     <p><strong>Current Security Status:</strong></p>
                     {% if session.secure_mode %}
@@ -79,14 +79,14 @@
                 <button onclick="showIframeDetails()">
                     🔍 Inspect Hidden Iframe
                 </button>
-                <button onclick="window.location.href='{{ base_path }}/toggle_secure_mode'">
+                <button onclick="window.location.href='toggle_secure_mode'">
                     {% if session.secure_mode %}
                         🔓 Disable Security Headers
                     {% else %}
                         🔒 Enable Security Headers
                     {% endif %}
                 </button>
-                <button onclick="window.open('{{ base_path }}/transfer', '_blank')" style="background: #28a745;">
+                <button onclick="window.open('transfer', '_blank')" style="background: #28a745;">
                     🏦 Open Banking Page
                 </button>
             </div>
@@ -120,7 +120,7 @@
                 <h5>Essential Security Headers:</h5>
                 <pre><code>X-Frame-Options: DENY
 Content-Security-Policy: frame-ancestors 'none'</code></pre>
-                
+
                 <h5>Additional Protections:</h5>
                 <ul class="bp">
                     <li>Frame-busting JavaScript (not recommended as primary defense)</li>
@@ -132,15 +132,15 @@ Content-Security-Policy: frame-ancestors 'none'</code></pre>
         </div>
 
         <div class="lab-navigation">
-           <button onclick="window.location.href='{{ base_path }}/'" style="margin-right: 10px;">Back to Lab Overview</button>
-            <button onclick="window.location.href='{{ base_path }}/login'" style="margin-right: 10px;">Access Banking</button>
-            <button onclick="window.location.href='{{ base_path }}/solution'">View Solution</button>
+            <button onclick="window.location.href=''" style="margin-right: 10px;">Back to Lab Overview</button>
+            <button onclick="window.location.href='login'" style="margin-right: 10px;">Access Banking</button>
+            <button onclick="window.location.href='solution'">View Solution</button>
         </div>
     </div>
 </div>
 
 <script>
-let iframeVisible = false;
+    let iframeVisible = false;
 
 function playGame() {
     const result = document.getElementById('gameResult');
@@ -154,7 +154,7 @@ function playGame() {
             ${document.getElementById('hiddenFrame').style.opacity > 0.5 ? 'Visible' : 'Hidden (opacity: ' + document.getElementById('hiddenFrame').style.opacity + ')'}
         </div>
     `;
-    
+
     result.scrollIntoView({ behavior: 'smooth' });
 }
 
@@ -190,13 +190,13 @@ function showIframeDetails() {
     alert(details);
 }
 
-document.getElementById('hiddenFrame').onload = function() {
+document.getElementById('hiddenFrame').onload = function () {
     console.log('Iframe loaded successfully - clickjacking possible!');
 };
 
-document.getElementById('hiddenFrame').onerror = function() {
-    console.log('Iframe blocked - security headers working!');
-};
+    document.getElementById('hiddenFrame').onerror = function () {
+        console.log('Iframe blocked - security headers working!');
+    };
 </script>
 
 <style>

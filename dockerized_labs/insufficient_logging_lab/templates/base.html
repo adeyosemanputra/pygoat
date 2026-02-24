@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <base href="{{ base_path }}/">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="static/style.css">
     {% block title %}<title>Insufficient Logging Lab</title>{% endblock %}
 </head>
 <body>
@@ -20,7 +21,7 @@
             const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
             body.setAttribute('data-theme', newTheme);
             localStorage.setItem('theme', newTheme);
-            fetch('/toggle-theme');
+            fetch('toggle-theme');
         }
 
         // Load saved theme

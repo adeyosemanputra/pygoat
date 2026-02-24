@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html data-theme="light">
 <head>
+    <base href="{{ base_path }}/">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% block title %}{% endblock %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="static/style.css">
 </head>
 <body>
     <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">🌙</button>
@@ -39,12 +40,12 @@
 
         async function testAPI(projectId, endpoint = 'details') {
             try {
-                const response = await fetch(`/api/project/${projectId}/${endpoint}`);
+                const response = await fetch(`api/project/${projectId}/${endpoint}`);
                 const data = await response.json();
                 
                 if (endpoint === 'details') {
                     console.log('%c VULNERABLE API RESPONSE (Check this console!):', 'color: red; font-weight: bold; font-size: 14px;');
-                    console.log('%cAPI Endpoint:', 'font-weight: bold;', `/api/project/${projectId}/details`);
+                    console.log('%cAPI Endpoint:', 'font-weight: bold;', `api/project/${projectId}/details`);
                     console.log('%cSensitive Data Exposed:', 'color: red; font-weight: bold;');
                     console.log(data);
                     

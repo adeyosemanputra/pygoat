@@ -8,7 +8,7 @@
 
     <div class="section">
         <h4>Create New Post</h4>
-        <form method="POST" action="{{ base_path }}/create_blog">
+        <form method="POST" action="create_blog">
             <div class="form-group">
                 <label for="title">Title:</label>
                 <input type="text" id="title" name="title" placeholder="Enter post title">
@@ -26,7 +26,7 @@
         <ul class="blog-list">
             {% for post in posts %}
             <li>
-                <a href="{{ base_path }}/blog/{{ post.filename }}">{{ post.title }}</a>
+                <a href="blog/{{ post.filename }}">{{ post.title }}</a>
             </li>
             {% else %}
             <li>No posts yet.</li>
@@ -35,7 +35,7 @@
     </div>
 
     <div class="button-container">
-        <button onclick="window.location.href='{{ base_path }}/'">Back to Lab Details</button>
+        <button onclick="window.location.href=''">Back to Lab Details</button>
     </div>
 </div>
 

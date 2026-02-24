@@ -2,18 +2,10 @@ from flask import Flask, render_template, request, redirect, url_for
 import sqlite3
 import os
 from pathlib import Path
+from lab_utils import init_lab
 
-app = Flask(__name__, static_url_path='/labs/sql-injection/static')
-BASE_PATH = '/labs/sql-injection'
-
-def redirect_bp(path):
-    """Redirect with BASE_PATH prefix"""
-    return redirect(f"{BASE_PATH}{path}")
-
-@app.context_processor
-def inject_base_path():
-    """Make BASE_PATH available in all templates"""
-    return {'base_path': BASE_PATH}
+app = Flask(__name__)
+init_lab(app)
 
 app.config['SECRET_KEY'] = 'your-secret-key-here'
 
@@ -57,13 +49,13 @@ def lab():
             conn.close()
             
             if result:
-                return render_template('lab.html', logged_in_user=result[0], base_path=BASE_PATH)
+                return render_template('lab.html', logged_in_user=result[0])
             else:
-                return render_template('lab.html', error='Invalid username or password', sql_query=sql_query, base_path=BASE_PATH)
+                return render_template('lab.html', error='Invalid username or password', sql_query=sql_query)
         except sqlite3.Error as e:
-            return render_template('lab.html', error=str(e), sql_query=sql_query, base_path=BASE_PATH)
+            return render_template('lab.html', error=str(e), sql_query=sql_query)
             
-    return render_template('lab.html', base_path=BASE_PATH)
+    return render_template('lab.html')
 
 if __name__ == '__main__':
     # Initialize database

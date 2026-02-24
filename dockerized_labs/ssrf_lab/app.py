@@ -1,24 +1,16 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 import os
 import requests
+from lab_utils import init_lab
 
-app = Flask(__name__, static_url_path='/labs/ssrf/static')
-BASE_PATH = '/labs/ssrf'
-
-def redirect_bp(path):
-    """Redirect with BASE_PATH prefix"""
-    return redirect(f"{BASE_PATH}{path}")
-
-@app.context_processor
-def inject_base_path():
-    """Make BASE_PATH available in all templates"""
-    return {'base_path': BASE_PATH}
+app = Flask(__name__)
+init_lab(app)
 
 app.secret_key = "your_secret_key_here"  # Required for flash messages
 
 @app.route('/')
 def index():
-    return render_template('index.html', base_path=BASE_PATH)
+    return render_template('index.html')
 
 # Lab 1: File Reading SSRF
 @app.route('/lab1', methods=['GET', 'POST'])
@@ -31,10 +23,10 @@ def lab1():
             with open(file_path, "r") as f:
                 blog_content = f.read()
             flash('Success! Keep exploring...', 'success')
-            return render_template('lab1.html', blog=blog_content, base_path=BASE_PATH)
+            return render_template('lab1.html', blog=blog_content)
         except:
-            return render_template('lab1.html', blog="No blog found", base_path=BASE_PATH)
-    return render_template('lab1.html', blog="Read Blog About SSRF", base_path=BASE_PATH)
+            return render_template('lab1.html', blog="No blog found")
+    return render_template('lab1.html', blog="Read Blog About SSRF")
 
 # Lab 2: URL SSRF with localhost check
 @app.route('/lab2', methods=['GET', 'POST'])
@@ -44,10 +36,10 @@ def lab2():
         try:
             response = requests.get(url)
             flash('Successfully fetched URL!', 'success')
-            return render_template('lab2.html', response=response.text, base_path=BASE_PATH)
+            return render_template('lab2.html', response=response.text)
         except:
-            return render_template('lab2.html', error="Invalid URL", base_path=BASE_PATH)
-    return render_template('lab2.html', base_path=BASE_PATH)
+            return render_template('lab2.html', error="Invalid URL")
+    return render_template('lab2.html')
 
 def get_client_ip(request):
     """Get client IP from request"""
@@ -60,8 +52,8 @@ def get_client_ip(request):
 def internal():
     client_ip = get_client_ip(request)
     if client_ip == '127.0.0.1':
-        return render_template('internal.html', base_path=BASE_PATH)
-    return render_template('internal.html', access_denied=True, base_path=BASE_PATH)
+        return render_template('internal.html')
+    return render_template('internal.html', access_denied=True)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)

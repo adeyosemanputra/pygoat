@@ -1,17 +1,9 @@
 from flask import Flask, render_template, redirect
 import os
+from lab_utils import init_lab
 
-app = Flask(__name__, static_url_path='/labs/sde/static')
-BASE_PATH = '/labs/sde'
-
-def redirect_bp(path):
-    """Redirect with BASE_PATH prefix"""
-    return redirect(f"{BASE_PATH}{path}")
-
-@app.context_processor
-def inject_base_path():
-    """Make BASE_PATH available in all templates"""
-    return {'base_path': BASE_PATH}
+app = Flask(__name__)
+init_lab(app)
 
 
 # Sensitive config data
@@ -29,12 +21,12 @@ SENSITIVE_DATA = 'FLAGTHATNEEDSTOBEFOUND'
 
 @app.route('/')
 def index():
-    return render_template('index.html', base_path=BASE_PATH)
+    return render_template('index.html')
 
 
 @app.route('/lab')
 def lab():
-    return render_template('lab.html', base_path=BASE_PATH)
+    return render_template('lab.html')
 
 @app.route('/500error')
 def trigger_error():

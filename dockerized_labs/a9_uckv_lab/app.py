@@ -5,24 +5,15 @@ from PIL import Image, ImageMath  # Intentionally vulnerable version
 import io
 import base64  # For converting image to base64 string
 import logging
+from lab_utils import init_lab
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-app = Flask(__name__, static_url_path='/labs/a9-uckv/static')
-BASE_PATH = '/labs/a9-uckv'
-
-def redirect_bp(path):
-    """Redirect with BASE_PATH prefix"""
-    return redirect(f"{BASE_PATH}{path}")
-
-@app.context_processor
-def inject_base_path():
-    """Make BASE_PATH available in all templates"""
-    return {'base_path': BASE_PATH}
-
+app = Flask(__name__)
 app.secret_key = os.urandom(24)
+init_lab(app)
 
 # Configuration
 ALLOWED_EXTENSIONS = {'yml', 'yaml', 'jpg', 'png'}
@@ -35,15 +26,15 @@ def allowed_file(filename):
 @app.route('/')
 def index():
     logger.info("Accessing index page")
-    return render_template('index.html', base_path=BASE_PATH)
+    return render_template('index.html')
 
 @app.route('/lab1')
 def lab1():
-    return render_template('lab1.html', base_path=BASE_PATH)
+    return render_template('lab1.html')
 
 @app.route('/lab2')
 def lab2():
-    return render_template('lab2.html', base_path=BASE_PATH)
+    return render_template('lab2.html')
 
 @app.route('/get_version')
 def get_version():
@@ -57,12 +48,12 @@ def get_version():
 def upload_yaml():
     if 'file' not in request.files:
         flash('No file selected')
-        return redirect_bp('/lab1')
+        return redirect('lab1')
     
     file = request.files['file']
     if file.filename == '':
         flash('No file selected')
-        return redirect_bp('/lab1')
+        return redirect('lab1')
     
     if file and allowed_file(file.filename):
         try:
@@ -70,27 +61,27 @@ def upload_yaml():
             data = yaml.load(file.stream, Loader=yaml.Loader)
             return render_template('result.html', 
                                 content=data, 
-                                filename=file.filename, base_path=BASE_PATH)
+                                filename=file.filename)
         except Exception as e:
             flash(f'Error processing file: {str(e)}')
             logger.error(f"Error processing YAML file {file.filename}: {str(e)}")
-            return redirect_bp('/lab1')
+            return redirect('lab1')
     
     flash('Invalid file type')
-    return redirect_bp('/lab1')
+    return redirect('lab1')
 
 @app.route('/process_image', methods=['POST'])
 def process_image():
     if 'image' not in request.files:
         flash('No image file selected')
-        return redirect_bp('/lab2')
+        return redirect('lab2')
     
     file = request.files['image']
     expression = request.form.get('expression', '')
     
     if file.filename == '':
         flash('No file selected')
-        return redirect_bp('/lab2')
+        return redirect('lab2')
     
     if file and allowed_file(file.filename):
         try:
@@ -116,14 +107,14 @@ def process_image():
                                 image=True,
                                 filename=file.filename,
                                 img_str=img_str,
-                                img_str_ref=img_str_ref, base_path=BASE_PATH)
+                                img_str_ref=img_str_ref)
         except Exception as e:
             flash(f'Error processing image: {str(e)}')
             logger.error(f"Error processing image file {file.filename}: {str(e)}")
-            return redirect_bp('/lab2')
+            return redirect('lab2')
     
     flash('Invalid file type')
-    return redirect_bp('/lab2')
+    return redirect('lab2')
 
 if __name__ == '__main__':
     # Ensure we're binding to all interfaces

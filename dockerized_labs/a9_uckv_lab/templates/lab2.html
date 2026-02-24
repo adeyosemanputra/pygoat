@@ -21,7 +21,7 @@
 
         <div class="lab-section">
             <h3>Image Processing</h3>
-            <form action="{{ base_path }}/process_image" method="post" enctype="multipart/form-data">
+            <form action="process_image" method="post" enctype="multipart/form-data">
                 <div>
                     <label for="image">Select Image:</label>
                     <input type="file" id="image" name="image" accept=".jpg,.png">
@@ -63,7 +63,7 @@
 
 <script>
     function getVersionInfo() {
-        fetch('/get_version')
+        fetch('get_version')
             .then(response => response.json())
             .then(data => {
                 const versionDiv = document.getElementById('versionInfo');

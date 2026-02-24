@@ -11,12 +11,12 @@
         
         <div class="user-info">
             <strong>Logged in as:</strong> {{ user.username }} ({{ user.role }})<br>
-            <a href="{{ base_path }}/logout">Logout</a>
+            <a href="logout">Logout</a>
         </div>
 
         <div class="navigation">
-            <a href="{{ base_path }}/lab">← Back to Lab</a>
-            <a href="{{ base_path }}/solution" target="_blank">View Solution</a>
+            <a href="lab">← Back to Lab</a>
+            <a href="solution" target="_blank">View Solution</a>
         </div>
 
         <div class="section">
@@ -71,7 +71,7 @@
 async function loadProjectDetails(projectId) {
     try {
         const response = await fetch(
-            "{{ base_path }}/api/project/" + projectId + "/details"
+            "api/project/" + projectId + "/details"
         );
 
         const data = await response.json();
@@ -91,7 +91,7 @@ async function loadProjectDetails(projectId) {
     async function testAPI(projectId, endpoint = 'details') {
         try {
             const response = await fetch(
-                "{{ base_path }}/api/project/" + projectId + "/" + endpoint
+                "api/project/" + projectId + "/" + endpoint
             );
 
             const data = await response.json();

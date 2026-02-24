@@ -33,9 +33,9 @@
 
         <div class="lab-section">
             {% if request.path.startswith('/upload_yaml') %}
-                <a href="{{ url_for('lab1') }}" class="btn">Back to Lab 1</a>
+                <a href="lab1" class="btn">Back to Lab 1</a>
             {% else %}
-                <a href="{{ url_for('lab2') }}" class="btn">Back to Lab 2</a>
+                <a href="lab2" class="btn">Back to Lab 2</a>
             {% endif %}
         </div>
     </div>

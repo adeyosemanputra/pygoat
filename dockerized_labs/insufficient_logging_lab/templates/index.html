@@ -21,7 +21,7 @@
 
     <div class="box">
         <button class="coll btn btn-info" onclick="toggleLabDetails('lab1')">Lab 1 Details</button>
-        <div id="lab1"  style="display: none;">
+        <div id="lab1" style="display: none;">
             <div class="section">
                 <p>This lab helps you to get an idea of how sometimes improper logging can result in information disclosure. The user on accessing the lab is given with a login page which tells us that the logs have been leaked. The user needs to find the leak and try to gain the credentials that have been leaked in the logs.
                 Finding the Log</p>
@@ -30,21 +30,21 @@
                         On seeing the Log try to get the required login details as there is a leak and the logging is improperly handled.</p>
             </div>
             <div align="right">
-                        <button type="button" onclick="window.location.href='{{ base_path }}/lab1'">Access Lab 1</button>
+                <button type="button" onclick="window.location.href='lab1'">Access Lab 1</button>
             </div>
-        
+
         </div>
 
         <button class="coll btn btn-info" onclick="toggleLabDetails('lab2')">Lab 2 Details</button>
-        <div id="lab2"  style="display: none;">
+        <div id="lab2" style="display: none;">
             <div class="section">
                 <p>It seems this application is logging every action performed in this logging page. But is there a way to inject some fake logs to the application?
                 
             </div>
             <div align="right">
-                        <button type="button" onclick="window.location.href='{{ base_path }}/lab2'">Access Lab 2</button>
+                <button type="button" onclick="window.location.href='lab2'">Access Lab 2</button>
             </div>
-        
+
         </div>
     </div>
 
@@ -60,7 +60,6 @@
 
 </div>
 
-    
 
 <script>
     function toggleLabDetails(id) {
@@ -75,22 +74,22 @@
        // Modal functionality
     function openModal() {
         document.getElementById('secureFixModal').style.display = 'block';
-        document.body.style.overflow = 'hidden'; 
+        document.body.style.overflow = 'hidden';
     }
 
     function closeModal() {
         document.getElementById('secureFixModal').style.display = 'none';
-        document.body.style.overflow = 'auto'; 
+        document.body.style.overflow = 'auto';
     }
     function showTab(tabName) {
         const panels = document.querySelectorAll('.tab-panel');
         panels.forEach(panel => panel.classList.remove('active'));
-        
+
         const buttons = document.querySelectorAll('.tab-btn');
         buttons.forEach(btn => btn.classList.remove('active'));
-        
+
         document.getElementById(tabName).classList.add('active');
-        
+
         event.target.classList.add('active');
     }
 

@@ -12,8 +12,8 @@
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
             <h4>Your Items</h4>
             <div>
-                <button onclick="window.location.href='{{ base_path }}/store'" style="margin-right: 10px;">Continue Shopping</button>
-                <button onclick="window.location.href='{{ base_path }}/clear_cart'" style="background: #dc3545;">Clear Cart</button>
+                <button onclick="window.location.href='store'" style="margin-right: 10px;">Continue Shopping</button>
+                <button onclick="window.location.href='clear_cart'" style="background: #dc3545;">Clear Cart</button>
             </div>
         </div>
 
@@ -77,8 +77,8 @@
                     {% for coupon in applied_coupons %}
                     <div class="applied-coupon">
                         <span>{{ coupon }} - {{ coupons[coupon].description }}</span>
-                        <button onclick="window.location.href='{{ base_path }}/remove_coupon/{{ coupon }}'" 
-                                style="background: #dc3545; padding: 5px 10px; font-size: 0.8rem;">Remove</button>
+                        <button onclick="window.location.href='remove_coupon/{{ coupon }}'"
+                            style="background: #dc3545; padding: 5px 10px; font-size: 0.8rem;">Remove</button>
                     </div>
                     {% endfor %}
                 </div>
@@ -114,10 +114,10 @@
             </div>
 
         {% else %}
-            <div class="empty-cart">
-                <p>Your cart is empty!</p>
-                <button onclick="window.location.href='{{ base_path }}/store'">Start Shopping</button>
-            </div>
+        <div class="empty-cart">
+            <p>Your cart is empty!</p>
+            <button onclick="window.location.href='store'">Start Shopping</button>
+        </div>
         {% endif %}
     </div>
 </div>
@@ -281,13 +281,13 @@
 function applyCoupon() {
     const couponCode = document.getElementById('couponCode').value.trim();
     const messageDiv = document.getElementById('couponMessage');
-    
+
     if (!couponCode) {
         showMessage('Please enter a coupon code', 'error');
         return;
     }
-    
-    fetch('/apply_coupon', {
+
+    fetch('apply_coupon', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
@@ -319,10 +319,10 @@ function showMessage(message, type) {
 }
 
 function toggleSecureMode() {
-    window.location.href='{{ base_path }}/toggle_secure_mode';
+    window.location.href = 'toggle_secure_mode';
 }
 
-document.getElementById('couponCode').addEventListener('keypress', function(e) {
+document.getElementById('couponCode').addEventListener('keypress', function (e) {
     if (e.key === 'Enter') {
         applyCoupon();
     }

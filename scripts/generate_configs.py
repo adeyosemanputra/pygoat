@@ -24,27 +24,30 @@ def generate_service_block(service_name, data):
     block += f"      context: {build_ctx}\n"
     block += f"    container_name: {service_name}\n"
     
-    # optional fields (any future extra docker-compose fields)
-    
     if 'command' in data:
         block += f"    command: {data['command']}\n"
     
-    if 'environment' in data:
-        block += f"    environment:\n"
-        for key, val in data['environment'].items():
-            block += f"      {key}: {val}\n"
+    # Merge PYTHONPATH into environment, preserving any lab-specific env vars
+    env = data.get('environment', {})
+    env['PYTHONPATH'] = '/shared'
+    block += f"    environment:\n"
+    for key, val in env.items():
+        block += f"      {key}: {val}\n"
     
-    if 'volumes' in data:
-        block += f"    volumes:\n"
-        for vol in data['volumes']:
-            block += f"      - {vol}\n"
+    # Merge shared volume, preserving any lab-specific volumes
+    volumes = data.get('volumes', [])
+    shared_mount = './shared:/shared'
+    if shared_mount not in volumes:
+        volumes = [shared_mount] + volumes
+    block += f"    volumes:\n"
+    for vol in volumes:
+        block += f"      - {vol}\n"
     
     if 'depends_on' in data:
         block += f"    depends_on:\n"
         for dep in data['depends_on']:
             block += f"      - {dep}\n"
     
-    # networks and profiles are standard for all labs
     block += f"    networks:\n"
     block += f"      - my_network\n"
     block += f"    profiles:\n"

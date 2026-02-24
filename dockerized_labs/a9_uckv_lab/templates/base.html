@@ -2,8 +2,9 @@
 <html data-theme="light">
 <head>
     <meta charset="UTF-8">
+    <base href="{{ base_path }}/">
     <title>{% block title %}A9:2017 Using Components with Known Vulnerabilities{% endblock %}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="static/css/style.css">
 </head>
 <body>
     <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">🌙</button>

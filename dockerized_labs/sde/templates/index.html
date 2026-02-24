@@ -25,7 +25,7 @@
         </p>
     </div>
     <button class="coll btn btn-info" onclick="toggleLabDetails('lab')">Lab Details</button>
-    <div id="lab"  style="display: none;">
+    <div id="lab" style="display: none;">
         <div class="section">
         <p class="bp">
             One of the features of having DEBUG=True is dumping lots of metadata from your environment, including the whole
@@ -33,8 +33,7 @@
         </p>
 
         <br>
-        <div class="button-container"> <button type="button"
-            onclick="window.location.href='{{ base_path }}/lab'">Access Lab</button></div>
+        <div class="button-container"> <button type="button" onclick="window.location.href='lab'">Access Lab</button></div>
         </div>
     </div>
     <div class="section">
@@ -66,17 +65,17 @@
 
     function closeModal() {
         document.getElementById('secureFixModal').style.display = 'none';
-        document.body.style.overflow = 'auto'; 
+        document.body.style.overflow = 'auto';
     }
     function showTab(tabName) {
         const panels = document.querySelectorAll('.tab-panel');
         panels.forEach(panel => panel.classList.remove('active'));
-        
+
         const buttons = document.querySelectorAll('.tab-btn');
         buttons.forEach(btn => btn.classList.remove('active'));
-        
+
         document.getElementById(tabName).classList.add('active');
-        
+
         event.target.classList.add('active');
     }
 

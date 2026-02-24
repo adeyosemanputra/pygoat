@@ -9,11 +9,11 @@
     <div class="banking-nav">
         <h3>SecureBank - Dashboard</h3>
         <div class="nav-buttons">
-            <button onclick="window.location.href='{{ base_path }}/transfer'" style="background: #17a2b8;">Transfer Money</button>
-            <button onclick="window.location.href='{{ base_path }}/logout'" style="background: #6c757d;">Logout</button>
+            <button onclick="window.location.href='transfer'" style="background: #17a2b8;">Transfer Money</button>
+            <button onclick="window.location.href='logout'" style="background: #6c757d;">Logout</button>
         </div>
     </div>
-    
+
     <div class="box">
         <div class="account-summary">
             <h4>Welcome, {{ user.full_name }}!</h4>
@@ -33,7 +33,7 @@
         <div class="quick-actions">
             <h4>Quick Actions</h4>
             <div class="action-buttons">
-                <button onclick="window.location.href='{{ base_path }}/transfer'" class="action-btn transfer">
+                <button onclick="window.location.href='transfer'" class="action-btn transfer">
                     💸 Transfer Money
                 </button>
                 <button onclick="checkBalance()" class="action-btn balance">
@@ -68,18 +68,18 @@
         <div class="security-status">
             <h4>Current Security Status</h4>
             <div class="security-info">
-                <p><strong>Security Headers:</strong> 
+                <p><strong>Security Headers:</strong>
                     {% if session.secure_mode %}
-                        <span style="color: #28a745;">✅ Enabled</span>
+                    <span style="color: #28a745;">✅ Enabled</span>
                     {% else %}
-                        <span style="color: #dc3545;">❌ Disabled (Vulnerable to Clickjacking)</span>
+                    <span style="color: #dc3545;">❌ Disabled (Vulnerable to Clickjacking)</span>
                     {% endif %}
                 </p>
-                <button onclick="window.location.href='{{ base_path }}/toggle_secure_mode'">
+                <button onclick="window.location.href='toggle_secure_mode'">
                     {% if session.secure_mode %}
-                        Disable Security Headers
+                    Disable Security Headers
                     {% else %}
-                        Enable Security Headers
+                    Enable Security Headers
                     {% endif %}
                 </button>
             </div>
@@ -88,15 +88,15 @@
         <div class="lab-warnings">
             <h4>Lab Testing Information</h4>
             <p class="bp">
-                <strong>Clickjacking Test:</strong> When security headers are disabled, this banking interface 
-                can be embedded in malicious iframes. Try the <a href="{{ base_path }}/malicious" target="_blank">malicious page</a> 
+                <strong>Clickjacking Test:</strong> When security headers are disabled, this banking interface
+                can be embedded in malicious iframes. Try the <a href="malicious" target="_blank">malicious page</a>
                 to see how clickjacking works.
             </p>
             <div class="warning-buttons">
-                <button onclick="window.open(''{{ base_path }}/malicious''), '_blank')" style="background: #dc3545;">
+                <button onclick="window.open('malicious', '_blank')" style="background: #dc3545;">
                     🚨 View Malicious Page
                 </button>
-                <button onclick="window.location.href='{{ base_path }}/lab'">
+                <button onclick="window.location.href='lab'">
                     📚 Lab Details
                 </button>
             </div>
@@ -190,7 +190,7 @@ function viewSecurity() {
 
 .action-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 .recent-transactions {

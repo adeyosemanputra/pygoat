@@ -19,7 +19,7 @@
 
         <div class="lab-section">
             <h3>YAML File Upload</h3>
-            <form action="{{ base_path }}/upload_yaml" method="post" enctype="multipart/form-data">
+            <form action="upload_yaml" method="post" enctype="multipart/form-data">
                 <div>
                     <label for="file">Select YAML File:</label>
                     <input type="file" id="file" name="file" accept=".yml,.yaml,png,jpeg">
@@ -45,7 +45,7 @@
 
 <script>
     function getVersionInfo() {
-        fetch('/get_version')
+        fetch('get_version')
             .then(response => response.json())
             .then(data => {
                 const versionDiv = document.getElementById('versionInfo');

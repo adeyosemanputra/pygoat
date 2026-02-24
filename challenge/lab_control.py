@@ -73,6 +73,24 @@ def run(cmd):
             'stdout': ''
         })()
 
+def _get_host_shared_path():
+    """Get host path for shared/ by inspecting own container mounts"""
+    if not RUNNING_IN_DOCKER:
+        return os.path.abspath("shared")
+    
+    try:
+        container_id = open("/etc/hostname").read().strip()
+        result = run(f"docker inspect {container_id}")
+        mounts = json.loads(result.stdout)
+        for mount in mounts[0].get("Mounts", []):
+            if mount.get("Destination") == "/app":
+                host_app_path = mount["Source"]
+                # normalize Windows path separators if needed
+                return host_app_path.replace("\\", "/") + "/shared"
+    except Exception as e:
+        print(f"Warning: Could not detect host shared path: {e}")
+    
+    return "/app/shared"
 
 def start_lab(lab, user_id=None):
     """Start lab container - isolated per user with network alias"""
@@ -89,7 +107,6 @@ def start_lab(lab, user_id=None):
     service_name = LAB_PROFILES[lab]
     user_containers = _load_user_containers()
     user_key = f"user{user_id}_{lab}"
-    
 
     if user_key in user_containers:
         container_name = user_containers[user_key]
@@ -102,18 +119,27 @@ def start_lab(lab, user_id=None):
         _save_user_containers(user_containers)
 
     container_name = f"{service_name}-user{user_id}"
-    internal_port = LAB_PORTS.get(lab, 5000)
     
     build_result = run(f"{BASE_CMD} build {service_name}")
     if build_result.returncode != 0:
         return False, f"Failed to build image: {build_result.stderr[:200]}"
     
-    cmd = f"""docker run -d --rm \
-        --name {container_name} \
-        --network pygoat_my_network \
-        --network-alias {service_name} \
-        pygoat-{service_name}"""
+    image_inspect = run(f"docker images --format '{{{{.Repository}}}}:{{{{.Tag}}}}' --filter reference='*{service_name}*' | head -n 1")
+    image_name = image_inspect.stdout.strip()
     
+    if not image_name:
+        return False, "Failed to find built image"
+
+    shared_path = _get_host_shared_path()
+    cmd = (
+        f"docker run -d --rm"
+        f" --name {container_name}"
+        f" --network pygoat_my_network"
+        f" --network-alias {service_name}"
+        f" -v \"{shared_path}:/shared\""
+        f" -e PYTHONPATH=/shared"
+        f" {image_name}"
+    )
     result = run(cmd)
 
     if result.returncode != 0:
@@ -173,7 +199,15 @@ def lab_status(lab, user_id=None):
 
     container_name = user_containers[user_key]
     result = run(f"docker inspect -f '{{{{.State.Running}}}}' {container_name}")
-    return "true" in result.stdout.lower()
+    
+    is_running = "true" in result.stdout.lower()
+    
+    # cleanup
+    if not is_running and result.returncode != 0:
+        del user_containers[user_key]
+        _save_user_containers(user_containers)
+    
+    return is_running
 
 
 def get_lab_url(lab, user_id=None):

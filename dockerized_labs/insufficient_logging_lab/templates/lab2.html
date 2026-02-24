@@ -17,7 +17,7 @@
 
     <div class="section">
         <h4>User Management</h4>
-        <form method="POST" action="{{ base_path }}/lab2/change_password">
+        <form method="POST" action="lab2/change_password">
             <div class="form-group">
                 <label for="username">Username:</label>
                 <input type="text" id="username" name="username" required>
@@ -31,7 +31,7 @@
             </div>
         </form>
 
-        <form method="POST" action="{{ base_path }}/lab2/change_role" class="mt-4">
+        <form method="POST" action="lab2/change_role" class="mt-4">
             <div class="form-group">
                 <label for="username_role">Username:</label>
                 <input type="text" id="username_role" name="username" required>
@@ -91,8 +91,8 @@
     </div>
 
     <div class="button-container">
-        <button onclick="window.location.href='{{ base_path }}/lab1'">Back to Lab 1</button>
-        <button onclick="window.location.href='{{ base_path }}/'">Back to Lab Details</button>
+        <button onclick="window.location.href='lab1'">Back to Lab 1</button>
+        <button onclick="window.location.href='.'">Back to Lab Details</button>
     </div>
 </div>
 

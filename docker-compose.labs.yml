@@ -4,6 +4,10 @@ services:
     build:
       context: challenge/labs/bopla_lab/
     container_name: bopla-lab
+    environment:
+      PYTHONPATH: /shared
+    volumes:
+      - ./shared:/shared
     networks:
       - my_network
     profiles:
@@ -14,6 +18,10 @@ services:
     build:
       context: challenge/labs/business_logic_lab/
     container_name: business-logic-lab
+    environment:
+      PYTHONPATH: /shared
+    volumes:
+      - ./shared:/shared
     networks:
       - my_network
     profiles:
@@ -24,6 +32,10 @@ services:
     build:
       context: challenge/labs/security_headers_lab/
     container_name: security-headers-lab
+    environment:
+      PYTHONPATH: /shared
+    volumes:
+      - ./shared:/shared
     networks:
       - my_network
     profiles:
@@ -35,6 +47,10 @@ services:
     build:
       context: dockerized_labs/xss_lab/
     container_name: xss-lab
+    environment:
+      PYTHONPATH: /shared
+    volumes:
+      - ./shared:/shared
     networks:
       - my_network
     profiles:
@@ -45,6 +61,10 @@ services:
     build:
       context: dockerized_labs/ssrf_lab/
     container_name: ssrf-lab
+    environment:
+      PYTHONPATH: /shared
+    volumes:
+      - ./shared:/shared
     networks:
       - my_network
     profiles:
@@ -55,6 +75,10 @@ services:
     build:
       context: dockerized_labs/sql_injection_lab/
     container_name: sql-injection-lab
+    environment:
+      PYTHONPATH: /shared
+    volumes:
+      - ./shared:/shared
     networks:
       - my_network
     profiles:
@@ -65,6 +89,10 @@ services:
     build:
       context: dockerized_labs/command_injection_lab/
     container_name: command-injection-lab
+    environment:
+      PYTHONPATH: /shared
+    volumes:
+      - ./shared:/shared
     networks:
       - my_network
     profiles:
@@ -75,6 +103,10 @@ services:
     build:
       context: dockerized_labs/template_injection_lab/
     container_name: template-injection-lab
+    environment:
+      PYTHONPATH: /shared
+    volumes:
+      - ./shared:/shared
     networks:
       - my_network
     profiles:
@@ -85,6 +117,10 @@ services:
     build:
       context: dockerized_labs/xxe_lab/
     container_name: xxe-lab
+    environment:
+      PYTHONPATH: /shared
+    volumes:
+      - ./shared:/shared
     networks:
       - my_network
     profiles:
@@ -95,6 +131,10 @@ services:
     build:
       context: dockerized_labs/broken_auth_lab/
     container_name: broken-auth-lab
+    environment:
+      PYTHONPATH: /shared
+    volumes:
+      - ./shared:/shared
     networks:
       - my_network
     profiles:
@@ -105,6 +145,10 @@ services:
     build:
       context: dockerized_labs/broken_access_lab/
     container_name: broken-access-lab
+    environment:
+      PYTHONPATH: /shared
+    volumes:
+      - ./shared:/shared
     networks:
       - my_network
     profiles:
@@ -115,6 +159,10 @@ services:
     build:
       context: dockerized_labs/crypto_failure_lab/
     container_name: crypto-failure-lab
+    environment:
+      PYTHONPATH: /shared
+    volumes:
+      - ./shared:/shared
     networks:
       - my_network
     profiles:
@@ -125,6 +173,10 @@ services:
     build:
       context: dockerized_labs/insecure_design_lab/
     container_name: insecure-design-lab
+    environment:
+      PYTHONPATH: /shared
+    volumes:
+      - ./shared:/shared
     networks:
       - my_network
     profiles:
@@ -135,6 +187,10 @@ services:
     build:
       context: dockerized_labs/insec_des_lab/
     container_name: insec-des-lab
+    environment:
+      PYTHONPATH: /shared
+    volumes:
+      - ./shared:/shared
     networks:
       - my_network
     profiles:
@@ -145,6 +201,10 @@ services:
     build:
       context: dockerized_labs/sec_misconfig/
     container_name: sec-misconfig-lab
+    environment:
+      PYTHONPATH: /shared
+    volumes:
+      - ./shared:/shared
     networks:
       - my_network
     profiles:
@@ -156,6 +216,10 @@ services:
       context: dockerized_labs/sensitive_data_exposure/
     container_name: sensitive-data-exposure-lab
     command: python manage.py runserver 0.0.0.0:8000
+    environment:
+      PYTHONPATH: /shared
+    volumes:
+      - ./shared:/shared
     networks:
       - my_network
     profiles:
@@ -166,6 +230,10 @@ services:
     build:
       context: dockerized_labs/auth_failure_lab/
     container_name: auth-failure-lab
+    environment:
+      PYTHONPATH: /shared
+    volumes:
+      - ./shared:/shared
     networks:
       - my_network
     profiles:
@@ -176,6 +244,10 @@ services:
     build:
       context: dockerized_labs/software_integrity_lab/
     container_name: software-integrity-lab
+    environment:
+      PYTHONPATH: /shared
+    volumes:
+      - ./shared:/shared
     networks:
       - my_network
     profiles:
@@ -186,6 +258,10 @@ services:
     build:
       context: dockerized_labs/insufficient_logging_lab/
     container_name: insufficient-logging-lab
+    environment:
+      PYTHONPATH: /shared
+    volumes:
+      - ./shared:/shared
     networks:
       - my_network
     profiles:
@@ -196,6 +272,10 @@ services:
     build:
       context: dockerized_labs/sde/
     container_name: sde-lab
+    environment:
+      PYTHONPATH: /shared
+    volumes:
+      - ./shared:/shared
     networks:
       - my_network
     profiles:
@@ -206,6 +286,10 @@ services:
     build:
       context: dockerized_labs/a9_uckv_lab/
     container_name: a9-uckv-lab
+    environment:
+      PYTHONPATH: /shared
+    volumes:
+      - ./shared:/shared
     networks:
       - my_network
     profiles:

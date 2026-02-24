@@ -3,18 +3,10 @@ import pickle
 import base64
 from dataclasses import dataclass
 import os
+from lab_utils import init_lab
 
-app = Flask(__name__, static_url_path='/labs/insec-des/static')
-BASE_PATH = '/labs/insec-des'
-
-def redirect_bp(path):
-    """Redirect with BASE_PATH prefix"""
-    return redirect(f"{BASE_PATH}{path}")
-
-@app.context_processor
-def inject_base_path():
-    """Make BASE_PATH available in all templates"""
-    return {'base_path': BASE_PATH}
+app = Flask(__name__)
+init_lab(app)
 
 
 @dataclass
@@ -28,7 +20,7 @@ class User:
 
 @app.route('/')
 def index():
-    return render_template('index.html', base_path=BASE_PATH)
+    return render_template('index.html')
 
 @app.route('/serialize', methods=['POST'])
 def serialize_data():
@@ -37,7 +29,7 @@ def serialize_data():
     user = User(username=username, is_admin=False)
     # Match PyGoat's serialization format
     serialized = base64.b64encode(pickle.dumps(user)).decode()
-    return render_template('result.html', serialized=serialized, base_path=BASE_PATH)
+    return render_template('result.html', serialized=serialized)
 
 @app.route('/deserialize', methods=['POST'])
 def deserialize_data():
@@ -55,9 +47,9 @@ def deserialize_data():
         else:
             message = "Invalid user data"
         
-        return render_template('result.html', message=message, base_path=BASE_PATH)
+        return render_template('result.html', message=message)
     except Exception as e:
-        return render_template('result.html', message=f"Error: {str(e)}", base_path=BASE_PATH)
+        return render_template('result.html', message=f"Error: {str(e)}")
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080)

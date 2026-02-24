@@ -9,7 +9,7 @@
         <h4>Login Form</h4>
         <p class="bp">Try to log in as admin.</p>
 
-        <form method="POST" action="{{ base_path }}/lab">
+        <form method="POST" action="lab">
             <div class="form-group">
                 <label for="username">Username:</label>
                 <input type="text" id="username" name="username" placeholder="Enter username">
@@ -40,7 +40,7 @@
     </div>
 
     <div class="button-container">
-        <button onclick="window.location.href='{{ base_path }}/'">Back to Lab Details</button>
+        <button onclick="window.location.href='.'">Back to Lab Details</button>
     </div>
 </div>
 {% endblock %}

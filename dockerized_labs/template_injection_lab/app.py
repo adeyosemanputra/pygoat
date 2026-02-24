@@ -1,18 +1,10 @@
 from flask import Flask, render_template, request, redirect, url_for, render_template_string
 import os
 import uuid
+from lab_utils import init_lab
 
-app = Flask(__name__, static_url_path='/labs/template-injection/static')
-BASE_PATH = '/labs/template-injection'
-
-def redirect_bp(path):
-    """Redirect with BASE_PATH prefix"""
-    return redirect(f"{BASE_PATH}{path}")
-
-@app.context_processor
-def inject_base_path():
-    """Make BASE_PATH available in all templates"""
-    return {'base_path': BASE_PATH}
+app = Flask(__name__)
+init_lab(app)
 
 
 # Directory to store blog posts
@@ -68,13 +60,13 @@ def get_blog_posts():
 @app.route('/')
 def index():
     """Display the main lab page with instructions."""
-    return render_template('index.html', base_path=BASE_PATH)
+    return render_template('index.html')
 
 @app.route('/lab')
 def lab():
     """Display the lab page with blog creation form and list of posts."""
     posts = get_blog_posts()
-    return render_template('lab.html', posts=posts, base_path=BASE_PATH)
+    return render_template('lab.html', posts=posts)
 
 @app.route('/create_blog', methods=['POST'])
 def create_blog():
@@ -86,7 +78,7 @@ def create_blog():
     try:
         # Create the blog post with the user's content directly
         filename = create_blog_post(title, content)
-        return redirect_bp(f'/blog/{filename}')
+        return redirect(f'blog/{filename}')
     except Exception as e:
         return f"Error: {str(e)}", 400
 
@@ -94,7 +86,7 @@ def create_blog():
 def view_blog(filename):
     """View a specific blog post."""
     try:
-        return render_template(f'blogs/{filename}', base_path=BASE_PATH)
+        return render_template(f'blogs/{filename}')
     except Exception as e:
         return f"Blog post not found: {str(e)}", 404
 

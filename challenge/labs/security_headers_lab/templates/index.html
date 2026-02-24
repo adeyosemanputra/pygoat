@@ -38,29 +38,31 @@
                     <li><strong>Username:</strong> jane_smith | <strong>Password:</strong> securepass | <strong>Balance:</strong> ₹15,000</li>
                 </ul>
             </p>
-            
+
             <div style="text-align: right;">
-                <button type="button" onclick="window.location.href='{{ base_path }}/lab'" style="margin-right: 10px;">Lab Details</button>
-                <button type="button" onclick="window.location.href='{{ base_path }}/login'" style="margin-right: 10px;">Access Banking</button>
-                <button type="button" onclick="window.location.href='{{ base_path }}/solution'">View Solution</button>
+                <button type="button" onclick="window.location.href='lab'" style="margin-right: 10px;">Lab
+                    Details</button>
+                <button type="button" onclick="window.location.href='login'" style="margin-right: 10px;">Access
+                    Banking</button>
+                <button type="button" onclick="window.location.href='solution'">View Solution</button>
             </div>
         </div>
 
         <div class="section">
             <h4>Security Mode Toggle</h4>
             <div class="security-toggle">
-                <p><strong>Current Mode:</strong> 
+                <p><strong>Current Mode:</strong>
                     {% if session.secure_mode %}
-                        <span style="color: #28a745;">🔒 Secure (Headers Enabled)</span>
+                    <span style="color: #28a745;">🔒 Secure (Headers Enabled)</span>
                     {% else %}
-                        <span style="color: #dc3545;">⚠️ Vulnerable (Headers Disabled)</span>
+                    <span style="color: #dc3545;">⚠️ Vulnerable (Headers Disabled)</span>
                     {% endif %}
                 </p>
-                <button onclick="window.location.href='{{ base_path }}/toggle_secure_mode'">
+                <button onclick="window.location.href='toggle_secure_mode'">
                     {% if session.secure_mode %}
-                        Switch to Vulnerable Mode
+                    Switch to Vulnerable Mode
                     {% else %}
-                        Switch to Secure Mode
+                    Switch to Secure Mode
                     {% endif %}
                 </button>
                 <button onclick="checkHeaders()" style="margin-left: 10px;">Check Current Headers</button>
@@ -143,12 +145,12 @@
 
 <script>
 function checkHeaders() {
-    fetch('/check_headers')
+    fetch('check_headers')
         .then(response => response.json())
         .then(data => {
             const headersDiv = document.getElementById('headers-info');
             const contentDiv = document.getElementById('headers-content');
-            
+
             let headersList = '<ul>';
             headersList += `<li><strong>X-Frame-Options:</strong> ${data.x_frame_options}</li>`;
             headersList += `<li><strong>Content-Security-Policy:</strong> ${data.content_security_policy}</li>`;
@@ -156,7 +158,7 @@ function checkHeaders() {
             headersList += `<li><strong>X-XSS-Protection:</strong> ${data.x_xss_protection}</li>`;
             headersList += `<li><strong>Referrer-Policy:</strong> ${data.referrer_policy}</li>`;
             headersList += '</ul>';
-            
+
             contentDiv.innerHTML = headersList;
             headersDiv.style.display = 'block';
         })

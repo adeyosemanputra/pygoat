@@ -10,7 +10,7 @@
     <div class="box">
         <div class="section">
             <h4>Enter New Password</h4>
-            <form method="POST" action="{{ base_path }}/reset/{{ token }}/confirm">
+            <form method="POST" action="reset/{{ token }}/confirm">
                 <input type="password" name="new_password" placeholder="New Password" required>
                 <input type="password" name="confirm_password" placeholder="Confirm New Password" required>
                 <input type="hidden" name="token" value="{{ token }}">

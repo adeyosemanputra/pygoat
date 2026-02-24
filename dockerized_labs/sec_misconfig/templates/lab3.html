@@ -88,7 +88,7 @@
         const username = document.getElementById('username').value;
         const role = document.getElementById('role').value;
 
-        fetch('{{ base_path }}/lab3/get-token', {
+        fetch('lab3/get-token', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -104,7 +104,7 @@
     function verifyToken() {
         const token = document.getElementById('token').value;
 
-        fetch('{{ base_path }}/lab3/verify-token', {
+        fetch('lab3/verify-token', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -129,7 +129,7 @@
 </script>
 
 <div class="button-container">
-    <button class="btn btn-info" type="button" onclick="window.location.href='{{ base_path }}/'">Back to Lab
+    <button class="btn btn-info" type="button" onclick="window.location.href=''">Back to Lab
         Details</button>
 </div>
 {% endblock %}

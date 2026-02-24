@@ -1,20 +1,11 @@
-from flask import Flask, render_template, request, make_response, redirect, url_for
+from flask import Flask, render_template, request, make_response
 from dataclasses import dataclass
+from lab_utils import init_lab
 import os
 
-app = Flask(__name__, static_url_path='/labs/broken-access/static')
-BASE_PATH = '/labs/broken-access'
-
-def redirect_bp(path):
-    """Redirect with BASE_PATH prefix"""
-    return redirect(f"{BASE_PATH}{path}")
-
-@app.context_processor
-def inject_base_path():
-    """Make BASE_PATH available in all templates"""
-    return {'base_path': BASE_PATH}
-
+app = Flask(__name__)
 app.secret_key = os.urandom(24)
+init_lab(app)
 
 @dataclass
 class User:
@@ -22,7 +13,6 @@ class User:
     password: str
     is_admin: bool = False
 
-# Hardcoded users for demonstration
 users = {
     'jack': User('jack', 'jacktheripper', False),
     'admin': User('admin', 'admin_pass', True)
@@ -30,16 +20,18 @@ users = {
 
 @app.route('/')
 def index():
-    return render_template('index.html', base_path=BASE_PATH)
+    return render_template('index.html')
 
 @app.route('/lab')
 def lab():
-    return render_template('lab.html', base_path=BASE_PATH)
+    return render_template('lab.html')
 
 @app.route('/lab/login', methods=['GET', 'POST'])
 def lab_login():
     if request.cookies.get('admin') == '1':
-        return render_template('result.html', username='admin', message="Welcome Admin! Secret key: ADMIN_KEY_123", base_path=BASE_PATH)
+        return render_template('result.html',
+            username='admin',
+            message="Welcome Admin! Secret key: ADMIN_KEY_123")
 
     if request.method == 'POST':
         username = request.form.get('username')
@@ -49,14 +41,14 @@ def lab_login():
         user = users[username]
         response = make_response(render_template('result.html', 
             username=username,
-            message="Welcome back!" if not user.is_admin else "Welcome Admin! Secret key: ADMIN_KEY_123",
-            base_path=BASE_PATH))
-        
         # Set admin cookie - intentionally vulnerable
+            message="Welcome back!" if not user.is_admin else "Welcome Admin! Secret key: ADMIN_KEY_123"))
         response.set_cookie('admin', '0' if not user.is_admin else '1', max_age=200)
         return response
-    
-    return render_template('result.html', message="Invalid credentials", base_path=BASE_PATH)
+
+    return render_template('result.html', message="Invalid credentials")
+
+return render_template('lab.html')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080, debug=True) 

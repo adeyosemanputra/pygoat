@@ -1,18 +1,10 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for
 import os
 import json
+from lab_utils import init_lab
 
-app = Flask(__name__, static_url_path='/labs/bopla/static')
-BASE_PATH = '/labs/bopla'
-
-def redirect_bp(path):
-    """Redirect with BASE_PATH prefix"""
-    return redirect(f"{BASE_PATH}{path}")
-
-@app.context_processor
-def inject_base_path():
-    """Make BASE_PATH available in all templates"""
-    return {'base_path': BASE_PATH}
+app = Flask(__name__)
+init_lab(app)
 
 app.secret_key = os.urandom(24)
 
@@ -65,11 +57,11 @@ current_user = None
 
 @app.route('/')
 def index():
-    return render_template('index.html', base_path=BASE_PATH)
+    return render_template('index.html')
 
 @app.route('/lab')
 def lab():
-    return render_template('lab.html', base_path=BASE_PATH)
+    return render_template('lab.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -80,16 +72,16 @@ def login():
         
         if username in users and users[username]['password'] == password:
             current_user = {"username": username, "role": users[username]['role']}
-            return redirect_bp('/dashboard')
+            return redirect('dashboard')
         else:
-            return render_template('login.html', error="Invalid credentials", base_path=BASE_PATH)
+            return render_template('login.html', error="Invalid credentials")
     
-    return render_template('login.html', base_path=BASE_PATH)
+    return render_template('login.html')
 
 @app.route('/dashboard')
 def dashboard():
     if not current_user:
-        return redirect_bp('/login')
+        return redirect('login')
     
     project_list = []
     for project_id, project in projects_data.items():
@@ -99,7 +91,7 @@ def dashboard():
             "description": project["description"]
         })
     
-    return render_template('dashboard.html', projects=project_list, user=current_user, base_path=BASE_PATH)
+    return render_template('dashboard.html', projects=project_list, user=current_user)
 
 @app.route('/api/project/<int:project_id>/details')
 def get_project_details(project_id):
@@ -140,11 +132,11 @@ def get_project_safe(project_id):
 def logout():
     global current_user
     current_user = None
-    return redirect_bp('/')
+    return redirect('./')
 
 @app.route('/solution')
 def solution():
-    return render_template('solution.html', base_path=BASE_PATH)
+    return render_template('solution.html')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080, debug=True)

@@ -63,7 +63,7 @@
             </div>
 
             <div class="button-container">
-                <button onclick="window.location.href='{{ base_path }}/lab1'">Access Lab 1</button>
+                <button onclick="window.location.href='lab1'">Access Lab 1</button>
             </div>
         </div>
     </div>
@@ -99,7 +99,7 @@
             </div>
 
             <div class="button-container">
-                <button onclick="window.location.href='{{ base_path }}/lab2'">Access Lab 2</button>
+                <button onclick="window.location.href='lab2'">Access Lab 2</button>
             </div>
         </div>
     </div>
@@ -129,26 +129,26 @@
     // Modal functionality
     function openModal() {
         document.getElementById('secureFixModal').style.display = 'block';
-        document.body.style.overflow = 'hidden'; 
+        document.body.style.overflow = 'hidden';
     }
 
     function closeModal() {
         document.getElementById('secureFixModal').style.display = 'none';
-        document.body.style.overflow = 'auto'; 
+        document.body.style.overflow = 'auto';
     }
     function showTab(tabName) {
         const panels = document.querySelectorAll('.tab-panel');
         panels.forEach(panel => panel.classList.remove('active'));
-        
+
         const buttons = document.querySelectorAll('.tab-btn');
         buttons.forEach(btn => btn.classList.remove('active'));
-        
+
         document.getElementById(tabName).classList.add('active');
-        
+
         event.target.classList.add('active');
     }
 
-    document.addEventListener('click', function(event) {
+    document.addEventListener('click', function (event) {
         const modal = document.getElementById('secureFixModal');
         const overlay = event.target.classList.contains('modal-overlay');
         if (overlay) {
@@ -156,7 +156,7 @@
         }
     });
 
-    document.addEventListener('keydown', function(event) {
+    document.addEventListener('keydown', function (event) {
         if (event.key === 'Escape') {
             closeModal();
         }

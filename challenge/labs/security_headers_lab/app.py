@@ -2,18 +2,10 @@ from flask import Flask, render_template, request, session, redirect, url_for, j
 import uuid
 from datetime import datetime
 import os
+from lab_utils import init_lab
 
-app = Flask(__name__, static_url_path='/labs/security-headers/static')
-BASE_PATH = '/labs/security-headers'
-
-def redirect_bp(path):
-    """Redirect with BASE_PATH prefix"""
-    return redirect(f"{BASE_PATH}{path}")
-
-@app.context_processor
-def inject_base_path():
-    """Make BASE_PATH available in all templates"""
-    return {'base_path': BASE_PATH}
+app = Flask(__name__)
+init_lab(app)
 
 app.secret_key = 'security_headers_secret_key_2024'
 
@@ -63,7 +55,7 @@ def after_request(response):
 @app.route('/')
 def index():
     init_session()
-    return render_template('index.html', base_path=BASE_PATH)
+    return render_template('index.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -76,35 +68,35 @@ def login():
         if username in USERS and USERS[username]['password'] == password:
             session['user'] = username
             session.modified = True
-            return redirect_bp('/dashboard')
+            return redirect('dashboard')
         else:
-            return render_template('login.html', error='Invalid username or password', base_path=BASE_PATH)
+            return render_template('login.html', error='Invalid username or password')
     
-    return render_template('login.html', base_path=BASE_PATH)
+    return render_template('login.html')
 
 @app.route('/logout')
 def logout():
     session.clear()
-    return redirect_bp('/')
+    return redirect('./')
 
 @app.route('/dashboard')
 def dashboard():
     init_session()
     
     if not session.get('user'):
-        return redirect_bp('/login')
+        return redirect('login')
     
     user_data = USERS[session['user']]
     user_transactions = [t for t in TRANSACTIONS if t.get('from_user') == session['user']][-5:]
     
-    return render_template('dashboard.html', user=user_data, transactions=user_transactions, base_path=BASE_PATH)
+    return render_template('dashboard.html', user=user_data, transactions=user_transactions)
 
 @app.route('/transfer', methods=['GET', 'POST'])
 def transfer():
     init_session()
     
     if not session.get('user'):
-        return redirect_bp('/login')
+        return redirect('login')
     
     if request.method == 'POST':
         amount = request.form.get('amount', '0')
@@ -119,7 +111,7 @@ def transfer():
             user_data = USERS[session['user']]
             if amount > user_data['balance']:
                                      error='Insufficient balance',
-                                     user=user_data, base_path=BASE_PATH)
+                                     user=user_data)
             
             user_data['balance'] -= amount
             
@@ -135,29 +127,30 @@ def transfer():
             }
             TRANSACTIONS.append(transaction)
             
+            return render_template('transfer_success.html',
                                  user=user_data,
-                                 transaction=transaction, base_path=BASE_PATH)
+                                 transaction=transaction)
             
         except ValueError as e:
-                                 error=f'Invalid amount: {str(e)}',
-                                 user=USERS[session['user']], base_path=BASE_PATH)
+                             error=f'Invalid amount: {str(e)}',
+                             user=USERS[session['user']])
     
-    return render_template('transfer.html', user=USERS[session['user']], base_path=BASE_PATH)
+    return render_template('transfer.html', user=USERS[session['user']])
 
 @app.route('/malicious')
 def malicious():
     init_session()
-    return render_template('malicious.html', base_path=BASE_PATH)
+    return render_template('malicious.html')
 
 @app.route('/lab')
 def lab():
     init_session()
-    return render_template('lab.html', base_path=BASE_PATH)
+    return render_template('lab.html')
 
 @app.route('/solution')
 def solution():
     init_session()
-    return render_template('solution.html', base_path=BASE_PATH)
+    return render_template('solution.html')
 
 @app.route('/toggle_secure_mode')
 def toggle_secure_mode():
@@ -166,10 +159,10 @@ def toggle_secure_mode():
     session.modified = True
 
     ref = request.referrer or ''
-    if ref.startswith(BASE_PATH):
+    if ref.startswith(request.host_url.rstrip('/')):
         return redirect(ref)
 
-    return redirect_bp('/')
+    return redirect('./')
 
 
 @app.route('/check_headers')
@@ -197,7 +190,7 @@ def check_headers():
 @app.route('/demo_iframe')
 def demo_iframe():
     init_session()
-    return render_template('demo_iframe.html', base_path=BASE_PATH)
+    return render_template('demo_iframe.html')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5011, debug=True)

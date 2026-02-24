@@ -13,7 +13,7 @@
         <p class="bp">Browse our products and add them to your cart. Use discount coupons at checkout!</p>
         
         <div style="text-align: right; margin-bottom: 20px;">
-            <button type="button" onclick="window.location.href='{{ base_path }}/cart'" style="background: #28a745;">
+            <button type="button" onclick="window.location.href='cart'" style="background: #28a745;">
                 View Cart ({{ session.cart|length if session.cart else 0 }} items)
             </button>
         </div>
@@ -25,7 +25,7 @@
             <div class="product-image">{{ product.image }}</div>
             <h4>{{ product.name }}</h4>
             <p class="product-price">₹{{ product.price }}</p>
-            <button onclick="window.location.href='{{ base_path }}/add_to_cart/{{ product.id }}'" class="add-to-cart-btn">
+            <button onclick="window.location.href='add_to_cart/{{ product.id }}'" class="add-to-cart-btn">
                 Add to Cart
             </button>
         </div>
@@ -64,7 +64,7 @@
 
 .product-card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 .product-image {

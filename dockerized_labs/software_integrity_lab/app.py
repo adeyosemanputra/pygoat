@@ -4,18 +4,10 @@ import pickle
 import os
 from dataclasses import dataclass
 from pathlib import Path
+from lab_utils import init_lab
 
-app = Flask(__name__, static_url_path='/labs/software-integrity/static')
-BASE_PATH = '/labs/software-integrity'
-
-def redirect_bp(path):
-    """Redirect with BASE_PATH prefix"""
-    return redirect(f"{BASE_PATH}{path}")
-
-@app.context_processor
-def inject_base_path():
-    """Make BASE_PATH available in all templates"""
-    return {'base_path': BASE_PATH}
+app = Flask(__name__)
+init_lab(app)
 
 app.config['SECRET_KEY'] = 'your-secret-key-here'
 
@@ -31,26 +23,26 @@ encoded_user = base64.b64encode(pickled_user)
 @app.route('/')
 def index():
     """Description page explaining Software and Data Integrity Failures"""
-    return render_template('index.html', base_path=BASE_PATH)
+    return render_template('index.html')
 
 @app.route('/lab1')
 def lab1():
     """Lab 1: Insecure Deserialization"""
-    response = render_template('lab1.html', message="Only Admins can see this page", base_path=BASE_PATH)
+    response = render_template('lab1.html', message="Only Admins can see this page")
     token = request.cookies.get('token')
     
     if token is None:
         token = encoded_user
-        response = make_response(render_template('lab1.html', message="Only Admins can see this page", base_path=BASE_PATH))
+        response = make_response(render_template('lab1.html', message="Only Admins can see this page"))
         response.set_cookie(key='token', value=token.decode('utf-8'))
     else:
         try:
             token = base64.b64decode(token)
             admin = pickle.loads(token)  # Intentionally vulnerable to pickle deserialization
             if admin.admin == 1:
-                response = render_template('lab1.html', message="Welcome Admin, SECRETKEY:ADMIN123", base_path=BASE_PATH)
+                response = render_template('lab1.html', message="Welcome Admin, SECRETKEY:ADMIN123")
         except Exception as e:
-            response = render_template('lab1.html', error=str(e), base_path=BASE_PATH)
+            response = render_template('lab1.html', error=str(e))
             
     return response
 
@@ -60,8 +52,8 @@ def lab2():
     username = request.args.get('username', '')
     if username:
         # Intentionally vulnerable to XSS that can modify download link
-        return render_template('lab2.html', username=username, success=True, base_path=BASE_PATH)
-    return render_template('lab2.html', base_path=BASE_PATH)
+        return render_template('lab2.html', username=username, success=True)
+    return render_template('lab2.html')
 
 @app.route('/download/<path:filename>')
 def serve_file(filename):

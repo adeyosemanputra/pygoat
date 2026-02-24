@@ -3,18 +3,10 @@ import os
 import traceback
 import jwt
 from datetime import datetime, timedelta
+from lab_utils import init_lab
 
-app = Flask(__name__, static_url_path='/labs/sec-misconfig/static')
-BASE_PATH = '/labs/sec-misconfig'
-
-def redirect_bp(path):
-    """Redirect with BASE_PATH prefix"""
-    return redirect(f"{BASE_PATH}{path}")
-
-@app.context_processor
-def inject_base_path():
-    """Make BASE_PATH available in all templates"""
-    return {'base_path': BASE_PATH}
+app = Flask(__name__)
+init_lab(app)
 
 app.debug = True  # Intentionally enabled for Lab 2
 
@@ -27,11 +19,11 @@ SENSITIVE_DATA = {
 
 @app.route('/')
 def index():
-    return render_template('index.html', base_path=BASE_PATH)
+    return render_template('index.html')
 
 @app.route('/lab1')
 def lab1():
-    return render_template('lab1.html', base_path=BASE_PATH)
+    return render_template('lab1.html')
 
 @app.route('/lab1/get-secret')
 def get_secret():
@@ -50,7 +42,7 @@ def check_auth():
 
 @app.route('/lab2')
 def lab2():
-    return render_template('lab2.html', base_path=BASE_PATH)
+    return render_template('lab2.html')
 
 @app.errorhandler(404)
 def page_not_found(e):
@@ -87,7 +79,7 @@ def page_not_found(e):
 
 @app.route('/lab3')
 def lab3():
-    return render_template('lab3.html', base_path=BASE_PATH)
+    return render_template('lab3.html')
 
 @app.route('/lab3/get-token', methods=['POST'])
 def get_token():
