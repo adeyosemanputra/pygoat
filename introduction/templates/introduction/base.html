@@ -583,9 +583,9 @@
           </a>
           <ul class="collapse list-unstyled" id="challengeSubmenu">
             <li>
-              <a href="{% url 'bopla' %}" class="sidebar-list-items">Challenge 1</a>
-              <a href="{% url 'business_logic' %}" class="sidebar-list-items">Challenge 2</a>
-              <a href="{% url 'security_headers' %}" class="sidebar-list-items">Challenge 3</a>
+              <a href="{% url 'do_it_fast' 'bopla_lab' %}" class="sidebar-list-items">Challenge 1</a>
+              <a href="{% url 'do_it_fast' 'business_logic_lab' %}" class="sidebar-list-items">Challenge 2 {% if challenge_status.business_logic_lab %} ✅ {% endif %}</a>
+              <a href="{% url 'do_it_fast' 'security_headers_lab' %}" class="sidebar-list-items">Challenge 3</a>
             </li>
           </ul>
           <a href="#" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle" id="help"

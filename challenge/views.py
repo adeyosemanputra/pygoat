@@ -1,123 +1,90 @@
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import redirect, render
 from django.views.generic import View
 from django.views.decorators.csrf import csrf_exempt
 import subprocess
+import json
 from .utility import get_free_port
 from .models import Challenge, UserChallenge
-from django.http import HttpResponse
 
-# Create your views here.
-
+@csrf_exempt 
+def submit_solve(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            lab_name = data.get("lab_name")
+            user_id = data.get("user_id")
+            challenge = Challenge.objects.get(name=lab_name)
+            
+            # We add port=0 as a placeholder to satisfy the database constraint
+            user_challenge, created = UserChallenge.objects.get_or_create(
+                user_id=user_id, 
+                challenge=challenge,
+                defaults={'port': 0}
+            )
+            
+            user_challenge.is_solved = True
+            user_challenge.save()
+            return JsonResponse({"message": "Progress synchronized", "status": "200"})
+        except Exception as e:
+            return JsonResponse({"message": str(e), "status": "400"})
+    return JsonResponse({"message": "Method not allowed", "status": "405"})
 
 class DoItFast(View):
     def get(self, request, challenge):
         if not request.user.is_authenticated:
             return redirect("login")
-
         try:
             chal = Challenge.objects.get(name=challenge)
-        except Exception as e:
-            return render(request, "chal-not-found.html")
-
-        try:
             user_chal = UserChallenge.objects.get(user=request.user, challenge=chal)
-            return render(
-                request, "challenge.html", {"chal": chal, "user_chal": user_chal}
-            )
+            return render(request, "challenge.html", {"chal": chal, "user_chal": user_chal})
         except:
+            chal = Challenge.objects.get(name=challenge)
             return render(request, "challenge.html", {"chal": chal, "user_chal": None})
 
+    def put(self, request, challenge):
+        if not request.user.is_authenticated:
+            return JsonResponse({"message": "unauthorized", "status": "401"})
+        data = json.loads(request.body)
+        submitted_flag = data.get("flag")
+        chal = Challenge.objects.get(name=challenge)
+        if submitted_flag == chal.flag: 
+            user_chal, _ = UserChallenge.objects.get_or_create(user=request.user, challenge=chal, defaults={'port': 0})
+            user_chal.is_solved = True
+            user_chal.save()
+            return JsonResponse({"message": "Correct Flag!", "status": "200"})
+        return JsonResponse({"message": "Wrong Flag", "status": "400"})
+
     def post(self, request, challenge):
-        user_chall_exists = False
         if not request.user.is_authenticated:
             return redirect("login")
-
-        try:  # checking the existance of challenge
-            chal = Challenge.objects.get(name=challenge)
-        except Exception as e:
-            return render(request, "chal-not-found.html")
-
-        try:  # checking if he attempted it before or not, if yes then check if the container is live or not
-            user_chal = UserChallenge.objects.get(user=request.user, challenge=chal)
-            if user_chal.is_live:
-                return JsonResponse(
-                    {
-                        "message": "already running",
-                        "status": "200",
-                        "endpoint": f"http://localhost:{user_chal.port}",
-                    }
-                )
-            user_chall_exists = True
-        except:
-            pass
-
+        chal = Challenge.objects.get(name=challenge)
+        user_chal, created = UserChallenge.objects.get_or_create(user=request.user, challenge=chal, defaults={'port': 0})
+        if user_chal.is_live:
+            return JsonResponse({"message": "already running", "status": "200", "endpoint": f"http://localhost:{user_chal.port}"})
         port = get_free_port(8000, 8100)
-        if port == None:
-            return JsonResponse(
-                {"message": "failed", "status": "500", "endpoint": "None"}
-            )
-
         command = f"docker run -d -p {port}:{chal.docker_port} {chal.docker_image}"
         process = subprocess.Popen(command.split(" "), stdout=subprocess.PIPE)
         output, error = process.communicate()
-        container_id = output.decode("utf-8").strip()
-
-        if user_chall_exists:
-            # TODO : reuse the container instead of creaing the new one
-            user_chal.container_id = container_id
-            user_chal.port = port
-            user_chal.is_live = True
-            user_chal.save()
-        else:
-            user_chal = UserChallenge(
-                user=request.user, challenge=chal, container_id=container_id, port=port
-            )
-            user_chal.save()
-        # save the output in database for stoping the container
-        return JsonResponse(
-            {
-                "message": "success",
-                "status": "200",
-                "endpoint": f"http://localhost:{port}",
-            }
-        )
+        user_chal.container_id = output.decode("utf-8").strip()
+        user_chal.port = port
+        user_chal.is_live = True
+        user_chal.save()
+        return JsonResponse({"message": "success", "status": "200", "endpoint": f"http://localhost:{port}"})
 
     def delete(self, request, challenge):
-        if not request.user.is_authenticated:
-            return redirect("login")
-
-        try:
-            chal = Challenge.objects.get(name=challenge)
-            user_chal = UserChallenge.objects.get(user=request.user, challenge=chal)
-        except Exception as e:
-            return JsonResponse({"message": "failed", "status": "500"})
-
+        chal = Challenge.objects.get(name=challenge)
+        user_chal = UserChallenge.objects.get(user=request.user, challenge=chal)
         user_chal.is_live = False
         user_chal.save()
-        command = f"docker stop {user_chal.container_id}"
-        process = subprocess.Popen(command.split(" "), stdout=subprocess.PIPE)
-        output, error = process.communicate()
+        subprocess.Popen(f"docker stop {user_chal.container_id}".split(" "))
         return JsonResponse({"message": "success", "status": "200"})
 
-    def put(self, request, challange):
-        # TODO : implement flag checking
-        return "not implemented"
-
-
 def bopla_lab(request):
-    if not request.user.is_authenticated:
-        return redirect("login")
-    return redirect("http://localhost:7018")
-
+    return redirect("http://localhost:7018") if request.user.is_authenticated else redirect("login")
 
 def business_logic_lab(request):
-    if not request.user.is_authenticated:
-        return redirect("login")
-    return redirect("http://localhost:7019")
-
+    return redirect("http://localhost:7019") if request.user.is_authenticated else redirect("login")
 
 def security_headers_lab(request):
-    if not request.user.is_authenticated:
-        return redirect("login")
-    return redirect("http://localhost:7020")
+    return redirect("http://localhost:7020") if request.user.is_authenticated else redirect("login")
