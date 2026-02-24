@@ -32,11 +32,19 @@ First, Clone the repository using GitHub website or git in Terminal
   ### To Download a specific branch
   git clone -b <branch_name> https://github.com/adeyosemanputra/pygoat.git
 ```
-Then, Download Traefik on your local machine (if not using docker compose) from [traefik releases](https://github.com/traefik/traefik/releases).
-Open a separate terminal, navigate to the PyGoat main directory, and run:
+Then, download Traefik to your local machine in the Pygoat directory (if you are not using Docker Compose) from the Traefik [releases](https://github.com/traefik/traefik/releases) page. Open a separate terminal and run the following commands:
+
+For Linux/WSL - 
 ```
 tar -zxvf traefik_<traefik_version>_linux_<arch>.tar.gz
 sudo ./traefik
+```
+
+For Windows (Powershell) - 
+```
+Expand-Archive traefik_<traefik_version>_windows_<arch>.zip
+cd traefik_<traefik_version>_windows_<arch>
+./traefik.exe
 ```
 If you face any issue while installation, kindly refer to the [documentation](https://doc.traefik.io/traefik/getting-started/install-traefik/)
 #### Method 1
