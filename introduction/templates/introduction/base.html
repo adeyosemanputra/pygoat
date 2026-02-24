@@ -117,10 +117,23 @@
           </a>
           <ul class="collapse list-unstyled" id="OWASP10_2021">
             <li>
-              <a href="/broken_access_control" class="sidebar-list-items">
+              <a href="#brokenAccess2021" data-toggle="collapse" aria-expanded="false"
+                class="dropdown-toggle sidebar-list-items">
                 <i class="fas fa-bug"></i>
                 A1: Broken Access Control
               </a>
+              <ul class="collapse list-unstyled" id="brokenAccess2021">
+                <li>
+                  <a href="/broken_access_control" class="sidebar-list-items">
+                    Broken Access Control
+                  </a>
+                </li>
+                <li>
+                  <a href="{% url 'path_traversal_lab' %}" class="sidebar-list-items">
+                    Path Traversal
+                  </a>
+                </li>
+              </ul>
             </li>
             <li>
               <a href="/cryptographic_failure" class="sidebar-list-items">
