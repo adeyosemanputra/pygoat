@@ -12,6 +12,7 @@ urlpatterns = [
     path("api/all-users/", views.all_users_data_view, name="all_users_data"),
     path("logout/", views.logout_view, name="logout"),
     path("lesson/", views.sensitive_data_exposure_lesson, name="lesson"),
+    path("health/", views.health_check, name="health"),
     # TODO - additional URLs to implement:
     # path('api/v2/user-data/', views.api_data_view_v2, name='api_data_v2'), # secure version
     # path('settings/', views.user_settings, name='settings'),
