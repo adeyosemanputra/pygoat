@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+
+{% block title %}<title>Blind SQL Injection Lab</title>{% endblock %}
+
+{% block content %}
+<div class="content">
+	<div class="header-container">
+		<h1 style="border-bottom: 2px solid #474646; padding-bottom: 10px;">Blind SQL Injection</h1>
+		<button class="notebook-btn" onclick="openModal()" title="View Secure Implementation">Solution</button>
+	</div>
+
+	{% include 'secure-fix.html' %}
+
+	<div class="section">
+		<h4>What is Blind SQL Injection?</h4>
+		<p class="bp">
+			Blind SQL injection happens when the application does not reveal raw database errors,
+			but still behaves differently based on whether an injected SQL condition is true or false.
+			Attackers can infer data one character at a time by observing response messages.
+		</p>
+		<div class="info">
+			<h4>Blind SQL usually appears when:</h4>
+			<ul>
+				<li>Input is directly concatenated into SQL queries</li>
+				<li>Detailed SQL errors are hidden from users</li>
+				<li>Error handling and logging are inconsistent</li>
+				<li>Application responses leak small boolean clues</li>
+			</ul>
+		</div>
+	</div>
+
+	<div class="lab">
+		<button class="coll btn btn-info" onclick="toggleLabDetails('lab1')">Lab Details</button>
+		<div id="lab1" class="section" style="display: none;">
+			<h4>Lab Challenge</h4>
+			<p class="bp">
+				Your goal is to log in as the <strong>admin</strong> user. The password is not shown,
+				database errors are not exposed, and you must infer correct values through server responses.
+			</p>
+
+			<div class="info">
+				<h4>How to approach this lab:</h4>
+				<ul>
+					<li>Open the lab login page and use username <code>admin</code></li>
+					<li>Intercept requests with Burp Suite (or similar proxy)</li>
+					<li>Send boolean-based payloads and observe response changes</li>
+					<li>When a condition is true, the app hints: <em>You are going right</em></li>
+					<li>Extract the password one character at a time (alphanumeric)</li>
+				</ul>
+			</div>
+
+			<div class="section">
+				<h4>Expected Behavior</h4>
+				<p class="bp">
+					Unlike classic SQL injection labs, this one does not reveal SQL tracebacks.
+					You only get behavior-based clues, which simulates real-world blind SQL testing.
+				</p>
+			</div>
+
+			<div class="button-container">
+				<button onclick="window.location.href='/lab'">Access Lab</button>
+			</div>
+		</div>
+	</div>
+
+	<div class="section">
+		<h4>Mitigation</h4>
+		<ul>
+			<li>Use parameterized queries (prepared statements)</li>
+			<li>Implement strict input validation</li>
+			<li>Use centralized error handling and safe logging</li>
+			<li>Do not leak behavioral signals in authentication responses</li>
+			<li>Add rate limiting and brute-force detection</li>
+		</ul>
+	</div>
+</div>
+
+<script>
+	function toggleLabDetails(id) {
+		const el = document.getElementById(id);
+		if (el.style.display === "none" || el.style.display === "") {
+			el.style.display = "block";
+		} else {
+			el.style.display = "none";
+		}
+	}
+
+	function openModal() {
+		document.getElementById('secureFixModal').style.display = 'block';
+		document.body.style.overflow = 'hidden';
+	}
+
+	function closeModal() {
+		document.getElementById('secureFixModal').style.display = 'none';
+		document.body.style.overflow = 'auto';
+	}
+
+	function showTab(tabName) {
+		const panels = document.querySelectorAll('.tab-panel');
+		panels.forEach(panel => panel.classList.remove('active'));
+
+		const buttons = document.querySelectorAll('.tab-btn');
+		buttons.forEach(btn => btn.classList.remove('active'));
+
+		document.getElementById(tabName).classList.add('active');
+		event.target.classList.add('active');
+	}
+
+	document.addEventListener('click', function(event) {
+		const overlay = event.target.classList.contains('modal-overlay');
+		if (overlay) {
+			closeModal();
+		}
+	});
+
+	document.addEventListener('keydown', function(event) {
+		if (event.key === 'Escape') {
+			closeModal();
+		}
+	});
+</script>
+{% endblock %}
