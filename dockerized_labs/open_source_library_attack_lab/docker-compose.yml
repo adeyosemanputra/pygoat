@@ -1,0 +1,11 @@
+version: '3'
+services:
+  compromised_library_lab:
+    build: .
+    ports:
+      - "5022:5022"
+    volumes:
+      - .:/app
+    environment:
+      - FLASK_ENV=development
+      - FLASK_DEBUG=True

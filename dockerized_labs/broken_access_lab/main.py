@@ -5,48 +5,64 @@ import os
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
 
+
 @dataclass
 class User:
     username: str
     password: str
     is_admin: bool = False
 
+
 # Hardcoded users for demonstration
 users = {
-    'jack': User('jack', 'jacktheripper', False),
-    'admin': User('admin', 'admin_pass', True)
+    "jack": User("jack", "jacktheripper", False),
+    "admin": User("admin", "admin_pass", True),
 }
 
-@app.route('/')
+
+@app.route("/")
 def index():
-    return render_template('index.html')
+    return render_template("index.html")
 
-@app.route('/lab')
+
+@app.route("/lab")
 def lab():
-    return render_template('lab.html')
+    return render_template("lab.html")
 
-@app.route('/lab/login', methods=['GET', 'POST'])
+
+@app.route("/lab/login", methods=["GET", "POST"])
 def lab_login():
-    if request.cookies.get('admin') == '1':
-        return render_template('result.html', username='admin', message="Welcome Admin! Secret key: ADMIN_KEY_123")
+    if request.cookies.get("admin") == "1":
+        return render_template(
+            "result.html",
+            username="admin",
+            message="Welcome Admin! Secret key: ADMIN_KEY_123",
+        )
 
-    if request.method == 'POST':
-        username = request.form.get('username')
-        password = request.form.get('password')
+    if request.method == "POST":
+        username = request.form.get("username")
+        password = request.form.get("password")
 
     if username in users and users[username].password == password:
         user = users[username]
-        response = make_response(render_template('result.html', 
-            username=username,
-            message="Welcome back!" if not user.is_admin else "Welcome Admin! Secret key: ADMIN_KEY_123"))
-        
+        response = make_response(
+            render_template(
+                "result.html",
+                username=username,
+                message=(
+                    "Welcome back!"
+                    if not user.is_admin
+                    else "Welcome Admin! Secret key: ADMIN_KEY_123"
+                ),
+            )
+        )
         # Set admin cookie - intentionally vulnerable
-        response.set_cookie('admin', '0' if not user.is_admin else '1', max_age=200)
+        response.set_cookie("admin", "0" if not user.is_admin else "1", max_age=200)
         return response
-    
-    return render_template('result.html', message="Invalid credentials")
 
-@app.route('/health')
+    return render_template("result.html", message="Invalid credentials")
+
+@app.route("/health")
 def health_check():
     return "OK", 200
 

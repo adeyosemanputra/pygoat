@@ -3,6 +3,7 @@ import os
 from django.core.management.base import BaseCommand
 from challenge.models import Challenge
 
+
 class Command(BaseCommand):
     help = (
         "Reads challenge data from 'challenge/challenge.json' and populates the "
@@ -11,10 +12,10 @@ class Command(BaseCommand):
     )
 
     def handle(self, *args, **options):
-        file_path = os.path.join('challenge', 'challenge.json')
+        file_path = os.path.join("challenge", "challenge.json")
 
         try:
-            with open(file_path, 'r') as json_file:
+            with open(file_path, "r") as json_file:
                 challenges_data = json.load(json_file)
         except FileNotFoundError:
             self.stderr.write(self.style.ERROR(f"JSON file not found: {file_path}"))
@@ -33,12 +34,16 @@ class Command(BaseCommand):
                     "start_port": item.get("start_port", 0),
                     "end_port": item.get("end_port", 0),
                     "flag": item.get("flag", ""),
-                    "point": item.get("point", 0)
-                }
+                    "point": item.get("point", 0),
+                },
             )
             if created:
-                self.stdout.write(self.style.SUCCESS(f"Challenge '{challenge.name}' created."))
+                self.stdout.write(
+                    self.style.SUCCESS(f"Challenge '{challenge.name}' created.")
+                )
             else:
                 self.stdout.write(f"Challenge '{challenge.name}' already exists.")
 
-        self.stdout.write(self.style.SUCCESS("Challenge data has been populated successfully."))
+        self.stdout.write(
+            self.style.SUCCESS("Challenge data has been populated successfully.")
+        )

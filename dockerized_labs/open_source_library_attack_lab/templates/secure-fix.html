@@ -1,0 +1,120 @@
+<div id="secureFixModal" class="custom-modal">
+    <div class="modal-overlay"></div>
+    <div class="modal-container">
+        <div class="modal-header">
+            <h2 class="modal-title">
+                Security Fix for Compromised Open-Source Library Attacks
+            </h2>
+            <button type="button" class="close-btn" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="tabs-container">
+                <div class="tab-buttons">
+                    <button class="tab-btn active" onclick="showTab('secure-code',event)">Secure Code</button>
+                    <button class="tab-btn" onclick="showTab('prevention',event)">Solution</button>
+                </div>
+
+                <div class="tab-content">
+                    <div id="secure-code" class="tab-panel active">
+                        <h4>Preventing Compromised Library Attacks</h4>
+                        
+                        <h4>1. Version Locking</h4>
+                        <pre class="code-block"><code>
+# requirements.txt - Pin to known-good versions
+secure-auth-helper==1.2.0  # Last legitimate version
+
+# Use pip-tools to generate locked versions
+# pip-compile requirements.txt
+# This creates requirements.lock with exact versions</code></pre>
+
+                        <h4>2. Maintainer Verification</h4>
+                        <pre class="code-block"><code>
+import subprocess
+import json
+
+def verify_maintainer(package_name, version):
+    """Verify package maintainer hasn't changed suspiciously"""
+    result = subprocess.run(
+        ['pip', 'show', f'{package_name}=={version}'],
+        capture_output=True,
+        text=True
+    )
+    
+    # Check maintainer email domain
+    # Alert if maintainer changes between versions
+    # Verify against known good maintainers</code></pre>
+
+                        <h4>3. Automated Code Scanning</h4>
+                        <pre class="code-block"><code>
+import ast
+import re
+
+def scan_for_suspicious_patterns(code):
+    """Scan code for suspicious patterns"""
+    suspicious = []
+    
+    # Check for external HTTP requests
+    if re.search(r'requests\.(get|post)', code):
+        suspicious.append("External HTTP requests detected")
+    
+    # Check for base64 encoding with passwords
+    if 'base64' in code and 'password' in code.lower():
+        suspicious.append("Password encoding detected")
+    
+    # Check for very short timeouts (hiding network activity)
+    if re.search(r'timeout\s*=\s*[01]\.?\d*', code):
+        suspicious.append("Suspicious timeout value")
+    
+    return suspicious</code></pre>
+                    </div>
+
+                    <div id="prevention" class="tab-panel">
+                        <h4>Solution</h4>
+                        <p>
+                            To solve this lab, investigate the package timeline and identify when it was compromised:
+                        </p>
+                        <ol>
+                            <li>
+                                <strong>Review Timeline:</strong> Check the timeline tab. Notice that versions 1.0.0-1.2.0 
+                                were legitimate (green), version 2.0.0 became suspicious (yellow), and version 2.1.0 is 
+                                compromised (red).
+                            </li><br>
+                            <li>
+                                <strong>Compare Versions:</strong> Compare version 1.2.0 (legitimate) with 2.0.0 (suspicious). 
+                                Notice the maintainer changed from "john_developer" to "alex_maintainer" and a new analytics 
+                                feature was added.
+                            </li><br>
+                            <li>
+                                <strong>Investigate Clues:</strong> Mark all investigation clues as found. Key indicators:
+                                <ul>
+                                    <li>Maintainer change in version 2.0.0</li>
+                                    <li>New analytics feature sending data externally</li>
+                                    <li>Password being encoded and transmitted in version 2.1.0</li>
+                                    <li>Massive issue spike (3 to 127 issues)</li>
+                                </ul>
+                            </li><br>
+                            <li>
+                                <strong>Scan Code:</strong> Use the code scanner on version 2.1.0's code. It will detect:
+                                <ul>
+                                    <li>External data transmission (critical)</li>
+                                    <li>Password encoding/transmission (critical)</li>
+                                    <li>Short timeout to hide network activity (medium)</li>
+                                </ul>
+                            </li>
+                        </ol>
+                        
+                        <h4>Key Takeaways</h4>
+                        <ul>
+                            <li>Always review maintainer changes in dependencies</li>
+                            <li>Compare code changes between versions before updating</li>
+                            <li>Pin dependencies to known-good versions</li>
+                            <li>Use automated scanning to detect suspicious patterns</li>
+                            <li>Monitor for sudden changes in package metrics (issues, downloads)</li>
+                            <li>Verify maintainer identities and email domains</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

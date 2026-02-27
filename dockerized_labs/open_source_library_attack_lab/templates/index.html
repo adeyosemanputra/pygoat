@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+
+{% block title %}<title>Compromised Open-Source Library Attacks Lab</title>{% endblock %}
+
+{% block content %}
+
+    <div class="header-container">
+        <h1 style="border-bottom: 2px solid #474646; padding-bottom: 10px;">Compromised Open-Source Library Attacks</h1>
+        <button class="notebook-btn" onclick="openModal()" title="View Secure Implementation">Solution</button>
+    </div>
+    {% include 'secure-fix.html' %}
+    <div class="section">
+        <h4>What are Compromised Open-Source Library Attacks?</h4>
+        <p class="bp">
+            Compromised open-source library attacks occur when legitimate, trusted packages are taken over by attackers 
+            or malicious code is injected into them. Unlike typosquatting, these attacks target packages that developers 
+            already trust and use.
+        </p>
+        
+        <div class="story-box">
+            <h4> Scenario </h4>
+            <p class="bp">
+                Imagine a popular authentication library used by thousands of applications. One day, the original 
+                maintainer steps away, and a new maintainer takes over. What if that new maintainer is an attacker? 
+                They could gradually introduce malicious code that looks legitimate but steals credentials, exfiltrates 
+                data, or installs backdoors.
+            </p>
+        </div>
+
+        <ul>
+            <li><strong>Repository Takeovers:</strong> Attackers gain access to legitimate package repositories</li>
+            <li><strong>Malicious Updates:</strong> Legitimate packages receive updates containing malicious code</li>
+            <li><strong>Gradual Introduction:</strong> Attackers slowly introduce suspicious code over multiple versions</li>
+            <li><strong>Trust Exploitation:</strong> Developers trust the package name and install updates automatically</li>
+            <li><strong>Supply Chain Impact:</strong> One compromised package affects hundreds or thousands of applications</li>
+        </ul>
+
+        <div class="info">
+            <h4>How Compromises Happen:</h4>
+            <ul>
+                <li>Original maintainer abandons the project or account is compromised</li>
+                <li>New maintainer (attacker) takes over with malicious intent</li>
+                <li>Suspicious code is introduced gradually to avoid detection</li>
+                <li>Code reviews miss subtle malicious additions</li>
+                <li>Automated dependency updates spread the compromise quickly</li>
+            </ul>
+        </div>
+
+        <button class="coll btn btn-info" onclick="toggleLabDetails('lab1')">Lab Details</button>
+    </div>
+
+    <div id="lab1" class="section" style="display: none;">
+        <h4>Lab Challenge: Investigate the Compromise</h4>
+        <p class="bp">
+            You're a security researcher investigating reports of a compromised package. Your task is to:
+        </p>    
+    <div class="section">
+        <ol>
+            <li> Explore the package timeline to see how it evolved over time</li>
+            <li> Compare versions to identify when the compromise occurred</li>
+            <li> Investigate clues and piece together the evidence</li>
+            <li> Scan code for suspicious patterns</li>
+            <li> Assess the impact of the compromise</li>
+        </ol>
+    </div>
+
+        <div class="info">
+            <h4>Investigation Steps:</h4>
+            <ul>
+                <li>Review the version timeline - when did things change?</li>
+                <li>Compare code between versions - what's different?</li>
+                <li>Check maintainer information - did it change?</li>
+                <li>Look for suspicious code patterns - external connections, data transmission</li>
+                <li>Examine the impact - how widespread is the compromise?</li>
+            </ul>
+        </div>
+
+        <div class="button-container">
+            <button type="button" onclick="navigateToLab()" class="nav-button">Start Investigation</button>
+        </div>
+    </div>
+
+<script>
+    function toggleLabDetails(id) {
+        const el = document.getElementById(id);
+        if (el.style.display === "none" || el.style.display === "") {
+            el.style.display = "block";
+        } else {
+            el.style.display = "none";
+        }
+    }
+
+    function openModal() {
+        document.getElementById('secureFixModal').style.display = 'block';
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+        document.getElementById('secureFixModal').style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+    
+    function showTab(tabName,event) {
+        const panels = document.querySelectorAll('.tab-panel');
+        panels.forEach(panel => panel.classList.remove('active'));
+        
+        const buttons = document.querySelectorAll('.tab-btn');
+        buttons.forEach(btn => btn.classList.remove('active'));
+        
+        document.getElementById(tabName).classList.add('active');
+        
+        event.target.classList.add('active');
+    }
+
+    document.addEventListener('click', function(event) {
+        const modal = document.getElementById('secureFixModal');
+        const overlay = event.target.classList.contains('modal-overlay');
+        if (overlay) {
+            closeModal();
+        }
+    });
+
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            closeModal();
+        }
+    });
+
+    function navigateToLab() {
+        document.body.style.opacity = '0';
+        document.body.style.transition = 'opacity 0.2s ease-out';
+        setTimeout(() => {
+            window.location.href = '/lab';
+        }, 200);
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        document.body.style.opacity = '0';
+        document.body.style.transition = 'opacity 0.3s ease-in';
+        setTimeout(() => {
+            document.body.style.opacity = '1';
+        }, 10);
+    });
+</script>
+{% endblock %}
