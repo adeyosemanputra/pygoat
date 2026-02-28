@@ -115,10 +115,10 @@ def process_image():
             logger.error(f"Error processing image file {file.filename}: {str(e)}")
             return redirect(url_for("lab2"))
 
-    flash("Invalid file type")
-    return redirect(url_for("lab2"))
+@app.route("/health")
+def health_check():
+    return "OK", 200
 
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     # Ensure we're binding to all interfaces
     app.run(host="0.0.0.0", port=9000, debug=True, use_reloader=True, threaded=True)

@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   security_headers_lab:
     build: .

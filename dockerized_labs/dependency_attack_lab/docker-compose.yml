@@ -1,4 +1,3 @@
-version: '3'
 services:
   dependency_attack_lab:
     build: .
