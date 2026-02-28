@@ -102,6 +102,10 @@ DATABASE_URL = os.getenv("DATABASE_URL")
 if DATABASE_URL:
     DATABASES["default"] = dj_database_url.parse(DATABASE_URL, conn_max_age=600)
 
+# Default primary key field type
+# https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -130,8 +134,6 @@ LANGUAGE_CODE = "en-us"
 TIME_ZONE = "UTC"
 
 USE_I18N = True
-
-USE_L10N = True
 
 USE_TZ = True
 
@@ -173,8 +175,14 @@ SOCIALACCOUNT_PROVIDERS = {
 }
 
 SECRET_COOKIE_KEY = "PYGOAT"
-CSRF_TRUSTED_ORIGINS = [
-    "http://127.0.0.1:8000",
-    "http://0.0.0.0:8000",
-    "http://172.16.189.10",
+CSRF_TRUSTED_ORIGINS = ["http://127.0.0.1:8000","http://0.0.0.0:8000","http://172.16.189.10"]
+
+TRAEFIK_URLS = [
+    'http://localhost:8080/api/http/routers',     
+    'http://traefik_proxy:8080/api/http/routers',
 ]
+
+# Labs configuration
+# LAB_DOMAIN = "localhost"
+# DOCKER_NETWORK = "my_network"
+# LABS_PER_USER_LIMIT = 3

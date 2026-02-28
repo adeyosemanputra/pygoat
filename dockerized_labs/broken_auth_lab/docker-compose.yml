@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   broken_auth_lab:
     build: .

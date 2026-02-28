@@ -1,4 +1,3 @@
-version: '3'
 services:
   compromised_library_lab:
     build: .

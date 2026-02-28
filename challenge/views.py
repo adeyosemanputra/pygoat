@@ -30,6 +30,18 @@ def submit_solve(request):
             return JsonResponse({"message": str(e), "status": "400"})
     return JsonResponse({"message": "Method not allowed", "status": "405"})
 
+def check_traefik_reachable():
+    traefik_urls = getattr(settings, 'TRAEFIK_URLS', [])
+    for traefik_url in traefik_urls:
+        try:
+            response = requests.get(traefik_url, timeout=5)
+            if response.status_code == 200:
+                return True
+        except (requests.RequestException, Exception):
+            continue
+    print(f"Traefik unreachable on all attempted URLs: {traefik_urls}")
+    return False
+
 class DoItFast(View):
     def get(self, request, challenge):
         if not request.user.is_authenticated:

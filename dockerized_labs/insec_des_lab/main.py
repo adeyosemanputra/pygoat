@@ -53,6 +53,9 @@ def deserialize_data():
     except Exception as e:
         return render_template("result.html", message=f"Error: {str(e)}")
 
+@app.route("/health")
+def health_check():
+    return "OK", 200
 
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8080)
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=8080)
