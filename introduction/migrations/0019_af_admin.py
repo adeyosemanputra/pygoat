@@ -6,22 +6,22 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('introduction', '0018_cf_user_password2'),
+        ("introduction", "0018_cf_user_password2"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='AF_admin',
+            name="AF_admin",
             fields=[
-                ('id', models.AutoField(primary_key=True, serialize=False)),
-                ('username', models.CharField(max_length=200)),
-                ('password', models.CharField(max_length=200)),
-                ('session_id', models.CharField(max_length=200)),
-                ('last_login', models.DateTimeField(blank=True, null=True)),
-                ('logged_in', models.BooleanField(default=False)),
-                ('is_locked', models.BooleanField(default=False)),
-                ('failattempt', models.IntegerField(default=0)),
-                ('lockout_cooldown', models.DateField(blank=True, null=True)),
+                ("id", models.AutoField(primary_key=True, serialize=False)),
+                ("username", models.CharField(max_length=200)),
+                ("password", models.CharField(max_length=200)),
+                ("session_id", models.CharField(max_length=200)),
+                ("last_login", models.DateTimeField(blank=True, null=True)),
+                ("logged_in", models.BooleanField(default=False)),
+                ("is_locked", models.BooleanField(default=False)),
+                ("failattempt", models.IntegerField(default=0)),
+                ("lockout_cooldown", models.DateField(blank=True, null=True)),
             ],
         ),
     ]

@@ -1,5 +1,5 @@
-## input 
-'''
+## input
+"""
 def ssrf_lab(request):
     if request.user.is_authenticated:
         if request.method=="GET":
@@ -15,10 +15,10 @@ def ssrf_lab(request):
             except:
                 return render(request, "Lab/ssrf/ssrf_lab.html", {"blog": "No blog found"})
     else:
-        return redirect('login')'''
+        return redirect('login')"""
 
-## output 
-'''
+## output
+"""
 def ssrf_lab(file):
     try :
         dirname = os.path.dirname(__file__)
@@ -30,4 +30,4 @@ def ssrf_lab(file):
     except:
         return {"blog": "No blog found"}
 
-'''
+"""

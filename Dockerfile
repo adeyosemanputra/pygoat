@@ -1,4 +1,4 @@
-FROM python:3.11-slim-bookworm
+FROM python:3.11-slim-bookworm AS builder
 
 WORKDIR /app
 
@@ -17,7 +17,19 @@ ENV PYTHONUNBUFFERED=1
 
 COPY requirements.txt requirements.txt
 
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip wheel --no-cache-dir --no-deps -w /wheels -r requirements.txt
+
+# -------- runtime stage --------
+FROM python:3.11-slim-bookworm
+
+RUN apt-get update && apt-get install -y \
+    libpq5 \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+COPY --from=builder /wheels /wheels
+RUN pip install --no-cache-dir /wheels/*
 
 COPY . /app/
 
