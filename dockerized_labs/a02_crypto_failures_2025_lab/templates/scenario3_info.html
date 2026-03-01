@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Scenario 3: Weak Pseudorandom Number Generation</h2>
+
+<a href="/scenario3/lab" class="btn btn-primary" style="float: right;">Start Lab →</a>
+<a href="/" class="back-link">← Back to Home</a>
+
+<div class="card" style="margin-top: 30px;">
+    <div class="card-header" style="background: #dc3545;">
+        <h3 style="margin: 0;">The Vulnerability</h3>
+    </div>
+    <p>Many applications use random numbers for security-critical operations like generating session tokens, password reset codes, or authentication tokens. However, not all random number generators are created equal.</p>
+    
+    <p><strong>Weak Random Number Generators</strong> (like Python's <code>random</code> module) are <em>predictable</em>. They use algorithms that produce sequences of numbers that appear random but are actually deterministic based on an initial seed value.</p>
+    
+    <p>If an attacker can:</p>
+    <ul>
+        <li>Observe several generated values</li>
+        <li>Determine or guess the seed</li>
+        <li>Know what random number generator is being used</li>
+    </ul>
+    <p>Then they can predict ALL future (and past) random values!</p>
+</div>
+
+<div class="card">
+    <div class="card-header" style="background: #ff8c00;">
+        <h3 style="margin: 0;">Real-World Example: 2008 Debian OpenSSL Bug</h3>
+    </div>
+    <p>From 2006-2008, Debian's OpenSSL package had a bug that reduced the entropy for random number generation to only 32,767 possible values. This made SSH keys and SSL certificates generated during this period highly predictable.</p>
+    
+    <p><strong>Impact:</strong></p>
+    <ul>
+        <li>Attackers could generate all possible keys in hours</li>
+        <li>Tens of thousands of servers were vulnerable</li>
+        <li>Required mass key regeneration across the internet</li>
+    </ul>
+    
+    <div class="alert alert-danger">
+        <strong>Lesson:</strong> Weak randomness in cryptographic contexts can have catastrophic consequences affecting millions of users.
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header" style="background: #343a40;">
+        <h3 style="margin: 0;">Vulnerable Code Example</h3>
+    </div>
+    <pre><code>import random
+import time
+
+# INSECURE: Using time as seed
+random.seed(time.time())
+
+def generate_admin_token():
+    # INSECURE: Predictable random number
+    token = random.randint(100000, 999999)
+    return f"ADMIN-{token}"
+
+# Attacker can predict this!
+admin_token = generate_admin_token()
+print(f"Your admin token: {admin_token}")
+</code></pre>
+    
+    <div class="alert alert-danger">
+        <strong>Problems:</strong>
+        <ul>
+            <li>Using <code>time.time()</code> as seed means attacker knows seed value (within seconds)</li>
+            <li><code>random</code> module is not cryptographically secure</li>
+            <li>Token space is only 900,000 possibilities (easily brute-forced)</li>
+        </ul>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header" style="background: #28a745;">
+        <h3 style="margin: 0;">Secure Code Example</h3>
+    </div>
+    <pre><code>import secrets
+
+def generate_admin_token():
+    # SECURE: Using cryptographically secure random
+    token = secrets.token_hex(16)  # 32 characters, 256 bits
+    return f"ADMIN-{token}"
+
+# Unpredictable and secure
+admin_token = generate_admin_token()
+print(f"Your admin token: {admin_token}")
+
+# Alternative: For random integers
+secure_code = secrets.randbelow(1000000)
+</code></pre>
+    
+    <div class="alert alert-success">
+        <strong>Improvements:</strong>
+        <ul>
+            <li><code>secrets</code> module uses OS's cryptographically secure random source</li>
+            <li>No seed - uses system entropy pool</li>
+            <li>Much larger token space (2^256 possibilities)</li>
+            <li>Unpredictable even if attacker observes many tokens</li>
+        </ul>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header" style="background: #6610f2;">
+        <h3 style="margin: 0;">Best Practices</h3>
+    </div>
+    <ul>
+        <li><strong>Never use <code>random</code> module for security:</strong> Use <code>secrets</code> in Python, <code>crypto.randomBytes()</code> in Node.js, <code>SecureRandom</code> in Java</li>
+        <li><strong>Avoid predictable seeds:</strong> Don't seed with timestamps, PIDs, or other guessable values</li>
+        <li><strong>Use sufficient entropy:</strong> Tokens should be at least 128 bits for session IDs, 256 bits for keys</li>
+        <li><strong>Don't roll your own:</strong> Use established cryptographic libraries</li>
+        <li><strong>Regular security audits:</strong> Review code for weak randomness in authentication, tokens, keys</li>
+    </ul>
+</div>
+
+<div class="card">
+    <div class="card-header" style="background: #17a2b8;">
+        <h3 style="margin: 0;">Testing Time</h3>
+    </div>
+    <p>Ready to exploit weak random number generation? In the lab, you'll attack a system that uses time-based seeded random numbers to generate admin tokens. By predicting the seed, you can forge your own admin token!</p>
+    <a href="/scenario3/lab" class="btn btn-primary">Start Lab →</a>
+</div>
+
+<a href="/" class="back-link">← Back to Home</a>
+{% endblock %}

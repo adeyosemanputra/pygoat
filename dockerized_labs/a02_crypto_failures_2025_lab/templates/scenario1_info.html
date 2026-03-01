@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Scenario 1: Weak Encryption Algorithm</h2>
+
+<a href="/" class="back-link">← Back to Home</a>
+
+<div class="alert alert-danger">
+    <strong>Vulnerability:</strong> Using MD5 for password hashing
+</div>
+
+<h3>What is MD5?</h3>
+<p>MD5 (Message-Digest Algorithm 5) is a cryptographic hash function that produces a 128-bit hash value. While it was widely used in the past, it is now considered broken and unsuitable for security purposes.</p>
+
+<h3>Why is MD5 Dangerous?</h3>
+<ul>
+    <li><strong>Speed:</strong> MD5 is extremely fast, allowing billions of hashes per second with GPUs</li>
+    <li><strong>Rainbow Tables:</strong> Precomputed tables make cracking even faster</li>
+    <li><strong>Collision Attacks:</strong> It's computationally feasible to find two different inputs with the same hash</li>
+    <li><strong>No Salt:</strong> Basic MD5 doesn't include salting, making all identical passwords have identical hashes</li>
+</ul>
+
+<h3>Real-World Impact: LinkedIn Data Breach (2012)</h3>
+<p>In 2012, LinkedIn suffered a massive breach where 6.5 million password hashes were stolen. The passwords were hashed using unsalted SHA-1 (similar weaknesses to MD5). Within days, security researchers had cracked millions of passwords using rainbow tables and brute force attacks.</p>
+
+<h3>Vulnerable Code Example</h3>
+<pre><code>import hashlib
+
+# VULNERABLE: Using MD5 for passwords
+password = "mypassword123"
+password_hash = hashlib.md5(password.encode()).hexdigest()
+# Result: 6f8d0fca4ab0fa4b4ae7f2e4c161e0f0
+
+# Attacker can easily crack this:
+# 1. Search rainbow table
+# 2. Brute force (billions of attempts per second)
+# 3. Found in seconds for common passwords
+</code></pre>
+
+<h3>Secure Alternative</h3>
+<pre><code>from argon2 import PasswordHasher
+
+# SECURE: Use Argon2id (winner of Password Hashing Competition)
+ph = PasswordHasher()
+password_hash = ph.hash("mypassword123")
+# Result: $argon2id$v=19$m=65536,t=3,p=4$...(long secure hash)
+
+# Benefits:
+# - Slow by design (configurable work factor)
+# - Built-in salt
+# - Memory-hard (resistant to GPU attacks)
+# - Recommended by OWASP
+</code></pre>
+
+<h3>Challenge</h3>
+<p>In the interactive lab, you'll find a database of MD5 password hashes. Your mission is to crack the admin password and login.</p>
+
+<a href="/scenario1/lab" class="btn btn-success">Launch Lab →</a>
+<a href="/" class="back-link">← Back to Home</a>
+{% endblock %}

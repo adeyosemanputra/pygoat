@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Scenario 2: Insecure Cryptographic Storage</h2>
+
+<a href="/" class="back-link">← Back to Home</a>
+
+<div class="alert alert-danger">
+    <strong>Vulnerability:</strong> Hardcoded encryption keys in source code
+</div>
+
+<h3>The Problem</h3>
+<p>Storing encryption keys directly in application code is one of the most critical cryptographic failures. If an attacker gains access to the source code (through repository leaks, insider threats, or other means), all encrypted data becomes instantly compromised.</p>
+
+<h3>Common Mistakes</h3>
+<ul>
+    <li>Hardcoding keys directly in source files</li>
+    <li>Committing keys to version control systems (Git, SVN)</li>
+    <li>Storing keys in configuration files within the codebase</li>
+    <li>Using the same key across all environments (dev, staging, prod)</li>
+</ul>
+
+<h3>Real-World Example: Uber Data Breach (2016)</h3>
+<p>Uber suffered a massive breach affecting 57 million users. Attackers found AWS credentials hardcoded in a private GitHub repository. This allowed them to access S3 buckets containing sensitive user data.</p>
+
+<h3>Vulnerable Code</h3>
+<pre><code># VULNERABLE: Hardcoded encryption key
+ENCRYPTION_KEY = 'ZmDfcTF7_60GrrY167zsiPd67pEvs0aGOv2oasOM1Pg='
+
+from cryptography.fernet import Fernet
+cipher = Fernet(ENCRYPTION_KEY)
+encrypted_data = cipher.encrypt(b"sensitive_info")
+
+# If attacker gets source code, ALL encrypted data is compromised!
+</code></pre>
+
+<h3>Secure Approach</h3>
+<pre><code># SECURE: Use environment variables
+import os
+from cryptography.fernet import Fernet
+
+# Key stored in environment variable or key vault
+ENCRYPTION_KEY = os.environ['ENCRYPTION_KEY']
+cipher = Fernet(ENCRYPTION_KEY)
+
+# Alternative: Use cloud key management services
+# - AWS KMS (Key Management Service)
+# - Azure Key Vault
+# - Google Cloud KMS
+# - HashiCorp Vault
+</code></pre>
+
+<h3>Best Practices</h3>
+<ul>
+    <li>Store keys in environment variables or dedicated key vaults</li>
+    <li>Never commit keys to version control</li>
+    <li>Use .gitignore to exclude sensitive files</li>
+    <li>Rotate keys regularly</li>
+    <li>Use different keys for different environments</li>
+    <li>Implement proper key access controls</li>
+</ul>
+
+<h3>Challenge</h3>
+<p>In this lab, you'll find a "Leaked" source code file containing a hardcoded encryption key. Use it to decrypt the encrypted database dump and retrieve the flag.</p>
+
+<a href="/scenario2/lab" class="btn btn-success">Launch Lab →</a>
+<a href="/" class="back-link">← Back to Home</a>
+{% endblock %}
