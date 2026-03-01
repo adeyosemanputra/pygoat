@@ -50,6 +50,8 @@ First, Clone the repository using GitHub website or git in Terminal
 3. Finally, run the development server `python3 manage.py runserver`.<br>
 4. The project will be available at <http://127.0.0.1:8000> 
 
+> **Windows Users (Python 3.12+):** Running `pip install -r requirements.txt` may fail with `pg_config executable not found` because `psycopg2` needs PostgreSQL dev tools to build from source. To fix this, run `pip install psycopg2-binary` separately after the above command, or install PostgreSQL and add its `bin/` folder to your system PATH.
+
 #### Method 2
 
 1. Install python3 requirements `pip install -r requirements.txt`.<br> 
