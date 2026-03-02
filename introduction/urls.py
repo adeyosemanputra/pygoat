@@ -103,7 +103,6 @@ urlpatterns = [
         views.open_source_library_lab_page,
         name="open_source_library_attack_lab",
     ),
-    path("idor_lab", views.idor_lab_page, name="idor_lab"),
     path(
         "cryptographic_failure/lab2",
         views.crypto_failure_lab2,
