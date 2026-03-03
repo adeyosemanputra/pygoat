@@ -1,4 +1,19 @@
 services:
+  traefik:
+    image: traefik:v2.10
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    networks:
+      - pygoat_net
+
   web:
     build: .
     command: gunicorn --bind 0.0.0.0:8000 --workers 6 pygoat.wsgi
@@ -6,10 +21,26 @@ services:
       - "8000:8000"
     volumes:
       - .:/app
+      - "/var/run/docker.sock:/var/run/docker.sock" 
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.pygoat.rule=Host(`lvh.me`)"
+      - "traefik.http.services.pygoat.loadbalancer.server.port=8000"
+    environment:
+      - CHAL_DOCKER_NETWORK=pygoat_pygoat_net
     depends_on:
       - migration
+    networks:
+      - pygoat_net
+
   migration:
-    image: pygoat/pygoat:latest
+    build: .
     command: python manage.py migrate --noinput
     volumes:
       - .:/app
+    networks:
+      - pygoat_net
+
+networks:
+  pygoat_net:
+    driver: bridge
