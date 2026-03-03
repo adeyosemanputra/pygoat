@@ -1,93 +1,74 @@
 {% extends "base.html" %}
 
+{% block title %}<title>Scenario 4: CBC Bit-Flipping Attack</title>{% endblock %}
+
 {% block content %}
-<h2>Scenario 4: CBC Bit-Flipping Attack</h2>
+<div class="content">
+    <a href="/" class="back-link">← Back to Home</a>
+    <a href="/scenario4/lab" class="btn btn-success" style="float:right;">Start Lab →</a>
+    <h1>Scenario 4: CBC Bit-Flipping Attack</h1>
 
-<a href="/scenario4/lab" class="btn btn-primary" style="float: right;">Start Lab →</a>
-<a href="/" class="back-link">← Back to Home</a>
-
-<div class="card" style="margin-top: 30px;">
-    <div class="card-header" style="background: #dc3545;">
-        <h3 style="margin: 0;">The Vulnerability</h3>
+    <div class="alert alert-danger">
+        <strong>Vulnerability:</strong> Encryption without integrity protection (CWE-353)
     </div>
-    <p><strong>CBC (Cipher Block Chaining)</strong> is a block cipher mode that was widely used for encryption. While CBC provides confidentiality, it does NOT provide integrity or authentication by itself.</p>
-    
-    <p>In CBC mode, each block of plaintext is XORed with the previous ciphertext block before encryption. This creates a dependency chain, but it also creates an exploitable property:</p>
-    
-    <p><strong>Bit-Flipping Attack:</strong> An attacker can modify bits in the ciphertext to cause predictable changes in the decrypted plaintext without knowing the encryption key!</p>
-</div>
 
-<div class="card">
-    <div class="card-header" style="background: #343a40;">
-        <h3 style="margin: 0;">How CBC Mode Works</h3>
-    </div>
-    <pre><code>Encryption:
+    <div class="box">
+        <h3>The Vulnerability</h3>
+        <p class="bp"><strong>CBC (Cipher Block Chaining)</strong> is a block cipher mode that was widely used for encryption. While CBC provides confidentiality, it does <strong>NOT</strong> provide integrity or authentication by itself.</p>
+        <p class="bp">In CBC mode, each block of plaintext is XORed with the previous ciphertext block before encryption. This creates a dependency chain – but also an exploitable property:</p>
+        <p class="bp"><strong>Bit-Flipping Attack:</strong> An attacker can modify bits in the ciphertext to cause predictable changes in the decrypted plaintext <em>without knowing the encryption key</em>!</p>
+
+        <div class="section">
+            <h4>How CBC Mode Works</h4>
+<pre><code>Encryption:
 C[0] = Encrypt(P[0] XOR IV)
 C[1] = Encrypt(P[1] XOR C[0])
-C[2] = Encrypt(P[2] XOR C[1])
 ...
 
 Decryption:
 P[0] = Decrypt(C[0]) XOR IV
 P[1] = Decrypt(C[1]) XOR C[0]
-P[2] = Decrypt(C[2]) XOR C[1]
 ...</code></pre>
-    
-    <p><strong>Key Observation:</strong> When decrypting block N, the previous ciphertext block N-1 is XORed with the decrypted result. If we modify C[N-1], it directly affects P[N] through XOR!</p>
-</div>
+            <p class="bp"><strong>Key Observation:</strong> When decrypting block N, the previous ciphertext block N-1 is XORed with the decrypted result. Modifying C[N-1] directly affects P[N] through XOR!</p>
+        </div>
 
-<div class="card">
-    <div class="card-header" style="background: #ff8c00;">
-        <h3 style="margin: 0;">The XOR Property</h3>
-    </div>
-    <p>XOR has a useful property for attackers:</p>
-    <pre><code>A XOR B XOR B = A  (XOR is reversible)
+        <div class="section">
+            <h4>The XOR Property Attackers Exploit</h4>
+<pre><code>A XOR B XOR B = A  (XOR is reversible)
 
 If: P = Decrypt(C) XOR IV
 Then: P XOR X = Decrypt(C) XOR (IV XOR X)
 
 By flipping bits in IV (or previous ciphertext block),
 we can flip corresponding bits in the plaintext!</code></pre>
-    
-    <div class="alert alert-danger">
-        <strong>Attack Vector:</strong>
-        <p>If we know (or can guess) part of the plaintext, we can:</p>
-        <ol>
-            <li>Calculate what bits to flip in the previous ciphertext block</li>
-            <li>Flip those bits to change the plaintext to our desired value</li>
-            <li>The application decrypts it and trusts the modified data!</li>
-        </ol>
-    </div>
-</div>
+        </div>
 
-<div class="card">
-    <div class="card-header" style="background: #6610f2;">
-        <h3 style="margin: 0;">Real-World Example: Cookie Manipulation</h3>
-    </div>
-    <p>Consider an application that stores encrypted user roles in a cookie:</p>
-    <pre><code>Plaintext: {"user":"alice","role":"user"}
-Encrypted: [random-looking-base64-string]</code></pre>
-    
-    <p>An attacker who knows the plaintext structure can flip bits to change:</p>
-    <pre><code>{"user":"alice","role":"user"}
+        <div class="section">
+            <h4>Real-World Example: Cookie Manipulation</h4>
+            <p class="bp">Consider an application that stores encrypted user roles in a cookie:</p>
+<pre><code>Plaintext:  {"user":"alice","role":"user"}
+Encrypted:  [random-looking-base64-string]
+</code></pre>
+            <p class="bp">An attacker who knows the plaintext structure can flip bits to change:</p>
+<pre><code>{"user":"alice","role":"user"}
                               ↓ (flip bits)
-{"user":"alice","role":"admin"}</code></pre>
-    
-    <p><strong>Result:</strong> Privilege escalation without knowing the encryption key!</p>
-</div>
-
-<div class="card">
-    <div class="card-header" style="background: #343a40;">
-        <h3 style="margin: 0;">Vulnerable Code Example</h3>
+{"user":"alice","role":"admin"}
+</code></pre>
+            <p class="bp"><strong>Result:</strong> Privilege escalation without knowing the encryption key!</p>
+        </div>
     </div>
-    <pre><code>from Crypto.Cipher import AES
+
+    <div class="box">
+        <h3>Vulnerable vs Secure Code</h3>
+
+        <div class="section">
+            <h4>❌ Vulnerable – CBC with No Integrity Check</h4>
+<pre><code>from Crypto.Cipher import AES
 import base64
 
 def create_session_cookie(username, role):
     plaintext = f"user={username};role={role}"
-    # Pad to block size
     plaintext += " " * (16 - len(plaintext) % 16)
-    
     cipher = AES.new(SECRET_KEY, AES.MODE_CBC, IV)
     ciphertext = cipher.encrypt(plaintext.encode())
     return base64.b64encode(IV + ciphertext).decode()
@@ -96,70 +77,56 @@ def verify_session_cookie(cookie):
     data = base64.b64decode(cookie)
     iv = data[:16]
     ciphertext = data[16:]
-    
     cipher = AES.new(SECRET_KEY, AES.MODE_CBC, iv)
     plaintext = cipher.decrypt(ciphertext).decode()
-    
     # INSECURE: No integrity check!
-    # Attacker can flip bits in ciphertext
     return parse_cookie(plaintext)
 </code></pre>
-    
-    <div class="alert alert-danger">
-        <strong>Problem:</strong> The application trusts the decrypted data without verifying it hasn't been tampered with!
-    </div>
-</div>
+        </div>
 
-<div class="card">
-    <div class="card-header" style="background: #28a745;">
-        <h3 style="margin: 0;">Secure Alternatives</h3>
-    </div>
-    
-    <h4>1. Use Authenticated Encryption (AEAD)</h4>
-    <pre><code>from Crypto.Cipher import AES
+        <div class="section">
+            <h4>✅ Secure – Authenticated Encryption (AES-GCM)</h4>
+<pre><code>from Crypto.Cipher import AES
 
 # GCM mode provides both encryption and authentication
 cipher = AES.new(key, AES.MODE_GCM)
 ciphertext, tag = cipher.encrypt_and_digest(plaintext)
 
-# On decryption, verify() will raise exception if tampered
+# On decryption, verify() raises exception if tampered
 plaintext = cipher.decrypt_and_verify(ciphertext, tag)
 </code></pre>
-    
-    <h4>2. Encrypt-then-MAC</h4>
-    <pre><code>import hmac
-import hashlib
+        </div>
 
-# Encrypt first
+        <div class="section">
+            <h4>✅ Alternative – Encrypt-then-MAC</h4>
+<pre><code>import hmac, hashlib
+
 ciphertext = encrypt_cbc(plaintext, key)
-
-# Then create MAC
 mac = hmac.new(mac_key, ciphertext, hashlib.sha256).digest()
 
-# Verify MAC before decrypting
+# Verify MAC BEFORE decrypting
 if not hmac.compare_digest(received_mac, computed_mac):
     raise ValueError("Integrity check failed!")
 plaintext = decrypt_cbc(ciphertext, key)
 </code></pre>
-    
-    <div class="alert alert-success">
-        <strong>Key Principles:</strong>
-        <ul>
-            <li>Never use encryption alone for data that must be trusted</li>
-            <li>Always use authenticated encryption (AES-GCM, ChaCha20-Poly1305)</li>
-            <li>If using CBC, add HMAC for integrity (Encrypt-then-MAC pattern)</li>
-            <li>Verify authentication tags BEFORE processing decrypted data</li>
-        </ul>
+            <div class="alert alert-success">
+                <strong>Key Principles:</strong>
+                <ul>
+                    <li>Never use encryption alone for data that must be trusted</li>
+                    <li>Always use authenticated encryption (AES-GCM, ChaCha20-Poly1305)</li>
+                    <li>If using CBC, add HMAC for integrity (Encrypt-then-MAC)</li>
+                    <li>Verify authentication tags <strong>before</strong> processing decrypted data</li>
+                </ul>
+            </div>
+        </div>
     </div>
-</div>
 
-<div class="card">
-    <div class="card-header" style="background: #17a2b8;">
-        <h3 style="margin: 0;">Testing Time</h3>
+    <div class="lab">
+        <strong>Challenge:</strong>
+        <p class="bp">In the lab, you'll manipulate an encrypted cookie to escalate your privileges from regular user to admin by flipping specific bits in the ciphertext!</p>
+        <a href="/scenario4/lab" class="btn btn-success">Start Lab →</a>
     </div>
-    <p>Ready to perform a CBC bit-flipping attack? In the lab, you'll manipulate an encrypted cookie to escalate your privileges from regular user to admin by flipping specific bits in the ciphertext!</p>
-    <a href="/scenario4/lab" class="btn btn-primary">Start Lab →</a>
-</div>
 
-<a href="/" class="back-link">← Back to Home</a>
+    <a href="/" class="back-link">← Back to Home</a>
+</div>
 {% endblock %}

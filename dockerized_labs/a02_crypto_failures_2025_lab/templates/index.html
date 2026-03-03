@@ -1,59 +1,73 @@
 {% extends "base.html" %}
 
+{% block title %}<title>A02:2025 Cryptographic Failures Lab</title>{% endblock %}
+
 {% block content %}
-<h2>Welcome to the Cryptographic Failures Lab</h2>
+<div class="content">
+    <h1>A02:2025 Cryptographic Failures Lab</h1>
 
-<div class="alert alert-info">
-    <strong>About This Lab:</strong>
-    <p>This lab demonstrates OWASP Top 10:2025 A02 - Cryptographic Failures through 4 interactive scenarios. Each scenario includes educational content, vulnerable code examples, and hands-on challenges.</p>
-</div>
+    <div class="alert alert-info">
+        <strong>About This Lab:</strong>
+        <p class="bp">This lab demonstrates OWASP Top 10:2025 A02 – Cryptographic Failures through 4 interactive scenarios. Each scenario includes educational content, vulnerable code examples, and hands-on challenges.</p>
+    </div>
 
-<div class="alert alert-warning">
-    <strong>Security Warning:</strong>
-    <p>This application contains intentional security vulnerabilities for educational purposes only. DO NOT use any code patterns from this lab in production applications.</p>
-</div>
+    <div class="alert alert-warning">
+        <strong>⚠ Security Warning:</strong>
+        <p class="bp">This application contains intentional security vulnerabilities for educational purposes only. Do <strong>not</strong> use any code patterns from this lab in production applications.</p>
+    </div>
 
-<h3>Lab Scenarios</h3>
+    <div class="box">
+        <h3>Lab Scenarios</h3>
 
-<div class="card">
-    <h4>Scenario 1: Weak Encryption Algorithm</h4>
-    <p>Learn about the dangers of using deprecated hashing algorithms like MD5 for password storage.</p>
-    <p><strong>Topics:</strong> MD5 weaknesses, Rainbow tables, Modern hashing (Argon2/bcrypt)</p>
-    <a href="/scenario1" class="btn btn-primary">View Scenario 1</a>
-    <a href="/scenario1/lab" class="btn btn-success">Launch Lab 1</a>
-</div>
+        <div class="section">
+            <h4>Scenario 1: Weak Encryption Algorithm</h4>
+            <p class="bp">Learn about the dangers of using deprecated hashing algorithms like MD5 for password storage.</p>
+            <p><strong>Topics:</strong> MD5 weaknesses, Rainbow tables, Modern hashing (Argon2/bcrypt)</p>
+            <div class="mt-10">
+                <a href="/scenario1" class="btn btn-primary">View Scenario 1</a>
+                <a href="/scenario1/lab" class="btn btn-success">Launch Lab 1</a>
+            </div>
+        </div>
 
-<div class="card">
-    <h4>Scenario 2: Insecure Cryptographic Storage</h4>
-    <p>Discover how hardcoded encryption keys in source code can compromise all encrypted data.</p>
-    <p><strong>Topics:</strong> Key management, Environment variables, Key vaults</p>
-    <a href="/scenario2" class="btn btn-primary">View Scenario 2</a>
-    <a href="/scenario2/lab" class="btn btn-success">Launch Lab 2</a>
-</div>
+        <div class="section">
+            <h4>Scenario 2: Insecure Cryptographic Storage</h4>
+            <p class="bp">Discover how hardcoded encryption keys in source code can compromise all encrypted data.</p>
+            <p><strong>Topics:</strong> Key management, Environment variables, Key vaults</p>
+            <div class="mt-10">
+                <a href="/scenario2" class="btn btn-primary">View Scenario 2</a>
+                <a href="/scenario2/lab" class="btn btn-success">Launch Lab 2</a>
+            </div>
+        </div>
 
-<div class="card">
-    <h4>Scenario 3: Insufficient Randomness</h4>
-    <p>Exploit predictable random number generators to compromise security tokens and sessions.</p>
-    <p><strong>Topics:</strong> PRNG vs CSPRNG, secrets module, Token prediction</p>
-    <a href="/scenario3" class="btn btn-primary">View Scenario 3</a>
-    <a href="/scenario3/lab" class="btn btn-success">Launch Lab 3</a>
-</div>
+        <div class="section">
+            <h4>Scenario 3: Insufficient Randomness</h4>
+            <p class="bp">Exploit predictable random number generators to compromise security tokens and sessions.</p>
+            <p><strong>Topics:</strong> PRNG vs CSPRNG, secrets module, Token prediction</p>
+            <div class="mt-10">
+                <a href="/scenario3" class="btn btn-primary">View Scenario 3</a>
+                <a href="/scenario3/lab" class="btn btn-success">Launch Lab 3</a>
+            </div>
+        </div>
 
-<div class="card">
-    <h4>Scenario 4: CBC Bit-Flipping Attack</h4>
-    <p>Learn how encryption without integrity protection allows attackers to manipulate encrypted data.</p>
-    <p><strong>Topics:</strong> CBC mode, MAC/HMAC, Authenticated encryption (AES-GCM)</p>
-    <a href="/scenario4" class="btn btn-primary">View Scenario 4</a>
-    <a href="/scenario4/lab" class="btn btn-success">Launch Lab 4</a>
-</div>
+        <div class="section">
+            <h4>Scenario 4: CBC Bit-Flipping Attack</h4>
+            <p class="bp">Learn how encryption without integrity protection allows attackers to manipulate encrypted data.</p>
+            <p><strong>Topics:</strong> CBC mode, MAC/HMAC, Authenticated encryption (AES-GCM)</p>
+            <div class="mt-10">
+                <a href="/scenario4" class="btn btn-primary">View Scenario 4</a>
+                <a href="/scenario4/lab" class="btn btn-success">Launch Lab 4</a>
+            </div>
+        </div>
+    </div>
 
-<div class="alert alert-info" style="margin-top: 30px;">
-    <strong>Learning Objectives:</strong>
-    <ul style="margin-top: 10px; padding-left: 20px;">
-        <li>Understand common cryptographic failures and their real-world impacts</li>
-        <li>Identify vulnerable code patterns in web applications</li>
-        <li>Apply secure cryptographic practices following OWASP guidelines</li>
-        <li>Recognize the importance of proper key management and algorithm selection</li>
-    </ul>
+    <div class="lab">
+        <strong>Learning Objectives:</strong>
+        <ul>
+            <li>Understand common cryptographic failures and their real-world impacts</li>
+            <li>Identify vulnerable code patterns in web applications</li>
+            <li>Apply secure cryptographic practices following OWASP guidelines</li>
+            <li>Recognize the importance of proper key management and algorithm selection</li>
+        </ul>
+    </div>
 </div>
 {% endblock %}

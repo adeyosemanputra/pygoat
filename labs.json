@@ -101,6 +101,11 @@
       "port": 5006
     },
     {
+      "name": "a02_crypto_failures_2025_lab",
+      "build_location": "dockerized_labs/a02_crypto_failures_2025_lab",
+      "port": 5002
+    },
+    {
       "name": "xxe_lab",
       "build_location": "dockerized_labs/xxe_lab",
       "port": 5010

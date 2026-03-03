@@ -39,6 +39,7 @@ This lab provides hands-on experience with 4 critical cryptographic failure scen
 ### Using Docker Compose (Recommended)
 
 ```bash
+cd dockerized_labs/a02_crypto_failures_2025_lab
 docker-compose up --build
 ```
 
@@ -58,16 +59,37 @@ pip install -r requirements.txt
 python app.py
 ```
 
+## Integration with PyGoat
+
+This lab is registered in `labs.json` at the project root and will be automatically built and launched by PyGoat's lab management system.
+
+To verify the entry exists in `labs.json`:
+
+```json
+{
+  "name": "a02_crypto_failures_2025_lab",
+  "build_location": "dockerized_labs/a02_crypto_failures_2025_lab",
+  "port": 5002
+}
+```
+
+To launch all PyGoat labs (including this one) from the project root:
+
+```bash
+docker-compose up --build
+```
+
 ## Educational Content
 
 Each scenario includes:
 - Detailed vulnerability explanation
 - Real-world breach examples
-- CWE mappings
+- CWE mappings (CWE-259, CWE-321, CWE-327, CWE-330, CWE-338, CWE-353, CWE-916)
 - Vulnerable code examples
 - Secure code alternatives
 - Progressive hints for solving challenges
 - Interactive labs with immediate feedback
+- Dark/light theme support
 
 ## Security Notice
 
