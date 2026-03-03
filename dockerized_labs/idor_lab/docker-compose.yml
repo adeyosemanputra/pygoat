@@ -1,0 +1,10 @@
+services:
+  idor_lab:
+    build: .
+    ports:
+      - "5030:5030"
+    volumes:
+      - .:/app
+    environment:
+      - FLASK_ENV=development
+    restart: unless-stopped

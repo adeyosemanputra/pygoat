@@ -104,6 +104,11 @@
       "name": "xxe_lab",
       "build_location": "dockerized_labs/xxe_lab",
       "port": 5010
+    },
+    {
+      "name": "idor_lab",
+      "build_location": "dockerized_labs/idor_lab",
+      "port": 5030
     }
   ]
 }

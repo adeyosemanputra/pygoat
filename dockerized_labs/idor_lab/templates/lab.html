@@ -1,0 +1,236 @@
+{% extends "base.html" %}
+
+{% block title %}<title>IDOR Lab - Challenge</title>{% endblock %}
+
+{% block content %}
+<div class="content">
+    <h3 style="border-bottom: 2px solid var(--border-color); padding-bottom: 10px;">
+        IDOR Lab - Challenge
+    </h3>
+    
+    <div class="box">
+        {% if show_login or not current_user_id %}
+        <div class="section">
+            <h4>Login to Access the Lab</h4>
+            <p class="bp">Enter your credentials to access the employee directory API.</p>
+            
+            <form method="POST" action="/login" class="login-form">
+                <input type="text" name="username" placeholder="Username" required autocomplete="username">
+                <input type="password" name="password" placeholder="Password" required autocomplete="current-password">
+                <button type="submit">Login</button>
+            </form>
+            
+            {% if error %}
+            <div class="error-message" style="color: #e74c3c; margin-top: 10px;">{{ error }}</div>
+            {% endif %}
+            
+            <p class="bp" style="margin-top: 15px; font-size: 0.9em;">
+                <strong>Hint:</strong> Try <code>john:john123</code> or <code>jane:jane123</code>
+            </p>
+        </div>
+        
+        {% else %}
+        <div class="section" style="background: var(--section-bg); padding: 15px; border-radius: 8px;">
+            <p class="bp" style="margin: 0;">
+                <strong>Logged in as:</strong> <code>{{ current_username }}</code> 
+                &nbsp;|&nbsp;
+                <strong>Your User ID:</strong> <code>{{ current_user_id }}</code>
+                &nbsp;|&nbsp;
+                <a href="/logout?token={{ auth_token }}" style="color: var(--button-bg);">Logout</a>
+            </p>
+        </div>
+        
+        <div class="section">
+            <h4>Fetch User Profile</h4>
+            <p class="bp">
+                Enter a user ID to fetch their profile from the API.
+                <br><small>Endpoint: <code>/api/user/{user_id}</code></small>
+            </p>
+            
+            <div style="display: flex; gap: 10px; align-items: center; margin: 15px 0;">
+                <input type="number" id="user-id-input" placeholder="Enter User ID (1, 2, or 3)" 
+                       value="{{ current_user_id }}" min="1" style="flex: 1; max-width: 300px;">
+                <button onclick="fetchUserProfile()" id="fetch-btn">Fetch Profile</button>
+            </div>
+            
+            <div id="api-result" class="result-container" style="display: none;">
+                <h4>API Response:</h4>
+                <div id="api-status"></div>
+                <pre id="api-response" class="code-block"></pre>
+            </div>
+            
+            <div id="idor-alert" class="idor-alert" style="display: none;">
+                <h4>⚠️ IDOR Vulnerability Detected!</h4>
+                <p>You successfully accessed another user's sensitive data without authorization!</p>
+                <p>In a real application, this would be a <strong>critical security vulnerability</strong>.</p>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h4>User Discovery</h4>
+            <p class="bp">In real attacks, the first step is often discovering valid user IDs.</p>
+            <button onclick="listAllUsers()" id="list-users-btn">List All Users</button>
+            
+            <div id="users-list" style="display: none; margin-top: 15px;">
+                <h4>Discovered Users:</h4>
+                <div id="users-table"></div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h4>Activity Log</h4>
+            <p class="bp">Track your API requests and responses.</p>
+            <div id="activity-log" style="max-height: 200px; overflow-y: auto; background: var(--code-bg); padding: 15px; border-radius: 8px;">
+                <p style="color: var(--code-color); margin: 0;">Waiting for activity...</p>
+            </div>
+        </div>
+        {% endif %}
+        
+        <div class="button-container" style="margin-top: 20px; text-align: right;">
+            <button onclick="window.location.href='/'">Back to Lab Details</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const currentUserId = {{ current_user_id if current_user_id else 'null' }};
+    const authToken = '{{ auth_token if auth_token else '' }}';
+    
+    function addToLog(message, type = 'info') {
+        const log = document.getElementById('activity-log');
+        const timestamp = new Date().toLocaleTimeString();
+        const colors = { 'info': '#3498db', 'success': '#27ae60', 'warning': '#f39c12', 'error': '#e74c3c', 'danger': '#e74c3c' };
+        
+        const entry = document.createElement('div');
+        entry.style.cssText = `color: ${colors[type]}; margin: 5px 0; font-family: monospace;`;
+        entry.innerHTML = `<span style="color: #888;">[${timestamp}]</span> ${message}`;
+        
+        if (log.children.length === 1 && log.children[0].textContent.includes('Waiting')) {
+            log.innerHTML = '';
+        }
+        log.insertBefore(entry, log.firstChild);
+    }
+    
+    async function fetchUserProfile() {
+        const userId = document.getElementById('user-id-input').value;
+        const resultDiv = document.getElementById('api-result');
+        const statusDiv = document.getElementById('api-status');
+        const responseDiv = document.getElementById('api-response');
+        const idorAlert = document.getElementById('idor-alert');
+        const fetchBtn = document.getElementById('fetch-btn');
+        
+        if (!userId) { addToLog('Please enter a user ID', 'warning'); return; }
+        
+        fetchBtn.disabled = true;
+        fetchBtn.textContent = 'Loading...';
+        addToLog(`Requesting: GET /api/user/${userId}`, 'info');
+        
+        try {
+            const response = await fetch(`/api/user/${userId}?token=${authToken}`);
+            const data = await response.json();
+            
+            resultDiv.style.display = 'block';
+            
+            if (response.ok) {
+                statusDiv.innerHTML = `<span style="color: #27ae60;">✓ Status: ${response.status} OK</span>`;
+                addToLog(`Response: ${response.status} OK - Data retrieved`, 'success');
+                
+                if (parseInt(userId) !== currentUserId && data.ssn) {
+                    idorAlert.style.display = 'block';
+                    addToLog(`⚠️ IDOR DETECTED! Accessed user ${userId}'s data while logged in as user ${currentUserId}`, 'danger');
+                    responseDiv.innerHTML = syntaxHighlight(data, ['ssn', 'salary', 'email']);
+                } else {
+                    idorAlert.style.display = 'none';
+                    responseDiv.textContent = JSON.stringify(data, null, 2);
+                }
+            } else {
+                statusDiv.innerHTML = `<span style="color: #e74c3c;">✗ Status: ${response.status} Error</span>`;
+                responseDiv.textContent = JSON.stringify(data, null, 2);
+                addToLog(`Response: ${response.status} - ${data.error || 'Error'}`, 'error');
+                idorAlert.style.display = 'none';
+            }
+        } catch (error) {
+            statusDiv.innerHTML = `<span style="color: #e74c3c;">✗ Network Error</span>`;
+            responseDiv.textContent = error.message;
+            addToLog(`Network error: ${error.message}`, 'error');
+            idorAlert.style.display = 'none';
+        } finally {
+            fetchBtn.disabled = false;
+            fetchBtn.textContent = 'Fetch Profile';
+        }
+    }
+    
+    function syntaxHighlight(data, sensitiveFields = []) {
+        let highlighted = JSON.stringify(data, null, 2);
+        sensitiveFields.forEach(field => {
+            const regex = new RegExp(`("${field}":\\s*"[^"]*")`, 'g');
+            highlighted = highlighted.replace(regex, '<span style="color: #e74c3c; font-weight: bold;">$1 ⚠️ SENSITIVE</span>');
+        });
+        return highlighted;
+    }
+    
+    async function listAllUsers() {
+        const listDiv = document.getElementById('users-list');
+        const tableDiv = document.getElementById('users-table');
+        const btn = document.getElementById('list-users-btn');
+        
+        btn.disabled = true;
+        btn.textContent = 'Loading...';
+        addToLog('Requesting: GET /api/users', 'info');
+        
+        try {
+            const response = await fetch(`/api/users?token=${authToken}`);
+            const data = await response.json();
+            
+            if (response.ok && data.users) {
+                addToLog(`Found ${data.total} users in the system`, 'success');
+                
+                let html = `<table style="width: 100%; border-collapse: collapse;">
+                    <thead><tr style="background: var(--section-bg);">
+                        <th style="padding: 10px; border: 1px solid var(--border-color);">ID</th>
+                        <th style="padding: 10px; border: 1px solid var(--border-color);">Username</th>
+                        <th style="padding: 10px; border: 1px solid var(--border-color);">Department</th>
+                        <th style="padding: 10px; border: 1px solid var(--border-color);">Action</th>
+                    </tr></thead><tbody>`;
+                
+                data.users.forEach(user => {
+                    const isCurrentUser = user.id === currentUserId;
+                    html += `<tr ${isCurrentUser ? 'style="background: rgba(39, 174, 96, 0.1);"' : ''}>
+                        <td style="padding: 10px; border: 1px solid var(--border-color);">${user.id}</td>
+                        <td style="padding: 10px; border: 1px solid var(--border-color);">${user.username} ${isCurrentUser ? '(You)' : ''}</td>
+                        <td style="padding: 10px; border: 1px solid var(--border-color);">${user.department}</td>
+                        <td style="padding: 10px; border: 1px solid var(--border-color);">
+                            <button onclick="document.getElementById('user-id-input').value=${user.id}; fetchUserProfile();" style="padding: 5px 10px; font-size: 0.9em;">Fetch</button>
+                        </td>
+                    </tr>`;
+                });
+                
+                html += '</tbody></table>';
+                tableDiv.innerHTML = html;
+                listDiv.style.display = 'block';
+            }
+        } catch (error) {
+            addToLog(`Error listing users: ${error.message}`, 'error');
+        } finally {
+            btn.disabled = false;
+            btn.textContent = 'List All Users';
+        }
+    }
+    
+    document.addEventListener('DOMContentLoaded', () => {
+        const input = document.getElementById('user-id-input');
+        if (input) {
+            input.addEventListener('keypress', (e) => { if (e.key === 'Enter') fetchUserProfile(); });
+        }
+    });
+</script>
+
+<style>
+    .idor-alert { background: rgba(231, 76, 60, 0.1); border: 2px solid #e74c3c; border-radius: 8px; padding: 20px; margin-top: 20px; color: var(--text-color); }
+    .idor-alert h4 { color: #e74c3c; margin-top: 0; }
+    .login-form { max-width: 400px; margin: 20px 0; }
+    .login-form input { display: block; width: 100%; margin-bottom: 15px; }
+    .code-block { background: var(--code-bg); color: var(--code-color); padding: 15px; border-radius: 8px; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word; }
+    .result-container { margin-top: 20px; padding: 15px; background: var(--section-bg); border-radius: 8px; border: 1px solid var(--border-color); }
+</style>
+{% endblock %}
