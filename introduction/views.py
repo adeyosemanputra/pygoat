@@ -12,6 +12,7 @@ import string
 import subprocess
 import uuid
 from dataclasses import dataclass
+from functools import wraps
 from hashlib import md5
 from io import BytesIO
 from random import randint
@@ -96,15 +97,16 @@ def home(request):
         return redirect("login")
 
 
-## authentication check decurator function
+## authentication check decorator function
 def authentication_decorator(func):
-    def function(*args, **kwargs):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
         if args[0].user.is_authenticated:
             return func(*args, **kwargs)
         else:
             return redirect("login")
 
-    return function
+    return wrapper
 
 
 # *****************************************XSS****************************************************#
