@@ -1,33 +1,42 @@
-FROM python:3.11.0b1-buster
+# Build stage
+FROM docker.io/library/python:3.11.14-alpine3.23 AS builder
+
+# Dependencies for building psycopg2
+RUN apk add --no-cache --virtual .build-deps \
+    gcc \
+    python3-dev \
+    musl-dev \
+    postgresql-dev
+
+# Setup dependencies
+COPY requirements.txt .
+RUN pip install --user --no-cache-dir -r requirements.txt
 
 
-# set work directory
+# Run stage
+FROM docker.io/library/python:3.11.14-alpine3.23 AS runtime
+
+# Install runtime dependencies
+RUN apk add --no-cache libpq
+
+# Working directory on the container
 WORKDIR /app
 
+# Copy installed packages from the builder stage
+COPY --from=builder /root/.local /root/.local
 
-# dependencies for psycopg2
-RUN apt-get update && apt-get install --no-install-recommends -y dnsutils=1:9.11.5.P4+dfsg-5.1+deb10u11 libpq-dev=11.16-0+deb10u1 python3-dev=3.7.3-1 && apt-get clean && rm -rf /var/lib/apt/lists/*
+# Set PATH to include the local bin directory where pip installs packages
+ENV PATH=/root/.local/bin:$PATH
 
+# Copy the application code
+COPY . /app/
 
-# Set environment variables
+# Set environment variables specific for Python
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
-
-# Install dependencies
-RUN python -m pip install --no-cache-dir pip==22.0.4
-COPY requirements.txt requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
-
-
-# copy project
-COPY . /app/
-
-
-# install pygoat
+# Port the application will run on
 EXPOSE 8000
 
-
-RUN python3 /app/manage.py migrate
-WORKDIR /app
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers","6", "pygoat.wsgi"]
+# Run the application using Gunicorn
+CMD ["sh", "-c", "python manage.py migrate --noinput && gunicorn --bind 0.0.0.0:8000 --workers 6 pygoat.wsgi"]
