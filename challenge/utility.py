@@ -1,10 +1,16 @@
+import logging
 import socket
+from typing import Optional
 
-def get_free_port(START_PORT, END_PORT, HOST="localhost"):
-    for port in range(START_PORT, END_PORT):
+
+logger = logging.getLogger(__name__)
+
+
+def get_free_port(start_port: int, end_port: int, host: str = "localhost") -> Optional[int]:
+    for port in range(start_port, end_port):
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-            result = s.connect_ex((HOST, port))
+            result = s.connect_ex((host, port))
             if result == 111:
-                print(f"Port {port} is avilable")
+                logger.info("Port %s is available", port)
                 return port
     return None
