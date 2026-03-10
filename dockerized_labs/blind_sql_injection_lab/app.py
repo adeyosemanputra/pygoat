@@ -80,6 +80,9 @@ def lab():
 
 	return render_template("lab.html")
 
+@app.route("/health")
+def health_check():
+	return "OK", 200
 
 if __name__ == "__main__":
 	init_db()
