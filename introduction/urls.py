@@ -7,6 +7,7 @@ from . import apis, mitre, views
 urlpatterns = [
     path("accounts/", include("allauth.urls")),
     path("", views.home, name="homepage"),
+    path('auth/verify/', views.traefik_auth_verify, name='traefik-verify'),
     path("xss", views.xss, name="xss"),
     path("xssL", views.xss_lab, name="xss_lab"),
     path("xssL2", views.xss_lab2, name="xss_lab2"),
