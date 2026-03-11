@@ -21,6 +21,11 @@
       "port": 9000
     },
     {
+      "name": "mishandling_of_exceptional_conditions_lab",
+      "build_location": "dockerized_labs/mishandling_of_exceptional_conditions_lab",
+      "port": 5016
+    },
+    {
       "name": "auth_failure_lab",
       "build_location": "dockerized_labs/auth_failure_lab",
       "port": 5007

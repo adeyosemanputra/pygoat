@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}<title>Mishandling of Exceptional Conditions Lab</title>{% endblock %}
+
+{% block content %}
+<div class="content">
+  <h1 class="page-title">Exceptional Conditions Lab</h1>
+
+  <div class="section">
+    <h4>Scenario</h4>
+    <p class="bp">
+      You are testing a pricing calculator. It applies a discount based on a coupon code and a divisor. The handler does not
+      validate edge cases or handle failures safely. Your task is to trigger failures and observe the error leakage.
+    </p>
+  </div>
+
+  <div class="section">
+    <h4>Pricing Calculator</h4>
+    <form method="POST" action="/lab">
+      <div class="form-group">
+        <label for="order_total">Order Total (USD)</label>
+        <input type="text" id="order_total" name="order_total" placeholder="e.g. 120.50" value="{{ inputs.order_total }}" required>
+      </div>
+      <div class="form-group">
+        <label for="divisor">Discount Divisor</label>
+        <input type="text" id="divisor" name="divisor" placeholder="e.g. 3" value="{{ inputs.divisor }}" required>
+      </div>
+      <div class="form-group">
+        <label for="coupon">Coupon Code</label>
+        <input type="text" id="coupon" name="coupon" placeholder="Try: {{ coupons|join(', ') }}" value="{{ inputs.coupon }}" required>
+      </div>
+      <div class="button-container">
+        <button type="submit">Calculate Total</button>
+      </div>
+    </form>
+  </div>
+
+  {% if result %}
+  <div class="section">
+    <h4>Result</h4>
+    <p class="bp">Final total: <strong>{{ result }}</strong></p>
+  </div>
+  {% endif %}
+
+  {% if error %}
+  <div class="section">
+    <h4>Unhandled Error</h4>
+    <p class="bp">{{ error }}</p>
+    {% if error_details %}
+    <pre>{{ error_details }}</pre>
+    {% endif %}
+  </div>
+  {% endif %}
+
+  <div class="button-container">
+    <button onclick="window.location.href='/'">Back to Home</button>
+  </div>
+</div>
+{% endblock %}

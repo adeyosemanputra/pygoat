@@ -1,0 +1,86 @@
+<div id="secureFixModal" class="custom-modal">
+	<div class="modal-overlay"></div>
+	<div class="modal-container">
+		<div class="modal-header">
+			<h2 class="modal-title">
+				🛡️ Security Fix for Exceptional Conditions
+			</h2>
+			<button type="button" class="close-btn" onclick="closeModal()">&times;</button>
+		</div>
+		<div class="modal-body">
+			<div class="tabs-container">
+				<div class="tab-buttons">
+					<button class="tab-btn tab-btn-strong active" onclick="showTab('secure-code')">Secure Code</button>
+					<button class="tab-btn tab-btn-strong" onclick="showTab('prevention')">Solution</button>
+				</div>
+
+				<div class="tab-content">
+					<div id="secure-code" class="tab-panel active">
+						<h4>Secure Implementation Example</h4>
+						<pre class="code-block"><code>
+from decimal import Decimal, InvalidOperation
+import logging
+
+COUPON_RATES = {
+	"SAVE10": Decimal("0.10"),
+	"VIP25": Decimal("0.25"),
+	"BETA05": Decimal("0.05"),
+}
+
+def safe_calculate(order_total_raw: str, divisor_raw: str, coupon_raw: str) -> str:
+	try:
+		order_total = Decimal(order_total_raw)
+		divisor = Decimal(divisor_raw)
+	except InvalidOperation:
+		raise ValueError("Invalid numeric input")
+
+	if divisor <= 0:
+		raise ValueError("Divisor must be greater than zero")
+
+	coupon = coupon_raw.strip().upper()
+	if coupon not in COUPON_RATES:
+		raise ValueError("Unknown coupon code")
+
+	discount_rate = COUPON_RATES[coupon]
+	discount_amount = order_total / divisor
+	final_total = order_total - (discount_amount * discount_rate)
+	return f"${final_total:.2f}"
+
+@app.route('/lab-secure', methods=['POST'])
+def lab_secure():
+	try:
+		result = safe_calculate(
+			request.form.get("order_total", ""),
+			request.form.get("divisor", ""),
+			request.form.get("coupon", ""),
+		)
+		return render_template("lab.html", result=result)
+	except ValueError as exc:
+		return render_template("lab.html", error=str(exc))
+	except Exception:
+		logging.exception("Unexpected error in pricing calculator")
+		return render_template("lab.html", error="Something went wrong. Please try again.")</code></pre>
+					</div>
+
+					<div id="prevention" class="tab-panel">
+						<h4>Solution</h4>
+						<p>Triggering edge cases in the lab returns stack traces and internal details. This is unsafe because it exposes
+						   file paths, framework versions, and business logic. The fix is to validate input and handle exceptions safely.</p>
+						<ul>
+							<li>Validate numeric inputs and reject non-numeric values early.</li>
+							<li>Block invalid divisors (such as 0 or negative values).</li>
+							<li>Allowlist coupon codes instead of accessing dictionary keys directly.</li>
+							<li>Return generic error messages to the user.</li>
+							<li>Log full exception details server-side for debugging.</li>
+						</ul>
+						<h4>OWASP References</h4>
+						<ul>
+							<li><a href="https://owasp.org/Top10/" target="_blank">OWASP Top 10</a></li>
+							<li><a href="https://owasp.org/Top10/2025/A10_2025-Mishandling_of_Exceptional_Conditions/" target="_blank">OWASP A10:2025 Mishandling of Exceptional Conditions</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

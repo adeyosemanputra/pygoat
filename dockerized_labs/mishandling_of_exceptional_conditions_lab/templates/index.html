@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% block title %}<title>Mishandling of Exceptional Conditions Lab</title>{% endblock %}
+
+{% block content %}
+<div class="content">
+    <div class="header-container">
+        <h1 class="page-title">Mishandling of Exceptional Conditions</h1>
+        <button class="notebook-btn" onclick="openModal()" title="View Secure Implementation">
+        🔗
+        </button>
+    </div>
+    {% include 'secure-fix.html' %}
+    <div class="section">
+        <h4>What is Mishandling of Exceptional Conditions</h4>
+        <p class="bp">
+            Mishandling of exceptional conditions happens when applications expose internal error details, stack traces, or sensitive
+            system information while processing failures. Instead of failing safely, the system leaks implementation details that can
+            aid attackers in further exploitation.
+        </p>
+        <div class="info">
+            <h4>Common causes include:</h4>
+            <ul>
+                <li>Unhandled exceptions propagated to users</li>
+                <li>Verbose error pages that reveal stack traces</li>
+                <li>Inconsistent error handling across endpoints</li>
+                <li>Failing to validate input or handle edge cases</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="lab">
+        <button class="coll btn btn-info" onclick="toggleLabDetails('lab1')">Lab Details</button>
+        <div id="lab1" class="section lab-details">
+            <h4>Lab Challenge</h4>
+            <p class="bp">
+                This lab simulates a pricing calculator that fails unsafely. By providing edge-case input, you can trigger
+                exceptions and see detailed stack traces returned to the browser. Your goal is to observe how verbose errors
+                reveal internal implementation details.
+            </p>
+
+            <div class="info">
+                <h4>Try these inputs:</h4>
+                <ul>
+                    <li>Set the divisor to <code>0</code> to trigger a divide-by-zero error</li>
+                    <li>Use an invalid coupon code to trigger a key lookup failure</li>
+                    <li>Provide a non-numeric order total to trigger conversion errors</li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <h4>Why it matters</h4>
+                <p class="bp">
+                    Returning full stack traces can reveal framework versions, file paths, and business logic. Attackers use
+                    these hints to craft targeted exploits or bypass controls.
+                </p>
+            </div>
+
+            <div class="button-container">
+                <button onclick="window.location.href='/lab'">Start Lab</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h4>Mitigation</h4>
+        <ul>
+            <li>Implement centralized exception handling</li>
+            <li>Return generic error messages to users</li>
+            <li>Validate input and handle edge cases</li>
+            <li>Log errors securely on the server side</li>
+            <li>Disable debug error pages in production</li>
+        </ul>
+    </div>
+</div>
+
+<script>
+    function toggleLabDetails(id) {
+        const el = document.getElementById(id);
+        el.classList.toggle('is-visible');
+    }
+
+    function openModal() {
+        document.getElementById('secureFixModal').style.display = 'block';
+        document.body.style.overflow = 'hidden'; 
+    }
+
+    function closeModal() {
+        document.getElementById('secureFixModal').style.display = 'none';
+        document.body.style.overflow = 'auto'; 
+    }
+    function showTab(tabName) {
+        const panels = document.querySelectorAll('.tab-panel');
+        panels.forEach(panel => panel.classList.remove('active'));
+        
+        const buttons = document.querySelectorAll('.tab-btn');
+        buttons.forEach(btn => btn.classList.remove('active'));
+        
+        document.getElementById(tabName).classList.add('active');
+        
+        event.target.classList.add('active');
+    }
+
+    document.addEventListener('click', function(event) {
+        const modal = document.getElementById('secureFixModal');
+        const overlay = event.target.classList.contains('modal-overlay');
+        if (overlay) {
+            closeModal();
+        }
+    });
+
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            closeModal();
+        }
+    });
+</script>
+{% endblock %}
