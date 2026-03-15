@@ -84,5 +84,5 @@ class DoItFast(View):
     
     def put(self, request, challenge):
         # TODO : implement flag checking
-        return "not implemented"
+        return JsonResponse({'message': 'not implemented'}, status=501)
     
