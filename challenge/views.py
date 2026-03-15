@@ -83,6 +83,8 @@ class DoItFast(View):
         return JsonResponse({'message': 'success', 'status': '200'})
     
     def put(self, request, challenge):
+        if not request.user.is_authenticated:
+            return redirect('login')
         # TODO : implement flag checking
         return JsonResponse({'message': 'not implemented'}, status=501)
     
