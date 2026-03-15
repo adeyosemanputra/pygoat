@@ -1,0 +1,113 @@
+{% extends 'introduction/base.html' %}
+{% block content %}
+{% block title %}
+<title>A10 - Fail Open Authorization Lab</title>
+{% endblock %}
+
+<div class="content">
+  <h3>A10:2025 - Mishandling of Exceptional Conditions</h3>
+  <h4>Lab 3: Fail-Open Authorization (CWE-636)</h4>
+
+  <div class="box">
+
+    {% if not secure %}
+    <div class="alert alert-danger">
+      <strong>⚠️ Vulnerable Application</strong> —
+      When the auth service fails, access is granted instead of denied.
+    </div>
+
+    <p class="bp">
+      The authorization service is currently <strong>unavailable</strong>.
+      Try to access the secret resource anyway.
+    </p>
+
+    <form method="POST">
+      {% csrf_token %}
+      <input type="hidden" name="resource" value="secret_data">
+      <button type="submit" class="btn btn-danger">
+        Access Secret Resource
+      </button>
+    </form>
+
+    {% if result %}
+    <div class="alert alert-success mt-3">
+      <strong>🚨 You got in!</strong><br>
+      {{ result }}
+      <br><br>
+      <small>
+        Auth service was DOWN but you got access!
+        This is Fail-Open behavior — exception was silently ignored.
+      </small>
+    </div>
+    {% endif %}
+
+    {% if error %}
+    <div class="alert alert-warning mt-3">{{ error }}</div>
+    {% endif %}
+
+    <hr>
+    <h5>Vulnerable Code:</h5>
+    <pre class="bg-dark text-light p-3 rounded"><code>
+try:
+    if not auth_service_available:
+        raise Exception('Service down')
+    is_authorized = check_authorization(user, resource)
+except Exception:
+    # FLAW: Exception ignored — access granted!
+    result = 'SECRET DATA EXPOSED'
+    </code></pre>
+
+    <div class="mt-3">
+      <a href="/a10_lab_3_secure" class="btn btn-success">
+        See Secure Version →
+      </a>
+    </div>
+
+    {% else %}
+    <div class="alert alert-success">
+      <strong>✅ Secure Application</strong> —
+      When the auth service fails, access is DENIED.
+    </div>
+
+    <form method="POST">
+      {% csrf_token %}
+      <input type="hidden" name="resource" value="secret_data">
+      <button type="submit" class="btn btn-success">
+        Try Accessing Secret Resource
+      </button>
+    </form>
+
+    {% if error %}
+    <div class="alert alert-danger mt-3">
+      <strong>🔒 Access Denied</strong><br>
+      {{ error }}
+      <br><br>
+      <small>
+        Auth service was DOWN and access was DENIED.
+        This is Fail-Closed — the secure behavior.
+      </small>
+    </div>
+    {% endif %}
+
+    <hr>
+    <h5>Secure Code:</h5>
+    <pre class="bg-dark text-light p-3 rounded"><code>
+try:
+    if not auth_service_available:
+        raise Exception('Service down')
+    is_authorized = check_authorization(user, resource)
+except Exception:
+    # SECURE: Exception caught — access DENIED
+    error = 'Access Denied: Service unavailable'
+    </code></pre>
+
+    <div class="mt-3">
+      <a href="/a10_lab_3" class="btn btn-danger">
+        ← See Vulnerable Version
+      </a>
+    </div>
+    {% endif %}
+
+  </div>
+</div>
+{% endblock %}

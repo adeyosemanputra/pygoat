@@ -1236,3 +1236,65 @@ def software_and_data_integrity_failure_lab3(request):
 def A6_discussion(request):
     
     return render(request,"playground/A6/index.html")
+# ===== A10 Lab 3 - Fail Open Authorization (Issue #370) =====
+def a10_lab3(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+
+    result = None
+    error = None
+
+    if request.method == 'POST':
+        # VULNERABLE: Fail-Open Authorization
+        try:
+            # Simulating an authorization service that fails
+            auth_service_available = False  # Service is down
+
+            if not auth_service_available:
+                raise Exception('Authorization service unavailable')
+
+            # This never runs because service is always down
+            is_authorized = False
+            if not is_authorized:
+                error = 'Access Denied'
+
+        except Exception:
+            # FLAW: Exception ignored — access granted anyway!
+            result = 'SECRET: FLAG{fail_open_pwned_2025}'
+
+    return render(request, 'Lab/A10/a10_lab3.html', {
+        'result': result,
+        'error': error
+    })
+
+
+def a10_lab3_secure(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+
+    result = None
+    error = None
+
+    if request.method == 'POST':
+        # SECURE: Fail-Closed Authorization
+        try:
+            auth_service_available = False  # Service is down
+
+            if not auth_service_available:
+                raise Exception('Authorization service unavailable')
+
+            is_authorized = False
+            if not is_authorized:
+                error = 'Access Denied'
+            else:
+                result = 'Access Granted'
+
+        except Exception:
+            # SECURE: Exception caught — access DENIED
+            error = 'Access Denied: Authorization service unavailable. Please try again later.'
+
+    return render(request, 'Lab/A10/a10_lab3.html', {
+        'result': result,
+        'error': error,
+        'secure': True
+    })
