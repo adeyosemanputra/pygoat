@@ -1,21 +1,15 @@
 import datetime
-from datetime import timezone
 import hashlib
-import json
-import logging
 import os
 import random
 import string
 import uuid
 from hashlib import md5
-from random import randint
 
-import jwt
-import requests
 from argon2 import PasswordHasher
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
-from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
+from django.http import HttpResponseBadRequest
 from django.shortcuts import redirect, render
 from django.views.decorators.csrf import csrf_exempt
 
