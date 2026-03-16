@@ -1,54 +1,31 @@
-import base64
 import datetime
 from datetime import timezone
 import hashlib
 import json
 import logging
 import os
-import pickle
 import random
-import re
 import string
-import subprocess
 import uuid
-from dataclasses import dataclass
 from hashlib import md5
-from io import BytesIO
 from random import randint
-from xml.dom.pulldom import START_ELEMENT, parseString
-from xml.sax import make_parser
-from xml.sax.handler import feature_external_ges
 
 import jwt
 import requests
-import yaml
 from argon2 import PasswordHasher
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
-from django.contrib.auth.forms import UserCreationForm
-from django.core import serializers
 from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
 from django.shortcuts import redirect, render
-from django.template import loader
-from django.template.loader import render_to_string
 from django.views.decorators.csrf import csrf_exempt
-from PIL import Image, ImageMath
-from requests.structures import CaseInsensitiveDict
 
 from .forms import NewUserForm
 from .models import (
-    FAANG,
     AF_admin,
     AF_session_id,
     Blogs,
     CF_user,
-    authLogin,
-    comments,
-    info,
-    login,
-    otp,
     sql_lab_table,
-    tickits,
 )
 from .utility import customHash, filter_blog
 
