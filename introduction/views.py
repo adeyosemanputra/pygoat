@@ -171,7 +171,7 @@ def xss_lab3(request):
 def sql(request):
     if request.user.is_authenticated:
 
-        return render(request, "Lab/SQL/sql.html")
+        return render(request, "Lab_2021/A3_Injection/injection.html")
     else:
         return redirect("login")
 

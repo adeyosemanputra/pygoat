@@ -3,6 +3,7 @@
 {% endblock %}
 <div class="content">
   <h3>Insecure Design</h3>
+  <div id="lab-controls" data-lab="insecure_design_lab"></div>
   <div class="box">
     <h4>What is Insecure Design</h4>
     <p class="bp">
@@ -32,11 +33,11 @@
         <ul> Logout and then think.</ul>
         
         <br>
-        <div align="right"> <button class="btn btn-info" type="button" onclick="window.location.href='/insecure-design_lab'">Access
-            Lab</button></div>
-    </div>
-  <div>
-    <br>
+        <div align="right"> <a class="btn btn-info lab-access-btn" data-path="/lab" href="#">Access
+            Lab</a></div>
+      </div>
+    <div>
+      <br>
     <h4>Mitigation</h4>
     <p class="bp">
     <ul>

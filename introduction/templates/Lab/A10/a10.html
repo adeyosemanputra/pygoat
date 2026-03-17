@@ -5,6 +5,7 @@
 {% endblock %}
 <div class="content">
   <h3>Insufficient Logging & Monitoring</h3>
+  <div id="lab-controls" data-lab="insufficient_logging_lab"></div>
   <div class="box">
     <h4>What does Insufficient Logging & Monitoring means?</h4>
     <p class="bp">
@@ -33,19 +34,19 @@
 
       </p>
       <br>
-      <div align="right"> <button class="btn btn-info" type="button" onclick="window.location.href='/a10_lab'">Access
-          Lab</button></div>
+      <div align="right"> <a class="btn btn-info lab-access-btn" data-path="/lab1" href="#">Access
+          Lab</a></div>
     </div>
     <button class="coll btn btn-info">Lab 2 Details</button>
     <div class="lab">
       <p class="bp">
-        It seems this application is logging every action performed in this logging page. 
+        It seems this application is logging every action performed in this logging page.
         But is there a way to inject some fake logs to the application?
 
         <br>
         <span>Login credentials are same as lab1</span>
-      <div align="right"> <button class="btn btn-info" type="button" onclick="window.location.href='/a10_lab_2'">Access
-          Lab</button></div>
+      <div align="right"> <a class="btn btn-info lab-access-btn" data-path="/lab2" href="#">Access
+          Lab</a></div>
     </div>
     <div>
       <br>

@@ -5,6 +5,7 @@
 {% endblock %}
 <div class="content">
     <h3>Using Components with Known Vulnerabilities</h3>
+    <div id="lab-controls" data-lab="a9_uckv_lab"></div>
     <div class="box">
 
         <h4>What does Using Components with Know Vulnerability means?</h4>
@@ -42,8 +43,7 @@
             </p>
 
             <br>
-            <div align="right"> <button class="btn btn-info" type="button"
-                    onclick="window.location.href='/a9_lab'">Access Lab</button></div>
+            <div align="right"> <a class="btn btn-info lab-access-btn" data-path="/lab1" href="#">Access Lab</a></div>
 
             </p>
         </div>
@@ -62,8 +62,7 @@
 
             </p>
             <br>
-            <div align="right"> <button class="btn btn-info" type="button"
-                    onclick="window.location.href='/a9_lab2'">Access Lab</button></div>
+            <div align="right"> <a class="btn btn-info lab-access-btn" data-path="/lab2" href="#">Access Lab</a></div>
 
             </p>
         </div>
