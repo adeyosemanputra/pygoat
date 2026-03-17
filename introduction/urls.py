@@ -1,8 +1,6 @@
 from django.urls import include, path
 
-from introduction.playground.A9.api import log_function_target
-
-from . import apis, mitre, views
+from . import mitre, views
 
 urlpatterns = [
     path("accounts/", include("allauth.urls")),
@@ -56,83 +54,17 @@ urlpatterns = [
     path("insecure-design", views.insec_desgine, name="insecure-design"),
     path("insecure-design_lab", views.insec_desgine_lab, name="insecure-design_lab"),
     path("broken_access_control", views.a1_broken_access, name="broken_access"),
-    path(
-        "broken_access_lab_1", views.a1_broken_access_lab_1, name="broken_access_lab_1"
-    ),
-    path(
-        "broken_access_lab_2", views.a1_broken_access_lab_2, name="broken_access_lab_2"
-    ),
-    path(
-        "broken_access_lab_3", views.a1_broken_access_lab_3, name="broken_access_lab_3"
-    ),
-    path(
-        "broken_access_controle/secret",
-        views.a1_broken_access_lab3_secret,
-        name="broken_access_controle_secret",
-    ),
     path("ssrf", views.ssrf, name="SSRF"),
     path("ssrf_discussion", views.ssrf_discussion, name="SSRF Discussion"),
     path("ssrf_lab", views.ssrf_lab, name="SSRF LAB"),
     path("ssrf_lab2", views.ssrf_lab2, name="SSRF LAB"),
     path("ssrf_target", views.ssrf_target, name="SSRF LAB"),
     path("injection", views.injection, name="injection"),
-    path("injection_sql_lab", views.injection_sql_lab, name="injection"),
-    path("api/ssrf", apis.ssrf_code_checker, name="api/ssrf"),
     path("ssti", views.ssti, name="SSTI"),
-    path("ssti/lab", views.ssti_lab, name="SSTI Lab"),
-    path("ssti/blog/<str:blog_id>", views.ssti_view_blog, name="SSTI Blog"),
     path("cryptographic_failure", views.crypto_failure, name="cryptographic_failure"),
-    path(
-        "cryptographic_failure/lab",
-        views.crypto_failure_lab,
-        name="cryptographic_failure_lab",
-    ),
     path("A03", views.supply_chain_failures, name="supply_chain_failures"),
-    path(
-        "dependency_attack_lab",
-        views.dependency_attack_lab_page,
-        name="dependency_attack_lab",
-    ),
-    path(
-        "package_injection_lab",
-        views.package_injection_lab_page,
-        name="package_injection_lab",
-    ),
-    path(
-        "open_source_library_attack_lab",
-        views.open_source_library_lab_page,
-        name="open_source_library_attack_lab",
-    ),
-    path(
-        "cryptographic_failure/lab2",
-        views.crypto_failure_lab2,
-        name="cryptographic_failure_lab2",
-    ),
-    path(
-        "cryptographic_failure/lab3",
-        views.crypto_failure_lab3,
-        name="cryptographic_failure_lab3",
-    ),
     path("auth_failure", views.auth_failure, name="auth_failure"),
-    path(
-        "auth_failure/lab2/admin12983gfugef81e8yeryepanel",
-        views.auth_failure_lab2,
-        name="auth_failure_lab2",
-    ),
-    path("auth_failure/lab3", views.auth_failure_lab3, name="auth_failure_lab2"),
     path("2021/A8", views.software_and_data_integrity_failure, name="A8"),
-    path("2021/A8/lab2", views.software_and_data_integrity_failure_lab2, name="A8"),
-    path("2021/A8/lab3", views.software_and_data_integrity_failure_lab3, name="A8"),
-    path("2021/discussion/A9", views.A9_discussion, name="A9 discussion"),
-    path("2021/discussion/A9/api", apis.log_function_checker, name="A10 discussion"),
-    path("2021/discussion/A9/target", log_function_target, name="A9 discussion"),
-    path("2021/discussion/A7", views.A7_discussion, name="A7 discussion"),
-    path("2021/discussion/A7/api", apis.A7_disscussion_api, name="A7 discussion api"),
-    path("2021/discussion/A6", views.A6_discussion, name="A6 discussion"),
-    path("2021/discussion/A6/api", apis.A6_disscussion_api, name="A6 discussion api"),
-    path(
-        "2021/discussion/A6/api2", apis.A6_disscussion_api_2, name="A6 discussion api2"
-    ),
     ##------------------- mitre endpoints --------------------------------------------------------------|
     path("mitre/1", mitre.mitre_top1, name="mitre_top1"),
     path("mitre/2", mitre.mitre_top2, name="mitre_top2"),
