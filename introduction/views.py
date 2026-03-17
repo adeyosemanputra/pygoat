@@ -38,19 +38,13 @@ from requests.structures import CaseInsensitiveDict
 from .forms import NewUserForm
 from .models import (
     FAANG,
-    AF_admin,
-    AF_session_id,
-    Blogs,
-    CF_user,
     authLogin,
     comments,
     info,
     login,
     otp,
-    sql_lab_table,
     tickits,
 )
-from .utility import customHash, filter_blog
 
 # *****************************************Lab Requirements****************************************************#
 
