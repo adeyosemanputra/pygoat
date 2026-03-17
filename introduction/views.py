@@ -391,7 +391,7 @@ def robots(request):
         return response
 
 def error(request):
-    return 
+    return HttpResponse("Error", status=404) 
 
 
 #******************************************************  Command Injection  ***********************************************************************#
