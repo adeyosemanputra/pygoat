@@ -1,4 +1,3 @@
-version: '3'
 services:
   insufficient_logging:
     build: .

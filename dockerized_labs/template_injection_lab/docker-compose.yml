@@ -1,4 +1,3 @@
-version: '3'
 services:
   template_injection:
     build: .

@@ -1,4 +1,3 @@
-version: '3'
 services:
   sql_injection_lab:
     build: .

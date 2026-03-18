@@ -113,7 +113,6 @@ def get_token():
 def verify_token():
     token = request.get_json().get("token", "")
     secret = "secret123"
-
     try:
         payload = jwt.decode(token, secret, algorithms=["HS256"])
         if payload["role"] == "admin":
@@ -128,6 +127,9 @@ def verify_token():
     except jwt.InvalidTokenError:
         return jsonify({"error": "Invalid token"}), 401
 
+@app.route("/health")
+def health_check():
+    return "OK", 200
 
-if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=5009)
+if __name__ == '__main__':
+    app.run(debug=True, host='0.0.0.0', port=5009)

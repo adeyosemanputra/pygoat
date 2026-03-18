@@ -56,13 +56,15 @@ def lab_login():
                 ),
             )
         )
-
         # Set admin cookie - intentionally vulnerable
         response.set_cookie("admin", "0" if not user.is_admin else "1", max_age=200)
         return response
 
     return render_template("result.html", message="Invalid credentials")
 
+@app.route("/health")
+def health_check():
+    return "OK", 200
 
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8080, debug=True)
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=8080, debug=True) 
