@@ -1,12 +1,11 @@
-FROM python:3.9-slim
+FROM python:3.9-alpine
 
 WORKDIR /app
 
+RUN apk add --no-cache bind-tools
+
 COPY requirements.txt .
-RUN apt-get update && \
-    apt-get install -y dnsutils && \
-    rm -rf /var/lib/apt/lists/* && \
-    pip install -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
