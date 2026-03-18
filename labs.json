@@ -106,6 +106,21 @@
       "port": 5010
     },
     {
+      "name": "dependency_attack_lab",
+      "build_location": "dockerized_labs/dependency_attack_lab",
+      "port": 5020
+    },
+    {
+      "name": "package_injection_lab",
+      "build_location": "dockerized_labs/package_injection_lab",
+      "port": 5021
+    },
+    {
+      "name": "open_source_library_attack_lab",
+      "build_location": "dockerized_labs/open_source_library_attack_lab",
+      "port": 5022
+    },
+    {
       "name": "path_traversal_lab",
       "build_location": "dockerized_labs/path_traversal_lab",
       "port": 5031
