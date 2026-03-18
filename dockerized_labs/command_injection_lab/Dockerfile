@@ -2,6 +2,7 @@ FROM python:3.9-alpine
 
 WORKDIR /app
 
+# hadolint ignore=DL3018
 RUN apk add --no-cache bind-tools
 
 COPY requirements.txt .
