@@ -54,6 +54,16 @@ First, Clone the repository using GitHub website or git in Terminal
   ### To Download a specific branch
   git clone -b <branch_name> https://github.com/adeyosemanputra/pygoat.git
 ```
+### Windows Notes (PowerShell users)
+
+- PyGoat is tested primarily on Linux/macOS. Windows users are recommended to use:
+  - **Docker Desktop** (preferred), or
+  - **WSL2 (Ubuntu)** for smoother setup.
+- On some Windows environments, the `python3` command may not be available by default.
+  - If `python3` is not recognized, try using `python` instead (ensure it points to Python 3.x).
+- Ensure Python version is **3.10 or 3.11** for best compatibility.
+- Some labs rely on Unix-style commands and may behave differently on native Windows shells.
+
 
 #### Method 1
 
@@ -86,6 +96,18 @@ First, Clone the repository using GitHub website or git in Terminal
 ### From Docker-Compose 
 1. Install [Docker](https://www.docker.com)
 2. Run `docker-compose up` or `docker-compose up -d`
+
+## Populate Challenge Data
+
+PyGoat stores challenge definitions in `challenge/challenge.json`.
+To populate the `Challenge` table in the database from this file, use the
+built-in Django management command:
+
+### Using Docker Compose
+
+```bash
+docker compose exec web python manage.py populate_challenges
+
 
 ### Build Docker Image and Run
 1. Clone the repository  &ensp; `git clone https://github.com/adeyosemanputra/pygoat.git` 

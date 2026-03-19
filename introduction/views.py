@@ -122,9 +122,10 @@ def xss_lab2(request):
 def xss_lab3(request):
     if request.user.is_authenticated:
         if request.method == 'POST':
-            username = request.POST.get('username')
-            print(type(username))
-            pattern = r'\w'
+            username = request.POST.get('username', '')
+            # Remove only alphanumeric characters (letters and digits)
+            # This allows special characters like []()!+ for JSFuck-style payloads
+            pattern = r'[a-zA-Z0-9]'
             result = re.sub(pattern, '', username)
             context = {'code':result}
             return render(request, 'Lab/XSS/xss_lab_3.html',context)
@@ -154,7 +155,7 @@ def sql_lab(request):
 
             if login.objects.filter(user=name):
 
-                sql_query = "SELECT * FROM introduction_login WHERE user='"+name+"'AND password='"+password+"'"
+                sql_query = "SELECT * FROM introduction_login WHERE user='"+name+"' AND password='"+password+"'"
                 print(sql_query)
                 try:
                     print("\nin try\n")
@@ -238,9 +239,14 @@ def xxe_lab(request):
 @csrf_exempt
 def xxe_see(request):
     if request.user.is_authenticated:
-
-        data=comments.objects.all()
-        com=data[0].comment
+        # Get first comment or create a default one if none exist
+        comment_obj = comments.objects.first()
+        if comment_obj is None:
+            comment_obj = comments.objects.create(
+                name='System',
+                comment='Default comment for XXE lab',
+            )
+        com = comment_obj.comment
         return render(request,'Lab/XXE/xxe_lab.html',{"com":com})
     else:
         return redirect('login')
@@ -410,7 +416,8 @@ def cmd_lab(request):
     if request.user.is_authenticated:
         if(request.method=="POST"):
             domain=request.POST.get('domain')
-            domain=domain.replace("https://www.",'')
+            # Remove all common protocols (case-insensitive) and www prefix
+            domain = re.sub(r'^(?:(https?|ftp)://)?(?:www\.)?', '', domain, flags=re.IGNORECASE)
             os=request.POST.get('os')
             print(os)
             if(os=='win'):
