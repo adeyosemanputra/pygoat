@@ -14,13 +14,10 @@ django-allauth==0.52.0
 django-crispy-forms==2.3
 gunicorn==23.0.0
 idna==3.4
-mccabe==0.6.1
 oauthlib==3.2.2
 Pillow==12.1.0
 pre_commit==4.5.1
-pycodestyle==2.7.0
 pycparser==2.21
-pyflakes==2.3.1
 PyJWT==2.4.0
 python3-openid==3.2.0
 pytz==2020.1
