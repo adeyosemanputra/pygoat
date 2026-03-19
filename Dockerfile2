@@ -1,9 +1,13 @@
 # Use a Python base image
 FROM python:3.11-slim
 
-# Set environment variables
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
+# Install necessary system dependencies without hardcoded EOL versions
+RUN apt-get update && apt-get install --no-install-recommends -y \
+  dnsutils \
+  libpq-dev \
+  python3-dev \
+  gcc \
+  && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Set work directory
 WORKDIR /app
