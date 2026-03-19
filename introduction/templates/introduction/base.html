@@ -594,84 +594,80 @@
               </li>
               <ul class="collapse list-unstyled" id="sqlSubmenu">
                 <li>
-                  <button onclick="launchLab('sql_injection_lab')" class="sidebar-list-items lab-button" data-lab="sql_injection_lab">
+                  <a href="/sql" class="sidebar-list-items lab-button" data-lab="sql_injection_lab">
                     SQL Injection
                     <span class="lab-status-indicator not-running" aria-hidden="true"></span>
-                  </button>
+                  </a>
                 </li>
                 <li>
-                  <button onclick="launchLab('command_injection_lab')" class="sidebar-list-items lab-button" data-lab="command_injection_lab">
+                  <a href="/cmd" class="sidebar-list-items lab-button" data-lab="command_injection_lab">
                     Command Injection
                     <span class="lab-status-indicator not-running" aria-hidden="true"></span>
-                  </button>
+                  </a>
                 </li>
               </ul>
               <li>
-                <button onclick="launchLab('broken_auth_lab')" class="sidebar-list-items lab-button" data-lab="broken_auth_lab">
+                <a href="/bau" class="sidebar-list-items lab-button" data-lab="broken_auth_lab">
                   <i class="fas fa-bug"></i>
                   A2: Broken Authentication
                   <span class="lab-status-indicator not-running" aria-hidden="true"></span>
-                </button>
+                </a>
               </li>
               <li>
-                <button
-                  onclick="launchLab('sensitive_data_exposure')"
-                  class="sidebar-list-items lab-button"
-                  data-lab="sensitive_data_exposure"
-                >
+                <a href="/data_exp" class="sidebar-list-items lab-button" data-lab="sensitive_data_exposure">
                   <i class="fas fa-bug"></i>
                   A3: Sensitive Data Exposure
                   <span class="lab-status-indicator not-running" aria-hidden="true"></span>
-                </button>
+                </a>
               </li>
               <li>
-                <button onclick="launchLab('xxe_lab')" class="sidebar-list-items lab-button" data-lab="xxe_lab">
+                <a href="/xxe" class="sidebar-list-items lab-button" data-lab="xxe_lab">
                   <i class="fas fa-bug"></i>
                   A4: XML External Entities (XXE)
                   <span class="lab-status-indicator not-running" aria-hidden="true"></span>
-                </button>
+                </a>
               </li>
               <li>
-                <button onclick="launchLab('broken_access_lab')" class="sidebar-list-items lab-button" data-lab="broken_access_lab">
+                <a href="/broken_access_control" class="sidebar-list-items lab-button" data-lab="broken_access_lab">
                   <i class="fas fa-bug"></i>
                   A5: Broken Access Control
                   <span class="lab-status-indicator not-running" aria-hidden="true"></span>
-                </button>
+                </a>
               </li>
               <li>
-                <button onclick="launchLab('sec_misconfig')" class="sidebar-list-items lab-button" data-lab="sec_misconfig">
+                <a href="/sec_mis" class="sidebar-list-items lab-button" data-lab="sec_misconfig">
                   <i class="fas fa-bug"></i>
                   A6: Security Misconfiguration
                   <span class="lab-status-indicator not-running" aria-hidden="true"></span>
-                </button>
+                </a>
               </li>
               <li>
-                <button onclick="launchLab('xss_lab')" class="sidebar-list-items lab-button" data-lab="xss_lab">
+                <a href="/xss" class="sidebar-list-items lab-button" data-lab="xss_lab">
                   <i class="fas fa-bug"></i>
                   A7: Cross Site Scripting
                   <span class="lab-status-indicator not-running" aria-hidden="true"></span>
-                </button>
+                </a>
               </li>
               <li>
-                <button onclick="launchLab('insec_des_lab')" class="sidebar-list-items lab-button" data-lab="insec_des_lab">
+                <a href="/insec_des" class="sidebar-list-items lab-button" data-lab="insec_des_lab">
                   <i class="fas fa-bug"></i>
                   A8: Insecure Deserialization
                   <span class="lab-status-indicator not-running" aria-hidden="true"></span>
-                </button>
+                </a>
               </li>
               <li>
-                <button onclick="launchLab('a9_uckv_lab')" class="sidebar-list-items lab-button" data-lab="a9_uckv_lab">
+                <a href="/a9" class="sidebar-list-items lab-button" data-lab="a9_uckv_lab">
                   <i class="fas fa-bug"></i>
                   A9: Using Components with Known Vulnerabilities
                   <span class="lab-status-indicator not-running" aria-hidden="true"></span>
-                </button>
+                </a>
               </li>
               <li>
-                <button onclick="launchLab('insufficient_logging_lab')" class="sidebar-list-items lab-button" data-lab="insufficient_logging_lab">
+                <a href="/A03" class="sidebar-list-items lab-button" data-lab="insufficient_logging_lab">
                   <i class="fas fa-bug"></i>
                   A10: Insufficient Logging & Monitoring
                   <span class="lab-status-indicator not-running" aria-hidden="true"></span>
-                </button>
+                </a>
               </li>
             </ul>
 
@@ -859,6 +855,12 @@
         $(".pg").on("click", function () {
           $("#sidebar").toggleClass("active");
           $(".pg").toggleClass("active");
+        });
+      });
+
+      $(document).ready(function () {
+        $(".coll").on("click", function () {
+          $(this).next(".lab").toggle();
         });
       });
 

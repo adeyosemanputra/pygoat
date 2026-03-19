@@ -5,6 +5,7 @@
 {% endblock %}
 <div class="content">
   <h3>Senstive Data Exposure</h3>
+  <div id="lab-controls" data-lab="sensitive_data_exposure"></div>
   <div class="box">
 
     <h4>What is Sensitive Data Exposure</h4>
@@ -26,8 +27,7 @@
       </p>
 
       <br>
-      <div align="right"> <button class="btn btn-info" type="button"
-          onclick="launchLab('sensitive_data_exposure')">Access Lab</button></div>
+      <div align="right"> <a class="btn btn-info lab-access-btn" data-path="/lesson" href="#">Access Lab</a></div>
     </div>
     <h4>Mitigation</h4>
     <p class="bp">Even though you will never be using DEBUG=True, you need extra care when naming the configurations in
