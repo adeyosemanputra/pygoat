@@ -9,7 +9,6 @@ from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
 from django.shortcuts import redirect, render
 from django.views.decorators.csrf import csrf_exempt
 
-from .models import CSRF_user_tbl
 from .views import authentication_decorator
 
 # import os
