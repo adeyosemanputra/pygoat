@@ -274,7 +274,7 @@ def crypto_failure(request):
             {"success": False, "failure": False},
         )
     else:
-        redirect("login")
+        return redirect("login")
 
 
 # - ------------------------Identification and Authentication Failures--------------------------------
