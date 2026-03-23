@@ -53,6 +53,9 @@ def unique_id_generator():
     id = str(uuid.uuid4()).split('-')[-1]
 
 def filter_blog(code):
+    # remove Django template expressions
+    code = re.sub(r"{{.*?}}", "", code)
+    code = re.sub(r"{%.*?%}", "", code)
     return code
 
 def customHash(password):
