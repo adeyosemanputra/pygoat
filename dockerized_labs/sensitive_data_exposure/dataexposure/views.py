@@ -4,10 +4,14 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.http import JsonResponse
 from django.contrib import messages
+from django.http import HttpResponse
 from .models import UserData
 from .forms import UserLoginForm, UserRegisterForm
 import random
 import string
+import logging
+
+logger = logging.getLogger(__name__)
 
 def index(request):
     # main landing pg
@@ -70,10 +74,11 @@ def profile_view(request):
     # show user profile with some data masked
     try:
         user_data = UserData.objects.get(user=request.user)
-        # TODO: add audit logging here someday
+
+        logger.info(f"User {request.user.username} accessed profile data")
+        return HttpResponse("Logging working")
+        
     except UserData.DoesNotExist:
-        # If no user data exists, create some dummy data for demo
-        # This should never happen but just in case
         print(f"Creating missing user data for {request.user.username}")  # debugging stuff
         user_data = UserData.objects.create(
             user=request.user,
