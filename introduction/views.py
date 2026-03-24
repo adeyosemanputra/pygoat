@@ -147,34 +147,44 @@ def sql(request):
 def sql_lab(request):
     if request.user.is_authenticated:
 
-        name = request.POST.get('name')
-        password = request.POST.get('pass')
+        name=request.POST.get('name')
+
+        password=request.POST.get('pass')
 
         if name:
 
-            if login.objects.filter(user=name).exists():
+            if login.objects.filter(user=name):
 
-                user_obj = login.objects.filter(user=name, password=password).first()
-
-                if user_obj:
-                    user = user_obj.user
-                    return render(request, 'Lab/SQL/sql_lab.html', {"user1": user})
-                else:
+                sql_query = "SELECT * FROM introduction_login WHERE user='"+name+"' AND password='"+password+"'"
+                print(sql_query)
+                try:
+                    print("\nin try\n")
+                    val=login.objects.raw(sql_query)
+                except:
+                    print("\nin except\n")
                     return render(
-                        request,
+                        request, 
                         'Lab/SQL/sql_lab.html',
                         {
-                            "wrongpass": password,
-                            "sql_error": "Invalid credentials"
-                        }
-                    )
+                            "wrongpass":password,
+                            "sql_error":sql_query
+                        })
 
+                if val:
+                    user=val[0].user
+                    return render(request, 'Lab/SQL/sql_lab.html',{"user1":user})
+                else:
+                    return render(
+                        request, 
+                        'Lab/SQL/sql_lab.html',
+                        {
+                            "wrongpass":password,
+                            "sql_error":sql_query
+                        })
             else:
-                return render(request, 'Lab/SQL/sql_lab.html', {"no": "User not found"})
-
+                return render(request, 'Lab/SQL/sql_lab.html',{"no": "User not found"})
         else:
             return render(request, 'Lab/SQL/sql_lab.html')
-
     else:
         return redirect('login')
 
@@ -840,57 +850,59 @@ def injection(request):
     
     return render(request,"Lab_2021/A3_Injection/injection.html")
 
+
 @csrf_exempt
 def injection_sql_lab(request):
     if request.user.is_authenticated:
 
-        name = request.POST.get('name')
-        password = request.POST.get('pass')
-
+        name=request.POST.get('name')
+        password=request.POST.get('pass')
         print(name)
         print(password)
 
         if name:
+            sql_query = "SELECT * FROM introduction_sql_lab_table WHERE id='"+name+"'AND password='"+password+"'"
 
-            # create demo users
             sql_instance = sql_lab_table(id="admin", password="65079b006e85a7e798abecb99e47c154")
             sql_instance.save()
-
             sql_instance = sql_lab_table(id="jack", password="jack")
             sql_instance.save()
-
             sql_instance = sql_lab_table(id="slinky", password="b4f945433ea4c369c12741f62a23ccc0")
             sql_instance.save()
-
             sql_instance = sql_lab_table(id="bloke", password="f8d1ce191319ea8f4d1d26e65e130dd5")
             sql_instance.save()
 
-            # secure query using ORM
-            user_obj = sql_lab_table.objects.filter(id=name, password=password).first()
+            print(sql_query)
 
-            if user_obj:
-                user = user_obj.id
-                return render(
-                    request,
-                    'Lab_2021/A3_Injection/sql_lab.html',
-                    {"user1": user}
-                )
+            try:
+                user = sql_lab_table.objects.raw(sql_query)
+                user = user[0].id
+                print(user)
 
-            else:
+            except:
                 return render(
-                    request,
+                    request, 
                     'Lab_2021/A3_Injection/sql_lab.html',
                     {
-                        "wrongpass": password,
-                        "sql_error": "Invalid credentials"
-                    }
-                )
+                        "wrongpass":password,
+                        "sql_error":sql_query
+                    })
 
+            if user:
+                return render(request, 'Lab_2021/A3_Injection/sql_lab.html',{"user1":user})
+            else:
+                return render(
+                    request, 
+                    'Lab_2021/A3_Injection/sql_lab.html',
+                    {
+                        "wrongpass":password,
+                        "sql_error":sql_query
+                    })
         else:
             return render(request, 'Lab_2021/A3_Injection/sql_lab.html')
-
     else:
         return redirect('login')
+
 
 ##----------------------------------------------------------------------------------------------------------
 ##----------------------------------------------------------------------------------------------------------
