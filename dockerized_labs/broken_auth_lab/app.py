@@ -1,21 +1,21 @@
-from flask import Flask, render_template, request, redirect, url_for, make_response, flash
-import hashlib
-import json
-from datetime import datetime, timedelta
-import base64
+from flask import Flask, render_template, request, redirect, url_for, make_response, flash, session
+from werkzeug.security import generate_password_hash, check_password_hash
+import secrets
+import os
+
 
 app = Flask(__name__)
-app.secret_key = 'your-secret-key-here'  # Vulnerable: Hardcoded secret key
+app.secret_key = os.environ.get("SECRET_KEY", os.urandom(24))  # Vulnerable: Hardcoded secret key
 
 # Vulnerable: Storing user data in memory
 users = {
     'admin': {
-        'password': 'admin123',  # Vulnerable: Weak password
+        'password': generate_password_hash('admin123'),  # Vulnerable: Weak password
         'email': 'admin@example.com',
         'role': 'admin'
     },
     'user': {
-        'password': 'password123',  # Vulnerable: Weak password
+        'password': generate_password_hash('password123'),  # Vulnerable: Weak password
         'email': 'user@example.com',
         'role': 'user'
     }
@@ -38,17 +38,11 @@ def login():
     password = request.form.get('password')
     remember_me = request.form.get('remember_me')
 
-    if username in users and users[username]['password'] == password:  # Vulnerable: Plain text password comparison
+    if username in users and check_password_hash(users[username]['password'], password):  # Vulnerable: Plain text password comparison
         response = make_response(redirect(url_for('dashboard')))
         
-        # Vulnerable: Insecure session management
-        session_token = base64.b64encode(f"{username}:{datetime.now()}".encode()).decode()
-        
-        if remember_me:
-            # Vulnerable: Insecure "Remember Me" implementation
-            response.set_cookie('session', session_token, max_age=30*24*60*60)
-        else:
-            response.set_cookie('session', session_token)
+        session.clear()
+        session['username'] = username
             
         return response
     
@@ -65,7 +59,7 @@ def register():
     if username and password and email:
         if username not in users:
             users[username] = {
-                'password': password,  # Vulnerable: Storing plain text passwords
+                'password': generate_password_hash(password),  # Vulnerable: Storing plain text passwords
                 'email': email,
                 'role': 'user'
             }
@@ -83,12 +77,12 @@ def reset_password():
     for username, user_data in users.items():
         if user_data['email'] == email:
             # Vulnerable: Predictable token generation
-            token = hashlib.md5(f"{email}:{datetime.now()}".encode()).hexdigest()
+            token = secrets.token_urlsafe(32)
             password_reset_tokens[token] = username
             
             # In a real application, this would send an email
             # Vulnerable: Token exposed in response
-            flash(f'Password reset link: /reset/{token}')
+            flash('Password reset link generated')
             return redirect(url_for('lab'))
     
     flash('Email not found')
@@ -102,22 +96,19 @@ def reset_form(token):
 
 @app.route('/dashboard')
 def dashboard():
-    session_token = request.cookies.get('session')
-    if not session_token:
-        return redirect(url_for('lab'))
-    
-    try:
-        # Vulnerable: Insecure session validation
-        username = base64.b64decode(session_token).decode().split(':')[0]
-        if username in users:
-            return render_template('dashboard.html', 
-                                username=username, 
-                                role=users[username]['role'],
-                                email=users[username]['email'])
-    except:
-        pass
-    
-    return redirect(url_for('lab'))
+    username = session.get('username')
+
+    if not username or username not in users:
+     return redirect(url_for('lab'))
+
+    return render_template(
+        'dashboard.html',
+        username=username,
+        role=users[username]['role'],
+        email=users[username]['email']
+    )
+        
+
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)  # Vulnerable: Debug mode enabled in production 
+    app.run(host='0.0.0.0', port=5000)  # Vulnerable: Debug mode enabled in production 
