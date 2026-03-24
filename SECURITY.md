@@ -6,7 +6,7 @@ PyGoat is an intentionally vulnerable application designed for security training
 The following versions are currently maintained:
 
 | Version | Supported |
-|---------|-----------|
+| ------- | --------- |
 | latest (main) | ✅ |
 | older releases | ❌ |
 
