@@ -401,7 +401,8 @@ def robots(request):
         return response
 
 def error(request):
-    return render(request, 'introduction/error.html')
+    from django.http import HttpResponseServerError
+    return HttpResponseServerError("An error occurred.")
 
 
 #******************************************************  Command Injection  ***********************************************************************#
