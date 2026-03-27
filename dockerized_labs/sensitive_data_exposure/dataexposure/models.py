@@ -10,8 +10,10 @@ class UserData(models.Model):
     def __str__(self):
         return f"Data for {self.user.username}"
     
-    # TODO: add method to mask card number except last 4 digits
-    # Will do it later when have more time
+    def get_masked_card(self):
+        if self.credit_card and len(self.credit_card) >= 4:
+            return "*" * (len(self.credit_card) - 4) + self.credit_card[-4:]
+        return "****"
     
     # IMPORTANT: If u see OperationalError about missing tables,
     # run these commands manually:
