@@ -166,3 +166,15 @@ def logout_view(request):
 def sensitive_data_exposure_lesson(request):
     # lessons page
     return render(request, "lesson.html")
+
+
+def api_data_view_v2(request):
+    return JsonResponse({"message": "secure endpoint(to be implemented)"})
+
+
+def user_settings(request):
+    return JsonResponse({"user": "user settings page"})
+
+
+def admin_dashboard(request):
+    return JsonResponse({"message": "admin dashboard"})
