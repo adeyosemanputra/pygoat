@@ -491,31 +491,38 @@ def login_otp(request):
 
 @csrf_exempt
 def Otp(request):
+    otpN=randint(100,999)
     if request.method=="GET":
         email=request.GET.get('email')
-        otpN=randint(100,999)
+        
+        print(otpN)
         if email and otpN:
             if email=="admin@pygoat.com":
-                otp.objects.filter(id=2).update(otp=otpN)
+                otp.objects.update_or_create(id=2, defaults={"otp": otpN})
                 html = render(request, "Lab/BrokenAuth/otp.html", {"otp":"Sent To Admin Mail ID"})
                 html.set_cookie("email", email)
                 return html
 
             else:
-                otp.objects.filter(id=1).update(email=email, otp=otpN)
+                otp.objects.update_or_create(id=1, defaults={"email": email, "otp": otpN})
                 html=render (request,"Lab/BrokenAuth/otp.html",{"otp":otpN})
                 html.set_cookie("email",email)
                 return html
         else:
             return render(request,"Lab/BrokenAuth/otp.html")
     else:
-        otpR=request.POST.get("otp")
-        email=request.COOKIES.get("email")
-        if otp.objects.filter(email=email,otp=otpR) or otp.objects.filter(id=2,otp=otpR):
-            # return HttpResponse("<h3>Login Success for email:::"+email+"</h3>")
-            return render (request,"Lab/BrokenAuth/otp.html",{"email":email})
+        otpR = request.POST.get("otp")
+        # allow email to come from cookie or POST (helps automated tools like Intruder)
+        email = request.COOKIES.get("email") or request.POST.get("email")
+        try:
+            otp_int = int(otpR) if otpR is not None else None
+        except (ValueError, TypeError):
+            otp_int = None
+        print(otp.objects.all())
+        if otp_int is not None and (otp.objects.filter(email=email, otp=otp_int) or otp.objects.filter(id=2, otp=otp_int)):
+            return render(request, "Lab/BrokenAuth/otp.html", {"email": email})
         else:
-            return render (request,"Lab/BrokenAuth/otp.html",{"otp":"Invalid OTP Please Try Again"})
+            return render(request, "Lab/BrokenAuth/otp.html", {"otp": "Invalid OTP Please Try Again"})
 
 
 #*****************************************Security Misconfiguration**********************************************#
