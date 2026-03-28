@@ -3,8 +3,8 @@
 [![All Contributors](https://img.shields.io/badge/all_contributors-9-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
-intentionally vuln web Application Security in django.
-our roadmap build intentionally vuln web Application in django. The Vulnerability can based on OWASP top ten
+An intentionally vulnerable web application for learning application security in Django.
+Our roadmap is to build intentionally vulnerable web applications in Django, based on the OWASP Top 10.
 <br>
 
 Table of Contents
@@ -23,13 +23,13 @@ Table of Contents
 
 ### From Sources
 
-To setup the project on your local machine:
+To set up the project on your local machine:
 <br>
 
-First, Clone the repository using GitHub website or git in Terminal
+First, clone the repository using the GitHub website or git in terminal:
 ```
   git clone https://github.com/adeyosemanputra/pygoat.git
-  ### To Download a specific branch
+  # To download a specific branch
   git clone -b <branch_name> https://github.com/adeyosemanputra/pygoat.git
 ```
 ### Windows Notes (PowerShell users)
@@ -39,7 +39,7 @@ First, Clone the repository using GitHub website or git in Terminal
   - **WSL2 (Ubuntu)** for smoother setup.
 - On some Windows environments, the `python3` command may not be available by default.
   - If `python3` is not recognized, try using `python` instead (ensure it points to Python 3.x).
-- Ensure Python version is **3.10 or 3.11** for best compatibility.
+- Ensure Python is **3.8+** (3.10 or 3.11 recommended) for best compatibility.
 - Some labs rely on Unix-style commands and may behave differently on native Windows shells.
 
 
@@ -69,9 +69,9 @@ First, Clone the repository using GitHub website or git in Terminal
 2. Run `docker pull pygoat/pygoat` or `docker pull pygoat/pygoat:latest`
 3. Run `docker run --rm -p 8000:8000 pygoat/pygoat:latest`
 4. Browse to <http://127.0.0.1:8000> 
-5. Remove existing image using `docker image rm pygoat/pygoat` and pull again incase of any error
+5. Remove the existing image using `docker image rm pygoat/pygoat` and pull again in case of any error
 
-### From Docker-Compose 
+### From Docker Compose
 1. Install [Docker](https://www.docker.com)
 2. Run `docker-compose up` or `docker-compose up -d`
 
@@ -85,6 +85,13 @@ built-in Django management command:
 
 ```bash
 docker compose exec web python manage.py populate_challenges
+```
+
+### Without Docker Compose
+
+```bash
+python3 manage.py populate_challenges
+```
 
 
 ### Build Docker Image and Run
@@ -93,7 +100,7 @@ docker compose exec web python manage.py populate_challenges
 3. Run the docker image &ensp;`docker run --rm -p 8000:8000 pygoat:latest`
 4. Browse to <http://127.0.0.1:8000> or <http://0.0.0.0:8000> 
 
-### Installation video 
+### Installation Video
 
 1. From Source using `installer.sh`
  - [Installing PyGoat from Source](https://www.youtube.com/watch?v=7bYBJXG3FRQ)
@@ -106,14 +113,14 @@ docker compose exec web python manage.py populate_challenges
 ## Uninstallation
 
 ### On Debian/Ubuntu Based Systems
-- On Debian/Ubuntu based systems, you can use the `uninstaller.sh` script to uninstall `pygoat` along with all it's dependencies.
+- On Debian/Ubuntu based systems, you can use the `uninstaller.sh` script to uninstall `pygoat` along with all its dependencies.
 - To uninstall `pygoat`, simply run:
 ```bash
 $ bash ./uninstaller.sh
 ```
 
 ### On Other Systems
-- On other systems, you can use the `uninstaller.py` script to uninstall `pygoat` along with all it's dependencies
+- On other systems, you can use the `uninstaller.py` script to uninstall `pygoat` along with all its dependencies.
 - To uninstall `pygoat`, simply run:
 ```bash
 $ python3 uninstaller.py
@@ -124,7 +131,7 @@ $ python3 uninstaller.py
 
 ## Contributors ✨
 
-Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+Thanks go to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
