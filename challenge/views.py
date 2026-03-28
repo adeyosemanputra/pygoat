@@ -72,11 +72,21 @@ class DoItFast(View):
                     }
                 )
             user_chall_exists = True
-        except:
-            pass
+        except Exception:
+            user_chal = None
+        
+        if user_chall_exists:
+            if user_chal.container_id:
+                command = f"docker start {user_chal.container_id}"
+                subprocess.Popen(command.split(" "), stdout=subprocess.PIPE)
+
+                user_chal.is_live = True
+                user_chal.save()
+
+                return JsonResponse({"message": "reused existing container","status": 200,"endpoint": f"http://localhost:{user_chal.port}",})
 
         port = get_free_port(8000, 8100)
-        if port == None:
+        if port is None:
             return JsonResponse(
                 {"message": "failed", "status": "500", "endpoint": "None"}
             )
@@ -87,7 +97,6 @@ class DoItFast(View):
         container_id = output.decode("utf-8").strip()
 
         if user_chall_exists:
-            # TODO : reuse the container instead of creaing the new one
             user_chal.container_id = container_id
             user_chal.port = port
             user_chal.is_live = True
@@ -97,7 +106,6 @@ class DoItFast(View):
                 user=request.user, challenge=chal, container_id=container_id, port=port
             )
             user_chal.save()
-        # save the output in database for stoping the container
         return JsonResponse(
             {
                 "message": "success",
