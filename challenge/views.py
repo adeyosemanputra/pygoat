@@ -82,7 +82,7 @@ class DoItFast(View):
         output, error = process.communicate()
         return JsonResponse({'message': 'success', 'status': '200'})
     
-    def put(self, request, challange):
-        # TODO : implement flag checking
-        return "not implemented"
+    def put(self, request, challenge):
+    # TODO : implement flag checking
+    return JsonResponse({'message': 'not implemented', 'status': '501'}, status=501)
     
