@@ -1,0 +1,37 @@
+{% extends "introduction/base.html" %}
+{% load static %}
+{% block content %}
+{% block title %}
+<title>Cryptographic Failure</title>
+{% endblock %}
+
+
+{% if success %}
+    <h1>Successfully logged in as {{user.username}}
+{% else %}
+<div class="jumbotron">
+    <h4 style="text-align:center"> LOG IN </h4>
+    <div class="login" style="display: flex;justify-content: center;flex-direction: row;}">
+        <form method="post">
+            {% csrf_token %} 
+            <input id="input" type="text" name="username" placeholder="User Name"><br>
+            <input id="input" type="password" name="password" placeholder="Password"><br>
+            <button style="margin-top:20px" class="btn btn-info" type="submit"> Log in</button>
+        </form>
+    </div>
+</div>
+{% if failure %}
+    <h1>Login Failed</h1>
+{% endif %}
+<div class="container">
+</div>
+{% endif %}
+
+<br>
+<div align="right"> 
+    <button class="btn btn-info" type="button" onclick="window.location.href='/cryptographic_failure'">
+        Back to Lab Details
+    </button></div>
+</p>
+
+{% endblock %}

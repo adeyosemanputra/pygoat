@@ -1,0 +1,21 @@
+{% extends "introduction/base.html" %}
+{% load static %}
+{% block content %}
+{% block title %}
+<title>Sensitive Data Exposure</title>
+{% endblock %}
+
+<div class="jumbotron">
+    <h4 style="text-align:center">Sensitive Data Exposure</h4>
+</div>
+<div class="container">
+    Can you find a page to trigger 500 error? Can you find 'SENSITIVE_DATA'?
+</div>
+
+<br>
+<div align="right"> <button class="btn btn-info" type="button" onclick="window.location.href='/data_exp'">Back to Lab
+        Details</button></div>
+
+</p>
+
+{% endblock %}

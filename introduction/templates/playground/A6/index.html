@@ -1,0 +1,42 @@
+{% extends 'introduction/base.html' %}
+{% block content %}
+
+{% block title %}
+<title>Using Components with Known Vulnerabilities</title>
+{% endblock %}
+{% load static %}
+
+<div class="container" style="display:flex;flex-direction:column;width:70%">
+<h3>Lets make a utility function for checking Vulnerable modules in the requirements.txt file.</h3><br>
+<p>There are some api for getting detailed information about the pypi modules.</p><br>
+<code>https://pypi.org/pypi/{module-name}/{module-version}/json</code><br>
+<button id="a9_b1" class="button2 button--winona button--border-thick button--round-l button--text-upper button--size-s button--text-thick" data-text="Lets go" onclick=event1()>
+    <span>Lets go</span>
+</button>
+<div id="a9_d1" style="display:none;flex-direction:column;align-items:center">
+    <div id="textarea2">
+        <h5>utility.py</h5>
+        <textarea id="a6_t1" placeholder="">
+import requests
+
+def check_vul(list_of_modules)->list:
+    pass
+        </textarea>
+        
+    </div>
+    <button id="a6_b2" class="button2 button--winona button--border-thick button--round-l button--text-upper button--size-s button--text-thick" data-text="save code" onclick=event5()>
+        <span>Save code</span>
+    </button>
+    <button id="a6_b3" class="button2 button--winona button--border-thick button--round-l button--text-upper button--size-s button--text-thick" data-text="Run Code" onclick=event6()>
+        <span>Run code</span>
+    </button>
+    <div id="a6_d5" style="display:none;flex-direction:column;align-items:center"></div>
+</div>
+</div>
+<script src="{% static 'js/a9.js'%}"> </script>
+<script src="{% static 'js/a7.js'%}"> </script>
+<script src="{% static 'js/a6.js'%}"> </script>
+{% endblock %}
+
+
+

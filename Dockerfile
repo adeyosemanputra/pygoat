@@ -1,47 +1,33 @@
-# -------- build stage --------
-FROM python:3.11-slim-bookworm AS builder
+FROM python:3.11.0b1-buster
 
+
+# set work directory
 WORKDIR /app
 
-# hadolint ignore=DL3008
-RUN apt-get update \
-    && apt-get install --no-install-recommends -y \
-        dnsutils \
-        libpq-dev \
-        gcc \
-        python3-dev \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
 
+# dependencies for psycopg2
+RUN apt-get update && apt-get install --no-install-recommends -y dnsutils=1:9.11.5.P4+dfsg-5.1+deb10u11 libpq-dev=11.16-0+deb10u1 python3-dev=3.7.3-1 && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+
+# Set environment variables
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
+
+# Install dependencies
+RUN python -m pip install --no-cache-dir pip==22.0.4
 COPY requirements.txt requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
-RUN pip wheel --no-cache-dir --no-deps -w /wheels -r requirements.txt
 
-# -------- runtime stage --------
-FROM python:3.11-slim-bookworm
-
-# hadolint ignore=DL3008
-RUN apt-get update \
-    && apt-get install --no-install-recommends -y \
-        curl \
-        libpq5 \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
-
-WORKDIR /app
-
-COPY --from=builder /wheels /wheels
-RUN pip install --no-cache-dir /wheels/* \
-    && rm -rf /wheels
-
+# copy project
 COPY . /app/
 
+
+# install pygoat
 EXPOSE 8000
 
-HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
-    CMD curl -f http://localhost:8000/healthz || exit 1
 
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "4", "pygoat.wsgi"]
+RUN python3 /app/manage.py migrate
+WORKDIR /app
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers","6", "pygoat.wsgi"]

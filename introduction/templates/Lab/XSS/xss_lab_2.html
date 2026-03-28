@@ -1,0 +1,52 @@
+{% extends "introduction/base.html" %}
+{% block content %}
+{% block title %}
+
+<title>XSS LAB 2</title>
+{% endblock %}
+<h1>Welcome to XSS Challenge</h1>
+<form  method="post" action="/xssL2">
+    {% csrf_token %}
+    <div class="jumbotron">
+        <label for="username">Comment:</label>
+        <input type="text" class="form-control" id="username" name="username" required>
+        <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+    </div>
+   <button class="btn btn-info" type="submit">
+                Go
+            </button>
+</form>
+<br>
+<p>Hello, {{ username|safe }}</p>
+<script>
+  function setCookie(name, value) {
+    document.cookie = name + "=" + value + ";path=/;";
+  }
+
+  function getCookie(name) {
+    var name = name + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+      var c = ca[i];
+      while (c.charAt(0) == ' ') {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+      }
+    }
+    return "";
+  }
+</script>
+<script>
+  var flag = getCookie("flag");
+  if (flag === "success") {
+    alert("Congratulations! You have solved the XSS Challenge");
+  }
+</script>
+<br>
+<div align="right">
+  <button class="btn btn-info" type="button" onclick="window.location.href='/xss'">Back to Lab Details</button>
+</div>
+{% endblock content %}

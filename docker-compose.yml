@@ -1,18 +1,4 @@
 services:
-  migration:
-    build: .
-    command: >
-      sh -c "python manage.py migrate --noinput &&
-             python manage.py populate_challenges &&
-             python manage.py startuplabs"
-    environment:
-      - PREBUILD_LABS_ON_STARTUP=true
-    volumes:
-      - .:/app
-      - /var/run/docker.sock:/var/run/docker.sock
-    networks:
-      - my_network
-
   web:
     build: .
     command: gunicorn --bind 0.0.0.0:8000 --workers 6 pygoat.wsgi
@@ -20,30 +6,10 @@ services:
       - "8000:8000"
     volumes:
       - .:/app
-      - /var/run/docker.sock:/var/run/docker.sock
-    labels:
-      - "traefik.enable=true"
     depends_on:
-      migration:
-        condition: service_completed_successfully
-    networks:
-      - my_network
-
-  traefik:
-    image: traefik:latest
-    container_name: traefik_proxy
-    command:
-      - "--configfile=/traefik.yml"
-    ports:
-      - "80:80"
-      - "8080:8080"
+      - migration
+  migration:
+    image: pygoat/pygoat:latest
+    command: python manage.py migrate --noinput
     volumes:
-      - ./traefik.yml:/traefik.yml
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-    networks:
-      - my_network
-
-networks:
-  my_network:
-    name: my_network
-    driver: bridge
+      - .:/app
