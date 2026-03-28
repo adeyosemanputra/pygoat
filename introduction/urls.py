@@ -21,6 +21,7 @@ urlpatterns = [
     path("a10", views.a10, name="A10"),
     path("insecure-design", views.insec_desgine, name="insecure-design"),
     path("broken_access_control", views.a1_broken_access, name="broken_access"),
+    path("path_traversal_lab", views.path_traversal_lab_page, name="path_traversal_lab"),
     path("ssrf", views.ssrf, name="SSRF"),
     path("injection", views.injection, name="injection"),
     path("ssti", views.ssti, name="SSTI"),

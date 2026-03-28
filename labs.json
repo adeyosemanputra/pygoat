@@ -119,6 +119,11 @@
       "name": "open_source_library_attack_lab",
       "build_location": "dockerized_labs/open_source_library_attack_lab",
       "port": 5022
+    },
+    {
+      "name": "path_traversal_lab",
+      "build_location": "dockerized_labs/path_traversal_lab",
+      "port": 5031
     }
   ]
 }

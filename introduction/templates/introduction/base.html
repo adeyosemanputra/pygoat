@@ -93,6 +93,24 @@
             <ul class="collapse list-unstyled" id="OWASP10_2025">
               <li>
                 <a
+                  href="#brokenAccess2025"
+                  data-toggle="collapse"
+                  aria-expanded="false"
+                  class="dropdown-toggle sidebar-list-items"
+                >
+                  <i class="fas fa-bug"></i>
+                  A01:2025 - Broken Access Control
+                </a>
+                <ul class="collapse list-unstyled" id="brokenAccess2025">
+                  <li>
+                    <a href="{% url 'path_traversal_lab' %}" class="sidebar-list-items">
+                      Path Traversal Lab
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <li>
+                <a
                   href="#supplyChain2025"
                   data-toggle="collapse"
                   aria-expanded="false"
@@ -144,11 +162,28 @@
             </a>
             <ul class="collapse list-unstyled" id="OWASP10_2021">
               <li>
-                <button onclick="launchLab('broken_access_lab')" class="sidebar-list-items lab-button" data-lab="broken_access_lab">
+                <a
+                  href="#brokenAccess2021"
+                  data-toggle="collapse"
+                  aria-expanded="false"
+                  class="dropdown-toggle sidebar-list-items"
+                >
                   <i class="fas fa-bug"></i>
                   A1: Broken Access Control
-                  <span class="lab-status-indicator not-running" aria-hidden="true"></span>
-                </button>
+                </a>
+                <ul class="collapse list-unstyled" id="brokenAccess2021">
+                  <li>
+                    <button onclick="launchLab('broken_access_lab')" class="sidebar-list-items lab-button" data-lab="broken_access_lab">
+                      Broken Access Control
+                      <span class="lab-status-indicator not-running" aria-hidden="true"></span>
+                    </button>
+                  </li>
+                  <li>
+                    <a href="{% url 'path_traversal_lab' %}" class="sidebar-list-items">
+                      Path Traversal Lab
+                    </a>
+                  </li>
+                </ul>
               </li>
               <li>
                 <button onclick="launchLab('crypto_failure_lab')" class="sidebar-list-items lab-button" data-lab="crypto_failure_lab">

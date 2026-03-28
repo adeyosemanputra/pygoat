@@ -222,6 +222,16 @@ def a1_broken_access(request):
     return render(request, "Lab_2021/A1_BrokenAccessControl/broken_access.html")
 
 
+def path_traversal_lab_page(request):
+    """Embed the path traversal lab within the PyGoat page using an iframe."""
+    if not request.user.is_authenticated:
+        return redirect("login")
+    return render(
+        request, "Lab_2021/A01_Broken_Access_Control_2025/path_traversal_lab.html"
+    )
+
+
+
 ###################################################### 2021 A3: Injection
 
 

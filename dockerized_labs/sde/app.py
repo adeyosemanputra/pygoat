@@ -30,7 +30,7 @@ def lab():
 @app.route("/500error")
 def trigger_error():
     # Intentional crash
-    undefined_variable = some_undefined_variable
+    undefined_variable = some_undefined_variable  # noqa: F821 — intentional crash for lab
     return "This won't be reached"
 
 
