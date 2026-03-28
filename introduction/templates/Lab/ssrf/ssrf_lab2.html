@@ -1,0 +1,52 @@
+{% extends "introduction/base.html" %}
+{% block content %}
+{% block title %}
+<title>SSRF LAB</title>
+{% endblock %}
+
+<div style="display:flex;flex-direction:column;align-items:center">
+    {% if error %}
+    <div class="alert alert-danger" role="alert">
+        {{ error }}
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="url">URL</label>
+            <input type="text" class="form-control" id="url" name="url" placeholder="Enter URL">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </form>
+    
+    {% if response %}
+        <div style="width:70%;overflow:scroll;background-color:#000">{{response | safe}}<div>
+    {% endif %}
+</div>
+
+
+<button class="coll2 btn btn-info" style= "position : fixed ; right :200px; bottom : 7px">View Code</button>
+
+<div class="lab code">
+   <code>   
+    @authentication_decorator<br>
+def ssrf_lab2(request):<br>
+&emsp;if request.method == "GET":<br>
+&emsp;&emsp;return render(request, "Lab/ssrf/ssrf_lab2.html")<br>
+<br>
+&emsp;elif request.method == "POST":<br>
+&emsp;&emsp;url = request.POST["url"]<br>
+&emsp;&emsp;try:<br>
+&emsp;&emsp;&emsp;response = requests.get(url)<br>
+&emsp;&emsp;&emsp;return render(request, "Lab/ssrf/ssrf_lab2.html", {"response": response.content.decode()})<br>
+&emsp;&emsp;except:<br>
+&emsp;&emsp;&emsp;return render(request, "Lab/ssrf/ssrf_lab2.html", {"error": "Invalid URL"})<br>
+   </code>
+    
+</div>
+<div>
+
+<div style= "position : fixed ; right : 7px; bottom : 7px"> <button class="btn btn-info" type="button" onclick="window.location.href='/ssrf'">Back to Lab
+    Details</button></div>
+
+{% endblock %}

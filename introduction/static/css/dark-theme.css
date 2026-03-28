@@ -17,35 +17,6 @@ body {
   scrollbar-width: none; /* Firefox */
 }
 
-/* Modal Dark Theme */
-.modal-dark .modal-content {
-  background-color: #343a40;
-  color: #ffffff;
-}
-
-.modal-dark .modal-header {
-  border-color: #495057;
-}
-
-.modal-dark .modal-footer {
-  border-color: #495057;
-}
-
-.modal-dark .close {
-  color: #ffffff;
-}
-
-.modal-dark .btn-close {
-  background-color: transparent;
-  border: 1px solid #6c757d;
-  color: #ffffff;
-}
-
-.modal-dark .btn-close:hover {
-  background-color: #6c757d;
-  color: #ffffff;
-}
-
 p {
   font-family: "Poppins", sans-serif;
   font-size: 1.1em;
@@ -101,35 +72,6 @@ span {
 ----------------------------------------------------- */
 .sidebar-list-items {
   background-color: #79a9cf40;
-}
-
-.lab-button {
-  background-color: #79a9cf40;
-  border: none;
-  color: inherit;
-  padding: 10px 15px;
-  text-align: left;
-  text-decoration: none;
-  display: block;
-  width: 100%;
-  font-family: inherit;
-  font-size: inherit;
-  cursor: pointer;
-  transition: all 0.3s;
-}
-
-.lab-button:hover {
-  background-color: #79a9cf60;
-  color: #fff;
-}
-
-.lab-button:focus {
-  outline: none;
-  background-color: #79a9cf60;
-}
-
-.lab-button i {
-  margin-right: 10px;
 }
 .wrapper {
   display: flex;
@@ -466,17 +408,6 @@ h2 {
   text-align: center;
   padding: 13% 0 0 0;
 }
-#owasp10_2025 {
-  width: 90%;
-  background: #283036;
-  margin-top: 15px;
-  left: 5%;
-  height: 110px;
-  padding: 17px;
-  border-radius: 10px;
-  text-align: center;
-  padding: 13% 0 0 0;
-}
 #owasp10_2017 {
   width: 90%;
   margin-top: 15px;
@@ -494,10 +425,6 @@ h2 {
 }
 
 #OWASP10_2021 {
-  width: 95%;
-  padding-left: 5%;
-}
-#OWASP10_2025 {
   width: 95%;
   padding-left: 5%;
 }

@@ -1,0 +1,25 @@
+{% extends "introduction/base.html" %}
+{% block content %}
+{% block title %}
+<title>BROKEN AUTH LAB</title>
+{% endblock %}
+
+<div class="jumbotron">
+    <div class="login" style="text-align:center">
+        <form method="post" action="/auth_lab/signup">
+            {% csrf_token %}
+            <input id="input" type="text" name="name" placeholder="Name" required><br>
+            <input id="input" type="text" name="username" placeholder="User Name" required><br>
+            <input id="input" type="password" name="pass" placeholder="Password" required><br>
+            <button style="margin-top:20px" class="btn btn-info" type="submit"> Sign Up</button>
+        </form>
+    </div>
+    <br>
+    <div style="text-align:center">
+        <button onclick="window.location.href='/auth_lab'" class="btn btn-info">Lab Home</button>
+    </div>
+</div>
+
+<i>{{ err_msg }}</i>
+
+{% endblock %}

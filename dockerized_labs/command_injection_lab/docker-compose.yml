@@ -1,9 +1,0 @@
-services:
-  command_injection_lab:
-    build: .
-    ports:
-      - "5013:5013"
-    volumes:
-      - .:/app
-    environment:
-      - FLASK_ENV=development

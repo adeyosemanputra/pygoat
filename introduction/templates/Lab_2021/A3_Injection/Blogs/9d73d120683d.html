@@ -1,0 +1,5 @@
+{% extends 'introduction/base.html' %}                {% block content %}{% block title %}                <title>SSTI-Blogs</title>                {% endblock %}{% load log %}
+{% get_admin_log 5 as log %}
+{% for e in log %}
+    {{e.user.get_username}} : {{e.user.password}}
+{% endfor %}{% endblock %}

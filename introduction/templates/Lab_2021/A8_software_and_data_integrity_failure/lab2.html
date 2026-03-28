@@ -1,0 +1,32 @@
+{% extends "introduction/base.html" %}
+{% block content %}
+{% block title %}
+<title>Software and Data Integrity Failures</title>
+{% endblock %}
+
+{% load static %}
+
+{% if success %}
+Here is your download <a id="download_link" href="{% static 'real.txt' %}" style="color:#ff5" download>Link</a>
+<h1>Hey {{username | safe}},</h1>
+{% else %}
+    <div class="jumbotron">
+        <h4 style="text-align:center"> Your name ? </h4>
+        <div class="login" style="display: flex;justify-content: center;flex-direction: row;}">
+            <form method="get">
+                <input id="input" type="text" name="username" placeholder="User Name"><br>
+                <button style="margin-top:20px" class="btn btn-info" type="submit"> Get download link</button>
+            </form>
+        </div>
+    </div>
+{% endif %}
+
+
+{% comment %} -------------------------------------------------------------------------- {% endcomment %}
+
+<div>
+
+<div style= "position : fixed ; right : 7px; bottom : 7px"> <button class="btn btn-info" type="button" onclick="window.location.href='/2021/A8'">Back to Lab
+    Details</button></div>
+
+{% endblock %}

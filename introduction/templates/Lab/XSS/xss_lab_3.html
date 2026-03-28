@@ -1,0 +1,28 @@
+{% extends "introduction/base.html" %}
+{% block content %}
+{% block title %}
+
+<title>XSS LAB 2</title>
+{% endblock %}
+<h1>Welcome to XSS Challenge</h1>
+<form  method="post" action="/xssL3">
+    {% csrf_token %}
+    <div class="jumbotron">
+        <label for="username">Name:</label>
+        <input type="text" class="form-control" id="username" name="username" required>
+    </div>
+   <button class="btn btn-info" type="submit">
+                Go
+            </button>
+</form>
+<br>
+<p>{{code}}</p>
+<script>
+    // LAB 3 JS CODE
+    {{code}}
+</script>
+<br>
+<div align="right">
+  <button class="btn btn-info" type="button" onclick="window.location.href='/xss'">Back to Lab Details</button>
+</div>
+{% endblock content %}

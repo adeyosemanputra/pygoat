@@ -30,7 +30,7 @@ The `introduction` folder has a few more folders and files
 
 * `lab_code` - This contains `test.py` which can be used to test a piece of code before implementing it in the app.
 * `static` - Contains CSS files that give the pages styling
-* `templates` - Contains all HTML templates used by the we app. This has 3 folders
+* `templates` - Contains all HTML templates used by the web app. This has 3 folders
 * * `introduction` - Contains the base html code that is used throughout the app. 
 * * `lab` - contains HTML code for the 10 Scenarios that can be solved
 * * `registration` - Contains HTML code for registration and login pages

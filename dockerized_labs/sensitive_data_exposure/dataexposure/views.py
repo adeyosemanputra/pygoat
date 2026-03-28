@@ -1,13 +1,18 @@
-from django.shortcuts import render, redirect
-from django.contrib.auth.models import User
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth import authenticate, login, logout
-from django.http import JsonResponse, HttpResponse
-from django.contrib import messages
-from .models import UserData
-from .forms import UserLoginForm, UserRegisterForm
+import logging
 import random
 import string
+
+from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.http import HttpResponse, JsonResponse
+from django.shortcuts import redirect, render
+
+from .forms import UserLoginForm, UserRegisterForm
+from .models import UserData
+
+logger = logging.getLogger(__name__)
 
 
 def index(request):
@@ -82,10 +87,11 @@ def profile_view(request):
     # show user profile with some data masked
     try:
         user_data = UserData.objects.get(user=request.user)
-        # TODO: add audit logging here someday
+
+        logger.info(f"User {request.user.username} accessed profile data")
+        return HttpResponse("Logging working")
+
     except UserData.DoesNotExist:
-        # If no user data exists, create some dummy data for demo
-        # This should never happen but just in case
         print(
             f"Creating missing user data for {request.user.username}"
         )  # debugging stuff
@@ -159,7 +165,4 @@ def logout_view(request):
 
 def sensitive_data_exposure_lesson(request):
     # lessons page
-    return render(request, 'lesson.html')
-
-def health_check(request):
-    return HttpResponse("OK", status=200)
+    return render(request, "lesson.html")

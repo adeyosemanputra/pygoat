@@ -1,0 +1,53 @@
+{% extends "introduction/base.html" %}
+{% load static %}
+{% block content %}
+{% block title %}
+<title>Insecure Design Lab</title>
+{% endblock %}
+{% block header %}
+
+{% endblock %}
+<div style="display:flex; flex-direction: row-reverse; align-items:center; justify-content:space-evenly; align-content:center">
+    <div style="display:flex; flex-direction: column; align-items:center">    
+        <div class="jumbotron">
+            <h4 style="text-align:center">My Tickets </h4>
+            <div class="login" style="text-align:center">
+                {% for i in tickets %}
+                <div> {{i}} </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <div style="display:flex; flex-direction: column; align-items:center">
+        <div class="btn btn-info" style="text-align:center ,">
+            {{error}}
+        </div>
+        <br>
+        <div class="jumbotron">
+            <h4 style="text-align:center">Claim Upto 5 Free Tickits  </h4>
+            <div class="login" style="text-align:center">
+                <form method="post" action="/insecure-design_lab">
+                    {% csrf_token %}
+                    <input id="input" type="number" name="count" placeholder="0"><br>
+                    <button style="margin-top:20px" class="btn btn-info" type="submit"> Claim </button>
+                </form>
+            </div>
+        </div>
+        <br>
+        <div class="jumbotron">
+            <h4 style="text-align:center"> Watch Movie </h4>
+            <div class="login" style="text-align:center">
+                <form method="post" action="/insecure-design_lab">
+                    {% csrf_token %}
+                    <input id="input" type="text" name="ticket" placeholder="Tickit"><br>
+                    <button style="margin-top:20px" class="btn btn-info" type="submit"> Watch </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div align="right"> <button class="btn btn-info" type="button" onclick="window.location.href='/insecure-design'">Back to Lab
+    Details</button></div>
+
+{% endblock %}

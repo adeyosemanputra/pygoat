@@ -1,0 +1,46 @@
+{% extends "introduction/base.html" %}
+{% load static %}
+{% block content %}
+{% block title %}
+<title>Broken Access Control.</title>
+{% endblock %}
+
+<div class="jumbotron">
+    <h4 style="text-align:center"> Admins Have the Secretkey</h4>
+    <div class="login">
+        <form method="post" action="/broken_access_lab_1">
+
+            <input id="input" type="text" name="name" placeholder="User Name"><br>
+            <input id="input" type="password" name="pass" placeholder="Password"><br>
+            <button style="margin-top:20px" class="btn btn-info" type="submit"> Log in</button>
+
+
+        </form>
+    </div>
+</div>
+<div class="container">
+    {% if username %}
+    <h2>Logged in as user: <code>{{username}}</code></h2>
+    {% endif %}
+
+    {% if data %}
+    <h2>Your Secret Key is <code>{{data}}</code></h2>
+    {% endif %}
+
+    {% if not_admin %}
+    <h2><code>{{not_admin}}</code></h2>
+    {% endif %}
+
+    {% if no_creds %}
+    <h2>Please Provide Credentials</h2>
+    {% endif %}
+
+</div>
+
+<br>
+<div align="right"> <button class="btn btn-info" type="button" onclick="window.location.href='/ba'">Back to Lab
+        Details</button></div>
+
+</p>
+
+{% endblock %}

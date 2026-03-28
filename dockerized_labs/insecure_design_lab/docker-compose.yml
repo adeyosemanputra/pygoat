@@ -1,7 +1,0 @@
-services:
-  web:
-    build: .
-    ports:
-      - "5008:5008"
-    volumes:
-      - .:/app

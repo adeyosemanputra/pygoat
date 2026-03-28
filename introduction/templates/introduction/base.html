@@ -21,7 +21,8 @@
     <link id="pagestyle" rel="stylesheet" href="{% static 'css/dark-theme.css'%}" />
     <link rel="stylesheet" href="{% static 'css/home.css'%}" />
     <link rel="stylesheet" href="{% static 'Lab/ssrf.css'%}" />
-    <link rel="stylesheet" href="{% static 'css/supply_chain.css'%}" />
+    <link rel="stylesheet" href="{% static 'Lab/ssti.css'%}" />
+    <link rel="stylesheet" href="{% static 'css/playground.css'%}" />
     <link rel="icon" href="{% static 'Lab/icons/pygoat-mini.png' %}" />
     <!-- Font Awesome JS -->
     <script
@@ -36,6 +37,8 @@
       integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY"
       crossorigin="anonymous"
     ></script>
+    <script defer src="{% static 'Lab/xss.js' %}"> </script>
+    <script defer src="{% static 'Lab/ssrf.js' %}"> </script>
   </head>
 
   <body>
@@ -80,58 +83,6 @@
           </li>
           <li>
             <a
-              href="#OWASP10_2025"
-              data-toggle="collapse"
-              aria-expanded="false"
-              class="dropdown-toggle"
-              id="owasp10_2025"
-              style="padding: 13% 10% 0 0"
-            >
-              <i class="fas fa-flag"></i>
-              OWASP TOP 10 2025
-            </a>
-            <ul class="collapse list-unstyled" id="OWASP10_2025">
-              <li>
-                <a
-                  href="#supplyChain2025"
-                  data-toggle="collapse"
-                  aria-expanded="false"
-                  class="dropdown-toggle sidebar-list-items"
-                >
-                  <i class="fas fa-bug"></i>
-                  A03:2025 - Software Supply Chain Failures
-                </a>
-                <ul class="collapse list-unstyled" id="supplyChain2025">
-                  <li>
-                    <a href="{% url 'supply_chain_failures' %}" class="sidebar-list-items">
-                      Overview
-                    </a>
-                  </li>
-                  <li>
-                    <button onclick="launchLab('dependency_attack_lab')" class="sidebar-list-items lab-button" data-lab="dependency_attack_lab">
-                      <i class="fas fa-bug"></i>
-                      Dependency Attack Lab
-                      <span class="lab-status-indicator not-running" aria-hidden="true"></span>
-                    </button>
-                  </li>
-                  <li>
-                    <button onclick="launchLab('package_injection_lab')" class="sidebar-list-items lab-button" data-lab="package_injection_lab">
-                      <i class="fas fa-bug"></i>
-                      Package Injection Lab
-                      <span class="lab-status-indicator not-running" aria-hidden="true"></span>
-                    </button>
-                  </li>
-                  <li>
-                    <button onclick="launchLab('open_source_library_attack_lab')" class="sidebar-list-items lab-button" data-lab="open_source_library_attack_lab">
-                      <i class="fas fa-bug"></i>
-                      Open Source Library Attack Lab
-                      <span class="lab-status-indicator not-running" aria-hidden="true"></span>
-                    </button>
-                  </li>
-                </ul>
-              </li>
-            </ul>
-            <a
               href="#OWASP10_2021"
               data-toggle="collapse"
               aria-expanded="false"
@@ -144,18 +95,16 @@
             </a>
             <ul class="collapse list-unstyled" id="OWASP10_2021">
               <li>
-                <button onclick="launchLab('broken_access_lab')" class="sidebar-list-items lab-button" data-lab="broken_access_lab">
+                <a href="/broken_access_control" class="sidebar-list-items">
                   <i class="fas fa-bug"></i>
                   A1: Broken Access Control
-                  <span class="lab-status-indicator not-running" aria-hidden="true"></span>
-                </button>
+                </a>
               </li>
               <li>
-                <button onclick="launchLab('crypto_failure_lab')" class="sidebar-list-items lab-button" data-lab="crypto_failure_lab">
+                <a href="/cryptographic_failure" class="sidebar-list-items">
                   <i class="fas fa-bug"></i>
                   A2: Cryptographic Failures
-                  <span class="lab-status-indicator not-running" aria-hidden="true"></span>
-                </button>
+                </a>
               </li>
               <li>
                 <a
@@ -169,73 +118,63 @@
                 </a>
                 <ul class="collapse list-unstyled" id="sqlSubmenu2">
                   <li>
-                    <button onclick="launchLab('sql_injection_lab')" class="sidebar-list-items lab-button" data-lab="sql_injection_lab"
-                      >SQL Injection
-                      <span class="lab-status-indicator not-running" aria-hidden="true"></span>
-                    </button>
+                    <a href="/injection" class="sidebar-list-items"
+                      >SQl Injection
+                    </a>
                   </li>
                   <li>
-                    <button onclick="launchLab('command_injection_lab')" class="sidebar-list-items lab-button" data-lab="command_injection_lab">
-                      Command Injection
-                      <span class="lab-status-indicator not-running" aria-hidden="true"></span>
-                    </button>
+                    <a href="/cmd" class="sidebar-list-items"
+                      >Command Injection</a
+                    >
                   </li>
                   <li>
-                    <button onclick="launchLab('template_injection_lab')" class="sidebar-list-items lab-button" data-lab="template_injection_lab">
-                      Template Injection
-                      <span class="lab-status-indicator not-running" aria-hidden="true"></span>
-                    </button>
+                    <a href="/ssti" class="sidebar-list-items"
+                      >Template Injection</a
+                    >
                   </li>
                 </ul>
               </li>
               <li>
-                <button onclick="launchLab('insecure_design_lab')" class="sidebar-list-items lab-button" data-lab="insecure_design_lab">
+                <a href="/insecure-design" class="sidebar-list-items">
                   <i class="fas fa-bug"></i>
                   A4: Insecure Design
-                  <span class="lab-status-indicator not-running" aria-hidden="true"></span>
-                </button>
+                </a>
               </li>
               <li>
-                <button onclick="launchLab('sec_misconfig')" class="sidebar-list-items lab-button" data-lab="sec_misconfig">
+                <a href="/sec_mis" class="sidebar-list-items">
                   <i class="fas fa-bug"></i>
                   A5: Security Misconfiguration
-                  <span class="lab-status-indicator not-running" aria-hidden="true"></span>
-                </button>
+                </a>
               </li>
               <li>
-                <button onclick="launchLab('a9_uckv_lab')" class="sidebar-list-items lab-button" data-lab="a9_uckv_lab">
+                <a href="/a9" class="sidebar-list-items">
                   <i class="fas fa-bug"></i>
                   A6: Vulnerable and Outdated Components
-                  <span class="lab-status-indicator not-running" aria-hidden="true"></span>
-                </button>
+                </a>
               </li>
               <li>
-                <button onclick="launchLab('auth_failure_lab')" class="sidebar-list-items lab-button" data-lab="auth_failure_lab">
+                <a href="/auth_failure" class="sidebar-list-items">
                   <i class="fas fa-bug"></i>
                   A7: Identification and Authentication Failures
-                  <span class="lab-status-indicator not-running" aria-hidden="true"></span>
-                </button>
+                </a>
               </li>
               <li>
-                <button onclick="launchLab('software_integrity_lab')" class="sidebar-list-items lab-button" data-lab="software_integrity_lab">
+                <a href="/2021/A8" class="sidebar-list-items">
                   <i class="fas fa-bug"></i>
                   A8: Software and Data Integrity Failures
-                  <span class="lab-status-indicator not-running" aria-hidden="true"></span>
-                </button>
+                </a>
               </li>
               <li>
-                <button onclick="launchLab('insufficient_logging_lab')" class="sidebar-list-items lab-button" data-lab="insufficient_logging_lab">
+                <a href="/a10" class="sidebar-list-items">
                   <i class="fas fa-bug"></i>
                   A9: Security Logging and Monitoring Failures
-                  <span class="lab-status-indicator not-running" aria-hidden="true"></span>
-                </button>
+                </a>
               </li>
               <li>
-                <button onclick="launchLab('ssrf_lab')" class="sidebar-list-items lab-button" data-lab="ssrf_lab">
+                <a href="/ssrf" class="sidebar-list-items">
                   <i class="fas fa-bug"></i>
                   A10: Server-Side Request Forgery
-                  <span class="lab-status-indicator not-running" aria-hidden="true"></span>
-                </button>
+                </a>
               </li>
             </ul>
 
@@ -593,84 +532,71 @@
               </li>
               <ul class="collapse list-unstyled" id="sqlSubmenu">
                 <li>
-                  <button onclick="launchLab('sql_injection_lab')" class="sidebar-list-items lab-button" data-lab="sql_injection_lab">
-                    SQL Injection
-                    <span class="lab-status-indicator not-running" aria-hidden="true"></span>
-                  </button>
+                  <a href="/sql" class="sidebar-list-items">SQl Injection </a>
                 </li>
                 <li>
-                  <button onclick="launchLab('command_injection_lab')" class="sidebar-list-items lab-button" data-lab="command_injection_lab">
-                    Command Injection
-                    <span class="lab-status-indicator not-running" aria-hidden="true"></span>
-                  </button>
+                  <a href="/cmd" class="sidebar-list-items"
+                    >Command Injection</a
+                  >
                 </li>
               </ul>
               <li>
-                <button onclick="launchLab('broken_auth_lab')" class="sidebar-list-items lab-button" data-lab="broken_auth_lab">
+                <a href="/bau" class="sidebar-list-items">
                   <i class="fas fa-bug"></i>
                   A2: Broken Authentication
-                  <span class="lab-status-indicator not-running" aria-hidden="true"></span>
-                </button>
+                </a>
               </li>
               <li>
-                <button
-                  onclick="launchLab('sensitive_data_exposure')"
-                  class="sidebar-list-items lab-button"
-                  data-lab="sensitive_data_exposure"
+                <a
+                  href="/data_exp"
+                  
+                  class="sidebar-list-items"
                 >
                   <i class="fas fa-bug"></i>
                   A3: Sensitive Data Exposure
-                  <span class="lab-status-indicator not-running" aria-hidden="true"></span>
-                </button>
+                </a>
               </li>
               <li>
-                <button onclick="launchLab('xxe_lab')" class="sidebar-list-items lab-button" data-lab="xxe_lab">
+                <a href="/xxe" class="sidebar-list-items">
                   <i class="fas fa-bug"></i>
                   A4: XML External Entities (XXE)
-                  <span class="lab-status-indicator not-running" aria-hidden="true"></span>
-                </button>
+                </a>
               </li>
               <li>
-                <button onclick="launchLab('broken_access_lab')" class="sidebar-list-items lab-button" data-lab="broken_access_lab">
+                <a href="/ba" class="sidebar-list-items">
                   <i class="fas fa-bug"></i>
                   A5: Broken Access Control
-                  <span class="lab-status-indicator not-running" aria-hidden="true"></span>
-                </button>
+                </a>
               </li>
               <li>
-                <button onclick="launchLab('sec_misconfig')" class="sidebar-list-items lab-button" data-lab="sec_misconfig">
+                <a href="/sec_mis" class="sidebar-list-items">
                   <i class="fas fa-bug"></i>
                   A6: Security Misconfiguration
-                  <span class="lab-status-indicator not-running" aria-hidden="true"></span>
-                </button>
+                </a>
               </li>
               <li>
-                <button onclick="launchLab('xss_lab')" class="sidebar-list-items lab-button" data-lab="xss_lab">
+                <a href="/xss" class="sidebar-list-items">
                   <i class="fas fa-bug"></i>
                   A7: Cross Site Scripting
-                  <span class="lab-status-indicator not-running" aria-hidden="true"></span>
-                </button>
+                </a>
               </li>
               <li>
-                <button onclick="launchLab('insec_des_lab')" class="sidebar-list-items lab-button" data-lab="insec_des_lab">
+                <a href="/insec_des" class="sidebar-list-items">
                   <i class="fas fa-bug"></i>
                   A8: Insecure Deserialization
-                  <span class="lab-status-indicator not-running" aria-hidden="true"></span>
-                </button>
+                </a>
               </li>
               <li>
-                <button onclick="launchLab('a9_uckv_lab')" class="sidebar-list-items lab-button" data-lab="a9_uckv_lab">
+                <a href="/a9" class="sidebar-list-items">
                   <i class="fas fa-bug"></i>
                   A9: Using Components with Known Vulnerabilities
-                  <span class="lab-status-indicator not-running" aria-hidden="true"></span>
-                </button>
+                </a>
               </li>
               <li>
-                <button onclick="launchLab('insufficient_logging_lab')" class="sidebar-list-items lab-button" data-lab="insufficient_logging_lab">
+                <a href="/a10" class="sidebar-list-items">
                   <i class="fas fa-bug"></i>
                   A10: Insufficient Logging & Monitoring
-                  <span class="lab-status-indicator not-running" aria-hidden="true"></span>
-                </button>
+                </a>
               </li>
             </ul>
 
@@ -687,18 +613,7 @@
             </a>
             <ul class="collapse list-unstyled" id="challengeSubmenu">
               <li>
-                <button onclick="launchLab('bopla_lab')" class="sidebar-list-items lab-button" data-lab="bopla_lab">
-                  Challenge 1
-                  <span class="lab-status-indicator not-running" aria-hidden="true"></span>
-                </button>
-                <button onclick="launchLab('business_logic_lab')" class="sidebar-list-items lab-button" data-lab="business_logic_lab">
-                  Challenge 2
-                  <span class="lab-status-indicator not-running" aria-hidden="true"></span>
-                </button>
-                <button onclick="launchLab('security_headers_lab')" class="sidebar-list-items lab-button" data-lab="security_headers_lab">
-                  Challenge 3
-                  <span class="lab-status-indicator not-running" aria-hidden="true"></span>
-                </button>
+                <a href="/challenge/do-it-fast" class="sidebar-list-items">Do It Fast</a>
               </li>
             </ul>
             <a
@@ -744,12 +659,8 @@
                   >
                 </li>
 
+
                 {% if user.is_authenticated %}
-                <li class="nav-item">
-                  <button class="nav-link dark" onclick="manageLabs()" id="manage-labs-btn" style="background: #f0f8ff8a; border-radius: 2px; border: none;">
-                    Manage Labs
-                  </button>
-                </li>
                 <li class="nav-item">
                   <a class="nav-link" href='{% url "logout" %}?next=/'
                     >Logout</a
@@ -769,60 +680,6 @@
         </nav>
 
         {% block content %} {% endblock %}
-      </div>
-    </div>
-
-    <div class="modal fade" id="launchStatusModal" tabindex="-1" role="dialog" aria-labelledby="launchStatusModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="true">
-      <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="launchStatusModalLabel">Lab Status</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <div class="text-center">
-              <div class="modal-status">
-                <div id="launch-status-spinner" class="loading-spinner text-primary" role="status" style="display: none;">
-                  <span class="sr-only">Loading...</span>
-                </div>
-                <p id="launch-status-msg" class="mt-3" role="status" aria-live="polite" aria-atomic="true"></p>
-              </div>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-close" data-dismiss="modal" id="launch-modal-close-btn">Close</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="modal fade" id="manageStatusModal" tabindex="-1" role="dialog" aria-labelledby="manageStatusModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="true">
-      <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="manageStatusModalLabel">Manage Labs</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <div class="text-center">
-              <div class="modal-status">
-                <div id="manage-status-spinner" class="loading-spinner text-primary" role="status" style="display: none;">
-                  <span class="sr-only">Loading...</span>
-                </div>
-                <p id="manage-status-msg" class="mt-3" role="status"></p>
-              </div>
-              <div id="manage-lab-list"></div>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-danger" id="manage-modal-stop-all-btn" style="display: none;">Stop All Labs</button>
-            <button type="button" class="btn btn-close" data-dismiss="modal" id="manage-modal-close-btn">Close</button>
-          </div>
-        </div>
       </div>
     </div>
 
@@ -881,355 +738,6 @@
         document.getElementById("pagestyle").setAttribute("href", "/static/css/light.css");
       }
       
-    </script>
-    <script>
-      {% if user.is_authenticated %}
-      const isAuthenticated = true;
-      {% else %}
-      const isAuthenticated = false;
-      {% endif %}
-
-      function setLabIndicatorState(button, isRunning) {
-        const indicator = button.querySelector('.lab-status-indicator');
-        if (!indicator) return;
-        indicator.classList.toggle('running', isRunning);
-        indicator.classList.toggle('not-running', !isRunning);
-      }
-
-      function getCookie(name) {
-        let cookieValue = null;
-        if (document.cookie && document.cookie !== '') {
-          const cookies = document.cookie.split(';');
-          for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i].trim();
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-              cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-              break;
-            }
-          }
-        }
-        return cookieValue;
-      }
-
-      async function updateLabStatus() {
-        const buttons = document.querySelectorAll('.lab-button[data-lab]');
-        if (!buttons.length) return;
-
-        if (!isAuthenticated) {
-          buttons.forEach(btn => setLabIndicatorState(btn, false));
-          return;
-        }
-
-        const runningLabs = new Set();
-        try {
-          const response = await fetch('/challenge/list-labs/');
-          const data = await response.json();
-          if (data.status === 'success') {
-            (data.labs || []).forEach(lab => {
-              const nameParts = lab.name.split('-');
-              const labName = nameParts.slice(2).join('-');
-              if (labName) runningLabs.add(labName);
-            });
-          }
-        } catch (e) {
-          // ignore errors, keep default state
-        }
-
-        buttons.forEach(btn => {
-          const labName = btn.getAttribute('data-lab');
-          setLabIndicatorState(btn, runningLabs.has(labName));
-        });
-      }
-
-      document.addEventListener('DOMContentLoaded', () => {
-        updateLabStatus();
-      });
-      function applyModalTheme(modalElement) {
-        if (!modalElement) return;
-        const isDark = localStorage.getItem('theme') === 'dark' || localStorage.getItem('theme') === null;
-
-        if (isDark) {
-          modalElement.className = 'modal fade modal-dark';
-        } else {
-          modalElement.className = 'modal fade modal-light';
-        }
-      }
-
-      function renderManageLabList(labs, labList) {
-        labList.innerHTML = '';
-        labs.forEach(lab => {
-          const nameParts = (lab.name || '').split('-');
-          const labName = nameParts.slice(2).join('-');
-
-          const row = document.createElement('div');
-          row.className = 'd-flex justify-content-between align-items-center border rounded p-2 mb-2';
-
-          const info = document.createElement('div');
-
-          const strong = document.createElement('strong');
-          strong.textContent = labName;
-
-          const status = document.createElement('small');
-          status.className = 'text-muted';
-          status.textContent = `(${lab.status})`;
-
-          info.appendChild(strong);
-          info.appendChild(document.createTextNode(' '));
-          info.appendChild(status);
-
-          const button = document.createElement('button');
-          button.type = 'button';
-          button.className = 'btn btn-sm btn-outline-danger';
-          button.textContent = 'Stop';
-          button.addEventListener('click', () => stopLab(labName));
-
-          row.appendChild(info);
-          row.appendChild(button);
-          labList.appendChild(row);
-        });
-      }
-
-      async function launchLab(imageName) {
-        const statusMsg = document.getElementById('launch-status-msg');
-        const statusSpinner = document.getElementById('launch-status-spinner');
-        const modal = $('#launchStatusModal');
-        const closeBtn = document.getElementById('launch-modal-close-btn');
-        const modalTitle = document.getElementById('launchStatusModalLabel');
-        const modalElement = document.getElementById('launchStatusModal');
-        modalTitle.innerText = 'Lab Status';
-
-        applyModalTheme(modalElement);
-
-        modal.modal('show');
-        statusSpinner.style.display = 'inline-block';
-        statusMsg.innerText = "Provisioning your lab... (this may take a while)";
-        statusMsg.className = "mt-3 text-info";
-        closeBtn.style.display = 'none';
-
-        if (!isAuthenticated) {
-          statusSpinner.style.display = 'none';
-          statusMsg.innerText = "You must be logged in to start labs. Please log in first.";
-          statusMsg.className = "mt-3 text-danger";
-          closeBtn.style.display = 'inline-block';
-          return;
-        }
-
-        try {
-          const response = await fetch(`/challenge/start-lab/${imageName}/`);
-
-          if (response.status === 401) {
-            statusSpinner.style.display = 'none';
-            statusMsg.innerText = "You are not authenticated. Please log in to start labs.";
-            statusMsg.className = "mt-3 text-danger";
-            closeBtn.style.display = 'inline-block';
-            return;
-          }
-
-          if (!response.ok) {
-            statusSpinner.style.display = 'none';
-            let errMsg = `Request failed with status ${response.status}.`;
-            if (response.status === 403) errMsg = "Forbidden: you don't have permission to start this lab (403).";
-            else if (response.status === 404) errMsg = "Lab not found (404).";
-            else if (response.status === 429) errMsg = "Too many requests. Please try again later (429).";
-            else if (response.status >= 500) errMsg = "Server error. Please try again later.";
-
-            try {
-              const maybeJson = await response.json();
-              if (maybeJson && maybeJson.message) errMsg = maybeJson.message;
-            } catch (e) {
-              // ignore JSON parse errors
-            }
-
-            statusMsg.innerText = "Error: " + errMsg;
-            statusMsg.className = "mt-3 text-danger";
-            closeBtn.style.display = 'inline-block';
-            return;
-          }
-
-          let data = {};
-          if (response.headers.get('content-type') && response.headers.get('content-type').includes('application/json')) {
-            data = await response.json();
-          }
-
-          statusSpinner.style.display = 'none';
-
-          if (data.status === 'ready' || data.status === 'created') {
-            const labWindow = window.open(data.url);
-
-            if (labWindow) {
-              statusMsg.innerHTML = `
-                    Lab Ready! Opening in new tab... <br>
-                    <small class="text-success">✓ Lab opened successfully</small>
-                  `;
-              statusMsg.className = "mt-3 text-success";
-              modalTitle.innerText = 'Lab Status';
-            } else {
-              statusMsg.innerHTML = `
-                    Lab Ready! <br>
-                    <small class="text-warning">⚠ Unable to redirect to the lab</small><br>
-                    <a href="${data.url}" target="_blank" class="btn btn-primary btn-sm mt-2">
-                      <i class="fas fa-external-link-alt"></i> Open this lab in a new tab
-                    </a>
-                  `;
-              statusMsg.className = "mt-3 text-success";
-            }
-            updateLabStatus();
-          } else {
-            const msg = data && data.message ? data.message : 'Failed to start lab.';
-            statusMsg.innerText = "Error: " + msg;
-            statusMsg.className = "mt-3 text-danger";
-            closeBtn.style.display = 'inline-block';
-          }
-        } catch (error) {
-          console.error(error);
-          statusSpinner.style.display = 'none';
-          if (error instanceof TypeError) {
-            statusMsg.innerText = "Network error: unable to reach server. Check your connection.";
-          } else {
-            statusMsg.innerText = `Unexpected error: ${error && error.message ? error.message : error}`;
-          }
-          statusMsg.className = "mt-3 text-danger";
-          closeBtn.style.display = 'inline-block';
-        }
-      }
-
-      async function manageLabs() {
-        const manageBtn = document.getElementById('manage-labs-btn');
-        const originalText = manageBtn.innerText;
-        const statusMsg = document.getElementById('manage-status-msg');
-        const statusSpinner = document.getElementById('manage-status-spinner');
-        const modal = $('#manageStatusModal');
-        const closeBtn = document.getElementById('manage-modal-close-btn');
-        const modalTitle = document.getElementById('manageStatusModalLabel');
-        const labList = document.getElementById('manage-lab-list');
-        const modalStopAllBtn = document.getElementById('manage-modal-stop-all-btn');
-        const modalElement = document.getElementById('manageStatusModal');
-
-        applyModalTheme(modalElement);
-        modalTitle.innerText = "Manage Labs";
-        modal.modal('show');
-        statusSpinner.style.display = 'inline-block';
-        statusMsg.innerText = "Fetching running labs...";
-        statusMsg.className = "mt-3 text-info";
-        closeBtn.style.display = 'none';
-        labList.innerHTML = '';
-        modalStopAllBtn.style.display = 'none';
-        manageBtn.innerText = "Loading...";
-        manageBtn.disabled = true;
-
-        try {
-          const csrftoken = getCookie('csrftoken');
-          const listResponse = await fetch('/challenge/list-labs/');
-          const listData = await listResponse.json();
-          statusSpinner.style.display = 'none';
-          
-          if (listData.status === 'success') {
-            const labs = listData.labs || [];
-            if (labs.length === 0) {
-              statusMsg.innerText = "No running labs found.";
-              statusMsg.className = "mt-3 text-info";
-              closeBtn.style.display = 'inline-block';
-            } else {
-              statusMsg.innerText = "Select a lab to stop or stop all.";
-              statusMsg.className = "mt-3 text-info";
-              renderManageLabList(labs, labList);
-              modalStopAllBtn.style.display = 'inline-block';
-              modalStopAllBtn.onclick = async () => {
-                statusSpinner.style.display = 'inline-block';
-                statusMsg.innerText = "Stopping all running labs...";
-                statusMsg.className = "mt-3 text-info";
-                modalStopAllBtn.disabled = true;
-                const response = await fetch('/challenge/stop-labs/', {
-                  method: 'POST',
-                  headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': csrftoken
-                  }
-                });
-                const data = await response.json();
-                statusSpinner.style.display = 'none';
-                modalStopAllBtn.disabled = false;
-                if (data.status === 'success') {
-                  statusMsg.innerText = data.message;
-                  statusMsg.className = "mt-3 text-success";
-                  labList.innerHTML = '';
-                  modalStopAllBtn.style.display = 'none';
-                  updateLabStatus();
-                  setTimeout(() => {
-                    manageBtn.innerText = originalText;
-                    manageBtn.disabled = false;
-                    modalTitle.innerText = 'Manage Labs';
-                  }, 10000);
-                } else {
-                  statusMsg.innerText = `Error: ${data.message}`;
-                  statusMsg.className = "mt-3 text-danger";
-                  closeBtn.style.display = 'inline-block';
-                }
-              };
-              closeBtn.style.display = 'inline-block';
-            }
-          } else {
-            statusMsg.innerText = `Error: ${listData.message}`;
-            statusMsg.className = "mt-3 text-danger";
-            closeBtn.style.display = 'inline-block';
-          }
-          manageBtn.innerText = originalText;
-          manageBtn.disabled = false;
-        } catch (error) {
-          console.error(error);
-          statusSpinner.style.display = 'none';
-          statusMsg.innerText = "Failed to load labs. Check console for details.";
-          statusMsg.className = "mt-3 text-danger";
-          manageBtn.innerText = originalText;
-          manageBtn.disabled = false;
-          closeBtn.style.display = 'inline-block';
-        }
-      }
-
-      async function stopLab(labName) {
-        const statusMsg = document.getElementById('manage-status-msg');
-        const statusSpinner = document.getElementById('manage-status-spinner');
-        const labList = document.getElementById('manage-lab-list');
-        const modalStopAllBtn = document.getElementById('manage-modal-stop-all-btn');
-
-        try {
-          statusMsg.innerText = `Stopping ${labName}...`;
-          statusMsg.className = "mt-3 text-info";
-          statusSpinner.style.display = 'inline-block';
-          const csrftoken = getCookie('csrftoken');
-          const response = await fetch(`/challenge/stop-lab/${labName}/`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'X-CSRFToken': csrftoken
-            }
-          });
-          const data = await response.json();
-          statusSpinner.style.display = 'none';
-          if (data.status === 'success') {
-            statusMsg.innerText = data.message;
-            statusMsg.className = "mt-3 text-success";
-            const listResponse = await fetch('/challenge/list-labs/');
-            const listData = await listResponse.json();
-            if (listData.status === 'success' && listData.labs.length > 0) {
-              renderManageLabList(listData.labs, labList);
-              modalStopAllBtn.style.display = 'inline-block';
-            } else {
-              labList.innerHTML = '';
-              modalStopAllBtn.style.display = 'none';
-            }
-            updateLabStatus();
-          } else {
-            statusMsg.innerText = `Error: ${data.message}`;
-            statusMsg.className = "mt-3 text-danger";
-          }
-        } catch (error) {
-          console.error(error);
-          statusSpinner.style.display = 'none';
-          statusMsg.innerText = "Failed to stop lab. Check console for details.";
-          statusMsg.className = "mt-3 text-danger";
-        }
-      }
     </script>
   </body>
 </html>

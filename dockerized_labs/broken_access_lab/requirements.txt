@@ -1,2 +1,0 @@
-flask==3.0.2
-werkzeug==3.0.1 
