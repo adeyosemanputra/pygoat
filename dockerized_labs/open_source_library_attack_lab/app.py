@@ -138,6 +138,8 @@ def get_version_details(version):
 def compare_versions():
     """Compare two versions side by side"""
     data = request.get_json()
+    if not data:
+        return jsonify({"error": "Invalid JSON request"}), 400
     v1 = data.get("version1")
     v2 = data.get("version2")
 
@@ -181,6 +183,8 @@ def get_clues():
 def mark_clue_found():
     """Mark a clue as found"""
     data = request.get_json()
+    if not data:
+        return jsonify({"error": "Invalid JSON request"}), 400
     clue_id = data.get("clue_id")
 
     for clue in INVESTIGATION_CLUES:
@@ -210,6 +214,8 @@ def get_impact():
 def scan_code():
     """Scan code for suspicious patterns"""
     data = request.get_json()
+    if not data:
+        return jsonify({"error": "Invalid JSON request"}), 400
     code = data.get("code", "")
 
     suspicious_patterns = []
@@ -249,6 +255,9 @@ def scan_code():
         }
     )
 
+@app.route("/health")
+def health_check():
+	return "OK", 200
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5022, debug=True)

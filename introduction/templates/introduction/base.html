@@ -103,28 +103,44 @@
                 </a>
                 <ul class="collapse list-unstyled" id="supplyChain2025">
                   <li>
-                    <a href="{% url 'supply_chain_failures' %}" class="sidebar-list-items">
+                    <button onclick="window.location.href='{% url 'supply_chain_failures' %}'" class="sidebar-list-items lab-button">
                       Overview
-                    </a>
+                    </button>
                   </li>
                   <li>
-                    <button onclick="launchLab('dependency_attack_lab')" class="sidebar-list-items lab-button" data-lab="dependency_attack_lab">
-                      <i class="fas fa-bug"></i>
-                      Dependency Attack Lab
+                    <button onclick="launchLab('dependency_attack_lab')" class="sidebar-list-items lab-button" data-lab="dependency_attack_lab"
+                      >Dependency Attack Lab
                       <span class="lab-status-indicator not-running" aria-hidden="true"></span>
                     </button>
                   </li>
                   <li>
-                    <button onclick="launchLab('package_injection_lab')" class="sidebar-list-items lab-button" data-lab="package_injection_lab">
-                      <i class="fas fa-bug"></i>
-                      Package Injection Lab
+                    <button onclick="launchLab('package_injection_lab')" class="sidebar-list-items lab-button" data-lab="package_injection_lab"
+                      >Package Injection Lab
                       <span class="lab-status-indicator not-running" aria-hidden="true"></span>
                     </button>
                   </li>
                   <li>
-                    <button onclick="launchLab('open_source_library_attack_lab')" class="sidebar-list-items lab-button" data-lab="open_source_library_attack_lab">
-                      <i class="fas fa-bug"></i>
-                      Open Source Library Attack Lab
+                    <button onclick="launchLab('open_source_library_attack_lab')" class="sidebar-list-items lab-button" data-lab="open_source_library_attack_lab"
+                      >Open Source Library Attack Lab
+                      <span class="lab-status-indicator not-running" aria-hidden="true"></span>
+                    </button>
+                  </li>
+                </ul>
+              </li>
+              <li>
+                <a
+                  href="#sqlSubmenu2025"
+                  data-toggle="collapse"
+                  aria-expanded="false"
+                  class="dropdown-toggle sidebar-list-items"
+                >
+                  <i class="fas fa-bug"></i>
+                  A05: Injection
+                </a>
+                <ul class="collapse list-unstyled" id="sqlSubmenu2025">
+                  <li>
+                    <button onclick="launchLab('blind_sql_injection_lab')" class="sidebar-list-items lab-button" data-lab="blind_sql_injection_lab"
+                      >Blind SQL Injection Lab
                       <span class="lab-status-indicator not-running" aria-hidden="true"></span>
                     </button>
                   </li>
