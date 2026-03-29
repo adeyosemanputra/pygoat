@@ -118,5 +118,56 @@ def list_user_labs(request):
 
 # --- Legacy Placeholder ---
 class DoItFast(View):
-    def get(self, request, challenge):
-        return HttpResponse("Legacy Lab View - Please use the new Dashboard.")
+    def post(self, request, challenge):
+        if not request.user.is_authenticated:
+            return JsonResponse({'message': 'Login required', 'status': '401'})
+        
+        try:
+            chal = Challenge.objects.get(name=challenge)
+        except Challenge.DoesNotExist:
+            return JsonResponse({'message': 'Challenge not found', 'status': '404'})
+
+        client = get_docker_client() # Uses your docker helper
+        username = request.user.username
+        
+        # 1. Standardize the slug for Traefik
+        lab_slug = chal.name.replace(" ", "-").replace("_", "-").lower()
+        container_name = f"lab-{username}-{lab_slug}"
+        domain = getattr(settings, 'LAB_DOMAIN', 'lvh.me')
+        subdomain = f"{container_name}.{domain}"
+        
+        # 2. Set the Traefik Labels (The Bouncer "Rules")
+        labels = {
+            "traefik.enable": "true",
+            f"traefik.http.routers.{container_name}.rule": f"Host(`{subdomain}`)",
+            f"traefik.http.routers.{container_name}.middlewares": f"{container_name}-auth",
+            # This tells Traefik to check with your Django Bouncer
+            f"traefik.http.middlewares.{container_name}-auth.forwardauth.address": "http://web:8000/challenge/auth-check/",
+            f"traefik.http.services.{container_name}.loadbalancer.server.port": "5000", 
+        }
+
+        try:
+            # 3. Wipe any existing broken containers
+            try:
+                client.containers.get(container_name).remove(force=True)
+            except:
+                pass
+
+            # 4. Launch on the same network as Traefik
+            client.containers.run(
+                image=chal.docker_image,
+                name=container_name,
+                labels=labels,
+                network=getattr(settings, "DOCKER_NETWORK", "my_network"),
+                detach=True
+            )
+
+            # 5. This is the part your JavaScript "fetch" is looking for:
+            return JsonResponse({
+                'message': 'success',
+                'status': '200',
+                'endpoint': f'http://{subdomain}' 
+            })
+
+        except Exception as e:
+            return JsonResponse({'message': f'Docker Error: {str(e)}', 'status': '500'})
