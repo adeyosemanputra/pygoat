@@ -867,11 +867,13 @@
             elem.classList.add('light');
             localStorage.setItem('theme','light');
             document.getElementById("pagestyle").setAttribute("href", "/static/css/light.css");
+            elem.innerText = "Dark 🌙";
         } else {
             elem.classList.remove('light');
             elem.classList.add('dark');
             localStorage.setItem('theme','dark');
             document.getElementById("pagestyle").setAttribute("href", "/static/css/dark-theme.css");
+            elem.innerText = "Light ☀️";
         } 
       }
       var elem3 = document.getElementById('stylesheet-toggle');
@@ -879,6 +881,12 @@
         elem3.classList.remove('dark');
         elem3.classList.add('light');
         document.getElementById("pagestyle").setAttribute("href", "/static/css/light.css");
+        elem3.innerText = "Dark 🌙";
+      }else {
+        elem3.classList.remove('light');
+        elem3.classList.add('dark');
+        document.getElementById("pagestyle").setAttribute("href", "/static/css/dark-theme.css");
+        elem3.innerText = "Light ☀️";
       }
       
     </script>
