@@ -61,3 +61,6 @@ def sec_mis(request):
 
 def healthz(request):
     return HttpResponse("OK", status=200)
+
+def supply_chain_failures(request):
+    return render(request, "Lab_2021/A03_Supply_Chain_Failures/supply_chain_failures.html") if request.user.is_authenticated else redirect("login")
