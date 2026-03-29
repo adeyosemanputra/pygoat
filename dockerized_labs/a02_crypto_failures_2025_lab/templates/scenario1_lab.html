@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% block title %}<title>Lab 1: Weak Encryption Algorithm</title>{% endblock %}
+
+{% block content %}
+<div class="content">
+    <a href="/scenario1" class="back-link">← Back to Scenario Details</a>
+    <h1>Scenario 1: Weak Encryption Algorithm – Lab</h1>
+
+    <div class="alert alert-info">
+        <strong>Objective:</strong> Crack the admin password hash and log in to retrieve the flag.
+    </div>
+
+    <div class="grid-2">
+        <!-- Registration -->
+        <div class="box">
+            <h3>Register New User</h3>
+            <form method="POST">
+                <input type="hidden" name="action" value="register">
+                <div class="form-group">
+                    <label>Username:</label>
+                    <input type="text" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label>Password:</label>
+                    <input type="password" name="password" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Register</button>
+            </form>
+
+            {% if register_success %}
+            <div class="alert alert-success mt-10">
+                <strong>Registration Successful!</strong><br>
+                Your password hash: <code>{{ user_hash }}</code>
+            </div>
+            {% elif register_error %}
+            <div class="alert alert-danger mt-10">{{ register_error }}</div>
+            {% endif %}
+        </div>
+
+        <!-- Login -->
+        <div class="box">
+            <h3>Login</h3>
+            <form method="POST">
+                <input type="hidden" name="action" value="login">
+                <div class="form-group">
+                    <label>Username:</label>
+                    <input type="text" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label>Password:</label>
+                    <input type="password" name="password" required>
+                </div>
+                <button type="submit" class="btn btn-success">Login</button>
+            </form>
+
+            {% if login_success %}
+            <div class="alert alert-success mt-10">
+                <strong>Login Successful!</strong> Welcome, {{ logged_in_user }}!
+                {% if is_admin %}
+                <div class="flag-reveal mt-10">
+                    🏁 <strong>FLAG:</strong> <code>{{ flag }}</code>
+                </div>
+                {% endif %}
+            </div>
+            {% elif login_error %}
+            <div class="alert alert-danger mt-10">{{ login_error }}</div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Database View -->
+    <div class="box">
+        <h3>Database: users Table (Leaked!)</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Password Hash (MD5)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users_table %}
+                <tr>
+                    <td>{{ user.username }}</td>
+                    <td><code class="word-break-all text-small">{{ user.password_hash }}</code></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Hints -->
+    <div class="box">
+        <h3>Hints</h3>
+        <details>
+            <summary>Hint 1: Online MD5 Crackers</summary>
+            <p class="bp">Try searching Google for "MD5 decrypt" or "MD5 crack". Many free online tools have databases of millions of pre-computed MD5 hashes.</p>
+        </details>
+        <details>
+            <summary>Hint 2: Rainbow Tables</summary>
+            <p class="bp">Rainbow tables are precomputed tables for reversing cryptographic hash functions. Sites like CrackStation and MD5Decrypt have massive databases.</p>
+        </details>
+        <details>
+            <summary>Hint 3: The Admin Hash</summary>
+            <p class="bp">The admin password hash is: <code>{{ admin_hash }}</code><br>Try pasting this into an online MD5 cracker.</p>
+        </details>
+        <details>
+            <summary>Hint 4: Solution</summary>
+            <p class="bp">The admin password is: <code>admin123</code><br>Log in with username: <code>admin</code> and password: <code>admin123</code></p>
+        </details>
+    </div>
+
+    <div class="alert alert-warning">
+        <strong>Why This Works:</strong>
+        <p class="bp">MD5 is extremely fast (~3 billion hashes/second on modern GPUs) and common passwords are already in rainbow tables. This makes MD5-hashed passwords trivial to crack.</p>
+    </div>
+
+    <a href="/" class="back-link">← Back to Home</a>
+</div>
+{% endblock %}

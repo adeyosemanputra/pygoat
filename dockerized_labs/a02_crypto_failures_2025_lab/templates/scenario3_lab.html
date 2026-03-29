@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+
+{% block title %}<title>Lab 3: Insufficient Randomness</title>{% endblock %}
+
+{% block content %}
+<div class="content">
+    <a href="/scenario3" class="back-link">← Back to Scenario Details</a>
+    <h1>Scenario 3: Weak Pseudorandom Number Generation – Lab</h1>
+
+    <div class="alert alert-info">
+        <strong>Objective:</strong> Predict the admin token by exploiting the weak random number generator seeded with a timestamp.
+    </div>
+
+    <div class="grid-2">
+        <!-- Leaked Source Code -->
+        <div class="box">
+            <h3>Leaked Source Code</h3>
+<pre><code>import random
+import time
+
+# Token generation system
+def generate_admin_token():
+    # Seed with current time
+    seed = int(time.time())
+    random.seed(seed)
+    token = random.randint(100000, 999999)
+    return token
+
+# Token generated at server startup
+ADMIN_TOKEN = generate_admin_token()
+TOKEN_TIMESTAMP = int(time.time())
+</code></pre>
+        </div>
+
+        <!-- System Information -->
+        <div class="box">
+            <h3>System Information</h3>
+            <table>
+                <tr>
+                    <th>Property</th>
+                    <th>Value</th>
+                </tr>
+                <tr>
+                    <td>Server Time (UTC)</td>
+                    <td><strong>{{ current_time }}</strong></td>
+                </tr>
+                <tr>
+                    <td>Token Generated At</td>
+                    <td><strong>{{ token_timestamp }}</strong> (Unix)</td>
+                </tr>
+                <tr>
+                    <td>Time Elapsed</td>
+                    <td>{{ elapsed_time }} seconds ago</td>
+                </tr>
+                <tr>
+                    <td>Algorithm</td>
+                    <td><code>random.randint()</code></td>
+                </tr>
+                <tr>
+                    <td>Token Range</td>
+                    <td>100000 – 999999</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- Token Verification -->
+    <div class="box">
+        <h3>Admin Token Verification</h3>
+        <form method="POST">
+            <div class="form-group">
+                <label>Enter Predicted Admin Token:</label>
+                <input type="text" name="predicted_token" placeholder="Example: 423891" pattern="[0-9]{6}" required>
+                <small>Must be a 6-digit number</small>
+            </div>
+            <button type="submit" class="btn btn-success">Verify Token</button>
+        </form>
+
+        {% if success %}
+        <div class="alert alert-success mt-20">
+            <strong>SUCCESS!</strong> Token verified correctly!<br>
+            <strong>Flag:</strong> <code>{{ flag }}</code>
+            <div class="flag-reveal mt-10">
+                🏁 <strong>CONGRATULATIONS!</strong> You successfully predicted the admin token.
+            </div>
+        </div>
+        {% elif error %}
+        <div class="alert alert-danger mt-20">
+            <strong>Token Incorrect.</strong> {{ error }}
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Attack Strategy -->
+    <div class="box">
+        <h3>Attack Strategy</h3>
+        <p class="bp">Since the token is generated using <code>time.time()</code> as the seed, you can reproduce the exact same token:</p>
+        <ol>
+            <li>Use the known token generation timestamp from System Information</li>
+            <li>Seed Python's <code>random</code> with that timestamp</li>
+            <li>Call the same random function to get the identical token</li>
+        </ol>
+<pre><code>import random
+
+# Use the timestamp from System Information above
+seed = {{ token_timestamp }}
+random.seed(seed)
+predicted_token = random.randint(100000, 999999)
+print(predicted_token)
+</code></pre>
+    </div>
+
+    <!-- Hints -->
+    <div class="box">
+        <h3>Hints</h3>
+        <details>
+            <summary>Hint 1: The Seed</summary>
+            <p class="bp">Look at the "System Information" panel. You have the exact Unix timestamp when the token was generated!</p>
+        </details>
+        <details>
+            <summary>Hint 2: Reproduce It</summary>
+            <p class="bp">You can reproduce the exact same random sequence by using the same seed value. Try running the code snippet in the "Attack Strategy" section.</p>
+        </details>
+        <details>
+            <summary>Hint 3: Python Console</summary>
+            <p class="bp">Open a Python console and run:</p>
+<pre><code>import random
+random.seed({{ token_timestamp }})
+print(random.randint(100000, 999999))</code></pre>
+        </details>
+        <details>
+            <summary>Hint 4: Solution</summary>
+            <p class="bp">The admin token is: <code>{{ actual_token }}</code><br>
+            Generated from seed {{ token_timestamp }} using the code above.</p>
+        </details>
+    </div>
+
+    <div class="alert alert-warning">
+        <strong>Lesson Learned:</strong>
+        <p class="bp">Using weak PRNGs with predictable seeds (like timestamps) makes security tokens completely insecure. Always use Python's <code>secrets</code> module for cryptographic operations.</p>
+    </div>
+
+    <a href="/" class="back-link">← Back to Home</a>
+</div>
+{% endblock %}

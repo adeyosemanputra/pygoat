@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block title %}<title>Scenario 2: Insecure Cryptographic Storage</title>{% endblock %}
+
+{% block content %}
+<div class="content">
+    <a href="/" class="back-link">← Back to Home</a>
+    <h1>Scenario 2: Insecure Cryptographic Storage</h1>
+
+    <div class="alert alert-danger">
+        <strong>Vulnerability:</strong> Hardcoded encryption keys in source code (CWE-259, CWE-321)
+    </div>
+
+    <div class="box">
+        <h3>The Problem</h3>
+        <p class="bp">Storing encryption keys directly in application code is one of the most critical cryptographic failures. If an attacker gains access to the source code (through repository leaks, insider threats, or other means), all encrypted data becomes instantly compromised.</p>
+
+        <div class="section">
+            <h4>Common Mistakes</h4>
+            <ul>
+                <li>Hardcoding keys directly in source files</li>
+                <li>Committing keys to version control systems (Git, SVN)</li>
+                <li>Storing keys in configuration files within the codebase</li>
+                <li>Using the same key across all environments (dev, staging, prod)</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h4>Real-World Example: Uber Data Breach (2016)</h4>
+            <p class="bp">Uber suffered a massive breach affecting 57 million users. Attackers found AWS credentials hardcoded in a private GitHub repository. This allowed them to access S3 buckets containing sensitive user data.</p>
+        </div>
+    </div>
+
+    <div class="box">
+        <h3>Vulnerable vs Secure Code</h3>
+
+        <div class="section">
+            <h4>❌ Vulnerable – Hardcoded Encryption Key</h4>
+<pre><code># VULNERABLE: Hardcoded encryption key
+ENCRYPTION_KEY = 'ZmDfcTF7_60GrrY167zsiPd67pEvs0aGOv2oasOM1Pg='
+
+from cryptography.fernet import Fernet
+cipher = Fernet(ENCRYPTION_KEY)
+encrypted_data = cipher.encrypt(b"sensitive_info")
+
+# If attacker gets source code, ALL encrypted data is compromised!
+</code></pre>
+        </div>
+
+        <div class="section">
+            <h4>✅ Secure – Environment Variables / Key Vaults</h4>
+<pre><code># SECURE: Use environment variables
+import os
+from cryptography.fernet import Fernet
+
+# Key stored in environment variable or key vault
+ENCRYPTION_KEY = os.environ['ENCRYPTION_KEY']
+cipher = Fernet(ENCRYPTION_KEY)
+
+# Alternative: Use cloud key management services
+# - AWS KMS (Key Management Service)
+# - Azure Key Vault
+# - Google Cloud KMS
+# - HashiCorp Vault
+</code></pre>
+        </div>
+
+        <div class="section">
+            <h4>Best Practices</h4>
+            <ul>
+                <li>Store keys in environment variables or dedicated key vaults</li>
+                <li>Never commit keys to version control (<code>.gitignore</code> sensitive files)</li>
+                <li>Rotate keys regularly</li>
+                <li>Use different keys for different environments</li>
+                <li>Implement proper key access controls</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="lab">
+        <strong>Challenge:</strong>
+        <p class="bp">In this lab, you'll find a &ldquo;leaked&rdquo; source code file containing a hardcoded encryption key. Use it to decrypt the encrypted database dump and retrieve the flag.</p>
+        <a href="/scenario2/lab" class="btn btn-success">Launch Lab →</a>
+    </div>
+
+    <a href="/" class="back-link">← Back to Home</a>
+</div>
+{% endblock %}

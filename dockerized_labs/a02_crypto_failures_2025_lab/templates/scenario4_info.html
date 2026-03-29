@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+
+{% block title %}<title>Scenario 4: CBC Bit-Flipping Attack</title>{% endblock %}
+
+{% block content %}
+<div class="content">
+    <a href="/" class="back-link">← Back to Home</a>
+    <a href="/scenario4/lab" class="btn btn-success" style="float:right;">Start Lab →</a>
+    <h1>Scenario 4: CBC Bit-Flipping Attack</h1>
+
+    <div class="alert alert-danger">
+        <strong>Vulnerability:</strong> Encryption without integrity protection (CWE-353)
+    </div>
+
+    <div class="box">
+        <h3>The Vulnerability</h3>
+        <p class="bp"><strong>CBC (Cipher Block Chaining)</strong> is a block cipher mode that was widely used for encryption. While CBC provides confidentiality, it does <strong>NOT</strong> provide integrity or authentication by itself.</p>
+        <p class="bp">In CBC mode, each block of plaintext is XORed with the previous ciphertext block before encryption. This creates a dependency chain – but also an exploitable property:</p>
+        <p class="bp"><strong>Bit-Flipping Attack:</strong> An attacker can modify bits in the ciphertext to cause predictable changes in the decrypted plaintext <em>without knowing the encryption key</em>!</p>
+
+        <div class="section">
+            <h4>How CBC Mode Works</h4>
+<pre><code>Encryption:
+C[0] = Encrypt(P[0] XOR IV)
+C[1] = Encrypt(P[1] XOR C[0])
+...
+
+Decryption:
+P[0] = Decrypt(C[0]) XOR IV
+P[1] = Decrypt(C[1]) XOR C[0]
+...</code></pre>
+            <p class="bp"><strong>Key Observation:</strong> When decrypting block N, the previous ciphertext block N-1 is XORed with the decrypted result. Modifying C[N-1] directly affects P[N] through XOR!</p>
+        </div>
+
+        <div class="section">
+            <h4>The XOR Property Attackers Exploit</h4>
+<pre><code>A XOR B XOR B = A  (XOR is reversible)
+
+If: P = Decrypt(C) XOR IV
+Then: P XOR X = Decrypt(C) XOR (IV XOR X)
+
+By flipping bits in IV (or previous ciphertext block),
+we can flip corresponding bits in the plaintext!</code></pre>
+        </div>
+
+        <div class="section">
+            <h4>Real-World Example: Cookie Manipulation</h4>
+            <p class="bp">Consider an application that stores encrypted user roles in a cookie:</p>
+<pre><code>Plaintext:  {"user":"alice","role":"user"}
+Encrypted:  [random-looking-base64-string]
+</code></pre>
+            <p class="bp">An attacker who knows the plaintext structure can flip bits to change:</p>
+<pre><code>{"user":"alice","role":"user"}
+                              ↓ (flip bits)
+{"user":"alice","role":"admin"}
+</code></pre>
+            <p class="bp"><strong>Result:</strong> Privilege escalation without knowing the encryption key!</p>
+        </div>
+    </div>
+
+    <div class="box">
+        <h3>Vulnerable vs Secure Code</h3>
+
+        <div class="section">
+            <h4>❌ Vulnerable – CBC with No Integrity Check</h4>
+<pre><code>from Crypto.Cipher import AES
+import base64
+
+def create_session_cookie(username, role):
+    plaintext = f"user={username};role={role}"
+    plaintext += " " * (16 - len(plaintext) % 16)
+    cipher = AES.new(SECRET_KEY, AES.MODE_CBC, IV)
+    ciphertext = cipher.encrypt(plaintext.encode())
+    return base64.b64encode(IV + ciphertext).decode()
+
+def verify_session_cookie(cookie):
+    data = base64.b64decode(cookie)
+    iv = data[:16]
+    ciphertext = data[16:]
+    cipher = AES.new(SECRET_KEY, AES.MODE_CBC, iv)
+    plaintext = cipher.decrypt(ciphertext).decode()
+    # INSECURE: No integrity check!
+    return parse_cookie(plaintext)
+</code></pre>
+        </div>
+
+        <div class="section">
+            <h4>✅ Secure – Authenticated Encryption (AES-GCM)</h4>
+<pre><code>from Crypto.Cipher import AES
+
+# GCM mode provides both encryption and authentication
+cipher = AES.new(key, AES.MODE_GCM)
+ciphertext, tag = cipher.encrypt_and_digest(plaintext)
+
+# On decryption, verify() raises exception if tampered
+plaintext = cipher.decrypt_and_verify(ciphertext, tag)
+</code></pre>
+        </div>
+
+        <div class="section">
+            <h4>✅ Alternative – Encrypt-then-MAC</h4>
+<pre><code>import hmac, hashlib
+
+ciphertext = encrypt_cbc(plaintext, key)
+mac = hmac.new(mac_key, ciphertext, hashlib.sha256).digest()
+
+# Verify MAC BEFORE decrypting
+if not hmac.compare_digest(received_mac, computed_mac):
+    raise ValueError("Integrity check failed!")
+plaintext = decrypt_cbc(ciphertext, key)
+</code></pre>
+            <div class="alert alert-success">
+                <strong>Key Principles:</strong>
+                <ul>
+                    <li>Never use encryption alone for data that must be trusted</li>
+                    <li>Always use authenticated encryption (AES-GCM, ChaCha20-Poly1305)</li>
+                    <li>If using CBC, add HMAC for integrity (Encrypt-then-MAC)</li>
+                    <li>Verify authentication tags <strong>before</strong> processing decrypted data</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="lab">
+        <strong>Challenge:</strong>
+        <p class="bp">In the lab, you'll manipulate an encrypted cookie to escalate your privileges from regular user to admin by flipping specific bits in the ciphertext!</p>
+        <a href="/scenario4/lab" class="btn btn-success">Start Lab →</a>
+    </div>
+
+    <a href="/" class="back-link">← Back to Home</a>
+</div>
+{% endblock %}

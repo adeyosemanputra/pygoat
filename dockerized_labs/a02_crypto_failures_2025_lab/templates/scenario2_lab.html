@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+{% block title %}<title>Lab 2: Insecure Cryptographic Storage</title>{% endblock %}
+
+{% block content %}
+<div class="content">
+    <a href="/scenario2" class="back-link">← Back to Scenario Details</a>
+    <h1>Scenario 2: Insecure Cryptographic Storage – Lab</h1>
+
+    <div class="alert alert-info">
+        <strong>Objective:</strong> Use the leaked encryption key to decrypt the encrypted database dump and retrieve the flag.
+    </div>
+
+    <div class="grid-2">
+        <!-- Leaked Source Code -->
+        <div class="box">
+            <h3>Leaked Source Code <span style="color:#dc3545;">(config.py)</span></h3>
+<pre><code># Database configuration
+DB_HOST = "localhost"
+DB_PORT = 5432
+
+# SENSITIVE: Encryption key
+# TODO: Move to environment variable!
+ENCRYPTION_KEY = '{{ encryption_key }}'
+
+# API Configuration
+API_ENDPOINT = "https://api.example.com"
+</code></pre>
+        </div>
+
+        <!-- Encrypted Database Dump -->
+        <div class="box">
+            <h3>Encrypted Database Dump</h3>
+            <table>
+                <tr>
+                    <th>Field</th>
+                    <th>Encrypted Value</th>
+                </tr>
+                <tr>
+                    <td>admin_password</td>
+                    <td><code class="word-break-all text-small">{{ encrypted_password }}</code></td>
+                </tr>
+                <tr>
+                    <td>api_key</td>
+                    <td><code class="word-break-all text-small">{{ encrypted_api_key }}</code></td>
+                </tr>
+                <tr>
+                    <td>secret_flag</td>
+                    <td><code class="word-break-all text-small">{{ encrypted_flag }}</code></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- Decryption Tool -->
+    <div class="box">
+        <h3>Decryption Tool</h3>
+        <form method="POST">
+            <div class="form-group">
+                <label>Encryption Key:</label>
+                <input type="text" name="encryption_key" placeholder="Enter the encryption key from the leaked source">
+            </div>
+            <div class="form-group">
+                <label>Ciphertext to Decrypt:</label>
+                <textarea name="ciphertext" rows="3" placeholder="Paste encrypted value here"></textarea>
+            </div>
+            <button type="submit" class="btn btn-success">Decrypt</button>
+        </form>
+
+        {% if decrypted_data %}
+        <div class="alert alert-success mt-20">
+            <strong>Decrypted Data:</strong><br>
+            <code>{{ decrypted_data }}</code>
+            {% if is_flag %}
+            <div class="flag-reveal mt-10">
+                🏁 <strong>CONGRATULATIONS!</strong> You found the flag!
+            </div>
+            {% endif %}
+        </div>
+        {% elif decrypt_error %}
+        <div class="alert alert-danger mt-20">{{ decrypt_error }}</div>
+        {% endif %}
+    </div>
+
+    <!-- Hints -->
+    <div class="box">
+        <h3>Hints</h3>
+        <details>
+            <summary>Hint 1: Find the Key</summary>
+            <p class="bp">Look at the "Leaked Source Code" panel. The encryption key is right there in plain text!</p>
+        </details>
+        <details>
+            <summary>Hint 2: What to Decrypt</summary>
+            <p class="bp">Copy any encrypted value from the database dump table and paste it into the decryption tool along with the key.</p>
+        </details>
+        <details>
+            <summary>Hint 3: The Flag</summary>
+            <p class="bp">Try decrypting the <strong>secret_flag</strong> field to get the flag.</p>
+        </details>
+        <details>
+            <summary>Hint 4: Solution</summary>
+            <p class="bp">1. Copy the encryption key: <code>{{ encryption_key }}</code><br>
+               2. Copy the encrypted flag: <code class="word-break-all">{{ encrypted_flag }}</code><br>
+               3. Paste both into the decryption tool and click Decrypt.</p>
+        </details>
+    </div>
+
+    <div class="alert alert-warning">
+        <strong>Lesson Learned:</strong>
+        <p class="bp">Hardcoded encryption keys make encryption useless. If the key is discovered, ALL encrypted data becomes readable. Always use environment variables or dedicated key management services.</p>
+    </div>
+
+    <a href="/" class="back-link">← Back to Home</a>
+</div>
+{% endblock %}

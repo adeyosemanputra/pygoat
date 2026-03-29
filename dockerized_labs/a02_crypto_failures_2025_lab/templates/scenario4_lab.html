@@ -1,0 +1,182 @@
+{% extends "base.html" %}
+
+{% block title %}<title>Lab 4: CBC Bit-Flipping Attack</title>{% endblock %}
+
+{% block content %}
+<div class="content">
+    <a href="/scenario4" class="back-link">← Back to Scenario Details</a>
+    <h1>Scenario 4: CBC Bit-Flipping Attack – Lab</h1>
+
+    <div class="alert alert-info">
+        <strong>Objective:</strong> Manipulate the encrypted cookie using bit-flipping to change your role from <code>user</code> to <code>admin</code>.
+    </div>
+
+    <!-- Current Session -->
+    <div class="box">
+        <h3>Your Current Session</h3>
+        <table>
+            <tr>
+                <th>Property</th>
+                <th>Value</th>
+            </tr>
+            <tr>
+                <td>Username</td>
+                <td><strong>{{ username }}</strong></td>
+            </tr>
+            <tr>
+                <td>Role</td>
+                <td><strong>{{ role }}</strong></td>
+            </tr>
+            <tr>
+                <td>Encrypted Cookie</td>
+                <td><code class="word-break-all text-small">{{ cookie }}</code></td>
+            </tr>
+            <tr>
+                <td>Cookie Structure</td>
+                <td><code>Base64( IV + AES_CBC_Encrypt("user={{ username }};role={{ role }}") )</code></td>
+            </tr>
+            <tr>
+                <td>Admin Access</td>
+                <td>{% if is_admin %}<strong style="color:#28a745;">✓ GRANTED</strong>{% else %}<strong style="color:#dc3545;">✗ DENIED</strong>{% endif %}</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- Admin Panel -->
+    {% if is_admin %}
+    <div class="box admin-panel">
+        <div class="section">
+            <h3 style="color:#28a745;">Admin Panel – ACCESS GRANTED</h3>
+        </div>
+        <div class="flag-reveal">
+            🏁 <strong>CONGRATULATIONS!</strong> You successfully performed a CBC bit-flipping attack!<br>
+            <strong>Flag:</strong> <code>{{ flag }}</code>
+        </div>
+        <div class="section mt-20">
+            <h4>What You Did:</h4>
+            <p class="bp">By flipping specific bits in the IV or ciphertext, you modified the decrypted plaintext to change <code>role=user</code> to <code>role=admin</code> without knowing the encryption key!</p>
+            <h4>Why This Worked:</h4>
+            <p class="bp">CBC mode doesn't provide integrity protection. The XOR operation in CBC decryption means that modifying the IV or previous ciphertext block causes predictable changes in the plaintext.</p>
+        </div>
+    </div>
+    {% else %}
+    <div class="box">
+        <div class="alert alert-danger">
+            <strong>Admin Panel – ACCESS DENIED</strong><br>
+            You need admin role to access this panel. Current role: <strong>{{ role }}</strong>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Cookie Manipulation Tool -->
+    <div class="box">
+        <h3>Cookie Manipulation Tool</h3>
+        <form method="POST">
+            <div class="form-group">
+                <label>Modified Cookie (Base64):</label>
+                <textarea name="modified_cookie" rows="3" placeholder="Paste your manipulated cookie here">{{ cookie }}</textarea>
+                <small>Try flipping bits in the IV portion to modify the plaintext.</small>
+            </div>
+            <button type="submit" name="action" value="set_cookie" class="btn btn-warning">Use This Cookie</button>
+            <button type="submit" name="action" value="reset" class="btn btn-secondary">Reset to Original</button>
+        </form>
+
+        {% if cookie_error %}
+        <div class="alert alert-danger mt-20">{{ cookie_error }}</div>
+        {% endif %}
+    </div>
+
+    <!-- Attack Strategy -->
+    <div class="box">
+        <h3>Attack Strategy</h3>
+
+        <div class="section">
+            <h4>Cookie Structure</h4>
+<pre><code>Base64( [16 bytes IV] + [encrypted blocks] )
+
+Plaintext: "user=alice;role=user"
+                            ↑
+                Target: change "user" to "admin"
+</code></pre>
+        </div>
+
+        <div class="section">
+            <h4>Bit-Flipping Math</h4>
+<pre><code>1. Know the plaintext at position P: 'u' (0x75)
+2. Want to change it to:            'a' (0x61)
+3. Calculate XOR difference:   0x75 ^ 0x61 = 0x14
+4. Flip that bit in the IV at the same position
+5. When decrypted: P XOR 0x14 = target character!
+</code></pre>
+        </div>
+
+        <div class="section">
+            <h4>Python Attack Script</h4>
+<pre><code>import base64
+
+# Your current cookie
+cookie = "{{ cookie }}"
+cookie_bytes = bytearray(base64.b64decode(cookie))
+
+# Positions in "user=alice;role=user"
+# We want to change "role=user" to "role=admin"
+# Position of 'u' in "user" (after "role="): 17
+
+# XOR differences to change "user" -> "admin"
+# u -> a: ord('u') ^ ord('a') = 0x75 ^ 0x61 = 0x14
+# s -> d: ord('s') ^ ord('d') = 0x73 ^ 0x64 = 0x17
+# e -> m: ord('e') ^ ord('m') = 0x65 ^ 0x6d = 0x08
+# r -> i: ord('r') ^ ord('i') = 0x72 ^ 0x69 = 0x1b
+
+cookie_bytes[17] ^= 0x14  # u -> a
+cookie_bytes[18] ^= 0x17  # s -> d
+cookie_bytes[19] ^= 0x08  # e -> m
+cookie_bytes[20] ^= 0x1b  # r -> i
+
+modified_cookie = base64.b64encode(cookie_bytes).decode()
+print(modified_cookie)
+</code></pre>
+        </div>
+    </div>
+
+    <!-- Hints -->
+    <div class="box">
+        <h3>Hints</h3>
+        <details>
+            <summary>Hint 1: Understand the Structure</summary>
+            <p class="bp">The cookie is Base64-encoded. The first 16 bytes after decoding are the IV. The IV is XORed with the first plaintext block during decryption.</p>
+        </details>
+        <details>
+            <summary>Hint 2: Find the Target</summary>
+            <p class="bp">You need to change <code>role=user</code> to <code>role=admin</code>. Calculate the byte positions of 'u', 's', 'e', 'r' in the plaintext string <code>user=alice;role=user</code>.</p>
+        </details>
+        <details>
+            <summary>Hint 3: XOR Magic</summary>
+            <p class="bp">For each character you want to change, calculate: <code>original_char XOR target_char</code>. Then XOR that value with the corresponding IV byte.</p>
+        </details>
+        <details>
+            <summary>Hint 4: Use the Code</summary>
+            <p class="bp">Copy the Python script from the "Attack Strategy" section, run it, and paste the modified cookie into the form above.</p>
+        </details>
+        <details>
+            <summary>Hint 5: Quick Solution</summary>
+            <p class="bp">Run this in Python:</p>
+<pre><code>import base64
+cookie = base64.b64decode("{{ cookie }}")
+cookie = bytearray(cookie)
+cookie[17] ^= 0x14
+cookie[18] ^= 0x17
+cookie[19] ^= 0x08
+cookie[20] ^= 0x1b
+print(base64.b64encode(cookie).decode())</code></pre>
+        </details>
+    </div>
+
+    <div class="alert alert-warning">
+        <strong>Lesson Learned:</strong>
+        <p class="bp">CBC mode provides confidentiality but NOT integrity or authenticity. Always use authenticated encryption modes (AES-GCM) or add HMAC to detect tampering. Never trust decrypted data without verification!</p>
+    </div>
+
+    <a href="/" class="back-link">← Back to Home</a>
+</div>
+{% endblock %}
