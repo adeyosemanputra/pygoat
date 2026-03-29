@@ -58,3 +58,6 @@ def bau(request):
 
 def sec_mis(request):
     return render(request, "Lab/sec_mis/sec_mis.html") if request.user.is_authenticated else redirect("login")
+
+def healthz(request):
+    return HttpResponse("OK", status=200)
