@@ -21,8 +21,6 @@
     <link id="pagestyle" rel="stylesheet" href="{% static 'css/dark-theme.css'%}" />
     <link rel="stylesheet" href="{% static 'css/home.css'%}" />
     <link rel="stylesheet" href="{% static 'Lab/ssrf.css'%}" />
-    <link rel="stylesheet" href="{% static 'Lab/ssti.css'%}" />
-    <link rel="stylesheet" href="{% static 'css/playground.css'%}" />
     <link rel="stylesheet" href="{% static 'css/supply_chain.css'%}" />
     <link rel="icon" href="{% static 'Lab/icons/pygoat-mini.png' %}" />
     <!-- Font Awesome JS -->
@@ -38,8 +36,6 @@
       integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY"
       crossorigin="anonymous"
     ></script>
-    <script defer src="{% static 'Lab/xss.js' %}"> </script>
-    <script defer src="{% static 'Lab/ssrf.js' %}"> </script>
   </head>
 
   <body>
@@ -112,19 +108,25 @@
                     </a>
                   </li>
                   <li>
-                    <a href="{% url 'dependency_attack_lab' %}" class="sidebar-list-items">
+                    <button onclick="launchLab('dependency_attack_lab')" class="sidebar-list-items lab-button" data-lab="dependency_attack_lab">
+                      <i class="fas fa-bug"></i>
                       Dependency Attack Lab
-                    </a>
+                      <span class="lab-status-indicator not-running" aria-hidden="true"></span>
+                    </button>
                   </li>
                   <li>
-                    <a href="{% url 'package_injection_lab' %}" class="sidebar-list-items">
+                    <button onclick="launchLab('package_injection_lab')" class="sidebar-list-items lab-button" data-lab="package_injection_lab">
+                      <i class="fas fa-bug"></i>
                       Package Injection Lab
-                    </a>
+                      <span class="lab-status-indicator not-running" aria-hidden="true"></span>
+                    </button>
                   </li>
                   <li>
-                    <a href="{% url 'open_source_library_attack_lab' %}" class="sidebar-list-items">
+                    <button onclick="launchLab('open_source_library_attack_lab')" class="sidebar-list-items lab-button" data-lab="open_source_library_attack_lab">
+                      <i class="fas fa-bug"></i>
                       Open Source Library Attack Lab
-                    </a>
+                      <span class="lab-status-indicator not-running" aria-hidden="true"></span>
+                    </button>
                   </li>
                 </ul>
               </li>
