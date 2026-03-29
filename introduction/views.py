@@ -25,6 +25,7 @@ import yaml
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.shortcuts import redirect, render
+from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from PIL import Image, ImageMath
 
@@ -271,6 +272,7 @@ def Otp(request):
 
 # *****************************************THE BOUNCER (Traefik Auth)**********************************************#
 
+@csrf_exempt
 def check_auth(request):
     """The central view Traefik calls to verify if a user can access a lab."""
     if not request.user.is_authenticated:

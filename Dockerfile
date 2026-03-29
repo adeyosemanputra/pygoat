@@ -42,6 +42,7 @@ COPY . /app/
 
 EXPOSE 8000
 
+
 # v3 Healthcheck: Ensures Traefik knows when the backend is ready
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
     CMD curl -f http://localhost:8000/healthz || exit 1
