@@ -181,7 +181,7 @@ TRAEFIK_URLS = [
 
 # Labs configuration Defaults
 LAB_DOMAIN = "lvh.me"
-DOCKER_NETWORK = "pygoat_pygoat_net"
+DOCKER_NETWORK = "my_network"
 LABS_PER_USER_LIMIT = 3
 
 CSRF_TRUSTED_ORIGINS = [
