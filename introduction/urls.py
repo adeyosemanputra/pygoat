@@ -19,4 +19,3 @@ urlpatterns = [
     path("bau", views.bau, name="Broken Authe"),
     path("sec_mis", views.sec_mis, name="Security Misconfiguration"),
 ]
-]
