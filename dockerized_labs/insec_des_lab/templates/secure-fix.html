@@ -1,0 +1,125 @@
+<!-- Custom CSS Modal for Security Fix -->
+<div id="secureFixModal" class="custom-modal">
+    <div class="modal-overlay"></div>
+    <div class="modal-container">
+        <div class="modal-header">
+            <h2 class="modal-title">
+                🛡️ Security Fix for Insecure Deserialization
+            </h2>
+            <button type="button" class="close-btn" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="tabs-container">
+                <div class="tab-buttons">
+                    <!-- <button class="tab-btn active" onclick="showTab('vulnerability')">Vulnerability</button> -->
+                    <button class="tab-btn active" style="font-weight: bold; font-size: 18px;" onclick="showTab('secure-code')">Secure Code</button>
+                    <button class="tab-btn " style="font-weight: bold; font-size: 18px;" onclick="showTab('prevention')">Solution</button>
+                </div>
+
+                <div class="tab-content">
+                    <div id="secure-code" class="tab-panel active">
+                        <h4>Secure Implementation of Insecure Deserialization</h4>
+                        <pre class="code-block"><code>
+import json
+import hmac
+import hashlib
+import base64
+from typing import Dict, Any
+
+class SecureDeserialization:
+    """Secure deserialization implementation"""
+    
+    def __init__(self, secret_key: str):
+        self.secret_key = secret_key.encode()
+    
+    def safe_json_deserialize(self, json_string: str, allowed_keys: set = None) -> Dict:
+
+        """
+        SECURE: JSON deserialization with validation and whitelisting
+        """
+        try:
+            data = json.loads(json_string)
+            
+            if not isinstance(data, dict):
+                raise ValueError("Expected dictionary object")
+            
+            if allowed_keys:
+                data = {k: v for k, v in data.items() if k in allowed_keys}
+            
+            for key, value in data.items():
+                if isinstance(value, str):
+                    data[key] = value[:1000]  # Limit string length
+            
+            return data
+            
+        except json.JSONDecodeError:
+            raise ValueError("Invalid JSON format")
+    
+    def signed_serialize(self, data: Dict) -> str:
+        """
+        SECURE: Serialize with HMAC signature for integrity
+        """
+        json_data = json.dumps(data, sort_keys=True)
+        
+        # Create HMAC signature
+        signature = hmac.new(
+            self.secret_key,
+            json_data.encode(),
+            hashlib.sha256
+        ).hexdigest()
+        
+        signed_data = {'data': json_data, 'signature': signature}
+        return base64.b64encode(json.dumps(signed_data).encode()).decode()
+    
+    def signed_deserialize(self, signed_data: str) -> Dict:
+        """
+        SECURE: Deserialize with signature verification
+        """
+        try:
+            # Decode and parse
+            decoded = json.loads(base64.b64decode(signed_data).decode())
+            data = decoded['data']
+            provided_signature = decoded['signature']
+            
+            # Verify signature
+            expected_signature = hmac.new(
+                self.secret_key,
+                data.encode(),
+                hashlib.sha256
+            ).hexdigest()
+            
+            if not hmac.compare_digest(provided_signature, expected_signature):
+                raise ValueError("Data integrity check failed")
+            
+            return json.loads(data)
+            
+        except Exception as e:
+            raise ValueError(f"Deserialization failed: {e}")
+</code></pre>
+                    </div>
+
+                    <div id="prevention" class="tab-panel">
+                                <h4>Solution</h4>
+                                <p>This Lab consists of a Page that has some content only available to for the admin to see, How can we access that page as admin? How is our role defined?</p>
+                                <p>After creating User you will see that a serialized token is also generated with it, on decoding we realise it is pickle serialised and we can see some attributes, we have to change the attributes to access the admin content.</p>
+                                <p>Using online tools Try to flip the bit of the admin from ...admin\x94K\x00... to ...admin\x94K\x00...</p><br>
+
+                                <h4>Critical Rules:</h4>
+                                <li>Never use pickle.loads() with untrusted data (can execute arbitrary code).</li>
+                                <li>Never use eval() with user input (code injection risk)</li>
+                                <li>Always validate against expected schema/fields</li>
+                                <li>Always verify data integrity with signatures for sensitive data</li>
+                                
+                        <br>
+                        <h4>OWASP References</h4>
+                        <ul>
+                            <li><a href="https://owasp.org/www-community/vulnerabilities/Insecure_Deserialization" target="_blank">OWASP Insecure Deserialization </a></li>
+                            <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Deserialization_Cheat_Sheet.html" target="_blank">OWASP Insecure Deserialization Cheatsheet</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>

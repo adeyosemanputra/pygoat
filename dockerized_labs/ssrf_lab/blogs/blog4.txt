@@ -1,0 +1,24 @@
+SSRF in Cloud Environments
+
+SSRF has become increasingly critical in cloud environments:
+
+1. Cloud Service Provider Metadata
+- Access to instance metadata
+- Retrieval of cloud credentials
+- Service discovery
+
+2. Container Environments
+- Access to kubelet API
+- Docker API exploitation
+- Service mesh vulnerabilities
+
+3. Serverless Functions
+- Internal service discovery
+- Function chaining
+- Environment information disclosure
+
+4. Mitigation Strategies
+- Use IMDSv2 for AWS
+- Implement proper RBAC
+- Network segmentation
+- Strong access controls

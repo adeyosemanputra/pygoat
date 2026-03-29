@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>Login - Project Management System</title>
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <div class="box">
+        <h3>Login</h3>
+        
+        <div class="login-form">
+            {% if error %}
+            <div class="error">{{ error }}</div>
+            {% endif %}
+            
+            <form method="POST">
+                <input type="text" name="username" placeholder="Username" required>
+                <input type="password" name="password" placeholder="Password" required>
+                <button type="submit">Login</button>
+            </form>
+        </div>
+
+        <div class="section">
+            <h4>Test Credentials</h4>
+            <div class="bp">
+                <strong>Developer (Limited Access):</strong><br>
+                Username: <code>user1</code><br>
+                Password: <code>password123</code><br><br>
+
+                <strong>Manager (More Access):</strong><br>
+                Username: <code>user2</code><br>
+                Password: <code>pass456</code><br><br>
+
+                <strong>Admin (Full Access):</strong><br>
+                Username: <code>admin</code><br>
+                Password: <code>admin123</code>
+            </div>
+        </div>
+
+        <div class="navigation">
+            <a href="/lab">← Back to Lab</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

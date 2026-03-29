@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Security Misconfiguration - Lab 2</title>
+{% endblock %}
+
+{% block content %}
+<div class="box">
+    <h4>Debug Mode Exploitation</h4>
+    <p class="bp">
+        This lab demonstrates how enabling debug mode in production can leak sensitive information.
+        Try to trigger an error to see what information gets exposed.
+    </p>
+    <!-- <div class="section">
+        <button class="btn btn-info" onclick="window.location.href='/lab2/trigger-error'">Trigger Error</button>
+    </div> -->
+</div>
+
+
+
+<div class="button-container">
+    <button class="btn btn-info" type="button" onclick="window.location.href='/'">Back to Lab Details</button>
+</div>
+{% endblock %}

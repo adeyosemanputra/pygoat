@@ -1,0 +1,169 @@
+<!-- Custom CSS Modal for Security Fix -->
+<div id="secureFixModal" class="custom-modal">
+    <div class="modal-overlay"></div>
+    <div class="modal-container">
+        <div class="modal-header">
+            <h2 class="modal-title">
+                🛡️ Security Fix for Vulnerable and Outdated Components
+            </h2>
+            <button type="button" class="close-btn" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="tabs-container">
+                <div class="tab-buttons">
+                    <!-- <button class="tab-btn active" onclick="showTab('vulnerability')">Vulnerability</button> -->
+                    <button class="tab-btn active" style="font-weight: bold; font-size: 18px;" onclick="showTab('secure-code')">Secure Code</button>
+                    <button class="tab-btn " style="font-weight: bold; font-size: 18px;" onclick="showTab('prevention')">Solution</button>
+                </div>
+
+                <div class="tab-content">
+                    <div id="secure-code" class="tab-panel active">
+                        <h4>Secure Implementation for Vulnerable and Outdated Components</h4>
+                        <pre class="code-block"><code>
+class SecureComponentManager:
+    def __init__(self):
+        # Known vulnerable versions database
+        self.vulnerable_components = {
+            'requests': {'2.25.1': 'CVE-2023-XXXX', '2.24.0': 'CVE-2023-YYYY'},
+            'flask': {'1.0.0': 'CVE-2023-ZZZZ', '0.12.4': 'CVE-2023-AAAA'},
+            'urllib3': {'1.26.5': 'CVE-2021-33503'}
+        }
+        
+        # Approved secure versions
+        self.approved_versions = {
+            'requests': ['2.28.1', '2.31.0'],
+            'flask': ['2.2.2', '2.3.3'],
+            'urllib3': ['1.26.12', '2.0.4']
+        }
+    
+    def validate_component(self, component_name, component_version):
+        
+        result = {
+            'component': f"{component_name}=={component_version}",
+            'approved': False,
+            'vulnerabilities': [],
+            'risk_level': 'LOW'
+        }
+        
+        # 1. Check against known vulnerable versions
+        if self._has_known_vulnerability(component_name, component_version):
+            cve_id = self.vulnerable_components[component_name][component_version]
+            result['vulnerabilities'].append({
+                'cve_id': cve_id,
+                'severity': 'HIGH',
+                'description': f'Known vulnerability in {component_name} {component_version}'
+            })
+            result['risk_level'] = 'HIGH'
+        
+        # 2. Check if version is in approved list
+        elif not self._is_version_approved(component_name, component_version):
+            result['vulnerabilities'].append({
+                'issue': 'UNAPPROVED_VERSION',
+                'description': f'Version {component_version} not in approved list',
+                'recommended': self._get_latest_approved(component_name)
+            })
+            result['risk_level'] = 'MEDIUM'
+        
+        # 3. Final approval decision
+        result['approved'] = len(result['vulnerabilities']) == 0
+        
+        return result
+    
+    def scan_dependencies(self, requirements_file="requirements.txt"):
+        
+        dependencies = self._parse_requirements(requirements_file)
+        
+        scan_results = {
+            'total_components': len(dependencies),
+            'vulnerable_components': [],
+            'approved_components': [],
+            'security_score': 0
+        }
+        
+        for dep in dependencies:
+            validation = self.validate_component(dep['name'], dep['version'])
+            
+            if not validation['approved']:
+                scan_results['vulnerable_components'].append(validation)
+            else:
+                scan_results['approved_components'].append(validation)
+        
+        # Calculate security score (0-10)
+        total = scan_results['total_components']
+        vulnerable = len(scan_results['vulnerable_components'])
+        scan_results['security_score'] = max(0, 10 - (vulnerable / total * 10)) if total > 0 else 10
+        
+        return scan_results
+    
+    def get_secure_update_recommendation(self, component_name, current_version):
+       
+        validation = self.validate_component(component_name, current_version)
+        
+        if not validation['approved']:
+            recommended_version = self._get_latest_approved(component_name)
+            
+            return {
+                'update_required': True,
+                'current_version': current_version,
+                'recommended_version': recommended_version,
+                'reason': validation['vulnerabilities'][0]['description'] if validation['vulnerabilities'] else 'Version not approved',
+                'update_command': f"pip install {component_name}=={recommended_version}"
+            }
+        
+        return {
+            'update_required': False,
+            'current_version': current_version,
+            'status': 'Current version is secure'
+        }
+    
+    def _has_known_vulnerability(self, component_name, component_version):
+        return (component_name in self.vulnerable_components and 
+                component_version in self.vulnerable_components[component_name])
+    
+    def _is_version_approved(self, component_name, component_version):
+        return (component_name in self.approved_versions and 
+                component_version in self.approved_versions[component_name])
+    
+    def _get_latest_approved(self, component_name):
+        if component_name in self.approved_versions:
+            versions = self.approved_versions[component_name]
+            return max(versions, key=lambda v: version.parse(v))
+        return "unknown"
+    
+    def _parse_requirements(self, filename):
+    
+        # Simulate parsing requirements file
+        sample_dependencies = [
+            {'name': 'requests', 'version': '2.25.1'},  # Vulnerable
+            {'name': 'flask', 'version': '2.2.2'},      # Secure
+            {'name': 'urllib3', 'version': '1.26.5'},   # Vulnerable
+            {'name': 'django', 'version': '4.1.0'}      # Not in database
+        ]
+        return sample_dependencies
+</code></pre>
+                    </div>
+
+                    <div id="prevention" class="tab-panel">
+                                <h4>Solution</h4>
+                                <p>The user on accessing the lab is provided with a feature to convert yaml files into json objects. The user needs to choose an yaml file and click upload to get the json data. There is also a get version feature which tells the user the version of the library the app uses.</p>
+                                <strong>Exploiting the vulnerability.</strong>
+                                <li>The app usespyyaml 5.1  Which is vulnerable to code execution.</li>
+                                <li>You can google the library with the version to get the poc and vulnerability details.</li>
+                                <li>Create An yaml file with this payload:</li>
+                                <pre><code>!!python/object/apply:subprocess.check_output
+- ls</code></pre>
+                                <li>On Uploading this file the user should be able to see the output of the command executed.</li>
+
+                                <br><br>
+                        <h4>OWASP References</h4>
+                        <ul>
+                            <li><a href="https://owasp.org/Top10/A06_2021-Vulnerable_and_Outdated_Components/" target="_blank">OWASP Vulnerable and Outdated Components</a></li>
+                            <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Vulnerable_Dependency_Management_Cheat_Sheet.html" target="_blank">OWASP Vulnerable and Outdated Components Cheatsheet</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>

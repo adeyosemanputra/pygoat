@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}<title>Command Injection - Expression Evaluator</title>{% endblock %}
+
+{% block content %}
+<div class="box">
+    <h3>Expression Evaluator</h3>
+    
+    <div class="section">
+        <form method="post" action="/lab2">
+            <div class="form-group">
+                <label for="expression">Expression:</label>
+                <input type="text" id="expression" name="val" placeholder="Enter expression (e.g., 7*7)">
+            </div>
+            
+            <button type="submit">Evaluate</button>
+        </form>
+    </div>
+
+    {% if output %}
+    <div class="section">
+        <h4>Result:</h4>
+        <pre>{{ output }}</pre>
+    </div>
+    {% endif %}
+
+    <div class="button-container">
+        <button onclick="window.location.href='/'">Back to Lab Details</button>
+    </div>
+</div>
+{% endblock %}

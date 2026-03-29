@@ -1,0 +1,256 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Solution - Security Headers Misconfiguration</title>
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <h3>Solution: Security Headers Misconfiguration</h3>
+    
+    <div class="box">
+        <h4>Vulnerability Analysis</h4>
+        <div class="section">
+            <h5>The Problem</h5>
+            <p class="bp">
+                The application lacks proper security headers that prevent clickjacking attacks. When security headers 
+                are disabled, the banking transfer page can be embedded in malicious iframes, allowing attackers to 
+                trick users into performing unintended actions.
+            </p>
+        </div>
+
+        <div class="section">
+            <h5>Vulnerable Configuration</h5>
+            <p class="bp">Without proper security headers, the application responds like this:</p>
+            
+            <pre><code># VULNERABLE: Missing or inadequate security headers
+HTTP/1.1 200 OK
+Content-Type: text/html; charset=utf-8
+# No X-Frame-Options header
+# No Content-Security-Policy header
+# Allows iframe embedding from any origin</code></pre>
+            
+            <p class="bp">
+                This allows the banking page to be embedded in any iframe, making clickjacking attacks possible.
+            </p>
+        </div>
+
+        <div class="lab">
+            <h4>Exploitation Steps</h4>
+            <ol class="bp">
+                <li><strong>Identify Target:</strong> Banking transfer page lacks security headers</li>
+                <li><strong>Create Malicious Page:</strong> Design attractive interface with hidden iframe</li>
+                <li><strong>Embed Target:</strong> Load banking page in invisible iframe</li>
+                <li><strong>UI Redressing:</strong> Position fake buttons over real banking controls</li>
+                <li><strong>Social Engineering:</strong> Trick users into clicking fake buttons</li>
+                <li><strong>Execute Attack:</strong> User clicks trigger actions in hidden banking interface</li>
+            </ol>
+            
+            <p class="bp">
+                <strong>Attack Code Example:</strong>
+            </p>
+            <pre><code>&lt;!-- Malicious page structure --&gt;
+&lt;div style="position: relative;"&gt;
+    &lt;!-- Fake attractive interface --&gt;
+    &lt;button style="z-index: 1;"&gt;Click to Win Prize!&lt;/button&gt;
+    
+    &lt;!-- Hidden banking iframe --&gt;
+    &lt;iframe src="http://bank.com/transfer" 
+            style="position: absolute; opacity: 0.01; z-index: 2;"&gt;
+    &lt;/iframe&gt;
+&lt;/div&gt;</code></pre>
+        </div>
+
+        <div class="section">
+            <h4>Secure Implementation</h4>
+            <p class="bp">The secure version implements proper security headers:</p>
+            
+            <pre><code># SECURE: Proper security headers implementation
+def add_security_headers(response, secure_mode=False):
+    if secure_mode:
+        # Prevent iframe embedding
+        response.headers['X-Frame-Options'] = 'DENY'
+        response.headers['Content-Security-Policy'] = "frame-ancestors 'none'"
+        
+        # Additional security headers
+        response.headers['X-Content-Type-Options'] = 'nosniff'
+        response.headers['X-XSS-Protection'] = '1; mode=block'
+        response.headers['Referrer-Policy'] = 'strict-origin-when-cross-origin'
+    
+    return response</code></pre>
+            
+            <p class="bp">
+                <strong>Secure HTTP Response:</strong>
+            </p>
+            <pre><code>HTTP/1.1 200 OK
+Content-Type: text/html; charset=utf-8
+X-Frame-Options: DENY
+Content-Security-Policy: frame-ancestors 'none'
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 1; mode=block
+Referrer-Policy: strict-origin-when-cross-origin</code></pre>
+        </div>
+
+        <div class="section">
+            <h4>Security Headers Explained</h4>
+            <div class="lesson-section">
+                <h5>1. X-Frame-Options</h5>
+                <p class="bp">Legacy header for iframe protection:</p>
+                <pre><code># Completely prevent iframe embedding
+X-Frame-Options: DENY
+
+# Allow iframe only from same origin
+X-Frame-Options: SAMEORIGIN
+
+# Allow iframe from specific domain
+X-Frame-Options: ALLOW-FROM https://trusted-site.com</code></pre>
+            </div>
+
+            <div class="lesson-section">
+                <h5>2. Content-Security-Policy (frame-ancestors)</h5>
+                <p class="bp">Modern CSP directive (preferred over X-Frame-Options):</p>
+                <pre><code># Block all iframe embedding
+Content-Security-Policy: frame-ancestors 'none'
+
+# Allow iframe only from same origin
+Content-Security-Policy: frame-ancestors 'self'
+
+# Allow iframe from specific domains
+Content-Security-Policy: frame-ancestors 'self' https://trusted-site.com</code></pre>
+            </div>
+
+            <div class="lesson-section">
+                <h5>3. Additional Security Headers</h5>
+                <pre><code># Prevent MIME type sniffing
+X-Content-Type-Options: nosniff
+
+# Enable XSS filtering (legacy)
+X-XSS-Protection: 1; mode=block
+
+# Control referrer information
+Referrer-Policy: strict-origin-when-cross-origin
+
+# Force HTTPS (when applicable)
+Strict-Transport-Security: max-age=31536000; includeSubDomains</code></pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h4>Implementation Examples</h4>
+            <div class="lesson-section">
+                <h5>Flask Implementation</h5>
+                <pre><code>from flask import Flask, make_response
+
+@app.after_request
+def add_security_headers(response):
+    response.headers['X-Frame-Options'] = 'DENY'
+    response.headers['Content-Security-Policy'] = "frame-ancestors 'none'"
+    response.headers['X-Content-Type-Options'] = 'nosniff'
+    return response</code></pre>
+            </div>
+
+            <div class="lesson-section">
+                <h5>Apache Configuration</h5>
+                <pre><code># In .htaccess or Apache config
+Header always set X-Frame-Options "DENY"
+Header always set Content-Security-Policy "frame-ancestors 'none'"
+Header always set X-Content-Type-Options "nosniff"</code></pre>
+            </div>
+
+            <div class="lesson-section">
+                <h5>Nginx Configuration</h5>
+                <pre><code># In nginx.conf
+add_header X-Frame-Options "DENY" always;
+add_header Content-Security-Policy "frame-ancestors 'none'" always;
+add_header X-Content-Type-Options "nosniff" always;</code></pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h4>Testing & Validation</h4>
+            <div class="lesson-section">
+                <h5>Manual Testing</h5>
+                <pre><code># Check headers with curl
+curl -I https://yoursite.com/sensitive-page
+
+# Test iframe embedding
+&lt;iframe src="https://yoursite.com/sensitive-page"&gt;&lt;/iframe&gt;</code></pre>
+            </div>
+
+            <div class="lesson-section">
+                <h5>Automated Testing Tools</h5>
+                <ul class="bp">
+                    <li><strong>Mozilla Observatory:</strong> https://observatory.mozilla.org/</li>
+                    <li><strong>Security Headers:</strong> https://securityheaders.com/</li>
+                    <li><strong>OWASP ZAP:</strong> Automated security scanning</li>
+                    <li><strong>Burp Suite:</strong> Professional web security testing</li>
+                </ul>
+            </div>
+
+            <div class="lesson-section">
+                <h5>Browser Testing</h5>
+                <p class="bp">Expected browser behavior with proper headers:</p>
+                <ul class="bp">
+                    <li><strong>Chrome:</strong> "Refused to display ... in a frame because it set 'X-Frame-Options' to 'deny'"</li>
+                    <li><strong>Firefox:</strong> "Load denied by X-Frame-Options"</li>
+                    <li><strong>Safari:</strong> Similar iframe blocking messages</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h4>Real-World Examples</h4>
+            <p class="bp">
+                <strong>Notable Clickjacking Incidents:</strong>
+                <ul>
+                    <li><strong>Adobe Flash Settings:</strong> Attackers tricked users into enabling microphone/camera</li>
+                    <li><strong>Social Media Likes:</strong> Hidden Like buttons increased page engagement</li>
+                    <li><strong>Banking Transfers:</strong> Unauthorized transactions through hidden banking interfaces</li>
+                    <li><strong>Browser Plugins:</strong> Installation of malicious extensions</li>
+                </ul>
+            </p>
+        </div>
+
+        <div class="section">
+            <h4>Key Takeaways</h4>
+            <p class="bp">
+                <strong>For Developers:</strong>
+                <ul>
+                    <li>Always implement security headers for sensitive pages</li>
+                    <li>Use Content-Security-Policy frame-ancestors over X-Frame-Options</li>
+                    <li>Test iframe embedding during development</li>
+                    <li>Implement defense-in-depth with multiple security layers</li>
+                    <li>Regularly audit and update security header configurations</li>
+                </ul>
+            </p>
+            
+            <p class="bp">
+                <strong>For Security Testers:</strong>
+                <ul>
+                    <li>Always check for missing security headers</li>
+                    <li>Test iframe embedding capabilities</li>
+                    <li>Verify that sensitive pages cannot be embedded</li>
+                    <li>Check for bypass techniques and edge cases</li>
+                    <li>Validate security headers are properly configured</li>
+                </ul>
+            </p>
+        </div>
+
+        <div class="section">
+            <h4>References & Further Reading</h4>
+            <ul class="bp">
+                <li><a href="https://owasp.org/www-community/attacks/Clickjacking" target="_blank">OWASP Clickjacking Guide</a></li>
+                <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options" target="_blank">MDN X-Frame-Options</a></li>
+                <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/frame-ancestors" target="_blank">MDN CSP frame-ancestors</a></li>
+                <li><a href="https://securityheaders.com/" target="_blank">Security Headers Scanner</a></li>
+            </ul>
+        </div>
+
+        <div style="text-align: center; margin-top: 30px;">
+            <button onclick="window.location.href='/lab'" style="margin-right: 10px;">Back to Lab Details</button>
+            <button onclick="window.location.href='/malicious'" style="margin-right: 10px;">Try Attack Demo</button>
+            <button onclick="window.location.href='/'">Back to Overview</button>
+        </div>
+    </div>
+</div>
+{% endblock %}

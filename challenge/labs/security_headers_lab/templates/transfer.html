@@ -1,0 +1,349 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>SecureBank - Money Transfer</title>
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <div class="banking-nav">
+        <h3>🏦 SecureBank - Money Transfer</h3>
+        <div class="nav-buttons">
+            <button onclick="window.location.href='/dashboard'">Dashboard</button>
+            <button onclick="window.location.href='/logout'" style="background: #6c757d;">Logout</button>
+        </div>
+    </div>
+    
+    <div class="box">
+        <div class="transfer-header">
+            <h4>Transfer Money</h4>
+            <p class="bp">Current Balance: <strong>₹{{ "%.2f"|format(user.balance) }}</strong></p>
+        </div>
+
+        {% if error %}
+        <div class="alert error">
+            <strong>Error:</strong> {{ error }}
+        </div>
+        {% endif %}
+
+        {% if success %}
+        <div class="alert success">
+            <strong>Success:</strong> {{ success }}
+            {% if transaction %}
+            <div class="transaction-details">
+                <p><strong>Transaction ID:</strong> {{ transaction.id }}</p>
+                <p><strong>Timestamp:</strong> {{ transaction.timestamp }}</p>
+            </div>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        <form method="POST" class="transfer-form">
+            <div class="form-group">
+                <label for="recipient">Recipient Name/Account:</label>
+                <input type="text" id="recipient" name="recipient" 
+                       placeholder="Enter recipient name or account number" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="amount">Transfer Amount (₹):</label>
+                <input type="number" id="amount" name="amount" 
+                       step="0.01" min="1" max="{{ user.balance }}"
+                       placeholder="Enter amount to transfer" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="description">Description (Optional):</label>
+                <input type="text" id="description" name="description" 
+                       placeholder="Payment description">
+            </div>
+            
+            <div class="transfer-summary">
+                <h5>Transfer Summary</h5>
+                <div class="summary-row">
+                    <span>From Account:</span>
+                    <span>{{ user.account_number }} ({{ user.full_name }})</span>
+                </div>
+                <div class="summary-row">
+                    <span>Available Balance:</span>
+                    <span>₹{{ "%.2f"|format(user.balance) }}</span>
+                </div>
+            </div>
+            
+            <button type="submit" id="transferBtn" class="transfer-btn">
+                🔒 Confirm Transfer
+            </button>
+        </form>
+
+        <div class="clickjacking-demo">
+            <h4>Clickjacking Vulnerability Demo</h4>
+            <div class="demo-info">
+                <p class="bp">
+                    <strong>Current Security Status:</strong> 
+                    {% if session.secure_mode %}
+                        <span style="color: #28a745;">🔒 Protected (Headers enabled - iframe embedding blocked)</span>
+                    {% else %}
+                        <span style="color: #dc3545;">⚠️ Vulnerable (No security headers - iframe embedding allowed)</span>
+                    {% endif %}
+                </p>
+                
+                {% if not session.secure_mode %}
+                <div class="vulnerability-warning">
+                    <p><strong>⚠️ WARNING:</strong> This transfer page can be embedded in malicious iframes!</p>
+                    <p>An attacker could create a page that:</p>
+                    <ul>
+                        <li>Embeds this transfer form invisibly</li>
+                        <li>Tricks users into clicking hidden buttons</li>
+                        <li>Initiates unauthorized transfers</li>
+                    </ul>
+                </div>
+                {% endif %}
+            </div>
+            
+            <div class="demo-buttons">
+                <button onclick="testIframe()" style="background: #ffc107; color: #212529;">
+                    🧪 Test Iframe Embedding
+                </button>
+                <button onclick="window.open('/malicious', '_blank')" style="background: #dc3545;">
+                    🚨 View Malicious Demo
+                </button>
+                <button onclick="window.location.href='/toggle_secure_mode'">
+                    {% if session.secure_mode %}
+                        Disable Security Headers
+                    {% else %}
+                        Enable Security Headers
+                    {% endif %}
+                </button>
+            </div>
+        </div>
+
+        <div class="security-tips">
+            <h4>Security Best Practices</h4>
+            <ul class="bp">
+                <li>Always verify transfer details before confirming</li>
+                <li>Never perform banking operations on suspicious websites</li>
+                <li>Look for proper security indicators in your browser</li>
+                <li>Report any suspicious activity immediately</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script>
+function testIframe() {
+    const popup = window.open('', 'iframe_test', 'width=800,height=600');
+    popup.document.write(`
+        <html>
+        <head><title>Iframe Embedding Test</title></head>
+        <body style="font-family: Arial, sans-serif; padding: 20px;">
+            <h2>Iframe Embedding Test</h2>
+            <p>Attempting to embed the transfer page in an iframe:</p>
+            <iframe src="${window.location.href}" width="100%" height="400" style="border: 2px solid red;">
+                Your browser does not support iframes.
+            </iframe>
+            <p style="color: red; margin-top: 10px;">
+                {% if session.secure_mode %}
+                    <strong> BLOCKED:</strong> Security headers prevent iframe embedding!
+                {% else %}
+                    <strong> VULNERABLE:</strong> Page can be embedded in iframe!
+                {% endif %}
+            </p>
+        </body>
+        </html>
+    `);
+}
+
+document.querySelector('.transfer-form').addEventListener('submit', function(e) {
+    const amount = parseFloat(document.getElementById('amount').value);
+    const balance = {{ user.balance|tojson }};
+    
+    if (amount > balance) {
+        e.preventDefault();
+        alert('Transfer amount exceeds available balance!');
+        return false;
+    }
+    
+    if (amount <= 0) {
+        e.preventDefault();
+        alert('Please enter a valid amount!');
+        return false;
+    }
+    
+    const recipient = document.getElementById('recipient').value.trim();
+    if (!recipient) {
+        e.preventDefault();
+        alert('Please enter recipient information!');
+        return false;
+    }
+    
+    const confirmed = confirm(`Confirm transfer of ₹${amount.toFixed(2)} to ${recipient}?`);
+    if (!confirmed) {
+        e.preventDefault();
+        return false;
+    }
+});
+</script>
+
+<style>
+.banking-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.nav-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.transfer-header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding: 20px;
+    background: var(--section-bg);
+    border-radius: 8px;
+}
+
+.transfer-form {
+    max-width: 500px;
+    margin: 0 auto 30px auto;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.transfer-summary {
+    background: var(--section-bg);
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px 0;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0;
+    padding: 5px 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.transfer-btn {
+    width: 100%;
+    background: #28a745;
+    padding: 15px;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.transfer-btn:hover {
+    background: #218838;
+}
+
+.clickjacking-demo {
+    margin: 30px 0;
+    padding: 20px;
+    background: var(--section-bg);
+    border-radius: 8px;
+    border-left: 4px solid #ffc107;
+}
+
+.demo-info {
+    margin-bottom: 20px;
+}
+
+.vulnerability-warning {
+    background: #f8d7da;
+    color: #721c24;
+    padding: 15px;
+    border-radius: 4px;
+    border: 1px solid #f5c6cb;
+    margin: 15px 0;
+}
+
+[data-theme="dark"] .vulnerability-warning {
+    background: #4a1e1e;
+    color: #e6a3a3;
+    border-color: #5a2d2d;
+}
+
+.demo-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.security-tips {
+    margin: 30px 0;
+    padding: 20px;
+    background: #d4edda;
+    color: #155724;
+    border-radius: 8px;
+    border: 1px solid #c3e6cb;
+}
+
+[data-theme="dark"] .security-tips {
+    background: #1e4620;
+    color: #a3d9a5;
+    border-color: #2d5a2f;
+}
+
+.alert.error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    padding: 15px;
+    border-radius: 4px;
+    margin: 15px 0;
+}
+
+.alert.success {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+    padding: 15px;
+    border-radius: 4px;
+    margin: 15px 0;
+}
+
+[data-theme="dark"] .alert.error {
+    background: #4a1e1e;
+    color: #e6a3a3;
+    border-color: #5a2d2d;
+}
+
+[data-theme="dark"] .alert.success {
+    background: #1e4620;
+    color: #a3d9a5;
+    border-color: #2d5a2f;
+}
+
+.transaction-details {
+    margin-top: 10px;
+    font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+    .banking-nav {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .nav-buttons {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .demo-buttons {
+        flex-direction: column;
+    }
+}
+</style>
+{% endblock %}

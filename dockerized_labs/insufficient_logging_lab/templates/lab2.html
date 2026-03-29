@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block title %}<title>Lab 2 - Missing Critical Event Logging</title>{% endblock %}
+
+{% block content %}
+<div class="box">
+    <h3>Lab 2: Missing Critical Event Logging</h3>
+
+    <div class="section">
+        <h4>Description</h4>
+        <p>
+            This lab demonstrates the risks of not logging critical security events. The application allows password changes and role modifications without proper logging, making it difficult to track potential security breaches.
+        </p>
+    </div>
+
+    <div class="section">
+        <h4>User Management</h4>
+        <form method="POST" action="/lab2/change_password">
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="new_password">New Password:</label>
+                <input type="password" id="new_password" name="new_password" required>
+            </div>
+            <div class="button-container">
+                <button type="submit">Change Password</button>
+            </div>
+        </form>
+
+        <form method="POST" action="/lab2/change_role" class="mt-4">
+            <div class="form-group">
+                <label for="username_role">Username:</label>
+                <input type="text" id="username_role" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="new_role">New Role:</label>
+                <select id="new_role" name="new_role" required>
+                    <option value="user">User</option>
+                    <option value="admin">Admin</option>
+                </select>
+            </div>
+            <div class="button-container">
+                <button type="submit">Change Role</button>
+            </div>
+        </form>
+
+        {% if message %}
+        <div class="message">
+            {{ message }}
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="lab">
+        <button class="coll btn btn-info" onclick="toggleLabDetails('hint')">View Hint</button>
+        <div id="hint" class="section" style="display: none;">
+            <p>Try to:</p>
+            <ul>
+                <li>Change passwords for different users</li>
+                <li>Modify user roles</li>
+                <li>Check if these critical actions are being logged</li>
+                <li>Look for any audit trail of your actions</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="lab">
+        <button class="coll btn btn-info" onclick="toggleLabDetails('solution')">View Solution</button>
+        <div id="solution" class="section" style="display: none;">
+            <p>The application is vulnerable because:</p>
+            <ul>
+                <li>Password changes are not logged</li>
+                <li>Role modifications are not tracked</li>
+                <li>No audit trail exists for critical security events</li>
+                <li>Changes can be made without authentication</li>
+            </ul>
+            <p>Best practices for secure implementation:</p>
+            <ul>
+                <li>Log all critical security events</li>
+                <li>Include user ID, timestamp, and action details</li>
+                <li>Implement proper authentication and authorization</li>
+                <li>Maintain an audit trail for sensitive operations</li>
+                <li>Use tamper-evident logging mechanisms</li>
+                <li>Store logs securely and maintain them for an appropriate duration</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="button-container">
+        <button onclick="window.location.href='/lab1'">Back to Lab 1</button>
+        <button onclick="window.location.href='/'">Back to Lab Details</button>
+    </div>
+</div>
+
+<script>
+    function toggleLabDetails(id) {
+        const el = document.getElementById(id);
+        if (el.style.display === "none" || el.style.display === "") {
+            el.style.display = "block";
+        } else {
+            el.style.display = "none";
+        }
+    }
+</script>
+{% endblock %}

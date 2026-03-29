@@ -17,6 +17,35 @@ body {
   scrollbar-width: none; /* Firefox */
 }
 
+/* Modal Light Theme */
+.modal-light .modal-content {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+.modal-light .modal-header {
+  border-color: #dee2e6;
+}
+
+.modal-light .modal-footer {
+  border-color: #dee2e6;
+}
+
+.modal-light .close {
+  color: #000000;
+}
+
+.modal-light .btn-close {
+  background-color: #6c757d;
+  border: 1px solid #6c757d;
+  color: #ffffff;
+}
+
+.modal-light .btn-close:hover {
+  background-color: #5a6268;
+  border-color: #545b62;
+}
+
 p{
   font-family: "Poppins", sans-serif;
   font-size: 1.1em;
@@ -73,6 +102,35 @@ span {
 .sidebar-list-items {
   background-color: #79a9cf40;
   color : #0b446e;
+}
+
+.lab-button {
+  background-color: #79a9cf40;
+  border: none;
+  color: #0b446e;
+  padding: 10px 15px;
+  text-align: left;
+  text-decoration: none;
+  display: block;
+  width: 100%;
+  font-family: inherit;
+  font-size: inherit;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.lab-button:hover {
+  background-color: #79a9cf60;
+  color: #0b446e;
+}
+
+.lab-button:focus {
+  outline: none;
+  background-color: #79a9cf60;
+}
+
+.lab-button i {
+  margin-right: 10px;
 }
 .wrapper {
   display: flex;

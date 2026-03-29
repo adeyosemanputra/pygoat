@@ -1,0 +1,31 @@
+{% extends 'introduction/base.html' %}
+{% block title %}
+<title>A03:2025 - Open Source Library Attack Lab</title>
+{% endblock %}
+
+{% block content %}
+<div class="content">
+  <h3>A03:2025 - Open Source Library Attack Lab</h3>
+  <div class="box" style="padding:0">
+    <iframe id="osl-attack-iframe" title="Open Source Library Attack Lab" style="width:100%; height:80vh; border:none; background:#121212;"></iframe>
+  </div>
+  <div style="margin-top:0.5rem; font-size:0.9em">
+    If the iframe does not load (e.g., due to HTTPS mixed content),
+    <a id="osl-attack-direct" target="_blank" rel="noopener">open the lab directly</a>.
+  </div>
+  <script>
+    (function () {
+      try {
+        var port = window.LAB_OPEN_SOURCE_LIBRARY_ATTACK_PORT || '5022';
+        var url = location.protocol + '//' + location.hostname + ':' + port;
+        var f = document.getElementById('osl-attack-iframe');
+        var a = document.getElementById('osl-attack-direct');
+        if (f) f.src = url;
+        if (a) a.href = url;
+      } catch (e) {
+        console.error('Failed to load Open Source Library Attack lab:', e);
+      }
+    })();
+  </script>
+</div>
+{% endblock %}

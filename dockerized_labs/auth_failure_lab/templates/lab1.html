@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block title %}Authentication Lab 1 - OTP Bypass{% endblock %}
+
+{% block content %}
+<h3>OTP Authentication</h3>
+<div class="box login-box">
+    <h4 style="text-align:center">Login as Admin</h4>
+    {% if email %}
+        <div class="section">
+            <h4>Login Successful</h4>
+            <p>Logged in as: <code>{{email}}</code></p>
+            {% if email == "admin@pygoat.com" %}
+                <div class="success">Congratulations! You have successfully accessed the admin account!</div>
+            {% endif %}
+        </div>
+    {% else %}
+        {% if otp_form %}
+            <form method="post" action="/lab1/verify">
+                <div class="form-group">
+                    <input type="text" name="otp" placeholder="Enter OTP" maxlength="3" required>
+                </div>
+                <button type="submit">Verify OTP</button>
+            </form>
+            {% if otp %}
+                <div class="section" style="text-align: center;">
+                    <p>Your OTP is: {{ otp }}</p>
+                </div>
+            {% endif %}
+        {% else %}
+            <form method="post" action="/lab1">
+                <div class="form-group">
+                    <input type="email" name="email" placeholder="Email Address" required>
+                </div>
+                <button type="submit">Send OTP</button>
+            </form>
+        {% endif %}
+    {% endif %}
+</div>
+
+<button class="code-toggle">View Code</button>
+<button class="back-button" onclick="window.location.href='/'">Back to Lab Details</button>
+
+<div class="lab code">
+    <pre>
+@app.route('/lab1', methods=['GET', 'POST'])
+def lab1():
+    if request.method == 'POST':
+        email = request.form.get('email')
+        if email:
+            otp = str(random.randint(100, 999))
+            if email == "admin@pygoat.com":
+                global stored_admin_otp
+                stored_admin_otp = otp
+                response = make_response(render_template('lab1.html', otp_form=True))
+                response.set_cookie('email', email)
+                return response
+            else:
+                stored_otps[email] = otp
+                response = make_response(render_template('lab1.html', otp_form=True, otp=otp))
+                response.set_cookie('email', email)
+                return response
+    return render_template('lab1.html')
+
+@app.route('/lab1/verify', methods=['POST'])
+def verify_otp():
+    email = request.cookies.get('email')
+    otp = request.form.get('otp')
+    if email == "admin@pygoat.com":
+        if otp == stored_admin_otp:
+            return render_template('lab1.html', email=email)
+    elif email in stored_otps and otp == stored_otps[email]:
+        return render_template('lab1.html', email=email)
+    return render_template('lab1.html', otp_form=True)</pre>
+</div>
+
+<!-- Hidden admin email: admin@pygoat.com -->
+{% endblock %}

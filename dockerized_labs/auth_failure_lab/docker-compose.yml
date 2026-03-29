@@ -1,0 +1,9 @@
+services:
+  web:
+    build: .
+    ports:
+      - "5007:5007"
+    volumes:
+      - .:/app
+    environment:
+      - FLASK_ENV=development

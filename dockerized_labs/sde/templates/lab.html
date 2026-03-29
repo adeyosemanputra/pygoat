@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}<title>Sensitive Data Exposure</title>{% endblock %}
+
+{% block content %}
+<div class="content">
+    <div class="box">
+        <h4 style="text-align:center">Sensitive Data Exposure</h4>
+        <div class="bp">
+            Can you find a page to trigger 500 error? Can you find 'SENSITIVE_DATA'?
+        </div>
+        
+        <div class="button-container"> 
+            <button type="button" onclick="window.location.href='/'">Back to Lab Details</button>
+        </div>
+        
+        <br>
+        <button class="coll">Hint</button>
+        <div class="lab" style="display: none;">
+            <div class="code">
+                Try accessing any random or non-existing route to trigger an error and see debug information!
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

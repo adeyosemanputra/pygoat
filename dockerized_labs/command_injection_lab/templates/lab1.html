@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}<title>Command Injection - Name Server Lookup</title>{% endblock %}
+
+{% block content %}
+<div class="box">
+    <h3>Name Server Lookup</h3>
+    
+    <div class="section">
+        <form method="post" action="/lab1">
+            <div class="form-group">
+                <label for="domain">Domain:</label>
+                <input type="text" id="domain" name="domain" placeholder="Enter domain (e.g., google.com)">
+            </div>
+            
+            <div class="form-group">
+                <label>Operating System:</label>
+                <div class="radio-group">
+                    <input type="radio" id="linux" name="os" value="linux">
+                    <label for="linux">Linux</label>
+                    <input type="radio" id="windows" name="os" value="win">
+                    <label for="windows">Windows</label>
+                </div>
+            </div>
+            
+            <button type="submit">Lookup</button>
+        </form>
+    </div>
+
+    {% if output %}
+    <div class="section">
+        <h4>Output:</h4>
+        <pre>{{ output }}</pre>
+    </div>
+    {% endif %}
+
+    <div class="button-container">
+        <button onclick="window.location.href='/'">Back to Lab Details</button>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,98 @@
+<!-- Custom CSS Modal for Security Fix -->
+<div id="secureFixModal" class="custom-modal">
+    <div class="modal-overlay"></div>
+    <div class="modal-container">
+        <div class="modal-header">
+            <h2 class="modal-title">
+                🛡️ Security Fix for SDIF
+            </h2>
+            <button type="button" class="close-btn" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="tabs-container">
+                <div class="tab-buttons">
+                    <!-- <button class="tab-btn active" onclick="showTab('vulnerability')">Vulnerability</button> -->
+                    <button class="tab-btn active" style="font-weight: bold; font-size: 18px;" onclick="showTab('secure-code')">Secure Code</button>
+                    <button class="tab-btn " style="font-weight: bold; font-size: 18px;" onclick="showTab('prevention')">Solution</button>
+                </div>
+
+                <div class="tab-content">
+                    <div id="secure-code" class="tab-panel active">
+                        <h4>Secure Implementation for SDIF Prevention</h4>
+                        <pre class="code-block"><code>
+
+# 1. FILE INTEGRITY PROTECTION
+
+def verify_file_integrity(file_path, expected_hash):
+    with open(file_path, 'rb') as f:
+        file_data = f.read()
+    
+    actual_hash = hashlib.sha256(file_data).hexdigest()
+    # Use constant-time comparison to prevent timing attacks
+    return hmac.compare_digest(actual_hash, expected_hash)
+
+def create_file_signature(file_path, secret_key):
+    """Create HMAC signature for file integrity"""
+    with open(file_path, 'rb') as f:
+        file_data = f.read()
+    
+    return hmac.new(secret_key, file_data, hashlib.sha256).hexdigest()
+
+
+# 2. SAFE vs UNSAFE SERIALIZATION
+
+def safe_serialize(data):
+    return json.dumps(data)
+
+def safe_deserialize(json_data):
+    return json.loads(json_data)
+
+def unsafe_deserialize(pickle_data):
+    """ DANGEROUS: Pickle can execute arbitrary code!"""
+    return pickle.loads(base64.b64decode(pickle_data))
+
+
+# 3. DATA VALIDATION
+
+def validate_user_data(data):
+    required_fields = ['username', 'email']
+    if not all(field in data for field in required_fields):
+        return False, "Missing required fields"
+    
+    if not isinstance(data['username'], str) or not isinstance(data['email'], str):
+        return False, "Invalid data types"
+    
+    if len(data['username']) > 50 or len(data['email']) > 100:
+        return False, "Data too long"
+    
+    return True, "Valid data"
+
+
+# 4. SECURE UPDATE VERIFICATION
+
+def verify_update_hash(update_data, expected_hash):
+    actual_hash = hashlib.sha256(update_data).hexdigest()
+    return hmac.compare_digest(actual_hash, expected_hash)</code></pre>
+                    </div>
+
+                    <div id="prevention" class="tab-panel">
+                                <h4>Solution</h4>
+                                <!-- <ol> -->
+                                <p> This data is a demonstration that how an XSS attack can deceive users to download any malicious file. The lab consists of a page to download a file, and a direct link to that page is also given (from a hacker). Let's download both files and compare the hash before opening that. </p>
+                                <p>we will see the hashes don't match. So as a user we should always cross-check signatures for verification of Data Integrity.</p>
+                                <p>More more information about the attack itself you can look into the lab description.  It have a file url and XXS attack to replace the actual file url.</p>
+                                
+                                
+                        <br>
+                        <h4>OWASP References</h4>
+                        <ul>
+                            <li><a href="https://owasp.org/Top10/A08_2021-Software_and_Data_Integrity_Failures/" target="_blank">OWASP SDIF Testing</a></li>
+                            <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/DotNet_Security_Cheat_Sheet.html#a08-software-and-data-integrity-failures" target="_blank">OWASP SDIF Prevention Cheat Sheet</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>

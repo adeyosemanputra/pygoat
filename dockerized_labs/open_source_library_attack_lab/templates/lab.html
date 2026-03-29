@@ -1,0 +1,335 @@
+{% extends "base.html" %}
+
+{% block title %}<title>Compromised Library Investigation Lab</title>{% endblock %}
+
+{% block content %}
+
+<div class="box">
+    <h3>Compromised Library Investigation</h3>
+    
+    <div class="tabs-nav">
+        <button class="tab-nav-btn active" onclick="showTab('timeline')"> Timeline</button>
+        <button class="tab-nav-btn" onclick="showTab('compare')"> Compare Versions</button>
+        <button class="tab-nav-btn" onclick="showTab('investigate')"> Investigation</button>
+    </div>
+
+    <!-- Timeline Tab -->
+    <div id="timeline" class="tab-content active">
+        <div class="section">
+            <h4>Package Version Timeline</h4>
+            <p class="bp">Explore how the package evolved over time. Click on any version to see details.</p>
+            <div id="timeline-container" class="timeline-container"></div>
+        </div>
+    </div>
+
+    <!-- Compare Tab -->
+    <div id="compare" class="tab-content">
+        <div class="section">
+            <h4>Version Comparison</h4>
+            <p class="bp">Compare two versions side-by-side to identify changes.</p>
+            <div class="compare-controls">
+                <select id="version1-select" class="version-select">
+                    <option value="">Select Version 1...</option>
+                </select>
+                <span class="compare-arrow">→</span>
+                <select id="version2-select" class="version-select">
+                    <option value="">Select Version 2...</option>
+                </select>
+                <button onclick="compareVersions()" class="compare-btn">Compare</button>
+            </div>
+            <div id="compare-result" class="compare-result"></div>
+        </div>
+    </div>
+
+    <!-- Investigation Tab -->
+    <div id="investigate" class="tab-content">
+        <div class="section">
+            <h4>Investigation Clues</h4>
+            <p class="bp">Review clues and mark what you've discovered. <span id="clues-found">0</span> / <span id="clues-total">0</span> clues found</p>
+            <div id="clues-container" class="clues-container"></div>
+            <div class="section">
+                <h4>Code Scanner</h4>
+                <p class="bp">Paste code here to scan for suspicious patterns:</p>
+                <textarea id="code-scanner" class="code-scanner" placeholder="Paste code to analyze..."></textarea>
+                <button onclick="scanCode()" class="scan-btn">Scan Code</button>
+                <div id="scan-results" class="scan-results"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="button-container">
+        <button type="button" onclick="navigateToIndex()" class="nav-button">Back to Lab Details</button>
+    </div>
+</div>
+
+<script>
+let timelineData = null;
+
+async function showTab(tabName,event) {
+    document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+    document.querySelectorAll('.tab-nav-btn').forEach(btn => btn.classList.remove('active'));
+    
+    document.getElementById(tabName).classList.add('active');
+    event.target.classList.add('active');
+
+    if (tabName === 'timeline' && !timelineData) {
+        await loadTimeline();
+    } else if (tabName === 'investigate') {
+        await loadClues();
+    }
+}
+
+async function loadTimeline() {
+    try {
+        const response = await fetch('/api/timeline');
+        timelineData = await response.json();
+        renderTimeline(timelineData);
+    } catch (error) {
+        console.error('Error loading timeline:', error);
+    }
+}
+
+function renderTimeline(data) {
+    const container = document.getElementById('timeline-container');
+    let html = `<div class="timeline-wrapper"><h4>Package: <code>${data.package}</code></h4>`;
+    
+    data.timeline.forEach((version, index) => {
+        const statusClass = version.status === 'compromised' ? 'compromised' : 
+                           version.status === 'suspicious' ? 'suspicious' : 'legitimate';
+        
+        html += `
+            <div class="timeline-item ${statusClass}" onclick="showVersionDetails('${version.version}')">
+                <div class="timeline-marker"></div>
+                <div class="timeline-content">
+                    <div class="version-header">
+                        <span class="version-badge">v${version.version}</span>
+                        <span class="version-date">${version.date}</span>
+                        <span class="status-badge ${statusClass}">${version.status.toUpperCase()}</span>
+                    </div>
+                    <div class="version-info">
+                        <p><strong>Maintainer:</strong> ${version.maintainer}</p>
+                        <p><strong>Downloads:</strong> ${version.downloads.toLocaleString()}</p>
+                        <p><strong>Issues:</strong> ${version.issues}</p>
+                        ${version.warning ? `<p class="warning-text">${version.warning}</p>` : ''}
+                    </div>
+                </div>
+            </div>
+        `;
+    });
+    
+    html += '</div>';
+    container.innerHTML = html;
+}
+
+async function showVersionDetails(version) {
+    try {
+        const response = await fetch(`/api/version/${version}`);
+        const data = await response.json();
+        
+        const modal = document.createElement('div');
+        modal.className = 'version-modal';
+        modal.innerHTML = `
+            <div class="modal-overlay" onclick="this.parentElement.remove()"></div>
+            <div class="modal-content">
+                <h3>Version ${data.version} Details</h3>
+                <p><strong>Date:</strong> ${data.date}</p>
+                <p><strong>Maintainer:</strong> ${data.maintainer}</p>
+                <p><strong>Email:</strong> ${data.maintainer_email}</p>
+                <p><strong>Status:</strong> <span class="status-badge ${data.status}">${data.status.toUpperCase()}</span></p>
+                <p><strong>Code Snippet:</strong></p>
+                <pre class="code-preview">${data.code_snippet}</pre>
+                <button onclick="scanVersionCode('${data.version}', ${JSON.stringify(data.code_snippet)})">Scan This Code</button>
+                <button onclick="this.closest('.version-modal').remove()">Close</button>
+            </div>
+        `;
+        document.body.appendChild(modal);
+    } catch (error) {
+        console.error('Error loading version:', error);
+    }
+}
+
+async function compareVersions() {
+    const v1 = document.getElementById('version1-select').value;
+    const v2 = document.getElementById('version2-select').value;
+    
+    if (!v1 || !v2) {
+        alert('Please select both versions to compare');
+        return;
+    }
+    
+    try {
+        const response = await fetch('/api/compare', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({version1: v1, version2: v2})
+        });
+        const data = await response.json();
+        renderComparison(data);
+    } catch (error) {
+        console.error('Error comparing versions:', error);
+    }
+}
+
+function renderComparison(data) {
+    const container = document.getElementById('compare-result');
+    const diff = data.differences;
+    
+    container.innerHTML = `
+        <div class="comparison-grid">
+            <div class="comparison-col">
+                <h4>Version ${data.version1.version}</h4>
+                <p><strong>Maintainer:</strong> ${data.version1.maintainer}</p>
+                <p><strong>Email:</strong> ${data.version1.maintainer_email}</p>
+                <p><strong>Downloads:</strong> ${data.version1.downloads.toLocaleString()}</p>
+                <p><strong>Issues:</strong> ${data.version1.issues}</p>
+                <pre class="code-preview">${data.version1.code_snippet}</pre>
+            </div>
+            <div class="comparison-col">
+                <h4>Version ${data.version2.version}</h4>
+                <p><strong>Maintainer:</strong> ${data.version2.maintainer}</p>
+                <p><strong>Email:</strong> ${data.version2.maintainer_email}</p>
+                <p><strong>Downloads:</strong> ${data.version2.downloads.toLocaleString()}</p>
+                <p><strong>Issues:</strong> ${data.version2.issues}</p>
+                <pre class="code-preview">${data.version2.code_snippet}</pre>
+            </div>
+        </div>
+        <div class="differences-box">
+            <h4>Key Differences:</h4>
+            <ul>
+                <li>Maintainer Changed: ${diff.maintainer_changed ? 'YES' : 'NO'}</li>
+                <li>Downloads Change: ${diff.downloads_change > 0 ? '+' : ''}${diff.downloads_change.toLocaleString()}</li>
+                <li>Issues Change: ${diff.issues_change > 0 ? '+' : ''}${diff.issues_change}</li>
+                <li>Code Changed: ${diff.code_changed ? 'YES' : 'NO'}</li>
+            </ul>
+        </div>
+    `;
+}
+
+async function loadClues() {
+    try {
+        const response = await fetch('/api/investigation/clues');
+        const data = await response.json();
+        renderClues(data.clues);
+        document.getElementById('clues-found').textContent = data.found_count;
+        document.getElementById('clues-total').textContent = data.total_count;
+    } catch (error) {
+        console.error('Error loading clues:', error);
+    }
+}
+
+function renderClues(clues) {
+    const container = document.getElementById('clues-container');
+    let html = '';
+    
+    clues.forEach(clue => {
+        const severityClass = clue.severity === 'critical' ? 'critical' : 
+                            clue.severity === 'high' ? 'high' : 'medium';
+        html += `
+            <div class="clue-card ${clue.found ? 'found' : ''} ${severityClass}">
+                <div class="clue-header">
+                    <h4>${clue.title}</h4>
+                    <span class="severity-badge ${severityClass}">${clue.severity}</span>
+                </div>
+                <p>${clue.description}</p>
+            </div>
+        `;
+    });
+    
+    container.innerHTML = html;
+}
+
+async function markClueFound(clueId, found) {
+    if (found) {
+        try {
+            await fetch('/api/investigation/mark-found', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({clue_id: clueId})
+            });
+            await loadClues();
+        } catch (error) {
+            console.error('Error marking clue:', error);
+        }
+    }
+}
+
+async function scanCode() {
+    const code = document.getElementById('code-scanner').value;
+    if (!code) {
+        alert('Please enter code to scan');
+        return;
+    }
+    
+    try {
+        const response = await fetch('/api/scan', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({code: code})
+        });
+        const data = await response.json();
+        renderScanResults(data);
+    } catch (error) {
+        console.error('Error scanning code:', error);
+    }
+}
+
+function scanVersionCode(version, code) {
+    document.getElementById('code-scanner').value = code;
+    showTab('investigate');
+    setTimeout(() => scanCode(), 100);
+}
+
+function renderScanResults(data) {
+    const container = document.getElementById('scan-results');
+    
+    if (data.total_found === 0) {
+        container.innerHTML = '<p class="success-text">No suspicious patterns found in the code.</p>';
+        return;
+    }
+    
+    let html = `<h4>Found ${data.total_found} Suspicious Pattern(s):</h4>`;
+    data.suspicious_patterns.forEach(pattern => {
+        html += `
+            <div class="pattern-alert ${pattern.severity}">
+                <strong>${pattern.pattern}</strong> (${pattern.severity})
+                <p>${pattern.description}</p>
+            </div>
+        `;
+    });
+    
+    container.innerHTML = html;
+}
+
+// Populate version selects
+async function populateVersionSelects() {
+    try {
+        const response = await fetch('/api/timeline');
+        const data = await response.json();
+        const select1 = document.getElementById('version1-select');
+        const select2 = document.getElementById('version2-select');
+        
+        data.timeline.forEach(v => {
+            const opt1 = new Option(`v${v.version} - ${v.date}`, v.version);
+            const opt2 = new Option(`v${v.version} - ${v.date}`, v.version);
+            select1.appendChild(opt1);
+            select2.appendChild(opt2);
+        });
+    } catch (error) {
+        console.error('Error loading versions:', error);
+    }
+}
+
+    function navigateToIndex() {
+        document.body.style.opacity = '0';
+        document.body.style.transition = 'opacity 0.2s ease-out';
+        setTimeout(() => {
+            window.location.href = '/';
+        }, 200);
+    }
+
+document.addEventListener('DOMContentLoaded', function() {
+    populateVersionSelects();
+    loadTimeline();
+});
+</script>
+{% endblock %}

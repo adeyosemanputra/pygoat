@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}<title>SQL Injection Lab Challenge</title>{% endblock %}
+
+{% block content %}
+<div class="box">
+    <h3>SQL Injection Challenge</h3>
+    <div class="section">
+        <h4>Login Form</h4>
+        <p class="bp">Try to log in as admin.</p>
+        
+        <form method="POST" action="/lab">
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" placeholder="Enter username">
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" placeholder="Enter password">
+            </div>
+            <button type="submit">Login</button>
+        </form>
+
+        {% if logged_in_user %}
+        <div class="section">
+            <h4>Logged in as:</h4>
+            <pre>{{ logged_in_user }}</pre>
+        </div>
+        {% endif %}
+
+        {% if error %}
+        <div class="section">
+            <h4>Error:</h4>
+            <p class="bp">{{ error }}</p>
+            {% if sql_query %}
+            <pre>{{ sql_query }}</pre>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="button-container">
+        <button onclick="window.location.href='/'">Back to Lab Details</button>
+    </div>
+</div>
+{% endblock %}

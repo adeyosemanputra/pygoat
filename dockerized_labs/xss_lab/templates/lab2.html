@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Lab 2: Stored XSS</title>
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <div class="box">
+        <h3>Comment System</h3>
+        <div class="form-container">
+            <form method="post" action="/lab2">
+                <div class="section">
+                    <label for="username" class="form-label">Enter your comment:</label>
+                    <input type="text" id="username" name="username" required>
+                    <button type="submit">Post Comment</button>
+                </div>
+            </form>
+
+            {% if username and username != 'Guest' %}
+            <div class="section">
+                <h4>Latest Comment:</h4>
+                {# Vulnerable: Simple script tag filter can be bypassed #}
+                <div class="alert">{{ username|safe }}</div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="box">
+        <h4>Lab Instructions</h4>
+        <div class="lab">
+            <p class="bp">
+                This lab demonstrates a stored XSS vulnerability with a simple filter that attempts to prevent XSS by removing
+                script tags. However, the filter can be bypassed.
+            </p>
+            
+            <div class="section">
+                <h5>Your Challenge:</h5>
+                <p class="bp">Set the <code>flag</code> cookie value to "success" by bypassing the XSS filter.</p>
+                
+                <h5>What's Happening:</h5>
+                <ol>
+                    <li>The server removes <code>&lt;script&gt;</code> and <code>&lt;/script&gt;</code> tags</li>
+                    <li>The filtered input is then rendered as HTML using the <code>safe</code> filter</li>
+                    <li>You need to find another way to execute JavaScript</li>
+                </ol>
+            </div>
+
+            <div class="section">
+                <h5>Hints:</h5>
+                <ul>
+                    <li>Try HTML attributes that can execute JavaScript (like <code>onerror</code>)</li>
+                    <li>Example payload structure: <code>&lt;img src=x onerror=PUT_YOUR_CODE_HERE&gt;</code></li>
+                    <li>Use <code>document.cookie</code> to manipulate cookies</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div style="text-align: right;">
+            <button onclick="window.location.href='/lab1'" style="margin-right: 10px;">Previous Lab</button>
+            <button onclick="window.location.href='/lab3'" style="margin-right: 10px;">Next Lab</button>
+            <button onclick="window.location.href='/'">Back to Home</button>
+        </div>
+    </div>
+</div>
+
+{% block scripts %}
+<script>
+    function setCookie(name, value) {
+        document.cookie = name + "=" + value + ";path=/;";
+    }
+
+    function getCookie(name) {
+        var name = name + "=";
+        var decodedCookie = decodeURIComponent(document.cookie);
+        var ca = decodedCookie.split(';');
+        for (var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return "";
+    }
+
+    var flag = getCookie("flag");
+    if (flag === "success") {
+        alert("Congratulations! You have solved the XSS Challenge");
+    }
+</script>
+{% endblock %}
+{% endblock %}

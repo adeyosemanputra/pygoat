@@ -1,0 +1,130 @@
+<!-- Custom CSS Modal for Security Fix -->
+<div id="secureFixModal" class="custom-modal">
+    <div class="modal-overlay"></div>
+    <div class="modal-container">
+        <div class="modal-header">
+            <h2 class="modal-title">
+                🛡️ Security Fix for Broken Authentication
+            </h2>
+            <button type="button" class="close-btn" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="tabs-container">
+                <div class="tab-buttons">
+                    <!-- <button class="tab-btn active" onclick="showTab('vulnerability')">Vulnerability</button> -->
+                    <button class="tab-btn active" style="font-weight: bold; font-size: 18px;" onclick="showTab('secure-code')">Secure Code</button>
+                    <button class="tab-btn " style="font-weight: bold; font-size: 18px;" onclick="showTab('prevention')">Solution</button>
+                </div>
+
+                <div class="tab-content">
+                    <div id="secure-code" class="tab-panel active">
+                        <h4>Secure Implementation for Broken Authentication</h4>
+                        <pre class="code-block"><code>
+import hashlib
+import secrets
+import bcrypt
+import jwt
+from datetime import datetime, timedelta
+from werkzeug.security import generate_password_hash, check_password_hash
+
+class SecureAuth:
+    
+    def __init__(self):
+        self.secret_key = secrets.token_hex(32)
+        self.password_requirements = {
+            'min_length': 8,
+            'require_uppercase': True,
+            'require_lowercase': True,
+            'require_numbers': True,
+            'require_special': True
+        }
+        
+    def validate_password_strength(self, password):
+       
+        if len(password) < self.password_requirements['min_length']:
+            return False, "Password too short"
+        
+        if not any(c.isupper() for c in password):
+            return False, "Password must contain uppercase letters"
+        
+        if not any(c.islower() for c in password):
+            return False, "Password must contain lowercase letters"
+        
+        if not any(c.isdigit() for c in password):
+            return False, "Password must contain numbers"
+        
+        special_chars = "!@#$%^&*()_+-=[]{}|;:,.<>?"
+        if not any(c in special_chars for c in password):
+            return False, "Password must contain special characters"
+        
+        return True, "Password is strong"
+    
+    def hash_password(self, password):
+        
+        return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+    
+    def verify_password(self, password, hashed):
+       
+        return bcrypt.checkpw(password.encode('utf-8'), hashed)
+    
+    def create_secure_session(self, user_id, role='user'):
+      
+        payload = {
+            'user_id': user_id,
+            'role': role,
+            'iat': datetime.utcnow(),
+            'exp': datetime.utcnow() + timedelta(hours=1)
+        }
+        return jwt.encode(payload, self.secret_key, algorithm='HS256')
+    
+    def verify_session(self, token):
+       
+        try:
+            payload = jwt.decode(token, self.secret_key, algorithms=['HS256'])
+            return True, payload
+        except jwt.ExpiredSignatureError:
+            return False, "Token expired"
+        except jwt.InvalidTokenError:
+            return False, "Invalid token"
+    
+    def generate_secure_reset_token(self):
+       
+        return secrets.token_urlsafe(32)
+    
+    def create_reset_token_with_expiry(self, user_id):
+        
+        token = self.generate_secure_reset_token()
+        expiry = datetime.utcnow() + timedelta(minutes=15)
+        
+        # Store in secure database with expiry
+        # reset_tokens[token] = {'user_id': user_id, 'expires': expiry}
+        return token</code></pre>
+                    </div>
+
+                    <div id="prevention" class="tab-panel">
+                                <h4>Solution</h4>
+                                <p>The main aim of this lab is to login as admin, and to achieve this, gain unauthorized access through session manipulation and password reset flaws.</p>
+                                <p><strong>Session Token Manipulation</strong></p>
+                                <ul>
+                                    <li>Open browser developer tools (F12) and navigate to the Application/Storage tab</li>
+                                    <li>Locate the session cookie in the Cookies section</li>
+                                    <li>Copy the Base64-encoded session token value</li>
+                                    <li>Decode the token to reveal the user identifier and timestamp structure</li>
+                                    <li>Modify the user portion from the current user to "admin"</li>
+                                    <li>Re-encode the modified string back to Base64</li>
+                                    <li>Replace the original cookie value with your manipulated version</li>
+                                    <li>Refresh the page to gain administrative privileges</li>
+                                </ul>
+                        <br><br>
+                        <h4>OWASP References</h4>
+                        <ul>
+                            <li><a href="https://owasp.org/API-Security/editions/2023/en/0xa2-broken-authentication/" target="_blank">OWASP Broken Authentication</a></li>
+                            <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html" target="_blank">OWASP Broken Authentication Cheatsheet</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>

@@ -1,0 +1,200 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Solution - Business Logic Flaws</title>
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <h3>Solution: Business Logic Flaws</h3>
+    
+    <div class="box">
+        <h4>Vulnerability Analysis</h4>
+        <div class="section">
+            <h5>The Problem</h5>
+            <p class="bp">
+                The application contains a business logic flaw in the coupon application system. The vulnerable code allows 
+                users to apply the same discount coupon multiple times, leading to compound discounts that can reduce the 
+                total price to nearly zero.
+            </p>
+        </div>
+
+        <div class="section">
+            <h5>Vulnerable Code Analysis</h5>
+            <p class="bp">Let's examine the vulnerable code in the <code>apply_coupon</code> function:</p>
+            
+            <pre><code># VULNERABLE: Business logic flaw - allows multiple applications
+if session.get('secure_mode', False):
+    # Secure mode: Check if coupon already applied
+    if coupon_code not in session['applied_coupons']:
+        session['applied_coupons'].append(coupon_code)
+        return jsonify({'success': True, 'message': 'Coupon applied!'})
+    else:
+        return jsonify({'success': False, 'message': 'Coupon already applied!'})
+else:
+    # VULNERABLE: Always allow coupon application
+    session['applied_coupons'].append(coupon_code)
+    return jsonify({'success': True, 'message': 'Coupon applied!'})</code></pre>
+            
+            <p class="bp">
+                <strong>The Issue:</strong> In default mode, the application doesn't check if a coupon has already been applied. 
+                It simply adds the coupon to the list every time, allowing unlimited applications.
+            </p>
+        </div>
+
+        <div class="lab">
+            <h4>Exploitation Steps</h4>
+            <ol class="bp">
+                <li><strong>Add products to cart:</strong> Add items totaling ₹1000 or more</li>
+                <li><strong>Apply DISCOUNT10 coupon:</strong> This gives 10% off (₹100 discount)</li>
+                <li><strong>Apply the same coupon again:</strong> Notice it applies another 10% off the remaining amount</li>
+                <li><strong>Repeat multiple times:</strong> Each application compounds the discount</li>
+                <li><strong>Achieve goal:</strong> After 10-15 applications, the total will be below ₹100</li>
+            </ol>
+            
+            <p class="bp">
+                <strong>Mathematical progression with DISCOUNT10 (10% off):</strong><br>
+                Starting amount: ₹1000<br>
+                After 1st application: ₹900 (10% off)<br>
+                After 2nd application: ₹810 (10% off ₹900)<br>
+                After 3rd application: ₹729 (10% off ₹810)<br>
+                ...and so on until below ₹100
+            </p>
+        </div>
+
+        <div class="section">
+            <h4>Secure Implementation</h4>
+            <p class="bp">The secure version implements proper business logic validation:</p>
+            
+            <pre><code># SECURE: Check if coupon already applied
+if coupon_code not in session['applied_coupons']:
+    session['applied_coupons'].append(coupon_code)
+    session.modified = True
+    return jsonify({
+        'success': True, 
+        'message': f'Coupon {coupon_code} applied successfully!'
+    })
+else:
+    return jsonify({
+        'success': False, 
+        'message': f'Coupon {coupon_code} has already been applied to this order.'
+    })</code></pre>
+            
+            <p class="bp">
+                <strong>Key Security Controls:</strong>
+                <ul>
+                    <li>Check if coupon already exists in applied coupons list</li>
+                    <li>Reject duplicate applications with clear error message</li>
+                    <li>Maintain proper state tracking for each order</li>
+                </ul>
+            </p>
+        </div>
+
+        <div class="section">
+            <h4>Additional Security Measures</h4>
+            <div class="lesson-section">
+                <h5>1. Server-Side Validation</h5>
+                <pre><code>def validate_coupon_application(order_id, coupon_code):
+    # Check database for existing coupon applications
+    existing = db.query(AppliedCoupons).filter_by(
+        order_id=order_id, 
+        coupon_code=coupon_code
+    ).first()
+    
+    if existing:
+        raise ValidationError("Coupon already applied to this order")
+    
+    return True</code></pre>
+            </div>
+
+            <div class="lesson-section">
+                <h5>2. Database-Backed State</h5>
+                <pre><code># Store coupon applications in database, not just session
+class AppliedCoupons(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    order_id = db.Column(db.String(50), nullable=False)
+    coupon_code = db.Column(db.String(20), nullable=False)
+    applied_at = db.Column(db.DateTime, default=datetime.utcnow)
+    
+    # Unique constraint prevents duplicates
+    __table_args__ = (
+        db.UniqueConstraint('order_id', 'coupon_code'),
+    )</code></pre>
+            </div>
+
+            <div class="lesson-section">
+                <h5>3. Business Rule Validation</h5>
+                <pre><code>def calculate_discount(cart_total, applied_coupons):
+    total_discount = 0
+    
+    for coupon_code in set(applied_coupons):  # Use set to ensure uniqueness
+        coupon = COUPONS.get(coupon_code)
+        if coupon and cart_total >= coupon['min_amount']:
+            discount = (cart_total * coupon['discount_percent']) / 100
+            total_discount += discount
+            # Apply discount to remaining amount for next calculation
+            cart_total -= discount
+    
+    return total_discount</code></pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h4>Testing & Prevention</h4>
+            <p class="bp">
+                <strong>Security Testing Strategies:</strong>
+                <ul>
+                    <li><strong>Negative Testing:</strong> Test edge cases and invalid inputs</li>
+                    <li><strong>Business Logic Testing:</strong> Verify all business rules are enforced</li>
+                    <li><strong>State Management Testing:</strong> Test transaction integrity</li>
+                    <li><strong>Rate Limiting:</strong> Implement limits on coupon applications</li>
+                    <li><strong>Audit Logging:</strong> Log all coupon applications for monitoring</li>
+                </ul>
+            </p>
+        </div>
+
+        <div class="section">
+            <h4>Real-World Examples</h4>
+            <p class="bp">
+                Similar vulnerabilities have been found in major e-commerce platforms:
+                <ul>
+                    <li><strong>Multiple Discount Stacking:</strong> Major retailer allowed unlimited coupon stacking</li>
+                    <li><strong>Price Manipulation:</strong> Users could modify prices through parameter tampering</li>
+                    <li><strong>Free Purchases:</strong> Business logic flaws allowed $0 checkouts</li>
+                    <li><strong>Loyalty Points Abuse:</strong> Users could generate unlimited reward points</li>
+                </ul>
+            </p>
+        </div>
+
+        <div class="section">
+            <h4>Key Takeaways</h4>
+            <p class="bp">
+                <strong>For Developers:</strong>
+                <ul>
+                    <li>Always validate business rules on the server side</li>
+                    <li>Implement proper state management for transactions</li>
+                    <li>Use database constraints to enforce business logic</li>
+                    <li>Test negative scenarios and edge cases thoroughly</li>
+                    <li>Implement comprehensive logging and monitoring</li>
+                </ul>
+            </p>
+            
+            <p class="bp">
+                <strong>For Security Testers:</strong>
+                <ul>
+                    <li>Focus on business logic, not just technical vulnerabilities</li>
+                    <li>Test all user workflows and state transitions</li>
+                    <li>Look for ways to abuse legitimate functionality</li>
+                    <li>Verify that business rules are consistently enforced</li>
+                </ul>
+            </p>
+        </div>
+
+        <div style="text-align: center; margin-top: 30px;">
+            <button onclick="window.location.href='/lab'" style="margin-right: 10px;">Back to Lab Details</button>
+            <button onclick="window.location.href='/store'" style="margin-right: 10px;">Try Lab Again</button>
+            <button onclick="window.location.href='/'">Back to Overview</button>
+        </div>
+    </div>
+</div>
+{% endblock %}

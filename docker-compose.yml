@@ -1,18 +1,17 @@
 services:
-  traefik:
-    image: traefik:v2.10
-    command:
-      - "--api.insecure=true"
-      - "--providers.docker=true"
-      - "--providers.docker.exposedbydefault=false"
-      - "--entrypoints.web.address=:80"
-    ports:
-      - "80:80"
-      - "8080:8080"
+  migration:
+    build: .
+    command: >
+      sh -c "python manage.py migrate --noinput &&
+             python manage.py populate_challenges &&
+             python manage.py startuplabs"
+    environment:
+      - PREBUILD_LABS_ON_STARTUP=true
     volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - .:/app
+      - /var/run/docker.sock:/var/run/docker.sock
     networks:
-      - pygoat_net
+      - my_network
 
   web:
     build: .
@@ -21,26 +20,36 @@ services:
       - "8000:8000"
     volumes:
       - .:/app
-      - "/var/run/docker.sock:/var/run/docker.sock" 
+      - /var/run/docker.sock:/var/run/docker.sock
     labels:
       - "traefik.enable=true"
+      # --- Your LaaS Routing Rules ---
       - "traefik.http.routers.pygoat.rule=Host(`lvh.me`)"
       - "traefik.http.services.pygoat.loadbalancer.server.port=8000"
     environment:
-      - CHAL_DOCKER_NETWORK=pygoat_pygoat_net
+      # Updated to match the new upstream network name
+      - CHAL_DOCKER_NETWORK=my_network
     depends_on:
-      - migration
+      migration:
+        condition: service_completed_successfully
     networks:
-      - pygoat_net
+      - my_network
 
-  migration:
-    build: .
-    command: python manage.py migrate --noinput
+  traefik:
+    image: traefik:latest
+    container_name: traefik_proxy
+    command:
+      - "--configfile=/traefik.yml"
+    ports:
+      - "80:80"
+      - "8080:8080"
     volumes:
-      - .:/app
+      - ./traefik.yml:/traefik.yml
+      - /var/run/docker.sock:/var/run/docker.sock:ro
     networks:
-      - pygoat_net
+      - my_network
 
 networks:
-  pygoat_net:
+  my_network:
+    name: my_network
     driver: bridge

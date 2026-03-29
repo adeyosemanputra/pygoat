@@ -1,0 +1,96 @@
+<!-- Custom CSS Modal for Security Fix -->
+<div id="secureFixModal" class="custom-modal">
+    <div class="modal-overlay"></div>
+    <div class="modal-container">
+        <div class="modal-header">
+            <h2 class="modal-title">
+                🛡️ Security Fix for Insecure Design
+            </h2>
+            <button type="button" class="close-btn" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="tabs-container">
+                <div class="tab-buttons">
+                    <!-- <button class="tab-btn active" onclick="showTab('vulnerability')">Vulnerability</button> -->
+                    <button class="tab-btn active" style="font-weight: bold; font-size: 18px;" onclick="showTab('secure-code')">Secure Code</button>
+                    <button class="tab-btn " style="font-weight: bold; font-size: 18px;" onclick="showTab('prevention')">Solution</button>
+                </div>
+
+                <div class="tab-content">
+                    <div id="secure-code" class="tab-panel active">
+                        <h4>Secure Implementation of Insecure Design</h4>
+                        <pre class="code-block"><code>
+import hashlib
+from datetime import datetime, timedelta
+
+class SecurityError(Exception): pass
+
+class SecureTicketSystem:
+    def __init__(self):
+        self.users = {}
+        self.tickets_total = 60
+        self.MAX_TICKETS_PER_USER = 5
+        self.MAX_ACCOUNTS_PER_IP = 2
+
+        self.ip_registrations = {}
+
+    def register_user(self, email, phone, ip, device, id_document):
+        # Basic checks
+        if email in self.users: raise SecurityError("Email already registered")
+        if self.ip_registrations.get(ip, 0) >= self.MAX_ACCOUNTS_PER_IP:
+            raise SecurityError("Too many accounts from same IP")
+        if not id_document: raise SecurityError("KYC required")
+
+        # Register
+        self.users[email] = {
+            "phone": phone,
+            "ip": ip,
+            "device": device,
+            "verified": self._verify_id(id_document),
+            "tickets": 0,
+            "created": datetime.utcnow()
+        }
+        self.ip_registrations[ip] = self.ip_registrations.get(ip, 0) + 1
+        return "Registered"
+
+    def claim_tickets(self, email, num, ip):
+        if email not in self.users: raise SecurityError("User not found")
+        u = self.users[email]
+
+        if not u["verified"]: raise SecurityError("Not verified")
+        if u["ip"] != ip: raise SecurityError("IP mismatch")
+        if u["tickets"] + num > self.MAX_TICKETS_PER_USER:
+            raise SecurityError("User ticket limit exceeded")
+        if self.tickets_total < num: raise SecurityError("Not enough tickets")
+
+        u["tickets"] += num
+        self.tickets_total -= num
+        return [self._ticket_id(email, i) for i in range(num)]
+
+    def _verify_id(self, doc):
+        return len(doc) > 8  # (replace with real KYC)
+
+    def _ticket_id(self, email, i):
+        return hashlib.sha256(f"{email}{i}{datetime.utcnow()}".encode()).hexdigest()[:12]
+</code></pre>
+                    </div>
+
+                    <div id="prevention" class="tab-panel">
+                                <h4>Solution</h4>
+                                <p> This website is giving everyone free tickets ( upto 5 per person ). And the movie will be public when all the tickets will be sold.</p>
+                                <p>Now, the ticket generating system is quite secure itself, and one can't get more than 5 tickets for free. But there is a large design flaw. One can get all the tickets by creating multiple accounts. In this particular case, 5 tickets per page, and a total 60 required, so we need to create 12 accounts only and claim 5 tickets from each.</p>
+                                <p>If the sign up process is lame, then this process can be automated. Strong verification/kyc verification needs to be taken in such situations .</p>
+                                
+                        <br>
+                        <h4>OWASP References</h4>
+                        <ul>
+                            <li><a href="https://owasp.org/Top10/A04_2021-Insecure_Design/" target="_blank">OWASP Insecure Design </a></li>
+                            <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Secure_Product_Design_Cheat_Sheet.html" target="_blank">OWASP Insecure Design Cheatsheet</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>

@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>Broken Access Control Lab - Result</title>
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <h3>Result</h3>
+    <div class="box">
+        {% if username %}
+        <h2>Logged in as: <code>{{ username }}</code></h2>
+        {% endif %}
+        
+        {% if message %}
+        <pre>{{ message }}</pre>
+        {% endif %}
+        
+        <div align="right">
+            <button type="button" onclick="window.location.href='/'">Back</button>
+        </div>
+    </div>
+</div>
+{% endblock %} 

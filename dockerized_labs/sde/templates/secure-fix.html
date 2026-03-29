@@ -1,0 +1,151 @@
+<!-- Custom CSS Modal for Security Fix -->
+<div id="secureFixModal" class="custom-modal">
+    <div class="modal-overlay"></div>
+    <div class="modal-container">
+        <div class="modal-header">
+            <h2 class="modal-title">
+                🛡️ Security Fix for Sensitive Data Exposure
+            </h2>
+            <button type="button" class="close-btn" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="tabs-container">
+                <div class="tab-buttons">
+                    <!-- <button class="tab-btn active" onclick="showTab('vulnerability')">Vulnerability</button> -->
+                    <button class="tab-btn active" style="font-weight: bold; font-size: 18px;" onclick="showTab('secure-code')">Secure Code</button>
+                    <button class="tab-btn " style="font-weight: bold; font-size: 18px;" onclick="showTab('prevention')">Solution</button>
+                </div>
+
+                <div class="tab-content">
+                    <div id="secure-code" class="tab-panel active">
+                        <h4>Secure Implementation of Sensitive Data Exposure</h4>
+                        <pre class="code-block"><code>
+import os, base64, re, bcrypt
+from cryptography.fernet import Fernet, InvalidToken
+from flask import Flask, jsonify, request, abort
+
+app = Flask(__name__)
+app.config['JSONIFY_PRETTYPRINT_REGULAR'] = False
+
+# --- Key management: require a stable Fernet key via env ---
+FERNET_KEY_B64 = os.getenv("ENCRYPTION_KEY")
+if not FERNET_KEY_B64:
+    raise RuntimeError("ENCRYPTION_KEY not set (32-byte urlsafe base64)")
+
+try:
+    FERNET = Fernet(FERNET_KEY_B64.encode("utf-8"))
+except Exception as e:
+    raise RuntimeError("Invalid ENCRYPTION_KEY format for Fernet") from e
+
+# --- Password hashing ---
+def hash_password(password: str) -> str:
+    hashed = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())
+    return hashed.decode("utf-8")  # bcrypt hash is ASCII-safe
+
+def verify_password(password: str, hashed_text: str) -> bool:
+    return bcrypt.checkpw(password.encode("utf-8"), hashed_text.encode("utf-8"))
+
+# --- Encryption for highly sensitive fields ---
+def encrypt_sensitive_data(data: str) -> str:
+    token = FERNET.encrypt(data.encode("utf-8"))
+    return token.decode("utf-8")  # store as text
+
+def decrypt_sensitive_data(token_text: str) -> str:
+    try:
+        return FERNET.decrypt(token_text.encode("utf-8")).decode("utf-8")
+    except InvalidToken:
+        abort(400, description="Invalid encrypted payload")
+
+# --- Data masking & response sanitation ---
+EMAIL_RE = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
+
+def mask_email(email: str) -> str:
+    if not EMAIL_RE.match(email):
+        return "***"
+    user, domain = email.split("@", 1)
+    masked_user = (user[0] + "***") if user else "***"
+    return f"{masked_user}@{domain}"
+
+SENSITIVE_OUTBOUND_FIELDS = {
+    "password", "password_hash", "ssn", "ssn_encrypted",
+    "credit_card", "token", "api_key", "private_key", "access_token"
+}
+
+def sanitize_response(data: dict) -> dict:
+    safe = {}
+    for k, v in data.items():
+        if k in SENSITIVE_OUTBOUND_FIELDS:
+            continue
+        if k == "email" and isinstance(v, str):
+            safe[k] = mask_email(v)
+        else:
+            safe[k] = v
+    return safe
+
+# --- Secure endpoints example ---
+@app.route("/register", methods=["POST"])
+def register():
+    payload = request.get_json(silent=True) or {}
+    for field in ("name", "email", "password", "ssn"):
+        if field not in payload:
+            abort(400, description=f"Missing field: {field}")
+
+    pwd_hash = hash_password(payload["password"])
+    ssn_cipher = encrypt_sensitive_data(payload["ssn"])
+
+    # Store to DB (example object), DO NOT echo secrets back to client
+    user_record = {
+        "name": payload["name"],
+        "email": payload["email"],
+        "password_hash": pwd_hash,    # stored, not returned
+        "ssn_encrypted": ssn_cipher,  # stored, not returned
+    }
+
+    return jsonify(sanitize_response(user_record)), 201
+
+@app.route("/user/<int:user_id>", methods=["GET"])
+def get_user(user_id: int):
+    
+    user = {
+        "id": user_id,
+        "name": "John Doe",
+        "email": "john@example.com",
+        "password_hash": "$2b$12$example...",  # never return
+        "ssn_encrypted": "gAAAAABl...",        # never return
+    }
+    return jsonify(sanitize_response(user))
+
+# Optional: minimal security headers (use a proper middleware in prod)
+@app.after_request
+def set_security_headers(resp):
+    resp.headers["X-Content-Type-Options"] = "nosniff"
+    resp.headers["X-Frame-Options"] = "DENY"
+    resp.headers["Referrer-Policy"] = "no-referrer"
+    resp.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    resp.headers["Pragma"] = "no-cache"
+    return resp
+
+</code></pre>
+                    </div>
+
+                    <div id="prevention" class="tab-panel">
+                                <h4>Solution</h4>
+                                <p> The user has to find a way to trigger server error , so that the server throws some sensitive data in its error. Here the developer has forgoten to turn debug to false which resulted in showing the app.py file which has some sensitive data. Try entering a random route to trigger the error and go through the app.py file to find the sensitive data.</p>
+                                <li>Start by accessing the main lab page at `/lab`</li>
+                                <li>Access any non-existing route for ex.`/500error` endpoint to trigger debug information</li>
+                                <li>Find the `SENSITIVE_DATA` flag in the debug output</li>
+
+     
+                        <br>
+                        <h4>OWASP References</h4>
+                        <ul>
+                            <li><a href="https://owasp.org/API-Security/editions/2019/en/0xa3-excessive-data-exposure/" target="_blank">OWASP Sensitive Data Exposure </a></li>
+                            <li><a href="https://owasp.org/www-project-top-ten/2017/A3_2017-Sensitive_Data_Exposure" target="_blank">OWASP Sensitive Data Exposure Vulnerabilty</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>

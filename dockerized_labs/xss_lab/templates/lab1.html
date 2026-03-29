@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Lab 1: Reflected XSS</title>
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <div class="box">
+        <h3>FAANG Company Search</h3>
+        <div class="form-container">
+            <form method="get" action="/lab1">
+                <div class="section">
+                    <label for="search" class="form-label">Enter a company name:</label>
+                    <input type="text" id="search" name="q" placeholder="Try Facebook, Apple, etc.">
+                    <button type="submit">Search</button>
+                </div>
+            </form>
+
+            {% if company %}
+            <div class="search-result">
+                <h4>Company Details</h4>
+                <p class="bp"><strong>Company:</strong> {{ company }}</p>
+                <p class="bp"><strong>CEO:</strong> {{ ceo }}</p>
+                <p class="bp"><strong>About:</strong> {{ about }}</p>
+            </div>
+            {% elif query %}
+            <div class="search-result">
+                {# Vulnerable: Reflects unescaped user input #}
+                <h3>The company '{{ query|safe }}' You searched for is not Part of FAANG</h3>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="box">
+        <h4>Lab Instructions</h4>
+        <div class="lab">
+            <p class="bp">This lab demonstrates a reflected XSS vulnerability. The page reflects back user input without proper escaping. Try the following:</p>
+            
+            <div class="section">
+                <h5>Steps to Try:</h5>
+                <ol>
+                    <li>First enter a valid company name like "Facebook" to see normal behavior</li>
+                    <li>Try entering an HTML tag: <code>&lt;h4&gt;Hello&lt;/h4&gt;</code></li>
+                    <li>Notice how your input gets rendered as actual HTML</li>
+                    <li>Can you make it execute JavaScript using <code>&lt;script&gt;</code> tags?</li>
+                </ol>
+            </div>
+
+            <div class="section">
+                <h5>Vulnerability Details</h5>
+                <p class="bp">
+                    The vulnerability exists because user input is being reflected back with the <code>safe</code> filter in the template:
+                    <pre><code>&lt;h3&gt;The company '{{query|safe}}' You searched for is not Part of FAANG&lt;/h3&gt;</code></pre>
+                    This means any HTML or JavaScript in the input will be executed by the browser instead of being escaped.
+                </p>
+            </div>
+        </div>
+        
+        <div style="text-align: right;">
+            <button onclick="window.location.href='/lab2'" style="margin-right: 10px;">Next Lab</button>
+            <button onclick="window.location.href='/'">Back to Home</button>
+        </div>
+    </div>
+</div>
+{% endblock %}

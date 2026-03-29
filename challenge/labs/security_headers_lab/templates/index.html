@@ -1,0 +1,185 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Security Headers Misconfiguration - Clickjacking Lab</title>
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <h3>Challenge 3</h3>
+    <div class="box">
+        <h3>Security Headers Misconfiguration - Clickjacking Attack</h3>
+        <h4>What are Security Headers?</h4>
+        <p class="bp">
+            Security headers are HTTP response headers that instruct web browsers how to behave when handling a website's content. They provide an additional layer of security by enabling various security features and protections in the browser.
+        </p>
+
+        <h4>The Clickjacking Scenario</h4>
+        <div class="section">
+            <p class="bp">
+                <strong>Story:</strong> SecureBank's web application doesn't set proper security headers like X-Frame-Options or Content-Security-Policy. An attacker creates a malicious page that embeds the bank's transfer page in an invisible iframe.
+            </p>
+            
+            <p class="bp">
+                <strong>Vulnerability:</strong> When users think they're clicking a harmless button (like "Play Game"), they're actually clicking on the hidden banking interface, potentially triggering unauthorized money transfers.
+            </p>
+        </div>
+
+        <div class="lab">
+            <h4>Lab Challenge</h4>
+            <p class="bp">
+                <strong>Goal:</strong> Understand how clickjacking works and learn to prevent it with proper security headers.
+            </p>
+            
+            <p class="bp">
+                <strong>Available Test Accounts:</strong>
+                <ul>
+                    <li><strong>Username:</strong> john_doe | <strong>Password:</strong> password123 | <strong>Balance:</strong> ₹25,000</li>
+                    <li><strong>Username:</strong> jane_smith | <strong>Password:</strong> securepass | <strong>Balance:</strong> ₹15,000</li>
+                </ul>
+            </p>
+            
+            <div style="text-align: right;">
+                <button type="button" onclick="window.location.href='/lab'" style="margin-right: 10px;">Lab Details</button>
+                <button type="button" onclick="window.location.href='/login'" style="margin-right: 10px;">Access Banking</button>
+                <button type="button" onclick="window.location.href='/solution'">View Solution</button>
+            </div>
+        </div>
+
+        <div class="section">
+            <h4>Security Mode Toggle</h4>
+            <div class="security-toggle">
+                <p><strong>Current Mode:</strong> 
+                    {% if session.secure_mode %}
+                        <span style="color: #28a745;">🔒 Secure (Headers Enabled)</span>
+                    {% else %}
+                        <span style="color: #dc3545;">⚠️ Vulnerable (Headers Disabled)</span>
+                    {% endif %}
+                </p>
+                <button onclick="window.location.href='/toggle_secure_mode'">
+                    {% if session.secure_mode %}
+                        Switch to Vulnerable Mode
+                    {% else %}
+                        Switch to Secure Mode
+                    {% endif %}
+                </button>
+                <button onclick="checkHeaders()" style="margin-left: 10px;">Check Current Headers</button>
+            </div>
+        </div>
+
+        <div class="section">
+            <h4>Critical Security Headers</h4>
+            <div class="lesson-section">
+                <h5>1. X-Frame-Options</h5>
+                <p class="bp">
+                    Controls whether a page can be displayed in a frame or iframe:
+                    <ul>
+                        <li><code>DENY</code> - Page cannot be displayed in any frame</li>
+                        <li><code>SAMEORIGIN</code> - Page can only be framed by same origin</li>
+                        <li><code>ALLOW-FROM uri</code> - Page can be framed by specified URI</li>
+                    </ul>
+                </p>
+            </div>
+
+            <div class="lesson-section">
+                <h5>2. Content-Security-Policy (CSP)</h5>
+                <p class="bp">
+                    Modern replacement for X-Frame-Options with more granular control:
+                    <ul>
+                        <li><code>frame-ancestors 'none'</code> - Equivalent to X-Frame-Options: DENY</li>
+                        <li><code>frame-ancestors 'self'</code> - Equivalent to X-Frame-Options: SAMEORIGIN</li>
+                        <li><code>frame-ancestors example.com</code> - Allow framing from specific domain</li>
+                    </ul>
+                </p>
+            </div>
+
+            <div class="lesson-section">
+                <h5>3. Other Important Headers</h5>
+                <p class="bp">
+                    <ul>
+                        <li><code>X-Content-Type-Options: nosniff</code> - Prevents MIME type sniffing</li>
+                        <li><code>X-XSS-Protection: 1; mode=block</code> - Enables XSS filtering</li>
+                        <li><code>Referrer-Policy</code> - Controls referrer information</li>
+                    </ul>
+                </p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h4>Impact of Missing Security Headers</h4>
+            <p class="bp">
+                Missing or misconfigured security headers can lead to:
+                <ul>
+                    <li><strong>Clickjacking Attacks:</strong> Trick users into clicking hidden elements</li>
+                    <li><strong>MIME Type Confusion:</strong> Execute malicious content with wrong MIME types</li>
+                    <li><strong>Cross-Site Scripting:</strong> Bypass browser XSS protections</li>
+                    <li><strong>Information Disclosure:</strong> Leak sensitive referrer information</li>
+                </ul>
+            </p>
+        </div>
+
+
+        <div id="headers-info" class="section" style="display: none;">
+            <h4>Current Security Headers</h4>
+            <div id="headers-content"></div>
+        </div>
+
+        <div class="section">
+            <h4>Prevention & Best Practices</h4>
+            <p class="bp">
+                <strong>Essential Security Headers:</strong>
+                <ul>
+                    <li>Always set X-Frame-Options or CSP frame-ancestors</li>
+                    <li>Implement Content-Security-Policy for comprehensive protection</li>
+                    <li>Use X-Content-Type-Options: nosniff</li>
+                    <li>Enable X-XSS-Protection (where supported)</li>
+                    <li>Configure appropriate Referrer-Policy</li>
+                    <li>Use HTTPS and set Strict-Transport-Security</li>
+                </ul>
+            </p>
+        </div>
+    </div>
+</div>
+
+<script>
+function checkHeaders() {
+    fetch('/check_headers')
+        .then(response => response.json())
+        .then(data => {
+            const headersDiv = document.getElementById('headers-info');
+            const contentDiv = document.getElementById('headers-content');
+            
+            let headersList = '<ul>';
+            headersList += `<li><strong>X-Frame-Options:</strong> ${data.x_frame_options}</li>`;
+            headersList += `<li><strong>Content-Security-Policy:</strong> ${data.content_security_policy}</li>`;
+            headersList += `<li><strong>X-Content-Type-Options:</strong> ${data.x_content_type_options}</li>`;
+            headersList += `<li><strong>X-XSS-Protection:</strong> ${data.x_xss_protection}</li>`;
+            headersList += `<li><strong>Referrer-Policy:</strong> ${data.referrer_policy}</li>`;
+            headersList += '</ul>';
+            
+            contentDiv.innerHTML = headersList;
+            headersDiv.style.display = 'block';
+        })
+        .catch(error => {
+            console.error('Error checking headers:', error);
+        });
+}
+</script>
+
+<style>
+.security-toggle {
+    background: #fff3cd;
+    color: #856404;
+    padding: 15px;
+    border-radius: 4px;
+    border: 1px solid #ffeaa7;
+    text-align: center;
+}
+
+[data-theme="dark"] .security-toggle {
+    background: #4a4a00;
+    color: #ffff99;
+    border-color: #666600;
+}
+</style>
+{% endblock %}

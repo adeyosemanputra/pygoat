@@ -1,0 +1,118 @@
+<!-- Custom CSS Modal for Security Fix -->
+<div id="secureFixModal" class="custom-modal">
+    <div class="modal-overlay"></div>
+    <div class="modal-container">
+        <div class="modal-header">
+            <h2 class="modal-title">
+                🛡️ Security Fix for Command Injection
+            </h2>
+            <button type="button" class="close-btn" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="tabs-container">
+                <div class="tab-buttons">
+                    <!-- <button class="tab-btn active" onclick="showTab('vulnerability')">Vulnerability</button> -->
+                    <button class="tab-btn active" style="font-weight: bold; font-size: 18px;" onclick="showTab('secure-code')">Secure Code</button>
+                    <button class="tab-btn " style="font-weight: bold; font-size: 18px;" onclick="showTab('prevention')">Solution</button>
+                </div>
+
+                <div class="tab-content">
+                    <div id="secure-code" class="tab-panel active">
+                        <h4>Secure Implementation for Command Injection</h4>
+                        <pre class="code-block"><code>
+import subprocess
+import shlex
+import re
+from typing import List
+
+class SecureCommand:
+
+    def __init__(self):
+        # Whitelist of allowed commands only
+        self.allowed_commands = ['ls', 'cat', 'grep', 'head', 'tail', 'wc', 'date']
+        
+        # Dangerous characters to block
+        self.dangerous_chars = ['|', '&', ';', '$', '`', '(', ')', '<', '>', '\n']
+    
+    def validate_input(self, user_input: str) -> bool:
+        # Block dangerous characters
+        for char in self.dangerous_chars:
+            if char in user_input:
+                return False
+        
+        # Block command chaining patterns
+        if re.search(r'(\|\||\&\&|;;|\$\(|`.*`)', user_input):
+            return False
+        
+        return True
+    
+    def safe_execute(self, command: str, args: List[str]) -> str:
+        # Whitelist command
+        if command not in self.allowed_commands:
+            raise ValueError("Command not allowed")
+        
+        # Validate all arguments
+        for arg in args:
+            if not self.validate_input(arg):
+                raise ValueError("Invalid argument")
+        
+        try:
+            # Critical: shell=False prevents injection
+            result = subprocess.run(
+                [command] + args,  # Pass as list, not string
+                capture_output=True,
+                text=True,
+                timeout=10,
+                shell=False,  # Never use shell=True with user input!
+                check=True
+            )
+            return result.stdout.strip()
+            
+        except subprocess.CalledProcessError as e:
+            raise ValueError(f"Command failed: {e}")
+        except subprocess.TimeoutExpired:
+            raise ValueError("Command timed out")
+    
+    def safe_file_read(self, filename: str) -> str:
+        # Prevent path traversal
+        if '..' in filename or filename.startswith('/'):
+            raise ValueError("Invalid file path")
+        
+        # Only allow safe filenames
+        if not re.match(r'^[a-zA-Z0-9._-]+$', filename):
+            raise ValueError("Invalid filename")
+        
+        return self.safe_execute('cat', [filename])
+    
+    def escape_if_needed(self, arg: str) -> str:
+        return shlex.quote(arg)</code></pre>
+                    </div>
+
+                    <div id="prevention" class="tab-panel">
+                                <h4>Solution</h4>
+                                <h4>Lab 1</h4>
+                                <p>The user on accessing the lab is provided with a feature to perform a name server lookup on the given domain. The user has to give a domain name and the server would perform a ns lookup and return back to the client. If the user is running the lab, based on the OS he can select Windows or Linux.</p>
+                                <p>The user can cause the server to execute commands ,because of the lack of input validation.</p>
+                                <p>The user can give a domain say <pre>google.com && [any cmd]</pre> or <pre>google.com; [any cmd]</pre></p>
+                                <p>If the OS is windows, lets give input as <pre>google.com && ipconfig</pre> and choose windows.</p>
+                                <p>If the OS is linux (Ubuntu, Kali, etc), lets give input as <pre>google.com && ifconfig</pre> and choose linux.</p>
+                                <p>This should give you the output for both "ns lookup" as well as for the "ifconfig".</p><br><br>
+
+                                <h4>Lab 2</h4>
+                                <p>We are given an input form where we can calculate basic arithmetic expressions. Our task is to exploit this functionality and achieve code execution.</p>
+                                <br><p>This lab is using <pre>eval()</pre> function in backend which is used to evaluate expression in python. If the expression is a legal python statement, then it will be executed.</p>
+                                <br><p>If we submit the expression "1 + 1", we get the output as 2. Similarly, on submitting the expression "7 * 7", we get the output as 49.</p>
+                                <br><p>Now, if we submit <pre>os.system("id")</pre>we get nothing in the output. But if we check the terminal, we will see that the command gets executed and the result is printed on the terminal screen. You can also verify this by submitting <pre>os.system("sleep 30")</pre>and you will notice that the request completes after 30 seconds.</p>
+                        <br><br>
+                        <h4>OWASP References</h4>
+                        <ul>
+                            <li><a href="https://owasp.org/www-community/attacks/Command_Injection" target="_blank">OWASP Command Injection</a></li>
+                            <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/OS_Command_Injection_Defense_Cheat_Sheet.html" target="_blank">OWASP Command Injection Cheatsheet</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>

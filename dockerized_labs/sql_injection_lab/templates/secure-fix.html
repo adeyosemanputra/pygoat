@@ -1,0 +1,80 @@
+<!-- Custom CSS Modal for Security Fix -->
+<div id="secureFixModal" class="custom-modal">
+    <div class="modal-overlay"></div>
+    <div class="modal-container">
+        <div class="modal-header">
+            <h2 class="modal-title">
+                🛡️ Security Fix for SQL Injection
+            </h2>
+            <button type="button" class="close-btn" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="tabs-container">
+                <div class="tab-buttons">
+                    <!-- <button class="tab-btn active" onclick="showTab('vulnerability')">Vulnerability</button> -->
+                    <button class="tab-btn active" style="font-weight: bold; font-size: 18px;" onclick="showTab('secure-code')">Secure Code</button>
+                    <button class="tab-btn " style="font-weight: bold; font-size: 18px;" onclick="showTab('prevention')">Solution</button>
+                </div>
+
+                <div class="tab-content">
+                    <div id="secure-code" class="tab-panel active">
+                        <h4>Secure Implementation for SQL Injection Prevention</h4>
+                        <pre class="code-block"><code>
+def secure_get_user(user_id, email):
+    try:
+        conn = sqlite3.connect('users.db')
+        cursor = conn.cursor()
+
+        # Use parameterized queries (prevents SQL injection)
+
+        query = "SELECT * FROM users WHERE id = ? AND email = ?"
+        cursor.execute(query, (user_id, email))
+        result = cursor.fetchone()
+        conn.close()
+        return {"success": True, "data": result}
+    except sqlite3.Error as e:
+        return {"error": "Database error"}
+    except Exception as e:
+        return {"error": "Query failed"}
+
+def secure_search_users(search_term):
+    try:
+        if not search_term or len(search_term) > 100:
+            return {"error": "Invalid search term"}
+            
+        # More permissive regex for real names - allows hyphens, apostrophes, periods
+
+        if not re.match(r"^[a-zA-Z0-9\s\-'\.]+$", search_term):
+            return {"error": "Invalid search term"}
+            
+        conn = sqlite3.connect('users.db')
+        cursor = conn.cursor()
+      
+        query = "SELECT name, email FROM users WHERE name LIKE ?"
+        cursor.execute(query, (f"%{search_term}%",))
+        results = cursor.fetchall()
+        conn.close()
+        return {"success": True, "data": results}
+    except Exception as e:
+        return {"error": "Search failed"}</code></pre>
+                    </div>
+
+                    <div id="prevention" class="tab-panel">
+                                <h4>Solution</h4>
+                                <!-- <ol> -->
+                                <p> The user on accessing the lab is given with a login page,which challenges the user to login as admin. The user now has to identify some mechanism to login as admin. To test for sql injection ,the user can begin with a [  '  or  "  ] based on the error generated he can confirm that it is an sql injection. Search for common sql injections payloads in google and try using them to break the functionality of the backend code. </p><br>
+                                <p>Since the challenge requires you to login as admin, enter the username as admin . The user now can use a very common sql injection paylaod to bypass the login validation <pre><code>anything' OR '1' ='1. </code></pre> Click login and now you will see that you have successfully logged into admin's account.</p>
+                                
+                        <br>
+                        <h4>OWASP References</h4>
+                        <ul>
+                            <li><a href="https://owasp.org/www-community/attacks/SQL_Injection" target="_blank">OWASP SQL Injection</a></li>
+                            <li><a href="https://owasp.org/www-community/attacks/SQL_Injection_Bypassing_WAF" target="_blank">OWASP SQL Injection Bypassing WAF</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>

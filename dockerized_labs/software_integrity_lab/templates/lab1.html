@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+
+{% block title %}Lab 1: Insecure Deserialization{% endblock %}
+
+{% block content %}
+<div class="box">
+    <h3>Lab 1: Insecure Deserialization</h3>
+    
+    <div class="section">
+        <h4>Challenge</h4>
+        <p class="bp">There's a hidden admin panel that only administrators can access. Can you become an admin?</p>
+        
+        {% if error %}
+        <div class="error">{{ error }}</div>
+        {% endif %}
+        
+        <div class="response">{{ message }}</div>
+    </div>
+
+    <div class="section">
+        <h4>Hints</h4>
+        <ul>
+            <li>The application uses Python's pickle module for serialization</li>
+            <li>Check your browser cookies</li>
+            <li>Research pickle deserialization attacks</li>
+        </ul>
+    </div>
+</div>
+{% endblock %}

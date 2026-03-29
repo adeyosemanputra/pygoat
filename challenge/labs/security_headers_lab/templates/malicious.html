@@ -1,0 +1,431 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>🎮 Free Online Games - Win Prizes!</title>
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <div class="malicious-header">
+        <h3>🎮 Amazing Free Games - Click to Win Prizes! 🏆</h3>
+        <p class="game-subtitle">Play our exciting games and win amazing rewards!</p>
+    </div>
+    
+    <div class="box games-container">
+        <div class="game-announcement">
+            <h4>🎉 Special Limited Time Offer! 🎉</h4>
+            <p class="bp">
+                <strong>WIN BIG!</strong> Click the "PLAY NOW" button below to start playing and win instant prizes!
+                Limited time offer - don't miss out!
+            </p>
+        </div>
+
+        <div class="game-section">
+            <h4>🎯 Quick Prize Game</h4>
+            <p class="bp">Click the button below to play and win instant rewards!</p>
+            
+            <!-- This is where the clickjacking happens -->
+            <div class="game-button-container" id="gameContainer">
+                <button class="game-button" id="playButton" onclick="playGame()">
+                    🎮 PLAY NOW - WIN PRIZES! 🏆
+                </button>
+                
+                <!-- Hidden iframe that contains the banking transfer page -->
+                <iframe id="hiddenFrame" 
+                        src="/transfer" 
+                        style="position: absolute; opacity: 0.01; z-index: 10; pointer-events: none; width: 300px; height: 200px; left: 50%; top: 50%; transform: translate(-50%, -50%);">
+                </iframe>
+            </div>
+            
+            <div id="gameResult" class="game-result" style="display: none;"></div>
+        </div>
+
+        <div class="demo-explanation">
+            <h4>Clickjacking Demonstration</h4>
+            <div class="explanation-content">
+                <p class="bp">
+                    <strong>What's happening here:</strong>
+                </p>
+                <ul class="bp">
+                    <li>This page appears to be a harmless gaming website</li>
+                    <li>The "PLAY NOW" button looks innocent</li>
+                    <li>However, there's an invisible iframe containing the banking transfer page</li>
+                    <li>When security headers are disabled, the iframe loads successfully</li>
+                    <li>User clicks might interact with the hidden banking interface</li>
+                </ul>
+                
+                <div class="security-status">
+                    <p><strong>Current Security Status:</strong></p>
+                    {% if session.secure_mode %}
+                        <div class="status secure">
+                            <span>🔒 SECURE</span>
+                            <p>Security headers are enabled. The banking page cannot be embedded in this iframe.</p>
+                        </div>
+                    {% else %}
+                        <div class="status vulnerable">
+                            <span>⚠️ VULNERABLE</span>
+                            <p>Security headers are disabled. The banking page can be embedded and is potentially vulnerable to clickjacking.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="attack-simulation">
+            <h4>Attack Simulation Controls</h4>
+            <div class="simulation-controls">
+                <button onclick="toggleIframeVisibility()" id="toggleBtn">
+                    👁️ Toggle Iframe Visibility
+                </button>
+                <button onclick="showIframeDetails()">
+                    🔍 Inspect Hidden Iframe
+                </button>
+                <button onclick="window.location.href='/toggle_secure_mode'">
+                    {% if session.secure_mode %}
+                        🔓 Disable Security Headers
+                    {% else %}
+                        🔒 Enable Security Headers
+                    {% endif %}
+                </button>
+                <button onclick="window.open('/transfer', '_blank')" style="background: #28a745;">
+                    🏦 Open Banking Page
+                </button>
+            </div>
+        </div>
+
+        <div class="educational-content">
+            <h4>Educational Information</h4>
+            <div class="education-section">
+                <h5>How Clickjacking Works:</h5>
+                <ol class="bp">
+                    <li><strong>Iframe Embedding:</strong> Attacker embeds target site in invisible iframe</li>
+                    <li><strong>UI Redressing:</strong> Overlays fake interface on top of real content</li>
+                    <li><strong>User Deception:</strong> Users think they're clicking harmless buttons</li>
+                    <li><strong>Unauthorized Actions:</strong> Clicks actually interact with hidden content</li>
+                </ol>
+
+                <h5>Real-World Attack Scenarios:</h5>
+                <ul class="bp">
+                    <li>Banking transfers triggered by game clicks</li>
+                    <li>Social media actions (likes, follows, shares)</li>
+                    <li>Account settings changes</li>
+                    <li>Email or message sending</li>
+                    <li>Purchase confirmations</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="mitigation-info">
+            <h4>How to Prevent Clickjacking</h4>
+            <div class="mitigation-content">
+                <h5>Essential Security Headers:</h5>
+                <pre><code>X-Frame-Options: DENY
+Content-Security-Policy: frame-ancestors 'none'</code></pre>
+                
+                <h5>Additional Protections:</h5>
+                <ul class="bp">
+                    <li>Frame-busting JavaScript (not recommended as primary defense)</li>
+                    <li>SameSite cookies for session protection</li>
+                    <li>User interaction validation for sensitive actions</li>
+                    <li>Visual confirmations for critical operations</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="lab-navigation">
+            <button onclick="window.location.href='/'" style="margin-right: 10px;">Back to Lab Overview</button>
+            <button onclick="window.location.href='/login'" style="margin-right: 10px;">Access Banking</button>
+            <button onclick="window.location.href='/solution'">View Solution</button>
+        </div>
+    </div>
+</div>
+
+<script>
+let iframeVisible = false;
+
+function playGame() {
+    const result = document.getElementById('gameResult');
+    result.style.display = 'block';
+    result.innerHTML = `
+        <div class="alert warning">
+            <strong>Clickjacking Alert!</strong><br>
+            In a real attack, this click might have triggered an action in the hidden banking iframe!
+            <br><br>
+            <strong>Current iframe status:</strong> 
+            ${document.getElementById('hiddenFrame').style.opacity > 0.5 ? 'Visible' : 'Hidden (opacity: ' + document.getElementById('hiddenFrame').style.opacity + ')'}
+        </div>
+    `;
+    
+    result.scrollIntoView({ behavior: 'smooth' });
+}
+
+function toggleIframeVisibility() {
+    const iframe = document.getElementById('hiddenFrame');
+    const btn = document.getElementById('toggleBtn');
+    
+    if (iframeVisible) {
+        iframe.style.opacity = '0.01';
+        iframe.style.pointerEvents = 'none';
+        btn.textContent = '👁️ Toggle Iframe Visibility';
+        iframeVisible = false;
+    } else {
+        iframe.style.opacity = '0.8';
+        iframe.style.pointerEvents = 'auto';
+        iframe.style.border = '2px solid red';
+        btn.textContent = '🙈 Hide Iframe';
+        iframeVisible = true;
+    }
+}
+
+function showIframeDetails() {
+    const iframe = document.getElementById('hiddenFrame');
+    const details = `
+        Iframe Details:
+        - Source: ${iframe.src}
+        - Opacity: ${iframe.style.opacity}
+        - Z-index: ${iframe.style.zIndex}
+        - Position: ${iframe.style.position}
+        - Pointer Events: ${iframe.style.pointerEvents}
+        - Dimensions: ${iframe.style.width} x ${iframe.style.height}
+    `;
+    alert(details);
+}
+
+document.getElementById('hiddenFrame').onload = function() {
+    console.log('Iframe loaded successfully - clickjacking possible!');
+};
+
+document.getElementById('hiddenFrame').onerror = function() {
+    console.log('Iframe blocked - security headers working!');
+};
+</script>
+
+<style>
+.malicious-header {
+    text-align: center;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 30px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+}
+
+.game-subtitle {
+    font-size: 1.2rem;
+    margin: 10px 0;
+    opacity: 0.9;
+}
+
+.games-container {
+    background: var(--card-bg);
+}
+
+.game-announcement {
+    background: linear-gradient(135deg, #ffd700, #ffed4e);
+    color: #333;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    margin-bottom: 30px;
+    border: 2px solid #ffc107;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+    100% { transform: scale(1); }
+}
+
+.game-section {
+    text-align: center;
+    margin: 30px 0;
+    padding: 30px;
+    background: var(--section-bg);
+    border-radius: 12px;
+    position: relative;
+}
+
+.game-button-container {
+    position: relative;
+    display: inline-block;
+    margin: 20px 0;
+}
+
+.game-button {
+    background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+    color: white;
+    font-size: 1.5rem;
+    font-weight: bold;
+    padding: 20px 40px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
+    transition: all 0.3s ease;
+    animation: bounce 1s infinite alternate;
+}
+
+@keyframes bounce {
+    0% { transform: translateY(0px); }
+    100% { transform: translateY(-5px); }
+}
+
+.game-button:hover {
+    background: linear-gradient(135deg, #ee5a24, #ff6b6b);
+    transform: scale(1.05);
+    box-shadow: 0 12px 35px rgba(255, 107, 107, 0.6);
+}
+
+.game-result {
+    margin: 20px 0;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.demo-explanation {
+    margin: 30px 0;
+    padding: 25px;
+    background: var(--section-bg);
+    border-radius: 8px;
+    border-left: 5px solid #ffc107;
+}
+
+.explanation-content {
+    margin-top: 15px;
+}
+
+.security-status {
+    margin: 20px 0;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.status {
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.status.secure {
+    background: #d4edda;
+    color: #155724;
+    border: 2px solid #28a745;
+}
+
+.status.vulnerable {
+    background: #f8d7da;
+    color: #721c24;
+    border: 2px solid #dc3545;
+}
+
+[data-theme="dark"] .status.secure {
+    background: #1e4620;
+    color: #a3d9a5;
+}
+
+[data-theme="dark"] .status.vulnerable {
+    background: #4a1e1e;
+    color: #e6a3a3;
+}
+
+.status span {
+    font-size: 1.3rem;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.attack-simulation {
+    margin: 30px 0;
+    padding: 25px;
+    background: var(--section-bg);
+    border-radius: 8px;
+    border-left: 5px solid #dc3545;
+}
+
+.simulation-controls {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.educational-content {
+    margin: 30px 0;
+    padding: 25px;
+    background: var(--section-bg);
+    border-radius: 8px;
+    border-left: 5px solid #17a2b8;
+}
+
+.education-section {
+    margin-top: 15px;
+}
+
+.mitigation-info {
+    margin: 30px 0;
+    padding: 25px;
+    background: #d4edda;
+    color: #155724;
+    border-radius: 8px;
+    border: 2px solid #28a745;
+}
+
+[data-theme="dark"] .mitigation-info {
+    background: #1e4620;
+    color: #a3d9a5;
+}
+
+.mitigation-content {
+    margin-top: 15px;
+}
+
+.lab-navigation {
+    text-align: center;
+    margin: 30px 0;
+    padding: 20px;
+    background: var(--section-bg);
+    border-radius: 8px;
+}
+
+.alert.warning {
+    background: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeaa7;
+    padding: 15px;
+    border-radius: 4px;
+}
+
+[data-theme="dark"] .alert.warning {
+    background: #4a4a00;
+    color: #ffff99;
+    border-color: #666600;
+}
+
+pre {
+    background: var(--code-bg);
+    color: var(--code-color);
+    padding: 15px;
+    border-radius: 4px;
+    overflow-x: auto;
+    margin: 10px 0;
+}
+
+@media (max-width: 768px) {
+    .simulation-controls {
+        grid-template-columns: 1fr;
+    }
+    
+    .game-button {
+        font-size: 1.2rem;
+        padding: 15px 30px;
+    }
+    
+    .malicious-header {
+        padding: 20px;
+    }
+}
+</style>
+{% endblock %}

