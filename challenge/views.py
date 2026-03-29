@@ -27,22 +27,36 @@ def _get_user_containers(client, username: str):
     prefix = f"lab-{_sanitize(username)}-"
     return [c for c in client.containers.list(all=True) if c.name.startswith(prefix)]
 
-# --- THE BOUNCER (Traefik Auth) ---
+def _get_lab_config(lab_name: str) -> dict:
+    """Reads labs.json to find the correct internal port for Traefik."""
+    clean_name = lab_name.replace(" ", "_").lower()
+    labs_json_path = os.path.join(settings.BASE_DIR, 'labs.json')
+    try:
+        with open(labs_json_path, 'r') as f:
+            data = json.load(f)
+        for lab in data.get('labs', []):
+            if lab.get('name') == clean_name or lab.get('name') == lab_name:
+                return lab
+    except Exception:
+        pass
+    return {"port": 5000} # Fallback default
+
+# --- THE BOUNCER (Traefik ForwardAuth) ---
 
 @csrf_exempt
 def check_auth(request):
-    """The central Bouncer view used by Traefik."""
+    """The central Bouncer view used by Traefik to protect subdomains."""
     if not request.user.is_authenticated:
         return HttpResponse("Unauthorized", status=401)
     
     host = request.headers.get("X-Forwarded-Host", request.headers.get("Host", ""))
     parts = host.split(".")
     
-    # Allow main domain access
+    # Allow access to the main domain (lvh.me)
     if len(parts) < 3:
         return HttpResponse("OK", status=200)
         
-    # Example: lab-rishi-xss.lvh.me -> parts[0] is 'lab-rishi-xss'
+    # Verify the logged-in user owns this specific lab subdomain
     username_from_host = parts[0] 
     if request.user.username not in username_from_host:
         return HttpResponse("Access Denied", status=403)
@@ -52,6 +66,7 @@ def check_auth(request):
 # --- Lab Management Views ---
 
 def start_lab(request, lab_image_name):
+    """Starts a lab for the new Dashboard UI."""
     if not request.user.is_authenticated:
         return JsonResponse({'status': 'error', 'message': 'Auth required'}, status=401)
     
@@ -61,21 +76,22 @@ def start_lab(request, lab_image_name):
 
     username = request.user.username
     container_name = _get_container_name(username, lab_image_name)
-    domain = getattr(settings, 'LAB_DOMAIN', 'lvh.me')
-    subdomain = f"{container_name}.{domain}"
-    network_name = getattr(settings, 'DOCKER_NETWORK', 'my_network')
+    subdomain = f"{container_name}.{getattr(settings, 'LAB_DOMAIN', 'lvh.me')}"
+    
+    # Get port from config
+    lab_config = _get_lab_config(lab_image_name)
+    lab_port = str(lab_config.get('port', '5000'))
 
     labels = {
         "traefik.enable": "true",
         f"traefik.http.routers.{container_name}.rule": f"Host(`{subdomain}`)",
-        # Point to the web container for session validation
-        f"traefik.http.middlewares.{container_name}-auth.forwardauth.address": "http://web:8000/challenge/auth-check/",
         f"traefik.http.routers.{container_name}.middlewares": f"{container_name}-auth",
-        f"traefik.http.services.{container_name}.loadbalancer.server.port": "5000",
+        f"traefik.http.middlewares.{container_name}-auth.forwardauth.address": "http://pygoat-web-1:8000/challenge/auth-check/",
+        f"traefik.http.middlewares.{container_name}-auth.forwardauth.trustForwardHeader": "true",
+        f"traefik.http.services.{container_name}.loadbalancer.server.port": lab_port,
     }
 
     try:
-        # Cleanup old instances
         try:
             client.containers.get(container_name).remove(force=True)
         except:
@@ -85,7 +101,7 @@ def start_lab(request, lab_image_name):
             image=lab_image_name,
             name=container_name,
             labels=labels,
-            network=network_name,
+            network=getattr(settings, "DOCKER_NETWORK", "my_network"),
             detach=True,
             mem_limit="512m"
         )
@@ -116,44 +132,39 @@ def list_user_labs(request):
     labs = [{'name': c.name, 'status': c.status} for c in containers]
     return JsonResponse({'status': 'success', 'labs': labs})
 
-# --- Legacy Placeholder ---
 class DoItFast(View):
+    """Handles Start/Stop/Redirect for the 'Do It Fast' challenge UI."""
     def post(self, request, challenge):
         if not request.user.is_authenticated:
             return JsonResponse({'message': 'Login required', 'status': '401'})
         
         try:
             chal = Challenge.objects.get(name=challenge)
-        except Challenge.DoesNotExist:
-            return JsonResponse({'message': 'Challenge not found', 'status': '404'})
+            lab_config = _get_lab_config(chal.name)
+            lab_port = str(lab_config.get('port', '5000')) 
+        except Exception as e:
+            return JsonResponse({'message': f'Config Error: {str(e)}', 'status': '404'})
 
-        client = get_docker_client() # Uses your docker helper
+        client = get_docker_client()
         username = request.user.username
+        container_name = _get_container_name(username, challenge)
+        subdomain = f"{container_name}.lvh.me"
         
-        # 1. Standardize the slug for Traefik
-        lab_slug = chal.name.replace(" ", "-").replace("_", "-").lower()
-        container_name = f"lab-{username}-{lab_slug}"
-        domain = getattr(settings, 'LAB_DOMAIN', 'lvh.me')
-        subdomain = f"{container_name}.{domain}"
-        
-        # 2. Set the Traefik Labels (The Bouncer "Rules")
         labels = {
             "traefik.enable": "true",
             f"traefik.http.routers.{container_name}.rule": f"Host(`{subdomain}`)",
             f"traefik.http.routers.{container_name}.middlewares": f"{container_name}-auth",
-            # This tells Traefik to check with your Django Bouncer
-            f"traefik.http.middlewares.{container_name}-auth.forwardauth.address": "http://web:8000/challenge/auth-check/",
-            f"traefik.http.services.{container_name}.loadbalancer.server.port": "5000", 
+            f"traefik.http.middlewares.{container_name}-auth.forwardauth.address": "http://pygoat-web-1:8000/challenge/auth-check/",
+            f"traefik.http.middlewares.{container_name}-auth.forwardauth.trustForwardHeader": "true",
+            f"traefik.http.services.{container_name}.loadbalancer.server.port": lab_port,
         }
 
         try:
-            # 3. Wipe any existing broken containers
             try:
                 client.containers.get(container_name).remove(force=True)
             except:
                 pass
 
-            # 4. Launch on the same network as Traefik
             client.containers.run(
                 image=chal.docker_image,
                 name=container_name,
@@ -162,7 +173,6 @@ class DoItFast(View):
                 detach=True
             )
 
-            # 5. This is the part your JavaScript "fetch" is looking for:
             return JsonResponse({
                 'message': 'success',
                 'status': '200',
@@ -171,3 +181,13 @@ class DoItFast(View):
 
         except Exception as e:
             return JsonResponse({'message': f'Docker Error: {str(e)}', 'status': '500'})
+
+    def delete(self, request, challenge):
+        client = get_docker_client()
+        container_name = _get_container_name(request.user.username, challenge)
+        try:
+            container = client.containers.get(container_name)
+            container.remove(force=True)
+            return JsonResponse({'message': 'success', 'status': '200'})
+        except:
+            return JsonResponse({'message': 'Lab not found', 'status': '404'})
