@@ -2,7 +2,7 @@ import random
 import string
 
 from django.contrib import messages
-from django.contrib.auth import login
+from django.contrib.auth import authenticate, login
 from django.shortcuts import redirect, render
 from django.views.decorators.csrf import csrf_exempt
 
@@ -18,7 +18,13 @@ def register(request):
         form = NewUserForm(request.POST)
         if form.is_valid():
             user = form.save()
-            login(request, user)
+            authenticated_user = authenticate(
+                request,
+                username=user.username,
+                password=form.cleaned_data.get("password1"),
+            )
+            if authenticated_user is not None:
+                login(request, authenticated_user)
             messages.success(request, "Registration successful.")
             return redirect("/")
         messages.error(request, "Unsuccessful registration. Invalid information.")

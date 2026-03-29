@@ -1,4 +1,8 @@
 from django.db import models
 
-# Create your models here.
-# OWASP 2017, OWASP 2021, and MITRE integrated lab models removed via migrations.
+
+class CSRF_user_tbl(models.Model):
+	username = models.CharField(max_length=200)
+	password = models.CharField(max_length=200)
+	balance = models.IntegerField(default=0)
+	is_loggedin = models.BooleanField(default=False)
