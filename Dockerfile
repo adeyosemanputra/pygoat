@@ -1,9 +1,9 @@
-
+# -------- build stage --------
 FROM python:3.11-slim-bookworm AS builder
 
 WORKDIR /app
 
-
+# hadolint ignore=DL3008
 RUN apt-get update \
     && apt-get install --no-install-recommends -y \
         dnsutils \
@@ -21,9 +21,10 @@ COPY requirements.txt .
 RUN pip wheel --no-cache-dir --no-deps -w /wheels -r requirements.txt 
 
 
+# -------- runtime stage --------
 FROM python:3.11-slim-bookworm
 
-
+# hadolint ignore=DL3008
 RUN apt-get update \
     && apt-get install --no-install-recommends -y \
         curl \
@@ -41,8 +42,9 @@ COPY . /app/
 
 EXPOSE 8000
 
-
+# v3 Healthcheck: Ensures Traefik knows when the backend is ready
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
     CMD curl -f http://localhost:8000/healthz || exit 1
 
+# Performance: Using 6 workers as required by the Traefik ForwardAuth POC
 CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "6", "pygoat.wsgi"]
