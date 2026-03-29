@@ -1,0 +1,30 @@
+{% extends 'introduction/base.html' %}
+{% block title %}<title>A4: Cryptographic Failures</title>{% endblock %}
+{% block content %}
+<div style="padding: 2%">
+  <h1>A4: Cryptographic Failures</h1>
+  <div class="card" style="padding: 20px; margin: 20px 0; background: var(--card-bg);">
+    
+    <h3>What is this vulnerability?</h3>
+    <p>Cryptographic failures arise when sensitive data is not protected with appropriate encryption, hashing, or key management. Examples include weak or obsolete algorithms, hardcoded keys, missing TLS, improper password storage, or encrypting data but exposing the keys in the same repository or environment.</p>
+
+    <h3>Real World Example</h3>
+    <p>Many breaches involve stolen databases where passwords were hashed with weak schemes or not salted, allowing attackers to recover credentials offline. Poor TLS configuration has also enabled interception of session tokens and credentials on untrusted networks.</p>
+
+    <h3>Impact</h3>
+    <ul>
+      <li>Exposure of passwords, tokens, personal data, and payment information</li>
+      <li>Account takeover and fraud using recovered secrets</li>
+      <li>Regulatory fines and loss of trust when confidentiality is breached</li>
+    </ul>
+
+    <h3>Mitigation</h3>
+    <ul>
+      <li>Use vetted libraries and modern algorithms; avoid rolling your own cryptography</li>
+      <li>Store keys in dedicated secret managers or HSMs; rotate and scope keys by purpose</li>
+      <li>Enforce TLS for data in transit; use slow salted password hashing (e.g., Argon2) for passwords at rest</li>
+    </ul>
+
+  </div>
+</div>
+{% endblock %}

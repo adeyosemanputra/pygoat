@@ -1,0 +1,33 @@
+{% extends 'introduction/base.html' %}
+{% block title %}<title>A3: Software Supply Chain Failures</title>{% endblock %}
+{% block content %}
+<div style="padding: 2%">
+  <h1>A3: Software Supply Chain Failures</h1>
+  <div class="card" style="padding: 20px; margin: 20px 0; background: var(--card-bg);">
+    
+    <h3>What is this vulnerability?</h3>
+    <p>Software supply chain failures occur when attackers compromise third-party code, package registries, build systems, CI/CD pipelines, or signing processes. A single malicious dependency, typosquatted package, or hijacked release pipeline can propagate to every downstream project that trusts that artifact.</p>
+
+    <h3>Real World Example</h3>
+    <p>The SolarWinds Orion incident showed how attackers could insert malicious code into a vendor’s trusted build and distribute signed updates to thousands of customers, demonstrating systemic risk when upstream integrity fails.</p>
+
+    <h3>Real World Example from OWASP Python-Honeypot</h3>
+    <p>The codecov dependency (version 2.1.12) was removed from PyPI and archived by maintainers, introducing supply-chain risk into the OWASP Python-Honeypot project. This is a real example of A03:2025 Software Supply Chain failure.</p>
+
+    <h3>Impact</h3>
+    <ul>
+      <li>Widespread distribution of backdoors or malware through trusted channels</li>
+      <li>Long dwell time because artifacts may appear legitimate and signed</li>
+      <li>Difficult remediation across many teams and deployment targets</li>
+    </ul>
+
+    <h3>Mitigation</h3>
+    <ul>
+      <li>Pin dependencies, verify checksums, and maintain an SBOM with SCA tooling</li>
+      <li>Protect CI/CD with branch protections, secret management, and signed artifacts</li>
+      <li>Monitor advisories and replace or fork dependencies that become unavailable or untrusted</li>
+    </ul>
+
+  </div>
+</div>
+{% endblock %}

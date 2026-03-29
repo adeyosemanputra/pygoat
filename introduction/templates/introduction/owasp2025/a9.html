@@ -1,0 +1,30 @@
+{% extends 'introduction/base.html' %}
+{% block title %}<title>A9: Security Logging and Monitoring Failures</title>{% endblock %}
+{% block content %}
+<div style="padding: 2%">
+  <h1>A9: Security Logging and Monitoring Failures</h1>
+  <div class="card" style="padding: 20px; margin: 20px 0; background: var(--card-bg);">
+    
+    <h3>What is this vulnerability?</h3>
+    <p>These failures occur when security-relevant events are not logged, logs are not reviewed, alerts are missing or ignored, or sensitive data is written unsafely to logs. Without visibility and timely detection, breaches continue for months undetected.</p>
+
+    <h3>Real World Example</h3>
+    <p>In several large retail breaches, attackers exfiltrated data over long periods while anomalous database access and outbound traffic either was not logged or did not trigger effective alerts, delaying containment until external fraud patterns appeared.</p>
+
+    <h3>Impact</h3>
+    <ul>
+      <li>Extended attacker dwell time and greater data loss</li>
+      <li>Weak forensic support for legal and regulatory investigations</li>
+      <li>Inability to detect automated attacks such as credential stuffing at scale</li>
+    </ul>
+
+    <h3>Mitigation</h3>
+    <ul>
+      <li>Log authentication, authorization failures, and access to sensitive resources</li>
+      <li>Centralize logs with integrity controls and define retention for compliance needs</li>
+      <li>Build alerts and runbooks for high-risk patterns; avoid logging secrets or full PII</li>
+    </ul>
+
+  </div>
+</div>
+{% endblock %}

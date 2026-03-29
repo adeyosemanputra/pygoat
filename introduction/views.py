@@ -1236,3 +1236,34 @@ def software_and_data_integrity_failure_lab3(request):
 def A6_discussion(request):
     
     return render(request,"playground/A6/index.html")
+
+# ------------------------- OWASP TOP 10 2025 Views ------------------------- #
+def owasp2025_a1(request):
+    return render(request, 'introduction/owasp2025/a1.html')
+
+def owasp2025_a2(request):
+    return render(request, 'introduction/owasp2025/a2.html')
+
+def owasp2025_a3(request):
+    return render(request, 'introduction/owasp2025/a3.html')
+
+def owasp2025_a4(request):
+    return render(request, 'introduction/owasp2025/a4.html')
+
+def owasp2025_a5(request):
+    return render(request, 'introduction/owasp2025/a5.html')
+
+def owasp2025_a6(request):
+    return render(request, 'introduction/owasp2025/a6.html')
+
+def owasp2025_a7(request):
+    return render(request, 'introduction/owasp2025/a7.html')
+
+def owasp2025_a8(request):
+    return render(request, 'introduction/owasp2025/a8.html')
+
+def owasp2025_a9(request):
+    return render(request, 'introduction/owasp2025/a9.html')
+
+def owasp2025_a10(request):
+    return render(request, 'introduction/owasp2025/a10.html')

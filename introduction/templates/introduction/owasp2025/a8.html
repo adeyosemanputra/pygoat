@@ -1,0 +1,30 @@
+{% extends 'introduction/base.html' %}
+{% block title %}<title>A8: Vulnerable and Outdated Components</title>{% endblock %}
+{% block content %}
+<div style="padding: 2%">
+  <h1>A8: Vulnerable and Outdated Components</h1>
+  <div class="card" style="padding: 20px; margin: 20px 0; background: var(--card-bg);">
+    
+    <h3>What is this vulnerability?</h3>
+    <p>This category covers reliance on frameworks, libraries, and services with known vulnerabilities or end-of-life support. Attackers exploit public CVEs in dependencies you did not write, including deserialization bugs, RCE in parsers, or default credentials on bundled services.</p>
+
+    <h3>Real World Example</h3>
+    <p>The Equifax breach involved exploitation of a disclosed vulnerability in Apache Struts. A public patch existed, but the vulnerable component remained exposed—showing that unpatched dependencies can compromise entire organizations.</p>
+
+    <h3>Impact</h3>
+    <ul>
+      <li>Remote code execution or data leakage through library flaws</li>
+      <li>Cascade effects when one weak component exposes the rest of the stack</li>
+      <li>Compliance findings when unsupported versions remain in production</li>
+    </ul>
+
+    <h3>Mitigation</h3>
+    <ul>
+      <li>Maintain a software bill of materials (SBOM) and patch on a defined cadence</li>
+      <li>Run software composition analysis in CI/CD and track vendor security advisories</li>
+      <li>Remove unused dependencies and isolate third-party services with network controls</li>
+    </ul>
+
+  </div>
+</div>
+{% endblock %}

@@ -120,4 +120,15 @@ urlpatterns = [
     path("mitre/25/lab", mitre.mitre_lab_25, name="mitre_lab_25"),
     path("mitre/17/lab", mitre.mitre_lab_17, name="mitre_lab_17"),
     path("mitre/17/lab/api",mitre.mitre_lab_17_api,name="mitre_lab_17_api"),
+    # OWASP TOP 10 2025
+    path('owasp2025/a1', views.owasp2025_a1, name='owasp2025_a1'),
+    path('owasp2025/a2', views.owasp2025_a2, name='owasp2025_a2'),
+    path('owasp2025/a3', views.owasp2025_a3, name='owasp2025_a3'),
+    path('owasp2025/a4', views.owasp2025_a4, name='owasp2025_a4'),
+    path('owasp2025/a5', views.owasp2025_a5, name='owasp2025_a5'),
+    path('owasp2025/a6', views.owasp2025_a6, name='owasp2025_a6'),
+    path('owasp2025/a7', views.owasp2025_a7, name='owasp2025_a7'),
+    path('owasp2025/a8', views.owasp2025_a8, name='owasp2025_a8'),
+    path('owasp2025/a9', views.owasp2025_a9, name='owasp2025_a9'),
+    path('owasp2025/a10', views.owasp2025_a10, name='owasp2025_a10'),
 ]
