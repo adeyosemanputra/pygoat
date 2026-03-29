@@ -1,0 +1,61 @@
+name: ✨ Feature Request
+description: Suggest a new lab, improvement, or feature for PyGoat
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Got an idea to make PyGoat better? We'd love to hear it — especially new vulnerability labs or learning improvements!
+
+  - type: dropdown
+    id: type
+    attributes:
+      label: What kind of feature is this?
+      options:
+        - New vulnerability lab
+        - Improvement to an existing lab
+        - New OWASP / MITRE category coverage
+        - UI / UX improvement
+        - Docker / deployment improvement
+        - Documentation
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve?
+      description: Is your request related to a gap in learning content, a usability issue, or something else?
+      placeholder: e.g. "There is no lab for OWASP A09 – Security Logging and Monitoring Failures..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Describe the feature / solution
+      description: What should be added or changed? Be as specific as possible.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Have you considered any alternative approaches?
+
+  - type: textarea
+    id: references
+    attributes:
+      label: References
+      description: Links to OWASP pages, CVEs, write-ups, or similar projects that inspired this idea.
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Before submitting
+      options:
+        - label: I searched existing issues and this has not been requested before.
+          required: true
+        - label: I am willing to contribute a PR for this if accepted.

@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 Discussions
+    url: https://github.com/adeyosemanputra/pygoat/discussions
+    about: General questions, ideas, and community chat — use GitHub Discussions instead of an issue.
+  - name: 📖 PyGoat Documentation
+    url: https://github.com/adeyosemanputra/pygoat#readme
+    about: Check the README and wiki before opening an issue.

@@ -1,0 +1,61 @@
+name: 🔧 Maintainer Task
+description: Internal maintenance, refactoring, dependency updates, or CI/infra work
+labels: ["maintenance", "internal"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this template for housekeeping work: dependency bumps, CI fixes, code refactoring, test improvements, and similar tasks that are not user-facing bugs or features.
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+      options:
+        - Dependency update
+        - Refactoring / code quality
+        - CI / GitHub Actions
+        - Docker / infrastructure
+        - Test coverage
+        - Documentation update
+        - Security patch (non-lab)
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: What needs to be done?
+      description: Clear description of the maintenance task.
+    validations:
+      required: true
+
+  - type: textarea
+    id: motivation
+    attributes:
+      label: Why is this needed?
+      description: e.g. outdated dependency, failing lint, tech debt reason.
+    validations:
+      required: true
+
+  - type: textarea
+    id: scope
+    attributes:
+      label: Affected files / components
+      placeholder: |
+        - requirements.txt
+        - .github/workflows/flake8.yml
+        - introduction/views.py
+
+  - type: textarea
+    id: testing
+    attributes:
+      label: How will this be verified?
+      description: How do we know the task is complete and nothing is broken?
+
+  - type: input
+    id: priority
+    attributes:
+      label: Priority / deadline
+      placeholder: e.g. "Before next release", "Low – whenever", "Urgent – CI is broken"

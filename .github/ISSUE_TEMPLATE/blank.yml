@@ -1,0 +1,24 @@
+name: 💬 Blank Issue
+description: Anything that doesn't fit the other templates — questions, discussions, or custom reports
+labels: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this for anything that doesn't fit the Bug, Feature, or Maintainer templates — questions, general feedback, or anything else. Please be as descriptive as possible.
+
+  - type: textarea
+    id: content
+    attributes:
+      label: Describe your issue or question
+      description: Tell us everything relevant. The more context, the faster we can help.
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Before submitting
+      options:
+        - label: I checked existing issues and this is not a duplicate.
+          required: true
