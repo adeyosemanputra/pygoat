@@ -16,9 +16,10 @@ RUN apt-get update \
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
-COPY requirements.txt requirements.txt
+COPY requirements.txt .
 
-RUN pip wheel --no-cache-dir --no-deps -w /wheels -r requirements.txt
+RUN pip wheel --no-cache-dir --no-deps -w /wheels -r requirements.txt 
+
 
 # -------- runtime stage --------
 FROM python:3.11-slim-bookworm
@@ -41,7 +42,12 @@ COPY . /app/
 
 EXPOSE 8000
 
+
+
+# v3 Healthcheck: Ensures Traefik knows when the backend is ready
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
     CMD curl -f http://localhost:8000/healthz || exit 1
 
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "4", "pygoat.wsgi"]
+# Performance: Using 6 workers as required by the Traefik ForwardAuth POC
+
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "6", "pygoat.wsgi"]

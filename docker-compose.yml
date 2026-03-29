@@ -23,6 +23,12 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     labels:
       - "traefik.enable=true"
+      # --- Your LaaS Routing Rules ---
+      - "traefik.http.routers.pygoat.rule=Host(`lvh.me`)"
+      - "traefik.http.services.pygoat.loadbalancer.server.port=8000"
+    environment:
+      # Updated to match the new upstream network name
+      - CHAL_DOCKER_NETWORK=my_network
     depends_on:
       migration:
         condition: service_completed_successfully

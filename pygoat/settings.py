@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+import dj_database_url
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -24,14 +25,20 @@ SECRET_KEY = "lr66%-a!$km5ed@n5ug!tya5bv!0(yqwa1tn!q%0%3m2nh%oml"
 
 SENSITIVE_DATA = "FLAGTHATNEEDSTOBEFOUND"
 
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["pygoat.herokuapp.com", "0.0.0.0", "127.0.0.1", "localhost"]
-
+ALLOWED_HOSTS = [
+    "pygoat.herokuapp.com", 
+    "0.0.0.0", 
+    "127.0.0.1", 
+    "localhost",
+    "web",               
+    "pygoat-web-1",
+    "lvh.me",
+    ".lvh.me"
+]
 
 # Application definition
-
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -81,7 +88,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "pygoat.wsgi.application"
 
-
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
@@ -95,8 +101,6 @@ DATABASES = {
 
 # If an external DATABASE_URL is provided (e.g., Heroku), use it.
 # This keeps local dev on sqlite but allows production to use Postgres.
-import dj_database_url
-
 DATABASE_URL = os.getenv("DATABASE_URL")
 if DATABASE_URL:
     DATABASES["default"] = dj_database_url.parse(DATABASE_URL, conn_max_age=600)
@@ -124,16 +128,12 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
 LANGUAGE_CODE = "en-us"
-
 TIME_ZONE = "UTC"
-
 USE_I18N = True
-
 USE_TZ = True
 
 
@@ -141,12 +141,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = "/static/"
-
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
-
 CRISPY_TEMPLATE_PACK = "bootstrap4"
+
+LOGIN_URL = 'account_login'
 
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
@@ -174,14 +174,40 @@ SOCIALACCOUNT_PROVIDERS = {
 }
 
 SECRET_COOKIE_KEY = "PYGOAT"
-CSRF_TRUSTED_ORIGINS = ["http://127.0.0.1:8000","http://0.0.0.0:8000","http://172.16.189.10"]
 
+# --- Traefik & LaaS Configurations ---
 TRAEFIK_URLS = [
     'http://localhost:8080/api/http/routers',     
     'http://traefik_proxy:8080/api/http/routers',
 ]
 
-# Labs configuration
-# LAB_DOMAIN = "localhost"
-# DOCKER_NETWORK = "my_network"
-# LABS_PER_USER_LIMIT = 3
+# Labs configuration Defaults
+LAB_DOMAIN = "lvh.me"
+DOCKER_NETWORK = "my_network"
+LABS_PER_USER_LIMIT = 3
+
+CSRF_TRUSTED_ORIGINS = [
+    "http://127.0.0.1:8000",
+    "http://0.0.0.0:8000",
+    "http://172.16.189.10",
+    "http://lvh.me",
+    "http://*.lvh.me",
+    "http://localhost",
+    "http://*.localhost"
+]
+
+SESSION_COOKIE_DOMAIN = ".lvh.me"
+CSRF_COOKIE_DOMAIN = ".lvh.me"
+
+SESSION_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = False
+SESSION_COOKIE_HTTPONLY = True 
+SESSION_COOKIE_SAMESITE = 'Lax'
+CSRF_COOKIE_SAMESITE = 'Lax'
+USE_X_FORWARDED_HOST = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+ACCOUNT_AUTHENTICATION_METHOD = "username_email"
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = "none"  # Stops the app from asking for email confirmation
+ACCOUNT_SESSION_REMEMBER = True
