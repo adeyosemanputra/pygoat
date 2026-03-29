@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}PyGoat XSS Lab{% endblock %}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            border-bottom: 3px solid #d32f2f;
+            padding-bottom: 10px;
+        }
+        .lab-info {
+            background: #fff3cd;
+            padding: 15px;
+            border-left: 4px solid #ffc107;
+            margin: 20px 0;
+        }
+        a {
+            color: #d32f2f;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        code {
+            background-color: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+        .form-section {
+            background-color: #e3f2fd;
+            padding: 20px;
+            border-radius: 4px;
+            margin-bottom: 30px;
+        }
+        textarea {
+            width: 100%;
+            padding: 10px;
+            font-family: Arial;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #d32f2f;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        button:hover {
+            background-color: #b71c1c;
+        }
+    </style>
+</head>
+<body>
+    {% block content %}
+    <div class="container">
+        <h1>PyGoat - XSS (Cross-Site Scripting) Lab</h1>
+        
+        <div class="lab-info">
+            <strong>⚠️ Educational Purposes Only</strong><br>
+            This lab intentionally contains security vulnerabilities for learning purposes.
+        </div>
+
+        <h2>About This Lab</h2>
+        <p>
+            This lab demonstrates <strong>Cross-Site Scripting (XSS)</strong> vulnerabilities.
+            XSS is a common web vulnerability where attackers inject malicious scripts into web pages.
+        </p>
+
+        <h3>Vulnerability Type: Stored XSS (A03:2021 - Injection)</h3>
+        <p>
+            The application accepts user comments and displays them without proper HTML escaping.
+            This allows attackers to inject JavaScript code that executes in other users' browsers.
+        </p>
+
+        <h2>Try the Lab</h2>
+        <p><a href="/comments">→ Go to Comments Lab</a></p>
+
+        <hr>
+        <h3>How to Exploit:</h3>
+        <ol>
+            <li>Navigate to the Comments section</li>
+            <li>Enter this payload in the comment box:</li>
+            <li><code>&lt;script&gt;alert('XSS Vulnerability!')&lt;/script&gt;</code></li>
+            <li>Click "Post Comment"</li>
+            <li>If a JavaScript alert appears, the vulnerability is confirmed!</li>
+        </ol>
+
+        <h3>Other Payloads to Try:</h3>
+        <ul>
+            <li><code>&lt;img src=x onerror="alert('XSS')"&gt;</code></li>
+            <li><code>&lt;svg onload="alert('XSS')"&gt;</code></li>
+        </ul>
+
+        <hr>
+        <h3>How to Fix:</h3>
+        <p>Remove the <code>|safe</code> filter in templates to enable HTML escaping.</p>
+    </div>
+    {% endblock %}
+</body>
+</html>
