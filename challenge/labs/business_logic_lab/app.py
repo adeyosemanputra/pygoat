@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, session, redirect, url_for, jsonify
 import uuid
+from sync import report_solve
 
 app = Flask(__name__)
 app.secret_key = "business_logic_secret_key_2024"
@@ -188,13 +189,10 @@ def lab():
 
 
 @app.route("/solution")
+@report_solve("business_logic_lab") # <--- Add this decorator here
 def solution():
     init_session()
     return render_template("solution.html")
 
-@app.route("/health")
-def health_check():
-    return "OK", 200
-
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5010, debug=True)
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5010, debug=True)

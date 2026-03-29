@@ -1,0 +1,28 @@
+[
+  {
+    "model": "challenge.challenge",
+    "pk": 1,
+    "fields": {
+      "name": "business_logic_lab",
+      "flag": "pygoat{logic_is_fun}",
+      "docker_image": "pygoat-business-logic",
+      "docker_port": 5010,
+      "start_port": 8000,
+      "end_port": 8100,
+      "point": 50
+    }
+  },
+  {
+    "model": "challenge.challenge",
+    "pk": 2,
+    "fields": {
+      "name": "bopla_lab",
+      "flag": "pygoat{bopla_solved}",
+      "docker_image": "pygoat-bopla",
+      "docker_port": 8000,
+      "start_port": 7000,
+      "end_port": 7100,
+      "point": 50
+    }
+  }
+]

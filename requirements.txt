@@ -3,7 +3,7 @@ argon2-cffi-bindings==21.2.0
 asgiref==3.6.0
 black==26.1.0
 certifi==2022.12.7
-cffi==2.0.0
+cffi>=1.17.0
 charset-normalizer==3.0.1
 cryptography==39.0.1
 crispy-bootstrap4==2022.1
@@ -15,7 +15,7 @@ django-crispy-forms==2.3
 gunicorn==23.0.0
 idna==3.4
 oauthlib==3.2.2
-Pillow==12.1.0
+Pillow>=10.0.0
 pre_commit==4.5.1
 pycparser==2.21
 PyJWT==2.4.0

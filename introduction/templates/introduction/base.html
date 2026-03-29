@@ -716,25 +716,26 @@
         </ul>
       </nav>
 
-      <!-- Page Content  -->
-      <div id="content" style="height: 100vh">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-          <div class="container-fluid">
-            <button type="button" id="sidebarCollapse" class="btn btn-info">
-              <i class="fas fa-align-left"></i>
-              <span>Toggle Sidebar</span>
-            </button>
-            <button
-              class="btn btn-dark d-inline-block d-lg-none ml-auto"
-              type="button"
-              data-toggle="collapse"
-              data-target="#navbarSupportedContent"
-              aria-controls="navbarSupportedContent"
-              aria-expanded="false"
-              aria-label="Toggle navigation"
-            >
-              <i class="fas fa-align-justify"></i>
-            </button>
+          <a href="#challengeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"
+            id="challengeMenu" style="padding: 13% 0 0 0">
+            <i class="fas fa-flag"></i>
+            Challenges
+          </a>
+          <ul class="collapse list-unstyled" id="challengeSubmenu">
+            <li>
+              <a href="{% url 'do_it_fast' 'bopla_lab' %}" class="sidebar-list-items">Challenge 1</a>
+              <a href="{% url 'do_it_fast' 'business_logic_lab' %}" class="sidebar-list-items">Challenge 2 {% if challenge_status.business_logic_lab %} ✅ {% endif %}</a>
+              <a href="{% url 'do_it_fast' 'security_headers_lab' %}" class="sidebar-list-items">Challenge 3</a>
+            </li>
+          </ul>
+          <a href="#" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle" id="help"
+            style="padding: 13% 0 0 0">
+            <i class="fas fa-question"></i>
+            Help
+          </a>
+        </li>
+      </ul>
+    </nav>
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
               <ul class="nav navbar-nav ml-auto">

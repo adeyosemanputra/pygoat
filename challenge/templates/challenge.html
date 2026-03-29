@@ -10,6 +10,7 @@
     </div>
     <br>
     <button type="submit" class="btn btn-primary" id="cbtn-1" onclick="handleonclick()">Start Challenge</button>
+<button id="resetLab" class="btn btn-danger ml-2">Reset Lab</button>
     <button type="submit" class="btn btn-primary" id="cbtn-2" onclick="handleRedirect()" style="display:none">Go to
         Challenge </button>
 
@@ -64,6 +65,7 @@
             .then(result => {
                 console.log('Container stoped')
                 button1.textContent = "Start Challenge";
+<button id="resetLab" class="btn btn-danger ml-2">Reset Lab</button>
                 button1.onclick = handleonclick;
                 button2.style.display = "none";
             })
@@ -79,3 +81,20 @@
 </html>
 
 {% endblock content %}
+<script>
+document.getElementById('resetLab').onclick = function() {
+    if (confirm('This will stop your current container. Are you sure?')) {
+        fetch(window.location.href, {
+            method: 'DELETE',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}'
+            }
+        }).then(response => {
+            if (response.ok) {
+                alert('Lab stopped. You can now start a fresh instance.');
+                window.location.reload();
+            }
+        });
+    }
+};
+</script>

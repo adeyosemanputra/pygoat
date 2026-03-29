@@ -1,10 +1,12 @@
-from django.urls import path, include
-from .views import *
+from django.urls import path
+from . import views
 
 urlpatterns = [
-    path("<str:challenge>", DoItFast.as_view(), name="do-it-fast"),
-    path("start-lab/<slug:lab_image_name>/", start_lab, name="start_lab"),
-    path("stop-labs/", stop_user_labs, name="stop_labs"),
-    path("list-labs/", list_user_labs, name="list_labs"),
-    path("stop-lab/<slug:lab_image_name>/", stop_lab, name="stop_lab"),
+    path("api/solve/", views.submit_solve, name="api_solve"),
+    path("v1/<str:challenge>/", views.DoItFast.as_view(), name="do_it_fast"),
+    
+    # These names must match what is in your HTML templates (likely 'bopla', etc.)
+    path("bopla/", views.bopla_lab, name="bopla"),
+    path("business-logic/", views.business_logic_lab, name="business_logic"),
+    path("security-headers/", views.security_headers_lab, name="security_headers"),
 ]
