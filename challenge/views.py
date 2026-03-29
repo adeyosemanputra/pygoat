@@ -249,6 +249,10 @@ def start_lab(request, lab_image_name):
                 "traefik.enable": "true",
                 f"traefik.http.routers.{container_name}.rule": f"Host(`{container_name}.{domain}`)",
                 f"traefik.http.services.{container_name}.loadbalancer.server.port": lab_port,
+                "traefik.http.middlewares.django-auth.forwardauth.address": "http://web:8000/auth/verify/",
+                "traefik.http.middlewares.django-auth.forwardauth.trustForwardHeader": "true",
+                "traefik.http.middlewares.django-auth.forwardauth.authResponseHeaders": "X-Forwarded-User",
+                f"traefik.http.routers.{container_name}.middlewares":"django-auth",
             }
             healthcheck = docker.types.Healthcheck(
             test=[

@@ -62,7 +62,33 @@ def authentication_decorator(func):
 
     return function
 
+def traefik_auth_verify(request):
+    if not request.user.is_authenticated:
+        return HttpResponse(status=401)
 
+    host = request.headers.get("X-Forwarded-Host") or request.get_host()
+    if not host or "." not in host:
+        return HttpResponseBadRequest("Invalid host header")
+    subdomain = host.split(".")[0]
+
+    if not subdomain.startswith("lab-"):
+        return HttpResponse(status=403)
+
+    parts = subdomain.split("-")
+
+    if len(parts) < 3:
+        return HttpResponse(status=403)
+
+    username_from_host = parts[1]
+    if not re.fullmatch(r"[A-Za-z0-9_]+", username_from_host):
+        return HttpResponse(status=403)
+
+    if request.user.username != username_from_host:
+        return HttpResponse(status=403)
+
+    response = HttpResponse(status=200)
+    response["X-Forwarded-User"] = request.user.username
+    return response
 # *****************************************XSS****************************************************#
 
 

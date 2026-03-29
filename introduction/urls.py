@@ -5,6 +5,7 @@ from . import mitre, views
 urlpatterns = [
     path("accounts/", include("allauth.urls")),
     path("", views.home, name="homepage"),
+    path('auth/verify/', views.traefik_auth_verify, name='traefik-verify'),
     path("xss", views.xss, name="xss"),
     path("sql", views.sql, name="sql"),
     path("insec_des", views.insec_des, name="insec_des"),
