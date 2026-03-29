@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>Security Audit Log</title>
+{% endblock %}
+
+{% block content %}
+
+<div class="content">
+
+    <div class="box">
+        <h2>Security Audit Log</h2>
+
+        <p class="bp">
+            This view shows all security-relevant actions recorded by the system.
+            Notice that <b>logging an event does not guarantee a security response</b>.
+        </p>
+
+        <p class="bp" style="font-size: 0.95rem; opacity: 0.85;">
+            Pay attention to the <b>role at the time of the action</b>, not just the username.
+        </p>
+    </div>
+
+    <div class="box">
+        <div style="overflow-x: auto;">
+            <table width="100%" cellspacing="0" cellpadding="8" border="1">
+                <thead>
+                    <tr>
+                        <th>Time</th>
+                        <th>Username</th>
+                        <th>Role at Time</th>
+                        <th>IP</th>
+                        <th>Event</th>
+                        <th>Severity</th>
+                        <th>Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for log in logs %}
+                    <tr>
+                        <td>{{ log.timestamp }}</td>
+                        <td>{{ log.username }}</td>
+                        <td>{{ log.current_role }}</td>
+                        <td>{{ log.ip }}</td>
+                        <td>{{ log.event }}</td>
+                        <td>
+                            {% if log.severity == "ALERT" %}
+                                🚨 {{ log.severity }}
+                            {% else %}
+                                {{ log.severity }}
+                            {% endif %}
+                        </td>
+                        <td>
+                            <code style="font-size: 0.85rem;">
+                                {{ log.details }}
+                            </code>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="box">
+        <a href="/dashboard" style="text-decoration: none;">
+            <button type="button">
+                ← Back to Dashboard
+            </button>
+        </a>
+    </div>
+
+</div>
+
+{% endblock %}

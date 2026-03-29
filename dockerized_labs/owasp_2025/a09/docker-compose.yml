@@ -1,0 +1,25 @@
+#version: "3.8"
+
+services:
+
+  a09_index:
+    build:
+      context: .
+      dockerfile: index/Dockerfile
+    ports:
+      - "5000:5000"
+    container_name: a09_index
+    
+  
+  silent_privilege_escalation:
+    build:
+      context: .
+      dockerfile: silent_privilege_escalation/Dockerfile
+    container_name: a09_silent_privilege_escalation
+    ports:
+     - "5109:5000"
+
+  # future labs go here
+  # behavior_anomaly_lab:
+  #   ports:
+  #     - "5110:5000"

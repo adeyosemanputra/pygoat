@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>A09 – Silent Privilege Escalation</title>
+{% endblock %}
+
+{% block content %}
+
+<div class="content">
+
+    <!-- Two-column layout -->
+    <div style="display: flex; gap: 30px; flex-wrap: wrap; align-items: flex-start;">
+
+        <!-- LEFT: Lab Objective -->
+        <div style="flex: 1; min-width: 300px;">
+            <h1>Lab Objective</h1>
+
+            <div class="box">
+                <p class="bp">
+                    This lab demonstrates how a high-risk security action can succeed
+                    without triggering any alerts.
+                    Your goal is to identify a privilege escalation that is
+                    <b>logged</b> but not <b>detected</b>.
+                </p>
+
+                <ul>
+                    <li>
+                        Log in using the provided user account.
+                    </li>
+
+                    <li>
+                        From the dashboard, request a role change using the available button.
+                    </li>
+
+                    <li>
+                        Observe what happens when the request is denied.
+                        Does the role change? Does the system respond in any way?
+                    </li>
+
+                    <li>
+                        Notice that the system appears to detect and react to this attempt.
+                    </li>
+
+                    <li>
+                        Ask yourself:
+                        <i>
+                            If alerts exist and are working, how could a similar action ever succeed silently?
+                        </i>
+                    </li>
+
+                    <li>
+                        Experiment with the <b>same action</b> while switching between
+                        <b>Vulnerable</b> and <b>Secure</b> modes.
+                        Pay close attention to what changes — and what does not.
+                    </li>
+
+                    <li>
+                        Revisit the role change request and consider what the backend might be using
+                        to decide whether an alert should be triggered.
+                    </li>
+
+                    <li>
+                        Continue experimenting until the same user is able to obtain
+                        administrative privileges <b>without any warning or alert</b>.
+                    </li>
+                </ul>
+
+                <p class="bp" style="font-style: italic; opacity: 0.85;">
+                    <b>Success condition:</b>
+                    the user <code>alice</code> is able to become an administrator
+                    without triggering any security alert.
+                </p>
+
+                <div class="alert info">
+                    Hint: Not all security failures come from missing logs.
+                </div>
+
+                <!-- Solution reference (post-lab) -->
+                <p class="bp" style="font-size: 0.9rem; opacity: 0.8; margin-top: 20px;">
+                    If you get stuck or want to review the intended approach after completing the lab,
+                    a detailed walkthrough is available in the
+                    <b>solution documentation</b> for the Silent Privilege Escalation lab
+                    (see the project documentation or markdown files).
+                </p>
+            </div>
+        </div>
+
+        <!-- RIGHT: Login -->
+        <div style="flex: 1; min-width: 300px;">
+            <h1>Login</h1>
+
+            <div class="box form-container">
+                <form method="POST">
+                    <input type="text" name="username" placeholder="username" required>
+                    <input type="password" name="password" placeholder="password" required>
+                    <button type="submit">Login</button>
+                </form>
+
+                <p class="bp">
+                    <b>Test user:</b> alice / alicepass
+                </p>
+
+                <p class="bp" style="font-size: 0.9rem; opacity: 0.8;">
+                    Some actions are reserved for privileged users.
+                    Try repeating the same actions under different security modes.
+                </p>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

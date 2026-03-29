@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>OWASP Top 10 2025 - A09</title>
+{% endblock %}
+
+{% block content %}
+
+<div class="content">
+<h1>A09 – Security Logging &amp; Alerting Failures ( OWASP Top 10 2025 )</h1>
+    <div class="box">
+        <p class="bp">
+            Security Logging &amp; Alerting Failures occur when an application cannot
+            adequately detect, escalate, or respond to security-relevant events.
+            Without effective logging, monitoring, and alerting, attacks and breaches
+            may remain undetected, significantly increasing their impact.
+        </p>
+
+        <ul>
+            <li>Security events such as logins, access control failures, and high-value actions are not logged or are logged inconsistently</li>
+            <li>Warnings, errors, and exceptional conditions generate insufficient or unclear log data</li>
+            <li>Logs are not monitored for suspicious behavior or are stored without integrity protection</li>
+            <li>Alerting thresholds, escalation paths, or response playbooks are missing or ineffective</li>
+            <li>Active attacks do not trigger real-time or near real-time alerts</li>
+            <li>Penetration testing or automated scans fail to generate alerts</li>
+        </ul>
+    </div>
+
+    <div class="box">
+        <h3>Available Labs</h3>
+
+        <div class="lab-container">
+            <div class="lab">
+                <h4>Silent Privilege Escalation (No Alert Fired)</h4>
+                <p class="bp">
+                    Exploit a privilege escalation flaw that is logged internally
+                    but never escalated to an alert or monitoring system.
+                </p>
+                <a href="http://localhost:5109" target="_blank" style="text-decoration: none;">
+    			<button type="button">
+        			Launch Lab →
+    			</button>
+		</a>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
