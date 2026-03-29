@@ -4,8 +4,12 @@ import json
 from datetime import datetime, timedelta
 import base64
 
+import os
+from flask import Flask
+
 app = Flask(__name__)
-app.secret_key = 'your-secret-key-here'  # Vulnerable: Hardcoded secret key
+# Secure secret key configuration
+app.secret_key = os.environ.get("SECRET_KEY", os.urandom(32))
 
 # Vulnerable: Storing user data in memory
 users = {
