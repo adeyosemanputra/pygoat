@@ -1,0 +1,30 @@
+{% extends 'introduction/base.html' %}
+{% block title %}<title>A5: Injection</title>{% endblock %}
+{% block content %}
+<div style="padding: 2%">
+  <h1>A5: Injection</h1>
+  <div class="card" style="padding: 20px; margin: 20px 0; background: var(--card-bg);">
+    
+    <h3>What is this vulnerability?</h3>
+    <p>Injection flaws let attackers supply malicious input that is interpreted as part of a command or query—such as SQL, OS commands, LDAP, or server-side template code. The application fails to separate untrusted data from the interpreter, leading to execution of attacker-controlled logic.</p>
+
+    <h3>Real World Example</h3>
+    <p>The Heartland Payment Systems breach involved attackers using SQL injection to gain a foothold and deploy malware that captured card data. SQL injection has been a leading cause of large-scale data theft in web applications for years.</p>
+
+    <h3>Impact</h3>
+    <ul>
+      <li>Full database access, data exfiltration, or data destruction</li>
+      <li>Remote code execution when command or template injection is possible</li>
+      <li>Authentication bypass and escalation of privilege</li>
+    </ul>
+
+    <h3>Mitigation</h3>
+    <ul>
+      <li>Use parameterized queries and prepared statements for database access</li>
+      <li>Avoid passing user input to shells; use safe APIs with strict allow-lists</li>
+      <li>Apply context-appropriate encoding and validate input against expected formats</li>
+    </ul>
+
+  </div>
+</div>
+{% endblock %}

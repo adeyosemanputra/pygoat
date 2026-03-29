@@ -1,0 +1,28 @@
+{% extends 'introduction/base.html' %}
+{% block title %}<title>A1: Broken Access Control</title>{% endblock %}
+{% block content %}
+<div style="padding: 2%">
+  <h1>A1: Broken Access Control</h1>
+  <div class="card" style="padding: 20px; margin: 20px 0; background: var(--card-bg);">
+    <h3>What is Broken Access Control?</h3>
+    <p>Broken access control means users can perform actions or view data outside their intended permissions.</p>
+    
+    <h3>Real World Example</h3>
+    <p>An attacker changes URL from <code>/user/123/profile</code> to <code>/user/124/profile</code> and accesses another user's data.</p>
+    
+    <h3>Impact</h3>
+    <ul>
+      <li>Unauthorized access to sensitive data</li>
+      <li>Privilege escalation</li>
+      <li>Data modification or deletion</li>
+    </ul>
+
+    <h3>Mitigation</h3>
+    <ul>
+      <li>Deny access by default</li>
+      <li>Implement server-side access control checks</li>
+      <li>Log access control failures</li>
+    </ul>
+  </div>
+</div>
+{% endblock %}

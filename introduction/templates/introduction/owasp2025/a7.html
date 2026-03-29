@@ -1,0 +1,30 @@
+{% extends 'introduction/base.html' %}
+{% block title %}<title>A7: Authentication Failures</title>{% endblock %}
+{% block content %}
+<div style="padding: 2%">
+  <h1>A7: Authentication Failures</h1>
+  <div class="card" style="padding: 20px; margin: 20px 0; background: var(--card-bg);">
+    
+    <h3>What is this vulnerability?</h3>
+    <p>Authentication failures cover weaknesses in how applications verify identity: weak passwords, missing multi-factor authentication, flawed session management, credential stuffing, insecure “remember me” tokens, predictable session identifiers, or broken password reset flows.</p>
+
+    <h3>Real World Example</h3>
+    <p>Credential-stuffing campaigns use billions of leaked username-password pairs from other breaches. Services without MFA, rate limits, or breached-password checks see mass account takeover even when their own code has no injection bugs.</p>
+
+    <h3>Impact</h3>
+    <ul>
+      <li>Account takeover and impersonation of users or administrators</li>
+      <li>Fraud, data theft, and access to connected systems</li>
+      <li>High support cost and reputational damage from recovery efforts</li>
+    </ul>
+
+    <h3>Mitigation</h3>
+    <ul>
+      <li>Enable MFA where possible and enforce strong password policies with breach checks</li>
+      <li>Use secure cookies (HttpOnly, Secure, SameSite) and rotate session IDs on privilege change</li>
+      <li>Rate-limit login and recovery endpoints; monitor for stuffing and spraying</li>
+    </ul>
+
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'introduction/base.html' %}
+{% block title %}<title>A10: Mishandling of Exceptions</title>{% endblock %}
+{% block content %}
+<div style="padding: 2%">
+  <h1>A10: Mishandling of Exceptions</h1>
+  <div class="card" style="padding: 20px; margin: 20px 0; background: var(--card-bg);">
+    
+    <h3>What is this vulnerability?</h3>
+    <p>Mishandling exceptions means errors are exposed to users in ways that leak stack traces, file paths, SQL fragments, or framework details; swallowed without logging; or handled so broadly that security checks are skipped in failure paths. Inconsistent error handling can also leave resources or sessions in an unsafe state.</p>
+
+    <h3>Real World Example</h3>
+    <p>Verbose framework debug pages in production—such as detailed ASP.NET or Django error screens—have historically revealed versions, paths, and queries that attackers used to refine exploits. Error messages that echo user input can also introduce cross-site scripting.</p>
+
+    <h3>Impact</h3>
+    <ul>
+      <li>Information disclosure that aids targeted exploitation and fingerprinting</li>
+      <li>Logic or authorization gaps when exceptions bypass normal control flow</li>
+      <li>Compliance issues when error output contains personal or regulated data</li>
+    </ul>
+
+    <h3>Mitigation</h3>
+    <ul>
+      <li>Show generic messages to users; log detailed errors only on the server</li>
+      <li>Disable debug modes in production and configure secure global error handlers</li>
+      <li>Ensure cleanup and security checks run in finally blocks or equivalent patterns</li>
+    </ul>
+
+  </div>
+</div>
+{% endblock %}

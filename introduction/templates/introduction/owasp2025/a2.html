@@ -1,0 +1,30 @@
+{% extends 'introduction/base.html' %}
+{% block title %}<title>A2: Security Misconfiguration</title>{% endblock %}
+{% block content %}
+<div style="padding: 2%">
+  <h1>A2: Security Misconfiguration</h1>
+  <div class="card" style="padding: 20px; margin: 20px 0; background: var(--card-bg);">
+    
+    <h3>What is this vulnerability?</h3>
+    <p>Security misconfiguration happens when applications, servers, frameworks, cloud services, or containers are deployed with unsafe defaults, unnecessary features enabled, missing hardening, verbose errors in production, weak permissions, or exposed administrative interfaces. It is one of the most common issues because secure configuration must be repeated for every environment and release.</p>
+
+    <h3>Real World Example</h3>
+    <p>The 2017 Equifax breach involved an unpatched Apache Struts instance on a public-facing server. Attackers exploited a known vulnerability while the organization had not applied patches or aligned configuration with vendor security guidance—an operational and configuration failure rather than a novel coding bug.</p>
+
+    <h3>Impact</h3>
+    <ul>
+      <li>Full compromise of applications or supporting infrastructure</li>
+      <li>Exposure of secrets, backups, debug output, or internal documentation</li>
+      <li>Easier lateral movement after an initial foothold</li>
+    </ul>
+
+    <h3>Mitigation</h3>
+    <ul>
+      <li>Use hardened baselines, infrastructure-as-code, and automated configuration checks</li>
+      <li>Disable debug modes, default accounts, and unused features in production</li>
+      <li>Apply least privilege, patch regularly, and review cloud and firewall rules</li>
+    </ul>
+
+  </div>
+</div>
+{% endblock %}

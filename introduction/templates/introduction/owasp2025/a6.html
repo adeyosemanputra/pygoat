@@ -1,0 +1,30 @@
+{% extends 'introduction/base.html' %}
+{% block title %}<title>A6: Insecure Design</title>{% endblock %}
+{% block content %}
+<div style="padding: 2%">
+  <h1>A6: Insecure Design</h1>
+  <div class="card" style="padding: 20px; margin: 20px 0; background: var(--card-bg);">
+    
+    <h3>What is this vulnerability?</h3>
+    <p>Insecure design means missing or ineffective security controls in requirements and architecture. Unlike a single coding mistake, the system is built without adequate threat modeling, separation of duties, or enforcement of business rules at the design level, so flaws persist across the codebase.</p>
+
+    <h3>Real World Example</h3>
+    <p>Account recovery flows that rely only on easily guessed knowledge-based questions, or APIs that trust the client to send the correct user role or price, illustrate insecure design: the code may work as specified but fails against realistic attackers.</p>
+
+    <h3>Impact</h3>
+    <ul>
+      <li>Systemic fraud or abuse that spans multiple features</li>
+      <li>Expensive redesign when issues are discovered after release</li>
+      <li>Repeated incidents because root causes are architectural</li>
+    </ul>
+
+    <h3>Mitigation</h3>
+    <ul>
+      <li>Threat model features early and document abuse cases alongside use cases</li>
+      <li>Apply secure design patterns: least privilege, defense in depth, and server-side enforcement</li>
+      <li>Review designs with security stakeholders before implementation and test negative cases</li>
+    </ul>
+
+  </div>
+</div>
+{% endblock %}
