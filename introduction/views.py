@@ -292,7 +292,7 @@ def auth_lab_signup(request):
                 print('Setting cookie successful')
                 return response
             except:
-                return render(request,'Lab/AUTH/auth_lab_signup.html',{'err_msg':'Cookie cannot be set'})
+                render(request,'Lab/AUTH/auth_lab_signup.html',{'err_msg':'Cookie cannot be set'})
         except:
             return render(request,'Lab/AUTH/auth_lab_signup.html',{'err_msg':'Username already exists'})
 
