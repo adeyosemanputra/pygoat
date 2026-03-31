@@ -24,7 +24,90 @@ Table of Contents
 ### From Sources
 
 To setup the project on your local machine:
-<br>
+
+---
+
+## 🚀 Beginner Friendly Setup Guide
+
+This guide provides a simple cross-platform setup for Windows, Linux, and macOS users.
+
+---
+
+## 🛠️ Prerequisites
+
+- Python 3.8+
+- pip
+- Git (recommended)
+- virtualenv (recommended)
+
+---
+
+## ⚡ Quick Setup
+
+### 🔹 Clone the Repository
+
+```bash
+git clone https://github.com/Atulaics/pygoat.git
+cd pygoat
+
+## 🪟 Windows Setup
+'''bash
+# Create Virtual Environment 
+python -m venv venv
+# Activate Virtual Environment 
+venv\Scripts\activate
+# Install Dependencies 
+pip install -r requirements.txt
+# Apply Migration 
+python manage.py migrate
+# Run Server 
+python manage.py runserver
+
+    
+Visit http://localhost:8000 to access PyGoat.
+
+---
+
+'''bash
+
+
+##🐧 Linux / macOS Setup
+# Create Virtual Environment
+python3 -m venv venv
+#Activate Virtual Environment
+source venv/bin/activate
+#Install Dependencies
+pip install -r requirements.txt
+#Apply Migrations
+python manage.py migrate
+#Run Server
+python manage.py runserver
+
+👉 Open in browser: http://localhost:8000
+
+---
+'''md
+##⚠️ Common Errors & Fixes
+- ❌ 'git' is not recognized 
+  ->Install Git and add it to PATH
+- ❌ 'python' is not recognized 
+  ->Install Python and check "Add to PATH"
+- ❌ pip not found 
+    ->python -m ensurepip
+- ❌ Virtual environment not activating (Windows)           ->venv\Scripts\activate.bat
+- ❌ Permission denied (Linux/macOS) 
+  ->chmod +x venv/bin/activate
+
+
+💡 Notes
+1.Always activate virtual environment before running commands
+2.Use deactivate to exit virtual environment
+3.Recommended to use latest pip version:
+    pip install --upgrade pip
+---
+
+
+
 
 First, Clone the repository using GitHub website or git in Terminal
 ```
@@ -43,26 +126,7 @@ First, Clone the repository using GitHub website or git in Terminal
 - Some labs rely on Unix-style commands and may behave differently on native Windows shells.
 
 
-#### Method 1
 
-1. Install all app and python requirements using installer file - `bash installer.sh`
-2. Apply the migrations `python3 manage.py migrate`.<br>
-3. Finally, run the development server `python3 manage.py runserver`.<br>
-4. The project will be available at <http://127.0.0.1:8000> 
-
-#### Method 2
-
-1. Install python3 requirements `pip install -r requirements.txt`.<br> 
-2. Apply the migrations `python3 manage.py migrate`.<br>
-3. Finally, run the development server `python3 manage.py runserver`.<br>
-4. The project will be available at <http://127.0.0.1:8000> 
-
-#### Method 3
-
-1. Install all app and python requirements using `setup.py` file - `pip3 install .`
-2. Apply the migrations `python3 manage.py migrate`.<br>
-3. Finally, run the development server `python3 manage.py runserver`.<br>
-4. The project will be available at <http://127.0.0.1:8000> 
 
 ### Docker Container
 1. Install [Docker](https://www.docker.com)
