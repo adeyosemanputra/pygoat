@@ -401,7 +401,7 @@ def robots(request):
         return response
 
 def error(request):
-    return 
+    return HttpResponse("Error occurred") 
 
 
 #******************************************************  Command Injection  ***********************************************************************#
