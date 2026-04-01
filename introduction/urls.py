@@ -120,4 +120,15 @@ urlpatterns = [
     path("mitre/25/lab", mitre.mitre_lab_25, name="mitre_lab_25"),
     path("mitre/17/lab", mitre.mitre_lab_17, name="mitre_lab_17"),
     path("mitre/17/lab/api",mitre.mitre_lab_17_api,name="mitre_lab_17_api"),
+    ##------------------- A02:2025 Cryptographic Failures --------------------------------------------------------------|
+    path("crypto_home", views.crypto_home, name="crypto_home"),
+    path("crypto_weak_encryption", views.crypto_weak_encryption, name="crypto_weak_encryption"),
+    path("crypto_weak_encryption_lab", views.crypto_weak_encryption_lab, name="crypto_weak_encryption_lab"),
+    path("crypto_insecure_storage", views.crypto_insecure_storage, name="crypto_insecure_storage"),
+    path("crypto_insecure_storage_lab", views.crypto_insecure_storage_lab, name="crypto_insecure_storage_lab"),
+    path("crypto_weak_random", views.crypto_weak_random, name="crypto_weak_random"),
+    path("crypto_weak_random_lab", views.crypto_weak_random_lab, name="crypto_weak_random_lab"),
+    path("crypto_cbc_bitflip", views.crypto_cbc_bitflip, name="crypto_cbc_bitflip"),
+    path("crypto_cbc_bitflip_lab", views.crypto_cbc_bitflip_lab, name="crypto_cbc_bitflip_lab"),
 ]
+

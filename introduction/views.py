@@ -9,6 +9,7 @@ import random
 import re
 import string
 import subprocess
+import time
 import uuid
 from dataclasses import dataclass
 from hashlib import md5
@@ -1236,3 +1237,268 @@ def software_and_data_integrity_failure_lab3(request):
 def A6_discussion(request):
     
     return render(request,"playground/A6/index.html")
+
+
+#************************************************* A02:2025 Cryptographic Failures **************************************************#
+
+# Crypto Failures Home Page
+@authentication_decorator
+def crypto_home(request):
+    return render(request, 'Lab/CryptoFail/crypto_home.html')
+
+
+# Scenario 1: Weak Encryption - Info Page
+@authentication_decorator
+def crypto_weak_encryption(request):
+    return render(request, 'Lab/CryptoFail/weak_encryption.html')
+
+
+# Scenario 1: Weak Encryption - Lab
+@authentication_decorator
+def crypto_weak_encryption_lab(request):
+    # Pre-populate admin user with MD5 hash (password: "admin123")
+    admin_hash = "0192023a7bbd73250516f069df18b500"  # MD5 of "admin123"
+    
+    # Get or create admin user
+    admin_user, _ = CF_user.objects.get_or_create(
+        username='admin',
+        defaults={'password': admin_hash}
+    )
+    
+    context = {
+        'admin_hash': admin_hash,
+        'users': CF_user.objects.all()
+    }
+    
+    if request.method == 'POST':
+        action = request.POST.get('action')
+        username = request.POST.get('username', '').strip()
+        password = request.POST.get('password', '').strip()
+        
+        if action == 'register':
+            # Registration logic with MD5 (VULNERABLE!)
+            if username and password:
+                if CF_user.objects.filter(username=username).exists():
+                    context['register_error'] = f'Username "{username}" already exists!'
+                else:
+                    # VULNERABLE: Using MD5 for password hashing
+                    password_hash = hashlib.md5(password.encode()).hexdigest()
+                    new_user = CF_user.objects.create(
+                        username=username,
+                        password=password_hash
+                    )
+                    context['register_success'] = True
+                    context['user_hash'] = password_hash
+                    context['users'] = CF_user.objects.all()
+            else:
+                context['register_error'] = 'Username and password are required!'
+        
+        elif action == 'login':
+            # Login logic with MD5 (VULNERABLE!)
+            if username and password:
+                password_hash = hashlib.md5(password.encode()).hexdigest()
+                user = CF_user.objects.filter(username=username, password=password_hash).first()
+                
+                if user:
+                    context['login_success'] = True
+                    context['logged_in_user'] = username
+                    if username == 'admin':
+                        context['is_admin'] = True
+                else:
+                    context['login_error'] = 'Invalid username or password!'
+            else:
+                context['login_error'] = 'Username and password are required!'
+    
+    return render(request, 'Lab/CryptoFail/weak_encryption_lab.html', context)
+
+
+# Scenario 2: Insecure Storage - Info Page
+@authentication_decorator
+def crypto_insecure_storage(request):
+    return render(request, 'Lab/CryptoFail/insecure_storage.html')
+
+
+# Scenario 2: Insecure Storage - Lab
+@authentication_decorator
+def crypto_insecure_storage_lab(request):
+    # VULNERABLE: Hardcoded encryption key (this is what attackers will find)
+    from cryptography.fernet import Fernet
+    
+    # Generate a hardcoded key for demonstration (in real app, this would be in source code)
+    HARDCODED_KEY = b'ZmDfcTF7_60GrrY167zsiPd67pEvs0aGOv2oasOM1Pg='
+    
+    # Create cipher with hardcoded key
+    cipher = Fernet(HARDCODED_KEY)
+    
+    # Pre-encrypted sensitive data (encrypted with the hardcoded key)
+    encrypted_password = cipher.encrypt(b"SuperSecret123!").decode()
+    encrypted_api_key = cipher.encrypt(b"sk-1234567890abcdef").decode()
+    encrypted_flag = cipher.encrypt(b"FLAG{HARDCODED_KEYS_DESTROY_ENCRYPTION}").decode()
+    
+    context = {
+        'encryption_key': HARDCODED_KEY.decode(),
+        'encrypted_password': encrypted_password,
+        'encrypted_api_key': encrypted_api_key,
+        'encrypted_flag': encrypted_flag,
+    }
+    
+    if request.method == 'POST':
+        user_key = request.POST.get('encryption_key', '').strip()
+        ciphertext = request.POST.get('ciphertext', '').strip()
+        
+        if user_key and ciphertext:
+            try:
+                # Try to decrypt with user-provided key
+                user_cipher = Fernet(user_key.encode())
+                decrypted = user_cipher.decrypt(ciphertext.encode()).decode()
+                
+                context['decrypted_data'] = decrypted
+                
+                # Check if it's the flag
+                if 'FLAG{' in decrypted:
+                    context['is_flag'] = True
+                    
+            except Exception as e:
+                context['decrypt_error'] = 'Invalid key or ciphertext. Make sure you copied them correctly.'
+    
+    return render(request, 'Lab/CryptoFail/insecure_storage_lab.html', context)
+
+
+#----- Phase 2: Scenario 3 - Weak Randomness -----#
+
+@authentication_decorator
+def crypto_weak_random(request):
+    return render(request, 'Lab/CryptoFail/weak_random.html')
+
+@authentication_decorator
+def crypto_weak_random_lab(request):
+    # VULNERABLE: Weak PRNG with predictable seed
+    # Admin token was generated at a known timestamp
+    admin_time = 1704063600  # January 1, 2024 00:00:00 UTC
+    
+    # Generate admin token using weak PRNG (same method as in the challenge)
+    random.seed(int(admin_time))
+    admin_token = ''.join(random.choices('0123456789abcdef', k=32))
+    
+    # Reset random seed to show current time
+    current_time = int(time.time())
+    
+    # Generate a user token with current time for demonstration
+    random.seed(current_time)
+    user_token = ''.join(random.choices('0123456789abcdef', k=32))
+    
+    context = {
+        'admin_time': admin_time,
+        'current_time': current_time,
+        'user_token': user_token,
+        'token_generated': False,
+        'flag_found': False,
+    }
+    
+    if request.method == 'POST':
+        # Check if user is generating a token
+        if 'action' in request.POST and request.POST['action'] == 'generate':
+            seed_value = request.POST.get('seed', '').strip()
+            
+            if seed_value:
+                try:
+                    seed_int = int(seed_value)
+                    random.seed(seed_int)
+                    generated_token = ''.join(random.choices('0123456789abcdef', k=32))
+                    
+                    context['token_generated'] = True
+                    context['generated_token'] = generated_token
+                    context['seed_used'] = seed_int
+                    
+                except ValueError:
+                    context['error'] = 'Seed must be an integer'
+        
+        # Check if user is submitting an admin token guess
+        elif 'action' in request.POST and request.POST['action'] == 'submit':
+            submitted_token = request.POST.get('admin_token', '').strip()
+            
+            if submitted_token == admin_token:
+                context['flag_found'] = True
+                context['flag'] = 'FLAG{PREDICTABLE_RANDOM_IS_NOT_RANDOM}'
+            else:
+                context['error'] = 'Incorrect admin token. Try predicting it using the timestamp!'
+    
+    return render(request, 'Lab/CryptoFail/weak_random_lab.html', context)
+
+
+#----- Phase 2: Scenario 4 - CBC Bit-Flipping -----#
+
+@authentication_decorator
+def crypto_cbc_bitflip(request):
+    return render(request, 'Lab/CryptoFail/cbc_bitflip.html')
+
+@authentication_decorator
+def crypto_cbc_bitflip_lab(request):
+    from Crypto.Cipher import AES
+    from Crypto.Util.Padding import pad, unpad
+    
+    # Fixed key and IV for demonstration (in real app, these would be secret)
+    KEY = b'YELLOW_SUBMARINE'  # 16 bytes
+    IV = b'FEDCBA9876543210'   # 16 bytes
+    
+    context = {
+        'encryption_key': KEY.decode('latin-1'),
+        'encryption_iv': IV.decode('latin-1'),
+        'cookie_created': False,
+        'access_granted': False,
+        'access_denied': False,
+    }
+    
+    def encrypt_cookie(plaintext):
+        cipher = AES.new(KEY, AES.MODE_CBC, IV)
+        padded = pad(plaintext.encode(), 16)
+        ciphertext = cipher.encrypt(padded)
+        return base64.b64encode(ciphertext).decode()
+    
+    def decrypt_cookie(cookie_b64):
+        try:
+            ciphertext = base64.b64decode(cookie_b64)
+            cipher = AES.new(KEY, AES.MODE_CBC, IV)
+            plaintext = unpad(cipher.decrypt(ciphertext), 16)
+            return plaintext.decode('latin-1', errors='ignore')
+        except:
+            return None
+    
+    if request.method == 'POST':
+        action = request.POST.get('action', '')
+        
+        # Create new account
+        if action == 'create':
+            username = request.POST.get('username', '').strip()
+            
+            if username and len(username) <= 8:
+                # Create cookie with admin=0
+                cookie_data = f"user={username};admin=0"
+                encrypted = encrypt_cookie(cookie_data)
+                
+                context['cookie_created'] = True
+                context['session_cookie'] = encrypted
+                context['username'] = username
+        
+        # Access admin panel
+        elif action == 'access':
+            cookie = request.POST.get('cookie', '').strip()
+            
+            if cookie:
+                decrypted = decrypt_cookie(cookie)
+                
+                if decrypted:
+                    context['decrypted_data'] = decrypted
+                    
+                    # Check if admin=1 is present
+                    if 'admin=1' in decrypted:
+                        context['access_granted'] = True
+                        context['flag'] = 'FLAG{CBC_WITHOUT_MAC_ALLOWS_TAMPERING}'
+                    else:
+                        context['access_denied'] = True
+                        context['error_message'] = f'Admin access required. Decrypted: {decrypted}'
+                else:
+                    context['access_denied'] = True
+                    context['error_message'] = 'Invalid cookie or padding error'
+    
+    return render(request, 'Lab/CryptoFail/cbc_bitflip_lab.html', context)

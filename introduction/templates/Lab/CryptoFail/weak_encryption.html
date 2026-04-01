@@ -1,0 +1,196 @@
+{% extends 'introduction/base.html' %}
+{% block content %}
+{% block title %}
+<title>Scenario 1: Weak Encryption</title>
+{% endblock %}
+<div class="content">
+  <h3>Scenario 1: Weak Encryption Algorithm</h3>
+  <div class="box">
+
+    <h4>The Vulnerability</h4>
+    <p class="bp">
+      This application uses <strong>MD5 hashing</strong> for password storage. MD5 is cryptographically broken and 
+      unsuitable for password hashing because:
+    <ul>
+      <li>It's extremely fast - billions of hashes can be computed per second</li>
+      <li>Rainbow tables exist for common passwords</li>
+      <li>No built-in salt mechanism</li>
+      <li>Collision vulnerabilities discovered in 1996</li>
+    </ul>
+    </p>
+
+    <button class="coll btn btn-info">How the Attack Works</button>
+    <div class="lab">
+      <h5>Attack Steps:</h5>
+      <ol>
+        <li><strong>Attacker gains database access</strong> (SQL injection, insider threat, or breach)</li>
+        <li><strong>Extracts password hashes</strong> from the user table</li>
+        <li><strong>Cracks hashes using:</strong>
+          <ul>
+            <li>Rainbow tables (precomputed hash databases)</li>
+            <li>Online hash lookup services (e.g., crackstation.net)</li>
+            <li>GPU-accelerated brute force (hashcat, John the Ripper)</li>
+          </ul>
+        </li>
+        <li><strong>Gains plaintext passwords</strong> in seconds to minutes</li>
+      </ol>
+
+      <h5>Time-to-Crack Comparison:</h5>
+      <table class="table table-bordered" style="margin-top: 10px;">
+        <thead>
+          <tr>
+            <th>Algorithm</th>
+            <th>Password: "admin123"</th>
+            <th>Password: "P@ssw0rd!"</th>
+            <th>Security Level</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="background-color: #ffcccc;">
+            <td><strong>MD5</strong></td>
+            <td>< 1 second</td>
+            <td>< 1 second</td>
+            <td>❌ Broken</td>
+          </tr>
+          <tr style="background-color: #ffcccc;">
+            <td><strong>SHA-1</strong></td>
+            <td>< 1 second</td>
+            <td>< 1 second</td>
+            <td>❌ Deprecated</td>
+          </tr>
+          <tr style="background-color: #ccffcc;">
+            <td><strong>bcrypt</strong></td>
+            <td>~12 hours</td>
+            <td>~3 years</td>
+            <td>✅ Secure</td>
+          </tr>
+          <tr style="background-color: #ccffcc;">
+            <td><strong>Argon2</strong></td>
+            <td>~24 hours</td>
+            <td>~5 years</td>
+            <td>✅ Most Secure</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <button class="coll btn btn-info">Vulnerable Code Example</button>
+    <div class="lab">
+      <pre><code class="python">
+# ❌ VULNERABLE CODE - DO NOT USE IN PRODUCTION
+import hashlib
+
+def register_user(username, password):
+    # Weakness: Using MD5 for password hashing
+    password_hash = hashlib.md5(password.encode()).hexdigest()
+    
+    # Save to database
+    user = User(username=username, password=password_hash)
+    user.save()
+    
+def login_user(username, password):
+    password_hash = hashlib.md5(password.encode()).hexdigest()
+    user = User.objects.filter(username=username, password=password_hash).first()
+    return user
+      </code></pre>
+    </div>
+
+    <button class="coll btn btn-info">Secure Code Example</button>
+    <div class="lab">
+      <pre><code class="python">
+# ✅ SECURE CODE - Recommended Approach
+from django.contrib.auth.hashers import make_password, check_password
+
+def register_user(username, password):
+    # Uses PBKDF2 with SHA-256 by default (Django 4.x)
+    # Can be configured to use Argon2 (recommended)
+    password_hash = make_password(password)
+    
+    user = User(username=username, password=password_hash)
+    user.save()
+    
+def login_user(username, password):
+    user = User.objects.filter(username=username).first()
+    if user and check_password(password, user.password):
+        return user
+    return None
+
+# Alternative: Using Argon2 (install argon2-cffi)
+from argon2 import PasswordHasher
+
+ph = PasswordHasher()
+
+def register_user_argon2(username, password):
+    password_hash = ph.hash(password)
+    user = User(username=username, password=password_hash)
+    user.save()
+      </code></pre>
+    </div>
+
+    <h4>Your Mission</h4>
+    <div class="alert alert-warning" style="margin-top: 20px;">
+      <strong>Challenge:</strong> The lab below has a vulnerable login system using MD5. 
+      Try to:
+      <ol>
+        <li>Create a new account</li>
+        <li>Find a way to view the MD5 hash</li>
+        <li>Crack the hash using online tools</li>
+        <li>Understand why MD5 is inadequate</li>
+      </ol>
+    </div>
+
+    <br>
+    <div align="right">
+      <button class="btn btn-info" type="button" onclick="window.location.href='/crypto_weak_encryption_lab'">
+        Access Lab
+      </button>
+    </div>
+
+    <h4>Mitigation</h4>
+    <p class="bp">
+      <strong>Recommended Solutions:</strong>
+    <ul>
+      <li>✅ Use <strong>bcrypt</strong> or <strong>Argon2</strong> for password hashing</li>
+      <li>✅ Configure Django to use Argon2: <code>PASSWORD_HASHERS = ['django.contrib.auth.hashers.Argon2PasswordHasher', ...]</code></li>
+      <li>✅ Implement <strong>automatic hash upgrades</strong> when users log in</li>
+      <li>✅ Use strong <strong>salt</strong> and appropriate <strong>work factor/iterations</strong></li>
+      <li>✅ Never store passwords in plaintext or reversible encryption</li>
+    </ul>
+    </p>
+
+    <button class="coll btn btn-info">Learning Resources</button>
+    <div class="lab">
+      <ul>
+        <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html" target="_blank">OWASP Password Storage Cheat Sheet</a></li>
+        <li><a href="https://docs.djangoproject.com/en/stable/topics/auth/passwords/" target="_blank">Django Password Management</a></li>
+        <li><a href="https://github.com/P-H-C/phc-winner-argon2" target="_blank">Argon2 - Password Hashing Competition Winner</a></li>
+      </ul>
+    </div>
+
+    <br>
+    <div align="right">
+      <button class="btn btn-secondary" type="button" onclick="window.location.href='/crypto_home'">
+        Back to Crypto Home
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  // Collapsible sections
+  var coll = document.getElementsByClassName("coll");
+  for (var i = 0; i < coll.length; i++) {
+    coll[i].addEventListener("click", function() {
+      this.classList.toggle("active");
+      var content = this.nextElementSibling;
+      if (content.style.display === "block") {
+        content.style.display = "none";
+      } else {
+        content.style.display = "block";
+      }
+    });
+  }
+</script>
+
+{% endblock %}

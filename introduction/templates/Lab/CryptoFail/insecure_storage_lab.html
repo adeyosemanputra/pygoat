@@ -1,0 +1,248 @@
+{% extends "introduction/base.html" %}
+{% load static %}
+{% block content %}
+{% block title %}
+<title>Insecure Storage Lab</title>
+{% endblock %}
+
+<div class="jumbotron">
+    <h4 style="text-align:center">🔐 Insecure Cryptographic Storage Lab - Hardcoded Keys</h4>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- Scenario Introduction -->
+            <div class="alert alert-info">
+                <h5>📋 Scenario:</h5>
+                <p>
+                    You've gained access to a company's database backup and their source code repository. 
+                    The database contains encrypted sensitive information. Your goal is to decrypt it and 
+                    find the hidden flag.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Left Column: Source Code -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-dark text-white">
+                    <h5>📝 Source Code (GitHub Repository)</h5>
+                </div>
+                <div class="card-body">
+                    <p><em>File: <code>crypto_utils.py</code></em></p>
+                    <pre><code class="python" style="background-color: #f8f9fa; padding: 15px; border-radius: 5px;">
+# Encryption utilities for sensitive data
+from cryptography.fernet import Fernet
+import base64
+
+# TODO: Move this to environment variable
+ENCRYPTION_KEY = b'{{ encryption_key }}'
+
+def encrypt_data(plaintext):
+    """Encrypt sensitive data"""
+    cipher = Fernet(ENCRYPTION_KEY)
+    encrypted = cipher.encrypt(plaintext.encode())
+    return encrypted.decode()
+
+def decrypt_data(ciphertext):
+    """Decrypt sensitive data"""
+    cipher = Fernet(ENCRYPTION_KEY)
+    decrypted = cipher.decrypt(ciphertext.encode())
+    return decrypted.decode()
+
+# Example usage:
+# encrypted_cc = encrypt_data("4532-1234-5678-9010")
+                    </code></pre>
+                    <div class="alert alert-warning">
+                        ⚠️ <strong>Notice:</strong> The encryption key is hardcoded! This is a critical vulnerability.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column: Database Dump -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-secondary text-white">
+                    <h5>💾 Database Dump (Encrypted Data)</h5>
+                </div>
+                <div class="card-body">
+                    <p><em>Table: <code>sensitive_data</code></em></p>
+                    <table class="table table-bordered table-sm">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Description</th>
+                                <th>Encrypted Value</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>Admin Password</td>
+                                <td><code style="font-size: 0.75em;">{{ encrypted_password }}</code></td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>API Key</td>
+                                <td><code style="font-size: 0.75em;">{{ encrypted_api_key }}</code></td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>Secret Flag</td>
+                                <td><code style="font-size: 0.75em;">{{ encrypted_flag }}</code></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Decryption Tool -->
+    <div class="row" style="margin-top: 20px;">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h5>🔓 Decryption Tool</h5>
+                </div>
+                <div class="card-body">
+                    <p>Now that you have both the encryption key and the encrypted data, decrypt them:</p>
+                    
+                    <form method="POST" action="/crypto_insecure_storage_lab">
+                        {% csrf_token %}
+                        
+                        <div class="form-group">
+                            <label for="encryption_key">Encryption Key (from source code):</label>
+                            <input type="text" class="form-control" id="encryption_key" 
+                                   name="encryption_key" placeholder="Paste the key from source code">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="ciphertext">Encrypted Data (from database):</label>
+                            <textarea class="form-control" id="ciphertext" name="ciphertext" 
+                                      rows="3" placeholder="Paste encrypted value here"></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-success">🔓 Decrypt Data</button>
+                    </form>
+
+                    {% if decrypted_data %}
+                    <div class="alert alert-success" style="margin-top: 20px;">
+                        <h5>✅ Decryption Successful!</h5>
+                        <p><strong>Decrypted Value:</strong></p>
+                        <div style="background-color: #d4edda; padding: 15px; border-radius: 5px; font-family: monospace;">
+                            {{ decrypted_data }}
+                        </div>
+                        
+                        {% if is_flag %}
+                        <div class="alert alert-warning" style="margin-top: 15px;">
+                            🎯 <strong>CONGRATULATIONS!</strong> You found the flag:<br>
+                            <h4 style="font-family: monospace; color: #856404;">{{ decrypted_data }}</h4>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+
+                    {% if decrypt_error %}
+                    <div class="alert alert-danger" style="margin-top: 20px;">
+                        ❌ <strong>Decryption Failed:</strong> {{ decrypt_error }}
+                        <br><small>Make sure you're using the correct encryption key from the source code.</small>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hints Section -->
+    <div class="row" style="margin-top: 20px;">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header bg-warning">
+                    <h5>💡 Hints</h5>
+                </div>
+                <div class="card-body">
+                    <details>
+                        <summary><strong>Hint 1: Finding the Key</strong></summary>
+                        <p>Look at the source code on the left. The encryption key is defined as <code>ENCRYPTION_KEY</code>. 
+                           Copy the exact value (including the <code>b'...'</code> part without the b prefix).</p>
+                    </details>
+                    
+                    <details style="margin-top: 10px;">
+                        <summary><strong>Hint 2: Which Data to Decrypt</strong></summary>
+                        <p>Try decrypting the "Secret Flag" row (ID 3) to complete the challenge.</p>
+                    </details>
+                    
+                    <details style="margin-top: 10px;">
+                        <summary><strong>Hint 3: Copy-Paste Instructions</strong></summary>
+                        <p>
+                            1. Copy the encryption key from source code (the value after <code>ENCRYPTION_KEY = b'</code>)<br>
+                            2. Paste it in the "Encryption Key" field<br>
+                            3. Copy an encrypted value from the database table<br>
+                            4. Paste it in the "Encrypted Data" field<br>
+                            5. Click "Decrypt Data"
+                        </p>
+                    </details>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Educational Impact -->
+    <div class="alert alert-danger" style="margin-top: 20px;">
+        <h5>⚠️ Impact of Hardcoded Encryption Keys:</h5>
+        <ul>
+            <li><strong>Complete Data Breach:</strong> All encrypted data can be decrypted instantly</li>
+            <li><strong>Cannot Rotate Keys:</strong> Changing the key requires code changes and redeployment</li>
+            <li><strong>Version Control Exposure:</strong> Keys remain in Git history even if "deleted"</li>
+            <li><strong>Insider Threats:</strong> Any developer with code access can decrypt production data</li>
+            <li><strong>Third-Party Access:</strong> Contractors, offshore teams get the key</li>
+        </ul>
+        
+        <h5 style="margin-top: 15px;">✅ Proper Solution:</h5>
+        <ul>
+            <li>Store keys in <strong>AWS Secrets Manager</strong>, <strong>Azure Key Vault</strong>, or <strong>HashiCorp Vault</strong></li>
+            <li>Use <strong>environment variables</strong> (minimum - not in committed .env files!)</li>
+            <li>Implement <strong>key rotation</strong> policies</li>
+            <li>Apply <strong>principle of least privilege</strong> for key access</li>
+            <li>Use <strong>git-secrets</strong> to prevent accidental commits</li>
+        </ul>
+    </div>
+
+</div>
+
+<br>
+<div align="right">
+    <button class="btn btn-info" type="button" onclick="window.location.href='/crypto_insecure_storage'">
+        Back to Lab Details
+    </button>
+    <button class="btn btn-secondary" type="button" onclick="window.location.href='/crypto_home'">
+        Back to Crypto Home
+    </button>
+</div>
+
+<style>
+    details {
+        cursor: pointer;
+        padding: 10px;
+        background-color: #f8f9fa;
+        border: 1px solid #dee2e6;
+        border-radius: 4px;
+    }
+    summary {
+        font-weight: bold;
+        user-select: none;
+    }
+    details[open] {
+        background-color: #fff3cd;
+    }
+    code {
+        word-wrap: break-word;
+    }
+</style>
+
+{% endblock %}

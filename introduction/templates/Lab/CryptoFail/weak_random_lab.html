@@ -1,0 +1,240 @@
+{% extends "introduction/base.html" %}
+{% load static %}
+{% block content %}
+{% block title %}
+<title>Insufficient Randomness Lab</title>
+{% endblock %}
+
+<div class="jumbotron">
+    <h4 style="text-align:center">Insufficient Randomness Lab - Predictable Session Tokens</h4>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="alert alert-info">
+                <h5>Scenario:</h5>
+                <p>
+                    This application generates session tokens using a weak random number generator seeded 
+                    with timestamps. Your goal is to predict a valid session token and use it to access 
+                    a privileged account.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Token Generation -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5>Generate Session Tokens</h5>
+                </div>
+                <div class="card-body">
+                    <p>Click the button to generate session tokens using the VULNERABLE system:</p>
+                    
+                    <form method="POST" action="/crypto_weak_random_lab">
+                        {% csrf_token %}
+                        <div class="form-group" style="margin-bottom: 10px;">
+                            <label for="seed">Seed (e.g., UNIX timestamp in seconds)</label>
+                            <input type="number" class="form-control" id="seed" name="seed" placeholder="Enter seed value">
+                        </div>
+                        <input type="hidden" name="action" value="generate">
+                        <button type="submit" class="btn btn-primary">Generate Token</button>
+                    </form>
+
+                    {% if generated_tokens %}
+                    <div style="margin-top: 20px;">
+                        <h6>Recently Generated Tokens:</h6>
+                        <table class="table table-sm table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Token</th>
+                                    <th>Timestamp</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for token_data in generated_tokens %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td><code style="font-size: 0.8em;">{{ token_data.token }}</code></td>
+                                    <td>{{ token_data.timestamp }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        <small class="text-muted">Notice: Tokens generated close together in time may have patterns</small>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Vulnerable Code Display -->
+            <div class="card" style="margin-top: 20px;">
+                <div class="card-header bg-dark text-white">
+                    <h5>Vulnerable Code (Leaked)</h5>
+                </div>
+                <div class="card-body">
+                    <pre><code class="python" style="font-size: 0.85em;">
+import random
+import time
+
+def generate_session_token():
+    # VULNERABLE: Using time as seed!
+    seed = int(time.time())
+    random.seed(seed)
+    
+    chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+    token = ''.join(random.choice(chars) for _ in range(16))
+    
+    return token
+
+# Admin token was generated at: {{ admin_time }}
+                    </code></pre>
+                    <div class="alert alert-warning" style="margin-top: 10px;">
+                        The admin's session token was generated using this same function!
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Token Validation -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h5>Access Admin Panel</h5>
+                </div>
+                <div class="card-body">
+                    <p>Use a valid admin session token to access the admin panel:</p>
+                    
+                    <form method="POST" action="/crypto_weak_random_lab">
+                        {% csrf_token %}
+                        <input type="hidden" name="action" value="submit">
+                        
+                        <div class="form-group">
+                            <label for="admin_token">Session Token:</label>
+                            <input type="text" class="form-control" id="admin_token" name="admin_token" 
+                                   placeholder="Enter predicted admin token" required>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-success">Access Admin Panel</button>
+                    </form>
+
+                    {% if access_denied %}
+                    <div class="alert alert-danger" style="margin-top: 15px;">
+                        Access Denied: Invalid session token
+                    </div>
+                    {% endif %}
+
+                    {% if access_granted %}
+                    <div class="alert alert-success" style="margin-top: 15px;">
+                        <h5>Access Granted!</h5>
+                        <p>Welcome to the Admin Panel</p>
+                        <div class="alert alert-warning">
+                            <strong>FLAG:</strong> <code>{{ flag }}</code>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Hint System -->
+            <div class="card" style="margin-top: 20px;">
+                <div class="card-header bg-warning">
+                    <h5>Hints</h5>
+                </div>
+                <div class="card-body">
+                    <details>
+                        <summary><strong>Hint 1: Understanding the Vulnerability</strong></summary>
+                        <p>The token generator uses <code>int(time.time())</code> as the seed. 
+                           This means tokens generated at the same second will be identical!</p>
+                    </details>
+
+                    <details style="margin-top: 10px;">
+                        <summary><strong>Hint 2: The Admin's Token</strong></summary>
+                        <p>The admin's token was generated at timestamp: <code>{{ admin_time }}</code><br>
+                           You can reproduce the exact same token by using the same seed.</p>
+                    </details>
+
+                    <details style="margin-top: 10px;">
+                        <summary><strong>Hint 3: Token Generation Script</strong></summary>
+                        <p>Create a Python script to generate the token:</p>
+                        <pre><code>import random
+
+seed = {{ admin_time }}
+random.seed(seed)
+chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+token = ''.join(random.choice(chars) for _ in range(16))
+print(token)</code></pre>
+                    </details>
+
+                    <details style="margin-top: 10px;">
+                        <summary><strong>Hint 4: Online Python Interpreter</strong></summary>
+                        <p>If you don't have Python installed, use an online interpreter like:
+                        <ul>
+                            <li><a href="https://www.online-python.com/" target="_blank">Online Python</a></li>
+                            <li><a href="https://repl.it/" target="_blank">Repl.it</a></li>
+                        </ul>
+                        </p>
+                    </details>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Educational Content -->
+    <div class="row" style="margin-top: 20px;">
+        <div class="col-md-12">
+            <div class="alert alert-danger">
+                <h5>Why This Attack Works:</h5>
+                <ol>
+                    <li><strong>Predictable Seed:</strong> Using timestamp as seed makes it easily guessable</li>
+                    <li><strong>Weak PRNG:</strong> Python's <code>random</code> module is not cryptographically secure</li>
+                    <li><strong>Deterministic Output:</strong> Same seed always produces same sequence</li>
+                    <li><strong>Limited Seed Space:</strong> Timestamps have limited precision (1 second)</li>
+                </ol>
+
+                <h5 style="margin-top: 15px;">Secure Alternative:</h5>
+                <pre><code>import secrets
+
+# Cryptographically secure random token
+token = secrets.token_urlsafe(32)  # 256 bits of entropy
+
+# OR using secrets.choice
+import string
+chars = string.ascii_letters + string.digits
+token = ''.join(secrets.choice(chars) for _ in range(32))</code></pre>
+            </div>
+        </div>
+    </div>
+</div>
+
+<br>
+<div align="right">
+    <button class="btn btn-info" type="button" onclick="window.location.href='/crypto_weak_random'">
+        Back to Lab Details
+    </button>
+    <button class="btn btn-secondary" type="button" onclick="window.location.href='/crypto_home'">
+        Back to Crypto Home
+    </button>
+</div>
+
+<style>
+    details {
+        cursor: pointer;
+        padding: 10px;
+        background-color: #f8f9fa;
+        border: 1px solid #dee2e6;
+        border-radius: 4px;
+    }
+    summary {
+        font-weight: bold;
+        user-select: none;
+    }
+    details[open] {
+        background-color: #fff3cd;
+    }
+</style>
+
+{% endblock %}

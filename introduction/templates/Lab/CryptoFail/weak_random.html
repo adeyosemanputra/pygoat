@@ -1,0 +1,221 @@
+{% extends 'introduction/base.html' %}
+{% block content %}
+{% block title %}
+<title>Scenario 3: Insufficient Randomness</title>
+{% endblock %}
+<div class="content">
+  <h3>Scenario 3: Insufficient Randomness</h3>
+  <div class="box">
+
+    <h4>The Vulnerability</h4>
+    <p class="bp">
+      Using predictable or weak random number generators for security-critical operations is a common 
+      cryptographic failure. When applications use <code>random.random()</code> or similar functions 
+      instead of cryptographically secure random generators, attackers can predict tokens, session IDs, 
+      and password reset links.
+    </p>
+    <p class="bp">
+      Common insecure randomness scenarios:
+    <ul>
+      <li>Session tokens generated with <code>random.random()</code></li>
+      <li>Password reset tokens using timestamp-based seeds</li>
+      <li>API keys generated with predictable patterns</li>
+      <li>CSRF tokens using weak randomness</li>
+      <li>Cryptographic keys derived from insufficient entropy</li>
+    </ul>
+    </p>
+
+    <button class="coll btn btn-info">How the Attack Works</button>
+    <div class="lab">
+      <h5>Attack Scenario - Session Token Prediction:</h5>
+      <ol>
+        <li><strong>Reconnaissance:</strong> Attacker creates multiple accounts and collects session tokens</li>
+        <li><strong>Pattern Analysis:</strong> Discovers tokens are generated using weak PRNG</li>
+        <li><strong>Seed Discovery:</strong> Determines the seed (often based on timestamp)</li>
+        <li><strong>Token Prediction:</strong> Predicts future or existing session tokens</li>
+        <li><strong>Session Hijacking:</strong> Uses predicted tokens to impersonate legitimate users</li>
+      </ol>
+
+      <h5>Real-World Example:</h5>
+      <div class="alert alert-danger">
+        <strong>2008 Debian OpenSSL Bug:</strong> A bug in Debian's OpenSSL package reduced 
+        entropy from billions of possibilities to just 32,768 possible keys. This made SSH keys, 
+        SSL certificates, and other cryptographic material predictable and easily cracked.
+      </div>
+    </div>
+
+    <button class="coll btn btn-info">Vulnerable Code Example</button>
+    <div class="lab">
+      <pre><code class="python">
+# VULNERABLE CODE - DO NOT USE
+import random
+import string
+import time
+
+def generate_session_token():
+    # DANGER: Using random.random() which is predictable!
+    random.seed(int(time.time()))  # Even worse - predictable seed
+    token = ''.join(random.choices(string.ascii_letters + string.digits, k=32))
+    return token
+
+def generate_password_reset_token(user_id):
+    # DANGER: Using user_id and timestamp - highly predictable!
+    random.seed(user_id + int(time.time()))
+    token = ''.join(random.choices(string.hexdigits, k=16))
+    return token
+
+# Example usage
+session = generate_session_token()
+# Attacker can predict this by guessing the timestamp!
+      </code></pre>
+
+      <h5>Why This is Dangerous:</h5>
+      <ul>
+        <li>random.random() is NOT cryptographically secure</li>
+        <li>Same seed = same sequence of "random" numbers</li>
+        <li>Timestamps are easily guessable (within seconds)</li>
+        <li>Attackers can brute force small seed spaces</li>
+      </ul>
+    </div>
+
+    <button class="coll btn btn-info">Secure Code Example</button>
+    <div class="lab">
+      <pre><code class="python">
+# SECURE CODE - Recommended Approach
+import secrets
+import os
+
+def generate_session_token():
+    # Uses cryptographically secure random generator
+    token = secrets.token_urlsafe(32)  # 32 bytes = 256 bits
+    return token
+
+def generate_password_reset_token():
+    # Alternative: using os.urandom
+    token = secrets.token_hex(16)  # 16 bytes = 128 bits
+    return token
+
+def generate_api_key():
+    # For API keys, use longer tokens
+    api_key = secrets.token_urlsafe(48)  # 384 bits
+    return api_key
+
+# UUID4 is also acceptable (uses os.urandom internally)
+import uuid
+session_id = str(uuid.uuid4())
+      </code></pre>
+
+      <h5>Key Differences:</h5>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Aspect</th>
+            <th>random.random()</th>
+            <th>secrets module</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Purpose</strong></td>
+            <td>Simulations, games</td>
+            <td>Security, cryptography</td>
+          </tr>
+          <tr>
+            <td><strong>Predictability</strong></td>
+            <td>Predictable with seed</td>
+            <td>Cryptographically unpredictable</td>
+          </tr>
+          <tr>
+            <td><strong>Entropy Source</strong></td>
+            <td>Mersenne Twister (PRNG)</td>
+            <td>OS random source (/dev/urandom)</td>
+          </tr>
+          <tr>
+            <td><strong>For Security?</strong></td>
+            <td>NO</td>
+            <td>YES</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4>Your Mission</h4>
+    <div class="alert alert-warning" style="margin-top: 20px;">
+      <strong>Challenge:</strong> The lab demonstrates a vulnerable token generation system. 
+      Your tasks:
+      <ol>
+        <li>Generate multiple session tokens and observe the pattern</li>
+        <li>Predict a future token based on the pattern</li>
+        <li>Use the predicted token to gain unauthorized access</li>
+        <li>Retrieve the flag</li>
+      </ol>
+    </div>
+
+    <br>
+    <div align="right">
+      <button class="btn btn-info" type="button" onclick="window.location.href='/crypto_weak_random_lab'">
+        Access Lab
+      </button>
+    </div>
+
+    <h4>Mitigation</h4>
+    <p class="bp">
+      <strong>Best Practices for Random Number Generation:</strong>
+    <ul>
+      <li>Use <code>secrets</code> module for all security-critical randomness</li>
+      <li>Never use <code>random.random()</code>, <code>random.randint()</code> for security</li>
+      <li>Use <code>os.urandom()</code> or <code>secrets</code> for cryptographic keys</li>
+      <li>Token length: minimum 128 bits (16 bytes) for session tokens</li>
+      <li>API keys: minimum 256 bits (32 bytes)</li>
+      <li>Never use predictable seeds (timestamps, user IDs, counters)</li>
+      <li>Implement token expiration and rotation policies</li>
+    </ul>
+    </p>
+
+    <h4>Detection Methods</h4>
+    <p class="bp">
+    <strong>How to identify weak randomness:</strong>
+    <ul>
+      <li>Collect multiple tokens/IDs from the application</li>
+      <li>Analyze for patterns using statistical tests (Chi-square, runs test)</li>
+      <li>Check for sequential or time-based patterns</li>
+      <li>Use tools like <code>ent</code> to measure entropy</li>
+      <li>Review source code for use of <code>random</code> module</li>
+    </ul>
+    </p>
+
+    <button class="coll btn btn-info">Learning Resources</button>
+    <div class="lab">
+      <ul>
+        <li><a href="https://docs.python.org/3/library/secrets.html" target="_blank">Python secrets Module Documentation</a></li>
+        <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Cryptographic_Storage_Cheat_Sheet.html#secure-random-number-generation" target="_blank">OWASP Secure Random Number Generation</a></li>
+        <li><a href="https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-90Ar1.pdf" target="_blank">NIST SP 800-90A - Random Number Generation</a></li>
+      </ul>
+    </div>
+
+    <br>
+    <div align="right">
+      <button class="btn btn-secondary" type="button" onclick="window.location.href='/crypto_home'">
+        Back to Crypto Home
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  var coll = document.getElementsByClassName("coll");
+  for (var i = 0; i < coll.length; i++) {
+    coll[i].addEventListener("click", function() {
+      this.classList.toggle("active");
+      var content = this.nextElementSibling;
+      if (content.style.display === "block") {
+        content.style.display = "none";
+      } else {
+        content.style.display = "block";
+      }
+    });
+  }
+</script>
+
+{% endblock %}

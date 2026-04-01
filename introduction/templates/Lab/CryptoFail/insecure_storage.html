@@ -1,0 +1,252 @@
+{% extends 'introduction/base.html' %}
+{% block content %}
+{% block title %}
+<title>Scenario 2: Insecure Cryptographic Storage</title>
+{% endblock %}
+<div class="content">
+  <h3>Scenario 2: Insecure Cryptographic Storage</h3>
+  <div class="box">
+
+    <h4>The Vulnerability</h4>
+    <p class="bp">
+      This scenario demonstrates one of the most critical crypto failures: <strong>hardcoded encryption keys</strong>.
+      Even if applications use strong encryption algorithms like AES-256, hardcoding keys completely defeats the purpose.
+    </p>
+    <p class="bp">
+      Common insecure storage practices include:
+    <ul>
+      <li>Hardcoded keys directly in source code</li>
+      <li>Encryption keys stored in configuration files committed to Git</li>
+      <li>Keys in environment variables without proper access control</li>
+      <li>Using the same key for encryption and authentication</li>
+      <li>No key rotation policy</li>
+    </ul>
+    </p>
+
+    <button class="coll btn btn-info">How the Attack Works</button>
+    <div class="lab">
+      <h5>Attack Scenario:</h5>
+      <ol>
+        <li><strong>Recon:</strong> Attacker discovers the codebase (GitHub, GitLab, insider access)</li>
+        <li><strong>Key Discovery:</strong> Finds hardcoded encryption key in source code:
+          <pre><code>SECRET_KEY = "my_secret_key_12345"  # Found in settings.py</code></pre>
+        </li>
+        <li><strong>Data Access:</strong> Gains read access to encrypted database (SQL injection, backup leak)</li>
+        <li><strong>Decryption:</strong> Uses the hardcoded key to decrypt ALL encrypted data</li>
+        <li><strong>Impact:</strong> Complete compromise of confidentiality - credit cards, SSNs, medical records, etc.</li>
+      </ol>
+
+      <div class="alert alert-danger">
+        <strong>Real Example:</strong> In 2019, a major company had AWS credentials hardcoded in their public GitHub repository.
+        Attackers discovered this, gained access to their S3 buckets, and exfiltrated 100M+ customer records.
+      </div>
+    </div>
+
+    <button class="coll btn btn-info">Vulnerable Code Example</button>
+    <div class="lab">
+      <pre><code class="python">
+# ❌ VULNERABLE CODE - DO NOT USE IN PRODUCTION
+from cryptography.fernet import Fernet
+
+# DANGER: Hardcoded encryption key!
+ENCRYPTION_KEY = b'your-secret-key-here-1234567890ab='
+
+def encrypt_sensitive_data(data):
+    cipher = Fernet(ENCRYPTION_KEY)  # Using hardcoded key
+    encrypted = cipher.encrypt(data.encode())
+    return encrypted
+
+def decrypt_sensitive_data(encrypted_data):
+    cipher = Fernet(ENCRYPTION_KEY)  # Same hardcoded key
+    decrypted = cipher.decrypt(encrypted_data)
+    return decrypted.decode()
+
+# Example: Encrypting credit card
+credit_card = "4532-1234-5678-9010"
+encrypted_cc = encrypt_sensitive_data(credit_card)
+# This key is in the source code - anyone with code access can decrypt!
+      </code></pre>
+
+      <h5>Why This is Dangerous:</h5>
+      <ul>
+        <li>✗ Source code often ends up in version control (Git history)</li>
+        <li>✗ Developers may accidentally commit to public repositories</li>
+        <li>✗ Code is shared with contractors, offshore teams, etc.</li>
+        <li>✗ Cannot rotate keys without code changes and redeployment</li>
+      </ul>
+    </div>
+
+    <button class="coll btn btn-info">Secure Code Example</button>
+    <div class="lab">
+      <pre><code class="python">
+# ✅ SECURE CODE - Recommended Approach
+import os
+from cryptography.fernet import Fernet
+
+# Method 1: Environment Variables (Better)
+ENCRYPTION_KEY = os.environ.get('ENCRYPTION_KEY')
+if not ENCRYPTION_KEY:
+    raise ValueError("ENCRYPTION_KEY environment variable not set!")
+
+# Method 2: Secrets Manager (Best)
+import boto3
+
+def get_encryption_key():
+    client = boto3.client('secretsmanager')
+    response = client.get_secret_value(SecretId='prod/encryption/key')
+    return response['SecretString'].encode()
+
+ENCRYPTION_KEY = get_encryption_key()
+
+# Method 3: Key Derivation from Master Password (Alternative)
+from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
+from cryptography.hazmat.primitives import hashes
+import base64
+
+def derive_key_from_password(password, salt):
+    kdf = PBKDF2HMAC(
+        algorithm=hashes.SHA256(),
+        length=32,
+        salt=salt,
+        iterations=100000,
+    )
+    key = base64.urlsafe_b64encode(kdf.derive(password.encode()))
+    return key
+
+# Use derived key instead of hardcoded
+ENCRYPTION_KEY = derive_key_from_password(
+    password=os.environ['MASTER_PASSWORD'],
+    salt=os.environ['ENCRYPTION_SALT'].encode()
+)
+      </code></pre>
+    </div>
+
+    <button class="coll btn btn-info">Git Secrets Scanning</button>
+    <div class="lab">
+      <p>Prevent accidental commits of secrets using these tools:</p>
+      <ul>
+        <li><strong>git-secrets</strong> - AWS tool to prevent committing secrets
+          <pre><code>git secrets --install
+git secrets --register-aws</code></pre>
+        </li>
+        <li><strong>TruffleHog</strong> - Searches Git history for high entropy strings
+          <pre><code>trufflehog git https://github.com/your-repo --only-verified</code></pre>
+        </li>
+        <li><strong>GitHub Secret Scanning</strong> - Automatic scanning for known token patterns</li>
+        <li><strong>pre-commit hooks</strong> - Block commits with potential secrets</li>
+      </ul>
+    </div>
+
+    <h4>Your Mission</h4>
+    <div class="alert alert-warning" style="margin-top: 20px;">
+      <strong>Challenge:</strong> The lab below has sensitive data encrypted with a hardcoded key. 
+      Your goals:
+      <ol>
+        <li>Find the hardcoded encryption key in the "source code"</li>
+        <li>Decrypt the encrypted sensitive data</li>
+        <li>Retrieve the hidden flag</li>
+        <li>Understand the impact of hardcoded keys</li>
+      </ol>
+    </div>
+
+    <br>
+    <div align="right">
+      <button class="btn btn-info" type="button" onclick="window.location.href='/crypto_insecure_storage_lab'">
+        Access Lab
+      </button>
+    </div>
+
+    <h4>Mitigation Strategies</h4>
+    <p class="bp">
+      <strong>Best Practices for Key Management:</strong>
+    <table class="table table-bordered" style="margin-top: 10px;">
+      <thead>
+        <tr>
+          <th>Approach</th>
+          <th>Security Level</th>
+          <th>Use Case</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="background-color: #ffcccc;">
+          <td>Hardcoded in code</td>
+          <td>❌ Insecure</td>
+          <td>Never use</td>
+        </tr>
+        <tr style="background-color: #ffcccc;">
+          <td>Config file in repo</td>
+          <td>❌ Insecure</td>
+          <td>Never use</td>
+        </tr>
+        <tr style="background-color: #ffffcc;">
+          <td>Environment variables</td>
+          <td>⚠️ Basic</td>
+          <td>Development only</td>
+        </tr>
+        <tr style="background-color: #ccffcc;">
+          <td>Key derivation (PBKDF2)</td>
+          <td>✅ Good</td>
+          <td>Small scale production</td>
+        </tr>
+        <tr style="background-color: #ccffcc;">
+          <td>Secrets Manager (AWS/Azure)</td>
+          <td>✅ Excellent</td>
+          <td>Production (recommended)</td>
+        </tr>
+        <tr style="background-color: #ccffcc;">
+          <td>Hardware Security Module (HSM)</td>
+          <td>✅ Best</td>
+          <td>High security requirements</td>
+        </tr>
+      </tbody>
+    </table>
+    </p>
+
+    <h4>Additional Recommendations</h4>
+    <ul>
+      <li>✅ Implement <strong>key rotation</strong> policies (e.g., rotate every 90 days)</li>
+      <li>✅ Use <strong>separate keys</strong> for encryption and authentication</li>
+      <li>✅ Store keys in <strong>dedicated secrets management systems</strong></li>
+      <li>✅ Apply <strong>principle of least privilege</strong> for key access</li>
+      <li>✅ Use <strong>.gitignore</strong> to exclude config files with secrets</li>
+      <li>✅ Scan code with <strong>secret detection tools</strong> in CI/CD pipeline</li>
+      <li>✅ <strong>Never</strong> log encryption keys or sensitive data</li>
+    </ul>
+
+    <button class="coll btn btn-info">Learning Resources</button>
+    <div class="lab">
+      <ul>
+        <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Key_Management_Cheat_Sheet.html" target="_blank">OWASP Key Management Cheat Sheet</a></li>
+        <li><a href="https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-57pt1r5.pdf" target="_blank">NIST Key Management Guidelines</a></li>
+        <li><a href="https://docs.aws.amazon.com/secretsmanager/latest/userguide/intro.html" target="_blank">AWS Secrets Manager</a></li>
+        <li><a href="https://github.com/awslabs/git-secrets" target="_blank">Git-secrets Tool</a></li>
+      </ul>
+    </div>
+
+    <br>
+    <div align="right">
+      <button class="btn btn-secondary" type="button" onclick="window.location.href='/crypto_home'">
+        Back to Crypto Home
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  // Collapsible sections
+  var coll = document.getElementsByClassName("coll");
+  for (var i = 0; i < coll.length; i++) {
+    coll[i].addEventListener("click", function() {
+      this.classList.toggle("active");
+      var content = this.nextElementSibling;
+      if (content.style.display === "block") {
+        content.style.display = "none";
+      } else {
+        content.style.display = "block";
+      }
+    });
+  }
+</script>
+
+{% endblock %}

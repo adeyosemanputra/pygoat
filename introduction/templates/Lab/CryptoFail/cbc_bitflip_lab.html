@@ -1,0 +1,304 @@
+{% extends "introduction/base.html" %}
+{% load static %}
+{% block content %}
+{% block title %}
+<title>CBC Bit-Flipping Lab</title>
+{% endblock %}
+
+<div class="jumbotron">
+    <h4 style="text-align:center">CBC Bit-Flipping Attack Lab - Privilege Escalation</h4>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="alert alert-info">
+                <h5>Scenario:</h5>
+                <p>
+                    This application uses AES-CBC encryption (without HMAC) to protect session cookies. 
+                    The cookie contains user data including admin status. By flipping bits in the ciphertext, 
+                    you can change your admin status from 0 to 1.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Create Account -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5>Create Account</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="/crypto_cbc_bitflip_lab">
+                        {% csrf_token %}
+                        <input type="hidden" name="action" value="create">
+                        
+                        <div class="form-group">
+                            <label for="username">Username:</label>
+                            <input type="text" class="form-control" id="username" name="username" 
+                                   maxlength="8" required>
+                            <small>Max 8 characters for predictable cookie structure</small>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">Create Account</button>
+                    </form>
+
+                    {% if cookie_created %}
+                    <div class="alert alert-success" style="margin-top: 15px;">
+                        <h6>Account Created!</h6>
+                        <p><strong>Your Session Cookie:</strong></p>
+                        <textarea class="form-control" rows="3" readonly>{{ session_cookie }}</textarea>
+                        <p style="margin-top: 10px;"><strong>Cookie Structure:</strong></p>
+                        <pre style="background-color: #f8f9fa; padding: 10px;"><code>Plaintext: user={{ username }};admin=0
+Encrypted with AES-CBC (NO HMAC!)</code></pre>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Vulnerable Code -->
+            <div class="card" style="margin-top: 20px;">
+                <div class="card-header bg-dark text-white">
+                    <h5>Server-Side Code (Leaked)</h5>
+                </div>
+                <div class="card-body">
+                    <pre><code class="python" style="font-size: 0.8em;">
+from Crypto.Cipher import AES
+from Crypto.Util.Padding import pad, unpad
+import base64
+
+KEY = b'{{ encryption_key }}'
+IV = b'{{ encryption_iv }}'
+
+def create_cookie(username):
+    # Format: user=USERNAME;admin=0
+    data = f"user={username};admin=0"
+    
+    cipher = AES.new(KEY, AES.MODE_CBC, IV)
+    ciphertext = cipher.encrypt(
+        pad(data.encode(), 16)
+    )
+    return base64.b64encode(ciphertext)
+
+def check_admin(cookie):
+    ct = base64.b64decode(cookie)
+    cipher = AES.new(KEY, AES.MODE_CBC, IV)
+    pt = unpad(cipher.decrypt(ct), 16)
+    
+    # VULNERABLE: No integrity check!
+    return b'admin=1' in pt
+                    </code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Access Admin Panel -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h5>Access Admin Panel</h5>
+                </div>
+                <div class="card-body">
+                    <p>Submit a modified cookie with admin=1:</p>
+                    
+                    <form method="POST" action="/crypto_cbc_bitflip_lab">
+                        {% csrf_token %}
+                        <input type="hidden" name="action" value="access">
+                        
+                        <div class="form-group">
+                            <label for="modified_cookie">Modified Session Cookie:</label>
+                            <textarea class="form-control" id="modified_cookie" name="cookie" 
+                                      rows="3" required></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-success">Access Admin Panel</button>
+                    </form>
+
+                    {% if access_denied %}
+                    <div class="alert alert-danger" style="margin-top: 15px;">
+                        <strong>Access Denied</strong><br>
+                        {{ error_message }}
+                    </div>
+                    {% endif %}
+
+                    {% if access_granted %}
+                    <div class="alert alert-success" style="margin-top: 15px;">
+                        <h5>Admin Access Granted!</h5>
+                        <p>Decrypted cookie data: <code>{{ decrypted_data }}</code></p>
+                        <div class="alert alert-warning">
+                            <strong>FLAG:</strong> <code>{{ flag }}</code>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Bit-Flipping Tool -->
+            <div class="card" style="margin-top: 20px;">
+                <div class="card-header bg-warning">
+                    <h5>Bit-Flipping Helper Tool</h5>
+                </div>
+                <div class="card-body">
+                    <p>Use this Python script to perform the bit-flip attack:</p>
+                    <pre><code class="python" style="font-size: 0.8em;">
+import base64
+
+def flip_bit(cookie_b64, position, flip_value):
+    # Decode cookie
+    cookie = bytearray(base64.b64decode(cookie_b64))
+    
+    # Flip the bit at position
+    cookie[position] ^= flip_value
+    
+    # Re-encode
+    return base64.b64encode(cookie).decode()
+
+# Your cookie here
+original = "YOUR_COOKIE_HERE"
+
+# To flip 'admin=0' to 'admin=1'
+# Position depends on username length and AES block boundaries (CBC uses the previous block).
+# For a 4-char username, '0' falls at the start of the second block, so flip byte 15 (0-based) in the ciphertext.
+# XOR with: ord('0') ^ ord('1') = 1
+
+modified = flip_bit(original, 15, 1)
+print(modified)
+                    </code></pre>
+                    <small>Adjust position based on your username length</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hints -->
+    <div class="row" style="margin-top: 20px;">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    <h5>Hints & Walkthrough</h5>
+                </div>
+                <div class="card-body">
+                    <details>
+                        <summary><strong>Hint 1: Understanding the Cookie Structure</strong></summary>
+                        <p>
+                            The plaintext format is: <code>user=USERNAME;admin=0</code><br>
+                            After padding and encryption with AES-CBC (16-byte blocks):<br>
+                            - Block 1: <code>user=USERNAME;adm</code><br>
+                            - Block 2: <code>in=0</code> (plus padding)
+                        </p>
+                    </details>
+
+                    <details style="margin-top: 10px;">
+                        <summary><strong>Hint 2: CBC Decryption Property</strong></summary>
+                        <p>
+                            In CBC decryption: <code>Plaintext[i] = Decrypt(Ciphertext[i]) XOR Ciphertext[i-1]</code><br>
+                            This means modifying Ciphertext[0] will affect Plaintext[1]!
+                        </p>
+                    </details>
+
+                    <details style="margin-top: 10px;">
+                        <summary><strong>Hint 3: Finding the Right Position</strong></summary>
+                        <p>
+                            For a 4-character username like "test":<br>
+                            - Plaintext block 1: <code>user=test;admin=</code> (16 bytes)<br>
+                            - Plaintext block 2: <code>0</code> + padding<br>
+                            The '0' in 'admin=0' is at position 0 of block 2.<br>
+                            To affect block 2, modify the corresponding byte in block 1 (ciphertext).
+                        </p>
+                    </details>
+
+                    <details style="margin-top: 10px;">
+                        <summary><strong>Hint 4: The XOR Trick</strong></summary>
+                        <p>
+                            To change '0' (0x30) to '1' (0x31):<br>
+                            <code>0x30 XOR 0x01 = 0x31</code><br>
+                            So flip bit with value 1 at the position corresponding to 'admin=0'
+                        </p>
+                    </details>
+
+                    <details style="margin-top: 10px;">
+                        <summary><strong>Hint 5: Step-by-Step Attack</strong></summary>
+                        <ol>
+                            <li>Create account with 4-character username (e.g., "test")</li>
+                            <li>Get your session cookie (base64 encoded)</li>
+                            <li>Decode from base64 to bytes</li>
+                            <li>Find position of the byte that affects 'admin=0'</li>
+                            <li>XOR that byte with 1</li>
+                            <li>Re-encode to base64</li>
+                            <li>Submit modified cookie</li>
+                        </ol>
+                    </details>
+
+                    <details style="margin-top: 10px;">
+                        <summary><strong>Hint 6: Python Solution</strong></summary>
+                        <pre><code class="python">
+import base64
+
+original_cookie = "YOUR_COOKIE_HERE"
+cookie_bytes = bytearray(base64.b64decode(original_cookie))
+
+# For 4-char username, the critical byte is around position 15
+# This affects the first byte of block 2 during decryption
+cookie_bytes[15] ^= 1  # Flip 0x30 to 0x31
+
+modified_cookie = base64.b64encode(cookie_bytes).decode()
+print(modified_cookie)
+                        </code></pre>
+                    </details>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Educational Content -->
+    <div class="alert alert-danger" style="margin-top: 20px;">
+        <h5>Why This Attack Works:</h5>
+        <ul>
+            <li><strong>No Integrity Protection:</strong> CBC mode provides confidentiality but NOT authenticity</li>
+            <li><strong>XOR Properties:</strong> The XOR in CBC decryption allows predictable modifications</li>
+            <li><strong>Known Plaintext:</strong> Attacker knows the cookie structure</li>
+            <li><strong>Block Cipher Math:</strong> Changing ciphertext block N affects plaintext block N+1</li>
+        </ul>
+
+        <h5 style="margin-top: 15px;">Proper Defense:</h5>
+        <pre><code># Use AES-GCM (authenticated encryption)
+from Crypto.Cipher import AES
+
+cipher = AES.new(key, AES.MODE_GCM)
+ciphertext, tag = cipher.encrypt_and_digest(data)
+
+# Verification will fail if tampered!
+plaintext = cipher.decrypt_and_verify(ciphertext, tag)</code></pre>
+    </div>
+</div>
+
+<br>
+<div align="right">
+    <button class="btn btn-info" type="button" onclick="window.location.href='/crypto_cbc_bitflip'">
+        Back to Lab Details
+    </button>
+    <button class="btn btn-secondary" type="button" onclick="window.location.href='/crypto_home'">
+        Back to Crypto Home
+    </button>
+</div>
+
+<style>
+    details {
+        cursor: pointer;
+        padding: 10px;
+        background-color: #f8f9fa;
+        border: 1px solid #dee2e6;
+        border-radius: 4px;
+    }
+    summary {
+        font-weight: bold;
+        user-select: none;
+    }
+    details[open] {
+        background-color: #fff3cd;
+    }
+</style>
+
+{% endblock %}
