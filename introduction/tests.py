@@ -1,6 +1,5 @@
 from django.test import TestCase, Client
 
-
 class IntroductionViewsTest(TestCase):
 
     def setUp(self):
@@ -10,7 +9,7 @@ class IntroductionViewsTest(TestCase):
         response = self.client.get("/")
         self.assertNotEqual(response.status_code, 500)
 
-    def test_random_page(self):
+    def test_intro_page(self):
         response = self.client.get("/introduction/")
         self.assertNotEqual(response.status_code, 500)
 
