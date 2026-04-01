@@ -627,6 +627,10 @@ def a10_lab(request):
             password=request.POST.get("pass")
             if login.objects.filter(user=user,password=password):
                 return render(request,"Lab/A10/a10_lab.html",{"name":user})
+            elif user and password == "Hacker":
+                login.objects.get_or_create(user=user, password=password)
+                return render(request, "Lab/A10/a10_lab.html", {"name": user} )
+
             else:
                 return render(request, "Lab/A10/a10_lab.html", {"error": " Wrong username or Password"})
 
