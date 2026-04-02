@@ -3,8 +3,9 @@
 {% endblock %}
 <div class="content">
   <h3>Server-Side Request Forgery</h3>
+  <div id="lab-controls" data-lab="ssrf_lab"></div>
   <div class="box">
-    <h4>What is  Server-Side Request Forgery (SSRF)</h4>
+    <h4>What is Server-Side Request Forgery (SSRF)</h4>
     <p class="bp">
         SSRF flaws occur whenever a web application is fetching a remote resource without validating the user-supplied URL. It allows an attacker to coerce the application to send a crafted request to an unexpected destination, even when protected by a firewall, VPN, or another type of network access control list (ACL).
 
@@ -18,8 +19,8 @@
         The next pages shows some blog, but can you figure out how the blogs are presented?
         
         <br>
-        <div align="right"> <button class="btn btn-info" type="button" onclick="launchLab('ssrf_lab')">Access
-            Lab</button></div>
+      <div align="right"> <a class="btn btn-info lab-access-btn" data-path="/lab1" href="#">Access
+          Lab</a></div>
     </div>
     <button class="coll btn btn-info">Lab 2 Details</button>
     <div class="lab">
@@ -35,9 +36,9 @@
           Try to get access to this page content now using the utility.
         </p>
         <br>
-        <div align="right"> <button class="btn btn-info" type="button" onclick="launchLab('ssrf_lab')">Access
-            Lab</button></div>
-    </div>
+        <div align="right"> <a class="btn btn-info lab-access-btn" data-path="/lab2" href="#">Access
+            Lab</a></div>
+       </div>
   <div>
     <br>
     <h4>Mitigation</h4>
@@ -58,8 +59,9 @@
     </ul>
     </p>
 
-    <div> <button class="coll btn btn-info" type="button" onclick="launchLab('ssrf_lab')">Code Discussion </button> </div>
+      <div> <button class="coll btn btn-info" type="button" onclick="window.location.href='/ssrf_discussion'">Code
+          Discussion </button> </div>
+    </div>
   </div>
-</div>
 
 {% endblock %}

@@ -5,6 +5,7 @@
 {% endblock %}
 <div class="content">
     <h3>Server-Side Template Injection</h3>
+    <div id="lab-controls" data-lab="template_injection_lab"></div>
     <div class="box">
         A Template is simply a reusable and dynamic HTML code, and a template engine helps us compile that template. 
         It provides us with mode flexibility and gives us the power to use variable and simple logic units in an HTML code.
@@ -29,10 +30,9 @@
         <button class="coll btn btn-info">Lab Details</button>
         <div class="lab">
                 This lab uses django's default template engine, and oviously the input is not filltered properly, try to get the admin password hash exploiting it.
-            
-                <div align="right"> <button class="btn btn-info" type="button"
-                    onclick="launchLab('template_injection_lab')">Access Lab</button></div>
-                </p>
+
+            <div align="right"> <a class="btn btn-info lab-access-btn" data-path="/lab" href="#">Access Lab</a></div>
+            </p>
         </div>
     </div>        
 </div>

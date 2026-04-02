@@ -23,6 +23,7 @@
     <link rel="stylesheet" href="{% static 'Lab/ssrf.css'%}" />
     <link rel="stylesheet" href="{% static 'css/supply_chain.css'%}" />
     <link rel="icon" href="{% static 'Lab/icons/pygoat-mini.png' %}" />
+    <link rel="stylesheet" href="{% static 'css/manage-labs.css' %}">
     <!-- Font Awesome JS -->
     <script
       defer
@@ -144,18 +145,18 @@
             </a>
             <ul class="collapse list-unstyled" id="OWASP10_2021">
               <li>
-                <button onclick="launchLab('broken_access_lab')" class="sidebar-list-items lab-button" data-lab="broken_access_lab">
+                <a href="/broken_access_control" class="sidebar-list-items lab-button" data-lab="broken_access_lab">
                   <i class="fas fa-bug"></i>
                   A1: Broken Access Control
                   <span class="lab-status-indicator not-running" aria-hidden="true"></span>
-                </button>
+                </a>
               </li>
               <li>
-                <button onclick="launchLab('crypto_failure_lab')" class="sidebar-list-items lab-button" data-lab="crypto_failure_lab">
+                <a href="/cryptographic_failure" class="sidebar-list-items lab-button" data-lab="crypto_failure_lab">
                   <i class="fas fa-bug"></i>
                   A2: Cryptographic Failures
                   <span class="lab-status-indicator not-running" aria-hidden="true"></span>
-                </button>
+                </a>
               </li>
               <li>
                 <a
@@ -169,73 +170,73 @@
                 </a>
                 <ul class="collapse list-unstyled" id="sqlSubmenu2">
                   <li>
-                    <button onclick="launchLab('sql_injection_lab')" class="sidebar-list-items lab-button" data-lab="sql_injection_lab"
-                      >SQL Injection
+                    <a href="/sql" class="sidebar-list-items lab-button" data-lab="sql_injection_lab">
+                      SQL Injection
                       <span class="lab-status-indicator not-running" aria-hidden="true"></span>
-                    </button>
+                    </a>
                   </li>
                   <li>
-                    <button onclick="launchLab('command_injection_lab')" class="sidebar-list-items lab-button" data-lab="command_injection_lab">
+                    <a href="/cmd" class="sidebar-list-items lab-button" data-lab="command_injection_lab">
                       Command Injection
                       <span class="lab-status-indicator not-running" aria-hidden="true"></span>
-                    </button>
+                    </a>
                   </li>
                   <li>
-                    <button onclick="launchLab('template_injection_lab')" class="sidebar-list-items lab-button" data-lab="template_injection_lab">
+                    <a href="/ssti" class="sidebar-list-items lab-button" data-lab="template_injection_lab">
                       Template Injection
                       <span class="lab-status-indicator not-running" aria-hidden="true"></span>
-                    </button>
+                    </a>
                   </li>
                 </ul>
               </li>
               <li>
-                <button onclick="launchLab('insecure_design_lab')" class="sidebar-list-items lab-button" data-lab="insecure_design_lab">
+                <a href="/insecure-design" class="sidebar-list-items lab-button" data-lab="insecure_design_lab">
                   <i class="fas fa-bug"></i>
                   A4: Insecure Design
                   <span class="lab-status-indicator not-running" aria-hidden="true"></span>
-                </button>
+                </a>
               </li>
               <li>
-                <button onclick="launchLab('sec_misconfig')" class="sidebar-list-items lab-button" data-lab="sec_misconfig">
+                <a href="/sec_mis" class="sidebar-list-items lab-button" data-lab="sec_misconfig">
                   <i class="fas fa-bug"></i>
                   A5: Security Misconfiguration
                   <span class="lab-status-indicator not-running" aria-hidden="true"></span>
-                </button>
+                </a>
               </li>
               <li>
-                <button onclick="launchLab('a9_uckv_lab')" class="sidebar-list-items lab-button" data-lab="a9_uckv_lab">
+                <a href="/a9" class="sidebar-list-items lab-button" data-lab="a9_uckv_lab">
                   <i class="fas fa-bug"></i>
                   A6: Vulnerable and Outdated Components
                   <span class="lab-status-indicator not-running" aria-hidden="true"></span>
-                </button>
+                </a>
               </li>
               <li>
-                <button onclick="launchLab('auth_failure_lab')" class="sidebar-list-items lab-button" data-lab="auth_failure_lab">
+                <a href="/auth_failure" class="sidebar-list-items lab-button" data-lab="auth_failure_lab">
                   <i class="fas fa-bug"></i>
                   A7: Identification and Authentication Failures
                   <span class="lab-status-indicator not-running" aria-hidden="true"></span>
-                </button>
+                </a>
               </li>
               <li>
-                <button onclick="launchLab('software_integrity_lab')" class="sidebar-list-items lab-button" data-lab="software_integrity_lab">
+                <a href="/2021/A8" class="sidebar-list-items lab-button" data-lab="software_integrity_lab">
                   <i class="fas fa-bug"></i>
                   A8: Software and Data Integrity Failures
                   <span class="lab-status-indicator not-running" aria-hidden="true"></span>
-                </button>
+                </a>
               </li>
               <li>
-                <button onclick="launchLab('insufficient_logging_lab')" class="sidebar-list-items lab-button" data-lab="insufficient_logging_lab">
+                <a href="/A03" class="sidebar-list-items lab-button" data-lab="insufficient_logging_lab">
                   <i class="fas fa-bug"></i>
                   A9: Security Logging and Monitoring Failures
                   <span class="lab-status-indicator not-running" aria-hidden="true"></span>
-                </button>
+                </a>
               </li>
               <li>
-                <button onclick="launchLab('ssrf_lab')" class="sidebar-list-items lab-button" data-lab="ssrf_lab">
+                <a href="/ssrf" class="sidebar-list-items lab-button" data-lab="ssrf_lab">
                   <i class="fas fa-bug"></i>
                   A10: Server-Side Request Forgery
                   <span class="lab-status-indicator not-running" aria-hidden="true"></span>
-                </button>
+                </a>
               </li>
             </ul>
 
@@ -593,84 +594,80 @@
               </li>
               <ul class="collapse list-unstyled" id="sqlSubmenu">
                 <li>
-                  <button onclick="launchLab('sql_injection_lab')" class="sidebar-list-items lab-button" data-lab="sql_injection_lab">
+                  <a href="/sql" class="sidebar-list-items lab-button" data-lab="sql_injection_lab">
                     SQL Injection
                     <span class="lab-status-indicator not-running" aria-hidden="true"></span>
-                  </button>
+                  </a>
                 </li>
                 <li>
-                  <button onclick="launchLab('command_injection_lab')" class="sidebar-list-items lab-button" data-lab="command_injection_lab">
+                  <a href="/cmd" class="sidebar-list-items lab-button" data-lab="command_injection_lab">
                     Command Injection
                     <span class="lab-status-indicator not-running" aria-hidden="true"></span>
-                  </button>
+                  </a>
                 </li>
               </ul>
               <li>
-                <button onclick="launchLab('broken_auth_lab')" class="sidebar-list-items lab-button" data-lab="broken_auth_lab">
+                <a href="/bau" class="sidebar-list-items lab-button" data-lab="broken_auth_lab">
                   <i class="fas fa-bug"></i>
                   A2: Broken Authentication
                   <span class="lab-status-indicator not-running" aria-hidden="true"></span>
-                </button>
+                </a>
               </li>
               <li>
-                <button
-                  onclick="launchLab('sensitive_data_exposure')"
-                  class="sidebar-list-items lab-button"
-                  data-lab="sensitive_data_exposure"
-                >
+                <a href="/data_exp" class="sidebar-list-items lab-button" data-lab="sensitive_data_exposure">
                   <i class="fas fa-bug"></i>
                   A3: Sensitive Data Exposure
                   <span class="lab-status-indicator not-running" aria-hidden="true"></span>
-                </button>
+                </a>
               </li>
               <li>
-                <button onclick="launchLab('xxe_lab')" class="sidebar-list-items lab-button" data-lab="xxe_lab">
+                <a href="/xxe" class="sidebar-list-items lab-button" data-lab="xxe_lab">
                   <i class="fas fa-bug"></i>
                   A4: XML External Entities (XXE)
                   <span class="lab-status-indicator not-running" aria-hidden="true"></span>
-                </button>
+                </a>
               </li>
               <li>
-                <button onclick="launchLab('broken_access_lab')" class="sidebar-list-items lab-button" data-lab="broken_access_lab">
+                <a href="/broken_access_control" class="sidebar-list-items lab-button" data-lab="broken_access_lab">
                   <i class="fas fa-bug"></i>
                   A5: Broken Access Control
                   <span class="lab-status-indicator not-running" aria-hidden="true"></span>
-                </button>
+                </a>
               </li>
               <li>
-                <button onclick="launchLab('sec_misconfig')" class="sidebar-list-items lab-button" data-lab="sec_misconfig">
+                <a href="/sec_mis" class="sidebar-list-items lab-button" data-lab="sec_misconfig">
                   <i class="fas fa-bug"></i>
                   A6: Security Misconfiguration
                   <span class="lab-status-indicator not-running" aria-hidden="true"></span>
-                </button>
+                </a>
               </li>
               <li>
-                <button onclick="launchLab('xss_lab')" class="sidebar-list-items lab-button" data-lab="xss_lab">
+                <a href="/xss" class="sidebar-list-items lab-button" data-lab="xss_lab">
                   <i class="fas fa-bug"></i>
                   A7: Cross Site Scripting
                   <span class="lab-status-indicator not-running" aria-hidden="true"></span>
-                </button>
+                </a>
               </li>
               <li>
-                <button onclick="launchLab('insec_des_lab')" class="sidebar-list-items lab-button" data-lab="insec_des_lab">
+                <a href="/insec_des" class="sidebar-list-items lab-button" data-lab="insec_des_lab">
                   <i class="fas fa-bug"></i>
                   A8: Insecure Deserialization
                   <span class="lab-status-indicator not-running" aria-hidden="true"></span>
-                </button>
+                </a>
               </li>
               <li>
-                <button onclick="launchLab('a9_uckv_lab')" class="sidebar-list-items lab-button" data-lab="a9_uckv_lab">
+                <a href="/a9" class="sidebar-list-items lab-button" data-lab="a9_uckv_lab">
                   <i class="fas fa-bug"></i>
                   A9: Using Components with Known Vulnerabilities
                   <span class="lab-status-indicator not-running" aria-hidden="true"></span>
-                </button>
+                </a>
               </li>
               <li>
-                <button onclick="launchLab('insufficient_logging_lab')" class="sidebar-list-items lab-button" data-lab="insufficient_logging_lab">
+                <a href="/A03" class="sidebar-list-items lab-button" data-lab="insufficient_logging_lab">
                   <i class="fas fa-bug"></i>
                   A10: Insufficient Logging & Monitoring
                   <span class="lab-status-indicator not-running" aria-hidden="true"></span>
-                </button>
+                </a>
               </li>
             </ul>
 
@@ -747,7 +744,8 @@
                 {% if user.is_authenticated %}
                 <li class="nav-item">
                   <button class="nav-link dark" onclick="manageLabs()" id="manage-labs-btn" style="background: #f0f8ff8a; border-radius: 2px; border: none;">
-                    Manage Labs
+                    <i class="fas fa-flask mr-1" style="font-size:12px;"></i>Manage Labs
+                    <span id="running-labs-count" class="badge badge-pill badge-danger ml-1" style="display:none;"></span>
                   </button>
                 </li>
                 <li class="nav-item">
@@ -860,6 +858,12 @@
         });
       });
 
+      $(document).ready(function () {
+        $(".coll").on("click", function () {
+          $(this).next(".lab").toggle();
+        });
+      });
+
       function swapStyleSheet() {
         var elem = document.getElementById('stylesheet-toggle');
         if(elem.classList.contains('dark')){
@@ -939,6 +943,13 @@
           const labName = btn.getAttribute('data-lab');
           setLabIndicatorState(btn, runningLabs.has(labName));
         });
+
+        const count = runningLabs.size;
+        const navBadge = document.getElementById('running-labs-count');
+        if (navBadge) {
+          navBadge.textContent = count;
+          navBadge.style.display = count > 0 ? 'inline-block' : 'none';
+        }
       }
 
       document.addEventListener('DOMContentLoaded', () => {
@@ -955,32 +966,49 @@
         }
       }
 
-      function renderManageLabList(labs, labList) {
+        function renderManageLabList(labs, labList) {
         labList.innerHTML = '';
+        const total = labs.length;
+        const summary = document.createElement('p');
+        summary.id = 'manage-labs-summary';
+        summary.className = 'text-muted mb-2';
+        summary.style.fontSize = '12px';
+        summary.textContent = total + ' of 3 labs running';
+        labList.appendChild(summary);
+
         labs.forEach(lab => {
           const nameParts = (lab.name || '').split('-');
           const labName = nameParts.slice(2).join('-');
 
           const row = document.createElement('div');
-          row.className = 'd-flex justify-content-between align-items-center border rounded p-2 mb-2';
+          row.className = 'manage-lab-row d-flex justify-content-between align-items-center';
+          row.dataset.labName = labName;
 
           const info = document.createElement('div');
+          info.className = 'd-flex align-items-center';
 
-          const strong = document.createElement('strong');
-          strong.textContent = labName;
+          const dot = document.createElement('span');
+          dot.className = 'manage-lab-dot';
 
-          const status = document.createElement('small');
-          status.className = 'text-muted';
-          status.textContent = `(${lab.status})`;
+          const textWrap = document.createElement('div');
 
-          info.appendChild(strong);
-          info.appendChild(document.createTextNode(' '));
-          info.appendChild(status);
+          const nameSpan = document.createElement('span');
+          nameSpan.className = 'manage-lab-name';
+          nameSpan.textContent = labName;
+
+          const statusBadge = document.createElement('span');
+          statusBadge.className = 'manage-lab-status';
+          statusBadge.textContent = lab.status || 'running';
+
+          textWrap.appendChild(nameSpan);
+          textWrap.appendChild(statusBadge);
+          info.appendChild(dot);
+          info.appendChild(textWrap);
 
           const button = document.createElement('button');
           button.type = 'button';
           button.className = 'btn btn-sm btn-outline-danger';
-          button.textContent = 'Stop';
+          button.innerHTML = '<i class="fas fa-stop" style="font-size:9px;margin-right:4px;"></i>Stop';
           button.addEventListener('click', () => stopLab(labName));
 
           row.appendChild(info);
@@ -1231,5 +1259,6 @@
         }
       }
     </script>
+    <script defer src="{% static 'js/lab-control.js' %}"></script>
   </body>
 </html>
