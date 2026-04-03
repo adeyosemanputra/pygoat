@@ -14,39 +14,59 @@
       likelihood of successful exploit to nearly 100%. <br>
       In 2016, identifying a breach took an average of 191 days – plenty of time for damage to be inflicted.
     </p>
+
     <button class="coll btn btn-info">Lab 1 Details</button>
     <div class="lab">
       <p class="bp">
         This lab helps you to get an idea of how sometimes improper logging can result in information disclosure.
-
         The user on accessing the lab is given with a login page which tells us that the logs have been leaked.
         The user needs to find the leak and try to gain the credentials that have been leaked in the logs.
-
         <br><b>Finding the Log</b>
       <ul>
         <li>The log has been exposed in <code>/debug</code> route </li>
         <li>This can be found out with subdomain brute-forcing or just by guess</li>
         <li>On seeing the Log try to get the required login details as there is a leak and the logging is improperly
           handled.</li>
-
       </ul>
-
       </p>
       <br>
-      <div align="right"> <button class="btn btn-info" type="button" onclick="window.location.href='/a10_lab'">Access
-          Lab</button></div>
+      <div align="right">
+        <button class="btn btn-info" type="button" onclick="window.location.href='/a10_lab'">Access Lab</button>
+      </div>
     </div>
+
     <button class="coll btn btn-info">Lab 2 Details</button>
     <div class="lab">
       <p class="bp">
-        It seems this application is logging every action performed in this logging page. 
+        It seems this application is logging every action performed in this logging page.
         But is there a way to inject some fake logs to the application?
-
         <br>
         <span>Login credentials are same as lab1</span>
-      <div align="right"> <button class="btn btn-info" type="button" onclick="window.location.href='/a10_lab_2'">Access
-          Lab</button></div>
+      </p>
+      <div align="right">
+        <button class="btn btn-info" type="button" onclick="window.location.href='/a10_lab_2'">Access Lab</button>
+      </div>
     </div>
+
+    <button class="coll btn btn-info">Lab 3 Details</button>
+    <div class="lab">
+      <p class="bp">
+        This lab demonstrates <strong>Fail-Open Authorization (CWE-636)</strong> — a critical security flaw
+        where exceptions in authorization checks grant access instead of denying it.
+        <br><br>
+        When an authorization service becomes unavailable due to a timeout or exception,
+        a vulnerable application may default to <strong>allowing</strong> access instead of blocking it.
+        This can lead to privilege escalation and unauthorized access to restricted data.
+        <br><br>
+        <b>Your Goal:</b> Access the secret resource even though the authorization service is unavailable.
+        <br><br>
+        <b>Hint:</b> What happens when a security check throws an exception and the exception is silently ignored?
+      </p>
+      <div align="right">
+        <button class="btn btn-danger" type="button" onclick="window.location.href='/a10_lab_3'">Access Lab 3</button>
+      </div>
+    </div>
+
     <div>
       <br>
       <h4>Mitigation</h4>
@@ -57,14 +77,16 @@
           deletion.</li>
         <li>Effective monitoring and alerting should be established so that suspicious activities can be detected and
           responded to in a timely manner.</li>
-        <li>Make sure that there aren't any sensitive information like passwords are being logged</li>
+        <li>Make sure that there aren't any sensitive information like passwords are being logged.</li>
+        <li>Always use <strong>fail-closed</strong> authorization — deny access by default when security checks fail.</li>
       </ul>
       </p>
     </div>
-    <div> 
-      <button class="coll btn btn-info" type="button" onclick="window.location.href='/2021/discussion/A9'">Code Discussion </button> </div>
-    </div>
-  </div>
-    
 
-  {% endblock %}
+    <div>
+      <button class="coll btn btn-info" type="button" onclick="window.location.href='/2021/discussion/A9'">Code Discussion</button>
+    </div>
+
+  </div>
+</div>
+{% endblock %}
