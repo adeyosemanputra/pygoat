@@ -3,8 +3,8 @@
 [![All Contributors](https://img.shields.io/badge/all_contributors-9-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
-intentionally vuln web Application Security in django.
-our roadmap build intentionally vuln web Application in django. The Vulnerability can based on OWASP top ten
+An intentionally vulnerable web application built with Django, designed to teach web application security based on the OWASP Top Ten.
+
 <br>
 
 Table of Contents
