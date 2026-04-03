@@ -19,7 +19,7 @@ def is_user_admin():
     if platform.system() == 'Windows':
         try:
             return ctypes.windll.shell32.IsUserAnAdmin() == 1
-        except WindowsError:
+        except OSError:
             return False
 
     else:
