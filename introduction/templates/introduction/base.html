@@ -703,19 +703,53 @@
     ></script>
 
     <script type="text/javascript">
-      $(document).ready(function () {
-        $(".sidebar-header").on("click", function () {
-          $("#sidebar").toggleClass("active");
-          $(".pg").toggleClass("active");
-        });
-      });
+
+      // ── Sidebar persistence using localStorage ──────────────────────
+      // Restores collapsed/expanded state across page navigations
+      function saveSidebarState(isCollapsed) {
+        localStorage.setItem('sidebarCollapsed', isCollapsed);
+      }
+
+      function restoreSidebarState() {
+        var isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+        if (isCollapsed) {
+          $('#sidebar').addClass('active');
+          $('.pg').removeClass('active');
+        } else {
+          $('#sidebar').removeClass('active');
+          $('.pg').addClass('active');
+        }
+      }
 
       $(document).ready(function () {
+        // Restore state on every page load
+        restoreSidebarState();
+
+        // Toggle via sidebar header click
+        $(".sidebar-header").on("click", function () {
+          $('#sidebar').toggleClass('active');
+          $('.pg').toggleClass('active');
+          var isCollapsed = $('#sidebar').hasClass('active');
+          saveSidebarState(isCollapsed);
+        });
+
+        // Toggle via PG button click
         $(".pg").on("click", function () {
-          $("#sidebar").toggleClass("active");
-          $(".pg").toggleClass("active");
+          $('#sidebar').toggleClass('active');
+          $('.pg').toggleClass('active');
+          var isCollapsed = $('#sidebar').hasClass('active');
+          saveSidebarState(isCollapsed);
+        });
+
+        // Toggle via Toggle Sidebar button click
+        $("#sidebarCollapse").on("click", function () {
+          $('#sidebar').toggleClass('active');
+          $('.pg').toggleClass('active');
+          var isCollapsed = $('#sidebar').hasClass('active');
+          saveSidebarState(isCollapsed);
         });
       });
+      // ────────────────────────────────────────────────────────────────
 
       function swapStyleSheet() {
         var elem = document.getElementById('stylesheet-toggle');
