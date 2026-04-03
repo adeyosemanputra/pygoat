@@ -28,6 +28,7 @@ urlpatterns = [
     path("A03", views.supply_chain_failures, name="supply_chain_failures"),
     path("auth_failure", views.auth_failure, name="auth_failure"),
     path("2021/A8", views.software_and_data_integrity_failure, name="A8"),
+    path("insufficient_logging", views.insufficient_logging, name="insufficient_logging"),
     ##------------------- mitre endpoints --------------------------------------------------------------|
     path("mitre/1", mitre.mitre_top1, name="mitre_top1"),
     path("mitre/2", mitre.mitre_top2, name="mitre_top2"),
