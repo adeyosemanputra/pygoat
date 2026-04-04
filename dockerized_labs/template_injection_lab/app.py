@@ -64,10 +64,19 @@ def get_blog_posts():
     return posts
 
 
-@app.route("/")
-def index():
-    """Display the main lab page with instructions."""
-    return render_template("index.html")
+from flask import request, make_response
+
+@app.route("/toggle-theme")
+def toggle_theme():
+    current_theme = request.cookies.get("theme", "light")
+
+    # Toggle theme
+    new_theme = "dark" if current_theme == "light" else "light"
+
+    response = make_response("", 204)
+    response.set_cookie("theme", new_theme)
+
+    return response
 
 
 @app.route("/lab")
