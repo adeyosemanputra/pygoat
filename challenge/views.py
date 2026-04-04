@@ -180,7 +180,11 @@ def wait_for_health(container, timeout=60):
     while True:
         container.reload()
         
-        health_status = container.attrs.get('State', {}).get('Health', {}).get('Status')
+        health_status = container.attrs.get("State", {}).get("Health", {}).get("Status")
+        
+        # Handle case where no HEALTHCHECK exists
+        if health_status is None:
+            return True
         
         if health_status == 'healthy':
             print("Container is HEALTHY!")
