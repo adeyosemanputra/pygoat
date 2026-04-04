@@ -56,7 +56,7 @@ class DoItFast(View):
         if not request.user.is_authenticated:
             return redirect("login")
 
-        try:  # checking the existance of challenge
+        try:  # checking the existence of challenge
             chal = Challenge.objects.get(name=challenge)
         except Exception as e:
             return render(request, "chal-not-found.html")
@@ -87,7 +87,7 @@ class DoItFast(View):
         container_id = output.decode("utf-8").strip()
 
         if user_chall_exists:
-            # TODO : reuse the container instead of creaing the new one
+            # TODO : reuse the container instead of creating the new one
             user_chal.container_id = container_id
             user_chal.port = port
             user_chal.is_live = True
