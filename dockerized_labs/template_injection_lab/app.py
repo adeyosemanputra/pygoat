@@ -1,5 +1,6 @@
 from flask import (
     Flask,
+    make_response,
     render_template,
     request,
     redirect,
@@ -64,10 +65,17 @@ def get_blog_posts():
     return posts
 
 
-@app.route("/")
-def index():
-    """Display the main lab page with instructions."""
-    return render_template("index.html")
+@app.route("/toggle-theme")
+def toggle_theme():
+    current_theme = request.cookies.get("theme", "light")
+
+    # Toggle theme
+    new_theme = "dark" if current_theme == "light" else "light"
+
+    response = make_response("", 204)
+    response.set_cookie("theme", new_theme)
+
+    return response
 
 
 @app.route("/lab")
@@ -101,10 +109,7 @@ def view_blog(filename):
         return f"Blog post not found: {str(e)}", 404
 
 
-@app.route("/toggle-theme")
-def toggle_theme():
-    """Toggle between light and dark theme."""
-    return "", 204
+
 
 @app.route("/health")
 def health_check():
