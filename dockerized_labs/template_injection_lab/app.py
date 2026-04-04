@@ -1,5 +1,6 @@
 from flask import (
     Flask,
+    make_response,
     render_template,
     request,
     redirect,
@@ -64,8 +65,6 @@ def get_blog_posts():
     return posts
 
 
-from flask import request, make_response
-
 @app.route("/toggle-theme")
 def toggle_theme():
     current_theme = request.cookies.get("theme", "light")
@@ -110,10 +109,7 @@ def view_blog(filename):
         return f"Blog post not found: {str(e)}", 404
 
 
-@app.route("/toggle-theme")
-def toggle_theme():
-    """Toggle between light and dark theme."""
-    return "", 204
+
 
 @app.route("/health")
 def health_check():
