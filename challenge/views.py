@@ -51,7 +51,7 @@ class DoItFast(View):
         except:
             return render(request, "challenge.html", {"chal": chal, "user_chal": None})
 
-    def post(self, request, challange):
+    def post(self, request, challenge):
         user_chall_exists = False
         if not request.user.is_authenticated:
             return redirect("login")
