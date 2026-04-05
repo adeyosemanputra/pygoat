@@ -21,3 +21,4 @@ def hash_pw(pw):
 def read_file(filename):
     with open(f"/data/{filename}") as f:
         return f.read()
+# trigger
