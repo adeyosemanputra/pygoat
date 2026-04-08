@@ -42,7 +42,7 @@ print("Welcome to PyGoatBot! Type 'q' or 'exit' to quit.")
 while True:
     try:
         user_input = input("You: ")
-        if user_input.lower() == "exit" or user_input.lower() == "q":
+        if user_input.lower() in {"exit", "q"}:
             break
 
         print("Available questions:")
@@ -56,7 +56,12 @@ while True:
             except ValueError:
                 print("Please enter a valid number.")
 
-        question = training_data[(question_index - 1) * 2]
+        if 1 <= question_index <= len(training_data) // 2:
+            question = training_data[(question_index - 1) * 2]
+        else:
+            print("Enter a number within valid range.")
+            continue
+        
         response = chatbot.get_response(question)
         print(f"PyGoatBot: {response}")
 
