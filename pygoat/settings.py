@@ -181,6 +181,7 @@ TRAEFIK_URLS = [
     'http://traefik_proxy:8080/api/http/routers',
 ]
 
+LOGIN_URL = 'login'
 # Labs configuration
 # LAB_DOMAIN = "localhost"
 # DOCKER_NETWORK = "my_network"

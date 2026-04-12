@@ -2,6 +2,7 @@ from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.views.generic import View
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.mixins import LoginRequiredMixin
 import subprocess
 from .utility import get_free_port
 from .models import Challenge, UserChallenge
@@ -35,9 +36,7 @@ def check_traefik_reachable():
 
 class DoItFast(View):
     def get(self, request, challenge):
-        if not request.user.is_authenticated:
-            return redirect("login")
-
+        
         try:
             chal = Challenge.objects.get(name=challenge)
         except Exception as e:
@@ -53,9 +52,7 @@ class DoItFast(View):
 
     def post(self, request, challenge):
         user_chall_exists = False
-        if not request.user.is_authenticated:
-            return redirect("login")
-
+        
         try:  # checking the existance of challenge
             chal = Challenge.objects.get(name=challenge)
         except Exception as e:
@@ -107,8 +104,7 @@ class DoItFast(View):
         )
 
     def delete(self, request, challenge):
-        if not request.user.is_authenticated:
-            return redirect("login")
+        
 
         try:
             chal = Challenge.objects.get(name=challenge)
