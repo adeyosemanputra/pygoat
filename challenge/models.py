@@ -88,7 +88,7 @@ class UserProfile(models.Model):
     def xp_progress_pct(self):
         return self.xp_points % 100
 
-    # ✅ ADD THIS
+    
     def badge_details(self):
         return [
             {
