@@ -57,12 +57,12 @@ class UserChallenge(models.Model):
 # ─── New model: Progress Dashboard ────────────────────────────────────────────
 
 BADGE_CATALOGUE = {
-    "first_blood":   {"label": "First Blood",     "icon": "🩸", "desc": "Solved your first challenge"},
-    "half_way":      {"label": "Half Way",        "icon": "⚡", "desc": "Solved 50% of all challenges"},
-    "completionist": {"label": "Completionist",   "icon": "🏆", "desc": "Solved every challenge"},
-    "streak_3":      {"label": "3-Day Streak",    "icon": "🔥", "desc": "Active 3 days in a row"},
-    "streak_7":      {"label": "7-Day Streak",    "icon": "💎", "desc": "Active 7 days in a row"},
-    "high_scorer":   {"label": "High Scorer",     "icon": "🎯", "desc": "Earned 500+ XP"},
+    "first_blood":   {"label": "First Blood", "icon": "🩸", "desc": "Solved your first challenge"},
+    "half_way":      {"label": "Half Way","icon": "⚡", "desc": "Solved 50% of all challenges"},
+    "completionist": {"label": "Completionist","icon": "🏆", "desc": "Solved every challenge"},
+    "streak_3":      {"label": "3-Day Streak","icon": "🔥", "desc": "Active 3 days in a row"},
+    "streak_7":      {"label": "7-Day Streak","icon": "💎", "desc": "Active 7 days in a row"},
+    "high_scorer":   {"label": "High Scorer","icon": "🎯", "desc": "Earned 500+ XP"},
 }
 
 
