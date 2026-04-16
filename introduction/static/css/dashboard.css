@@ -1,0 +1,396 @@
+/*  static/css/dashboard.css */
+
+.dash-wrapper {
+    padding: 28px 32px;
+    max-width: 1280px;
+}
+
+.dash-title {
+    font-size: 1.6rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    margin-bottom: 4px;
+    color: #ffffff;
+}
+
+.dash-subtitle {
+    font-size: 0.88rem;
+    color: #8a9bb0;
+    margin-bottom: 28px;
+}
+
+/* ── Stat Cards (top row) ─────────────────────────────────────────────────── */
+
+.stat-card {
+    background: #7d9add;
+    border: 1px solid #7d9add;
+    border-radius: 12px;
+    padding: 20px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    transition: border-color 0.2s ease, transform 0.15s ease;
+}
+
+.stat-card:hover {
+    border-color: #3a7bd5;
+    transform: translateY(-2px);
+}
+
+.stat-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #6b7c99;
+    font-weight: 500;
+}
+
+.stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1;
+    color: #ffffff;
+}
+
+.stat-value.accent-green {
+    color: #34d399;
+}
+
+.stat-value.accent-blue {
+    color: #60a5fa;
+}
+
+.stat-value.accent-orange {
+    color: #fb923c;
+}
+
+.stat-value.accent-purple {
+    color: #a78bfa;
+}
+
+.stat-sub {
+    font-size: 0.78rem;
+    color: #6b7c99;
+}
+
+/* ── XP Level Bar ─────────────────────────────────────────────────────────── */
+
+.xp-bar-wrap {
+    background: #2a3347;
+    border-radius: 999px;
+    height: 8px;
+    overflow: hidden;
+    margin-top: 6px;
+}
+
+.xp-bar-fill {
+    height: 100%;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #3a7bd5, #a78bfa);
+    transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ── Streak indicator ─────────────────────────────────────────────────────── */
+
+.streak-flame {
+    font-size: 1.4rem;
+    vertical-align: middle;
+    margin-right: 4px;
+    animation: pulse-flame 2s ease-in-out infinite;
+}
+
+@keyframes pulse-flame {
+
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scale(1.15);
+        opacity: 0.85;
+    }
+}
+
+/* ── Completion Ring (Chart.js doughnut) ──────────────────────────────────── */
+
+.chart-container {
+    position: relative;
+    width: 180px;
+    height: 180px;
+    margin: 0 auto;
+}
+
+.chart-pct-label {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #ffffff;
+    pointer-events: none;
+}
+
+/* ── Section Headers ──────────────────────────────────────────────────────── */
+
+.section-heading {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #c5cfe0;
+    margin: 28px 0 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.section-heading::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: #2a3347;
+    margin-left: 8px;
+}
+
+/* ── Challenge Table ──────────────────────────────────────────────────────── */
+
+.chal-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 6px;
+}
+
+.chal-table thead th {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #6b7c99;
+    font-weight: 500;
+    padding: 0 14px 8px;
+    border-bottom: 1px solid #2a3347;
+}
+
+.chal-table tbody tr {
+    background: #1e2535;
+    transition: background 0.15s ease;
+}
+
+.chal-table tbody tr:hover {
+    background: #243047;
+}
+
+.chal-table tbody td {
+    padding: 12px 14px;
+    font-size: 0.88rem;
+    color: #d1daea;
+    vertical-align: middle;
+}
+
+.chal-table tbody tr td:first-child {
+    border-radius: 8px 0 0 8px;
+}
+
+.chal-table tbody tr td:last-child {
+    border-radius: 0 8px 8px 0;
+}
+
+/* ── Status Badges ────────────────────────────────────────────────────────── */
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+}
+
+.status-badge.solved {
+    background: rgba(52, 211, 153, 0.15);
+    color: #34d399;
+    border: 1px solid rgba(52, 211, 153, 0.35);
+}
+
+.status-badge.running {
+    background: rgba(251, 146, 60, 0.15);
+    color: #fb923c;
+    border: 1px solid rgba(251, 146, 60, 0.35);
+}
+
+.status-badge.started {
+    background: rgba(96, 165, 250, 0.15);
+    color: #60a5fa;
+    border: 1px solid rgba(96, 165, 250, 0.35);
+}
+
+.status-badge.not-started {
+    background: rgba(107, 124, 153, 0.12);
+    color: #8a9bb0;
+    border: 1px solid rgba(107, 124, 153, 0.25);
+}
+
+/* ── Inline Flag Input ────────────────────────────────────────────────────── */
+
+.flag-form {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+}
+
+.flag-input {
+    background: #151414;
+    border: 1px solid #2a3347;
+    border-radius: 6px;
+    color: #d1daea;
+    font-size: 0.78rem;
+    padding: 5px 10px;
+    width: 200px;
+    transition: border-color 0.2s;
+    font-family: "Courier New", monospace;
+}
+
+.flag-input:focus {
+    outline: none;
+    border-color: #3a7bd5;
+}
+
+.flag-submit-btn {
+    background: #1a3a6e;
+    border: 1px solid #3a7bd5;
+    border-radius: 6px;
+    color: #60a5fa;
+    font-size: 0.75rem;
+    padding: 5px 12px;
+    cursor: pointer;
+    transition: background 0.15s;
+    white-space: nowrap;
+}
+
+.flag-submit-btn:hover {
+    background: #1f4a8f;
+}
+
+.flag-feedback {
+    font-size: 0.72rem;
+    font-weight: 600;
+    display: none;
+}
+
+.flag-feedback.correct {
+    color: #34d399;
+}
+
+.flag-feedback.wrong {
+    color: #f87171;
+}
+
+/* ── Points chip ──────────────────────────────────────────────────────────── */
+
+.pts-chip {
+    display: inline-block;
+    background: rgba(167, 139, 250, 0.12);
+    color: #a78bfa;
+    border: 1px solid rgba(167, 139, 250, 0.25);
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 2px 8px;
+}
+
+/* ── Badge Wall ───────────────────────────────────────────────────────────── */
+
+.badge-wall {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 4px;
+}
+
+.badge-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    width: 90px;
+    text-align: center;
+}
+
+.badge-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    border: 2px solid;
+    transition: transform 0.2s ease;
+}
+
+.badge-icon:hover {
+    transform: scale(1.1);
+}
+
+.badge-icon.earned {
+    border-color: #f59e0b;
+    background: rgba(245, 158, 11, 0.12);
+    box-shadow: 0 0 12px rgba(245, 158, 11, 0.25);
+}
+
+.badge-icon.locked {
+    border-color: #2a3347;
+    background: #1a2030;
+    opacity: 0.45;
+    filter: grayscale(100%);
+}
+
+.badge-label {
+    font-size: 0.68rem;
+    color: #8a9bb0;
+    font-weight: 500;
+    line-height: 1.3;
+}
+
+.badge-label.earned-text {
+    color: #c5cfe0;
+}
+
+/* ── Responsive ───────────────────────────────────────────────────────────── */
+
+@media (max-width: 768px) {
+    .dash-wrapper {
+        padding: 16px;
+    }
+
+    .flag-input {
+        width: 130px;
+    }
+
+    .chart-container {
+        width: 140px;
+        height: 140px;
+    }
+
+    .chal-table thead {
+        display: none;
+    }
+
+    .chal-table tbody td {
+        display: block;
+        padding: 6px 12px;
+    }
+
+    .chal-table tbody tr td:first-child,
+    .chal-table tbody tr td:last-child {
+        border-radius: 0;
+    }
+
+    .chal-table tbody tr {
+        border-radius: 8px;
+        display: block;
+        margin-bottom: 8px;
+    }
+}

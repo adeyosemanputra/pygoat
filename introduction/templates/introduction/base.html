@@ -701,6 +701,17 @@
                 </button>
               </li>
             </ul>
+            <li>
+              <a
+                href="/challenge/progress"
+                class="sidebar-list-items"
+                id="progress-dashboard-link"
+                style="padding: 13% 0 0 0; display:flex; align-items: center; gap:8px;"
+              >
+              <i class="fas fa-chart-line"></i>
+              My Progress
+              </a>
+            </li>
             <a
               href="#"
               data-toggle="collapse"
@@ -745,6 +756,17 @@
                 </li>
 
                 {% if user.is_authenticated %}
+                <li class="nav-items">
+                  <a
+                    class="nav-link"
+                    href="/challenge/progress/"
+                    title="view your progress dashboard"
+                    style="display: flex; align-items: centre; gap: 5px;"
+                  >
+                    <!-- <i class="fas fa-chart-line"></i> -->
+                    Progress
+                  </a>  
+                </li>
                 <li class="nav-item">
                   <button class="nav-link dark" onclick="manageLabs()" id="manage-labs-btn" style="background: #f0f8ff8a; border-radius: 2px; border: none;">
                     Manage Labs

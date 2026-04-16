@@ -11,6 +11,13 @@ import os
 from django.conf import settings
 import time
 import requests
+import hashlib
+from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
+from django.shortcuts import render, redirect
+from django.views.decorators.http import require_POST
+ 
+from .models import Challenge, UserChallenge, UserProfile, BADGE_CATALOGUE
 
 # Create your views here.
 def get_docker_client():
@@ -362,3 +369,241 @@ def stop_lab(request, lab_image_name):
         return JsonResponse({'status': 'error', 'message': 'Lab container not found'}, status=404)
     except Exception as e:
         return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+    
+def _award_completion_badges(profile: UserProfile, solved_count: int, total: int) -> None:
+    """
+    Check and award milestone badges after a successful flag submission.
+    Called after every solve — idempotent (award_badge skips duplicates).
+    """
+    if solved_count == 1:
+        profile.award_badge("first_blood")
+    if total > 0 and solved_count >= total // 2:
+        profile.award_badge("half_way")
+    if total > 0 and solved_count >= total:
+        profile.award_badge("completionist")
+    if profile.xp_points >= 500:
+        profile.award_badge("high_scorer")
+ 
+ 
+# ─── Progress Dashboard (HTML) ────────────────────────────────────────────────
+ 
+@login_required
+def progress_dashboard(request):
+    """
+    Main learner progress page.
+ 
+    Context variables sent to the template:
+      challenges_data  – list of dicts, one per Challenge
+      stats            – summary dict (totals, XP, level, streak)
+      badges           – list of earned badge dicts
+      badge_catalogue  – full catalogue for "locked" badge display
+    """
+    all_challenges = Challenge.objects.all().order_by("name")
+    user_challenges_qs = UserChallenge.objects.filter(
+        user=request.user
+    ).select_related("challenge")
+ 
+    # Build a lookup: challenge_id → UserChallenge row
+    uc_map = {uc.challenge_id: uc for uc in user_challenges_qs}
+ 
+    challenges_data = []
+    for chal in all_challenges:
+        uc = uc_map.get(chal.id)
+        challenges_data.append(
+            {
+                "challenge":  chal,
+                "is_solved":  uc.is_solved if uc else False,
+                "is_live":    uc.is_live if uc else False,
+                "attempts":   uc.no_of_attempt if uc else 0,
+                "started":    uc is not None,
+            }
+        )
+ 
+    solved_list   = [d for d in challenges_data if d["is_solved"]]
+    started_list  = [d for d in challenges_data if d["started"] and not d["is_solved"]]
+    total_count   = len(challenges_data)
+    solved_count  = len(solved_list)
+    total_points  = sum(d["challenge"].point for d in solved_list)
+ 
+    completion_pct = (
+        round((solved_count / total_count) * 100) if total_count else 0
+    )
+ 
+    # Ensure UserProfile exists (guards legacy accounts created before signals)
+    profile, _ = UserProfile.objects.get_or_create(user=request.user)
+ 
+    # Sync XP with actual earned points so it stays accurate even if
+    # points were awarded outside the flag endpoint below.
+    if profile.xp_points != total_points:
+        profile.xp_points = total_points
+        profile.save(update_fields=["xp_points"])
+        _award_completion_badges(profile, solved_count, total_count)
+ 
+    stats = {
+        "total_count":     total_count,
+        "solved_count":    solved_count,
+        "started_count":   len(started_list),
+        "completion_pct":  completion_pct,
+        "total_points":    total_points,
+        "xp_points":       profile.xp_points,
+        "xp_level":        profile.xp_level,
+        "xp_progress_pct": profile.xp_progress_pct,
+        "streak_days":     profile.streak_days,
+    }
+ 
+    # Full catalogue with earned/locked distinction for the badge wall
+    badge_wall = []
+    for key, meta in BADGE_CATALOGUE.items():
+        badge_wall.append(
+            {**meta, "key": key, "earned": key in profile.badges}
+        )
+ 
+    context = {
+        "challenges_data": challenges_data,
+        "stats":           stats,
+        "badges":          profile.badge_details(),
+        "badge_wall":      badge_wall,
+    }
+    return render(request, "introduction/progress_dashboard.html", context)
+ 
+ 
+# ─── Progress API (JSON) – used by the dashboard chart ───────────────────────
+ 
+@login_required
+def progress_api(request):
+    """
+    Returns a JSON summary of the current user's progress.
+    Used by Chart.js on the dashboard page for the doughnut chart.
+ 
+    Response shape:
+    {
+        "solved": 3,
+        "in_progress": 1,
+        "not_started": 8,
+        "total": 12,
+        "xp_points": 350,
+        "streak_days": 4
+    }
+    """
+    all_challenges = Challenge.objects.all()
+    user_challenges_qs = UserChallenge.objects.filter(user=request.user)
+    uc_map = {uc.challenge_id: uc for uc in user_challenges_qs}
+ 
+    solved = in_progress = not_started = 0
+    for chal in all_challenges:
+        uc = uc_map.get(chal.id)
+        if uc is None:
+            not_started += 1
+        elif uc.is_solved:
+            solved += 1
+        else:
+            in_progress += 1
+ 
+    profile, _ = UserProfile.objects.get_or_create(user=request.user)
+ 
+    return JsonResponse(
+        {
+            "solved":       solved,
+            "in_progress":  in_progress,
+            "not_started":  not_started,
+            "total":        all_challenges.count(),
+            "xp_points":    profile.xp_points,
+            "streak_days":  profile.streak_days,
+        }
+    )
+ 
+ 
+# ─── Flag Submission (POST) ───────────────────────────────────────────────────
+ 
+@login_required
+@require_POST
+def submit_flag(request):
+    """
+    Accepts a flag submission from the dashboard flag input on each challenge row.
+ 
+    POST body (form-encoded):
+        challenge_id  – integer PK of the Challenge
+        flag          – the user's submitted flag string
+ 
+    Returns JSON:
+        {"success": true,  "xp_awarded": 100, "message": "..."} on correct flag
+        {"success": false, "message": "..."}                     on wrong flag
+    """
+    challenge_id   = request.POST.get("challenge_id", "").strip()
+    submitted_flag = request.POST.get("flag", "").strip()
+ 
+    if not challenge_id or not submitted_flag:
+        return JsonResponse(
+            {"success": False, "message": "challenge_id and flag are required."},
+            status=400,
+        )
+ 
+    try:
+        chal = Challenge.objects.get(pk=int(challenge_id))
+    except (Challenge.DoesNotExist, ValueError):
+        return JsonResponse(
+            {"success": False, "message": "Challenge not found."},
+            status=404,
+        )
+ 
+    # Build hashed version of what the user submitted (same scheme as Challenge.save)
+    submitted_hashed = (
+        "hashed_" + hashlib.sha256(submitted_flag.encode("utf-8")).hexdigest()
+    )
+ 
+    # Constant-time comparison to prevent timing attacks
+    import hmac as _hmac
+    correct = _hmac.compare_digest(submitted_hashed, chal.flag)
+ 
+    if not correct:
+        # Increment attempt counter even on wrong answer
+        uc, _ = UserChallenge.objects.get_or_create(
+            user=request.user,
+            challenge=chal,
+            defaults={"container_id": "", "port": 0},
+        )
+        uc.no_of_attempt = uc.no_of_attempt + 1
+        uc.save(update_fields=["no_of_attempt"])
+        return JsonResponse({"success": False, "message": "Incorrect flag. Try again!"})
+ 
+    # ── Correct flag ──────────────────────────────────────────────────────────
+    uc, _ = UserChallenge.objects.get_or_create(
+        user=request.user,
+        challenge=chal,
+        defaults={"container_id": "", "port": 0},
+    )
+    uc.no_of_attempt = uc.no_of_attempt + 1
+    already_solved    = uc.is_solved
+ 
+    if not already_solved:
+        uc.is_solved = True
+        uc.save(update_fields=["no_of_attempt", "is_solved"])
+ 
+        # Award XP (only on first solve)
+        profile, _ = UserProfile.objects.get_or_create(user=request.user)
+        profile.add_xp(chal.point)
+ 
+        # Check for milestone badges
+        total_count  = Challenge.objects.count()
+        solved_count = UserChallenge.objects.filter(
+            user=request.user, is_solved=True
+        ).count()
+        _award_completion_badges(profile, solved_count, total_count)
+ 
+        return JsonResponse(
+            {
+                "success":    True,
+                "xp_awarded": chal.point,
+                "message":    f"🎉 Correct! +{chal.point} XP awarded.",
+            }
+        )
+    else:
+        uc.save(update_fields=["no_of_attempt"])
+        return JsonResponse(
+            {
+                "success":    True,
+                "xp_awarded": 0,
+                "message":    "Already solved — no additional XP.",
+            }
+        )
+     
