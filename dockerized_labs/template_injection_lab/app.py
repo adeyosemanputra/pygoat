@@ -64,7 +64,7 @@ def get_blog_posts():
                     posts.append({"filename": filename, "title": title})
     return posts
 
-
+@app.route("/")
 @app.route("/toggle-theme")
 def toggle_theme():
     current_theme = request.cookies.get("theme", "light")
