@@ -5,12 +5,22 @@
     max-width: 1280px;
 }
 
+/* ── Force title to black regardless of theme ──────────────────────────────── */
+.dash-wrapper .dash-title,
+h1.dash-title,
 .dash-title {
     font-size: 1.6rem;
-    font-weight: 600;
+    font-weight: 700;
     letter-spacing: 0.02em;
     margin-bottom: 4px;
-    color: #ffffff;
+    color: #000000 !important;
+    -webkit-text-fill-color: #000000 !important;
+}
+
+/* Also force the username span inside the title to be black */
+.dash-title span {
+    color: #000000 !important;
+    -webkit-text-fill-color: #000000 !important;
 }
 
 .dash-subtitle {
@@ -22,61 +32,67 @@
 /* ── Stat Cards (top row) ─────────────────────────────────────────────────── */
 
 .stat-card {
-    background: #7d9add;
-    border: 1px solid #7d9add;
+    /* Match the sidebar's blue — same family as the left nav boxes */
+    background: #4e93c7 !important;
+    border: none !important;
     border-radius: 12px;
     padding: 20px 24px;
     display: flex;
     flex-direction: column;
     gap: 6px;
     transition: border-color 0.2s ease, transform 0.15s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+}
+
+/* All text inside cards: white — same as sidebar button text */
+.stat-card * {
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
 }
 
 .stat-card:hover {
-    border-color: #3a7bd5;
+    border-color: #3a6aad;
     transform: translateY(-2px);
+    background: #3a6aad !important;
 }
 
 .stat-label {
     font-size: 0.75rem;
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    color: #6b7c99;
-    font-weight: 500;
+    color: #d0e4ff !important;
+    -webkit-text-fill-color: #d0e4ff !important;
+    font-weight: 600;
+    opacity: 0.9;
 }
 
 .stat-value {
     font-size: 2rem;
     font-weight: 700;
     line-height: 1;
-    color: #ffffff;
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
 }
 
-.stat-value.accent-green {
-    color: #34d399;
-}
-
-.stat-value.accent-blue {
-    color: #60a5fa;
-}
-
-.stat-value.accent-orange {
-    color: #fb923c;
-}
-
-.stat-value.accent-purple {
-    color: #a78bfa;
+/* Override accent colours so numbers remain white on the blue cards */
+.accent-green,
+.accent-blue,
+.accent-purple,
+.accent-orange {
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
 }
 
 .stat-sub {
     font-size: 0.78rem;
-    color: #6b7c99;
+    color: #d0e4ff !important;
+    -webkit-text-fill-color: #d0e4ff !important;
 }
 
 /* ── XP Level Bar ─────────────────────────────────────────────────────────── */
 
 .xp-bar-wrap {
-    background: #2a3347;
+    background: rgba(255, 255, 255, 0.2);
     border-radius: 999px;
     height: 8px;
     overflow: hidden;
@@ -86,7 +102,7 @@
 .xp-bar-fill {
     height: 100%;
     border-radius: 999px;
-    background: linear-gradient(90deg, #3a7bd5, #a78bfa);
+    background: #ffffff !important;
     transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
@@ -129,7 +145,8 @@
     transform: translate(-50%, -50%);
     font-size: 1.6rem;
     font-weight: 700;
-    color: #ffffff;
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
     pointer-events: none;
 }
 
