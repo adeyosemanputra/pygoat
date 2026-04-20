@@ -53,3 +53,49 @@ class UserChallenge(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.challenge.name}"
+
+# ─── New model: Progress Dashboard ────────────────────────────────────────────
+
+BADGE_CATALOGUE = {
+    "first_blood":   {"label": "First Blood", "icon": "🩸", "desc": "Solved your first challenge"},
+    "half_way":      {"label": "Half Way","icon": "⚡", "desc": "Solved 50% of all challenges"},
+    "completionist": {"label": "Completionist","icon": "🏆", "desc": "Solved every challenge"},
+    "streak_3":      {"label": "3-Day Streak","icon": "🔥", "desc": "Active 3 days in a row"},
+    "streak_7":      {"label": "7-Day Streak","icon": "💎", "desc": "Active 7 days in a row"},
+    "high_scorer":   {"label": "High Scorer","icon": "🎯", "desc": "Earned 500+ XP"},
+}
+
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
+    xp_points = models.IntegerField(default=0)
+    streak_days = models.IntegerField(default=0)
+    last_active = models.DateField(null=True, blank=True)
+    badges = models.JSONField(default=list)
+
+    def __str__(self):
+        return f"Profile({self.user.username})"
+
+    def add_xp(self, points):
+        self.xp_points += points
+        self.save()
+
+    @property
+    def xp_level(self):
+        return (self.xp_points // 100) + 1
+
+    @property
+    def xp_progress_pct(self):
+        return self.xp_points % 100
+
+    
+    def badge_details(self):
+        return [
+            {
+                "label": BADGE_CATALOGUE[key]["label"],
+                "icon": BADGE_CATALOGUE[key]["icon"],
+                "desc": BADGE_CATALOGUE[key]["desc"],
+            }
+            for key in self.badges
+            if key in BADGE_CATALOGUE
+        ]

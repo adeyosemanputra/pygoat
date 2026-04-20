@@ -1,0 +1,351 @@
+{% extends "introduction/base.html" %}
+{% load static %}
+
+{% block title %}
+<title>My Progress — OWASP PyGoat</title>
+{% endblock %}
+
+{% block content %}
+{# ── Extra CSS for this page only ──────────────────────────────────────────── #}
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+
+{# Chart.js (lightweight, ~60 KB, used for the doughnut ring only) #}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+
+<div class="dash-wrapper">
+
+  {# ── Page header ──────────────────────────────────────────────────────── #}
+  <h1 class="dash-title">
+    My Progress
+    <span style="font-weight:300;font-size:0.85em;color:#6b7c99;">— {{ request.user.username }}</span>
+  </h1>
+  <p class="dash-subtitle">
+    Track your lab completion, XP, and earned badges across all OWASP challenges.
+  </p>
+
+  {# ── Top stat cards ───────────────────────────────────────────────────── #}
+  <div class="row no-gutters" style="gap:16px;display:flex;flex-wrap:wrap;margin-bottom:8px;">
+
+    {# Solved #}
+    <div class="stat-card" style="flex:1;min-width:160px;">
+      <span class="stat-label">Labs Solved</span>
+      <span class="stat-value accent-green">{{ stats.solved_count }}</span>
+      <span class="stat-sub">of {{ stats.total_count }} total</span>
+    </div>
+
+    {# Completion % #}
+    <div class="stat-card" style="flex:1;min-width:160px;">
+      <span class="stat-label">Completion</span>
+      <span class="stat-value accent-blue">{{ stats.completion_pct }}%</span>
+      <span class="stat-sub">{{ stats.started_count }} in progress</span>
+    </div>
+
+    {# XP / Level #}
+    <div class="stat-card" style="flex:1;min-width:200px;">
+      <span class="stat-label">XP &amp; Level</span>
+      <span class="stat-value accent-purple">{{ stats.xp_points }} <small style="font-size:0.9rem;font-weight:400;">XP</small></span>
+      <span class="stat-sub">Level {{ stats.xp_level }}</span>
+      <div class="xp-bar-wrap" title="{{ stats.xp_progress_pct }}% to next level">
+        <div class="xp-bar-fill" style="width:{{ stats.xp_progress_pct }}%;"></div>
+      </div>
+    </div>
+
+    {# Streak #}
+    <div class="stat-card" style="flex:1;min-width:160px;">
+      <span class="stat-label">Login Streak</span>
+      <span class="stat-value accent-orange">
+        <span class="streak-flame">🔥</span>{{ stats.streak_days }}
+      </span>
+      <span class="stat-sub">day{% if stats.streak_days != 1 %}s{% endif %} in a row</span>
+    </div>
+
+    {# Doughnut chart #}
+    <div class="stat-card" style="flex:1;min-width:220px;align-items:center;">
+      <span class="stat-label" style="align-self:flex-start;">Overview</span>
+      <div class="chart-container">
+        <canvas id="progressChart" width="180" height="180"></canvas>
+        <div class="chart-pct-label" id="chartPctLabel">{{ stats.completion_pct }}%</div>
+      </div>
+    </div>
+
+  </div>
+
+  {# ── Badge wall ───────────────────────────────────────────────────────── #}
+  <h2 class="section-heading"><span>🏅</span> Badges</h2>
+
+  <div class="badge-wall">
+    {% for badge in badge_wall %}
+    <div class="badge-item" title="{{ badge.desc }}">
+      <div class="badge-icon {% if badge.earned %}earned{% else %}locked{% endif %}">
+        {{ badge.icon }}
+      </div>
+      <span class="badge-label {% if badge.earned %}earned-text{% endif %}">
+        {{ badge.label }}
+      </span>
+    </div>
+    {% empty %}
+    <p style="color:#6b7c99;font-size:0.85rem;">No badges available yet.</p>
+    {% endfor %}
+  </div>
+
+  {# ── Challenge table ──────────────────────────────────────────────────── #}
+  <h2 class="section-heading"><span>🧪</span> All Challenges</h2>
+
+  {% if not challenges_data %}
+    <p style="color:#6b7c99;">No challenges found. Ask your instructor to populate the challenge registry.</p>
+  {% else %}
+  <div style="overflow-x:auto;">
+    <table class="chal-table" id="challengeTable">
+      <thead>
+        <tr>
+          <th style="width:35%;">Challenge</th>
+          <th style="width:10%;">Points</th>
+          <th style="width:14%;">Status</th>
+          <th style="width:10%;">Attempts</th>
+          <th style="width:31%;">Submit Flag</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in challenges_data %}
+        <tr id="row-{{ item.challenge.id }}">
+
+          {# Name + description #}
+          <td>
+            <span style="font-weight:600;color:#e2e8f0;">{{ item.challenge.name }}</span>
+            {% if item.challenge.description %}
+            <br><small style="color:#6b7c99;font-size:0.72rem;">
+              {{ item.challenge.description|truncatechars:80 }}
+            </small>
+            {% endif %}
+          </td>
+
+          {# Points #}
+          <td><span class="pts-chip">+{{ item.challenge.point }}</span></td>
+
+          {# Status #}
+          <td>
+            {% if item.is_solved %}
+              <span class="status-badge solved">✔ Solved</span>
+            {% elif item.is_live %}
+              <span class="status-badge running">▶ Running</span>
+            {% elif item.started %}
+              <span class="status-badge started">⏸ Started</span>
+            {% else %}
+              <span class="status-badge not-started">— Not started</span>
+            {% endif %}
+          </td>
+
+          {# Attempts #}
+          <td style="color:#8a9bb0;text-align:center;">
+            {{ item.attempts }}
+          </td>
+
+          {# Flag submission — disabled once solved #}
+          <td>
+            {% if item.is_solved %}
+              <span style="color:#34d399;font-size:0.78rem;font-weight:600;">
+                🏁 Already solved
+              </span>
+            {% else %}
+            <div class="flag-form" id="form-{{ item.challenge.id }}">
+              <input
+                type="text"
+                class="flag-input"
+                id="flag-{{ item.challenge.id }}"
+                placeholder="FLAG{...}"
+                autocomplete="off"
+                spellcheck="false"
+              >
+              <button
+                class="flag-submit-btn"
+                onclick="submitFlag({{ item.challenge.id }})"
+              >Submit</button>
+            </div>
+            <span class="flag-feedback" id="fb-{{ item.challenge.id }}"></span>
+            {% endif %}
+          </td>
+
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% endif %}
+
+</div>{# /dash-wrapper #}
+
+
+{# ── JavaScript ────────────────────────────────────────────────────────────── #}
+<script>
+/* ── CSRF helper (reuses existing PyGoat getCookie utility) ──────────────── */
+function getDashboardCsrf() {
+  let v = null;
+  document.cookie.split(';').forEach(c => {
+    const t = c.trim();
+    if (t.startsWith('csrftoken=')) v = decodeURIComponent(t.slice(10));
+  });
+  return v;
+}
+
+/* ── Chart.js doughnut ───────────────────────────────────────────────────── */
+(function buildChart() {
+  const solved     = {{ stats.solved_count }};
+  const inProgress = {{ stats.started_count }};
+  const notStarted = {{ stats.total_count }} - solved - inProgress;
+
+  const ctx = document.getElementById('progressChart');
+  if (!ctx) return;
+
+  new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: ['Solved', 'In Progress', 'Not Started'],
+      datasets: [{
+        data: [solved, inProgress, notStarted],
+        backgroundColor: [
+          'rgba(52, 211, 153, 0.85)',
+          'rgba(251, 146, 60, 0.85)',
+          'rgba(42, 51, 71, 0.95)',
+        ],
+        borderColor: [
+          '#34d399',
+          '#fb923c',
+          '#2a3347',
+        ],
+        borderWidth: 2,
+        hoverOffset: 6,
+      }],
+    },
+    options: {
+      responsive: false,
+      cutout: '72%',
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: ctx => ` ${ctx.label}: ${ctx.parsed}`,
+          },
+        },
+      },
+      animation: {
+        animateRotate: true,
+        duration: 900,
+      },
+    },
+  });
+})();
+
+/* ── XP bar animation on load ────────────────────────────────────────────── */
+document.addEventListener('DOMContentLoaded', () => {
+  const fill = document.querySelector('.xp-bar-fill');
+  if (fill) {
+    const target = fill.style.width;
+    fill.style.width = '0%';
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => { fill.style.width = target; });
+    });
+  }
+});
+
+/* ── Flag submission ─────────────────────────────────────────────────────── */
+async function submitFlag(challengeId) {
+  const input    = document.getElementById(`flag-${challengeId}`);
+  const feedback = document.getElementById(`fb-${challengeId}`);
+  const btn      = input.closest('.flag-form').querySelector('.flag-submit-btn');
+
+  const flagValue = input.value.trim();
+  if (!flagValue) {
+    showFeedback(feedback, 'Enter a flag first.', false);
+    return;
+  }
+
+  btn.disabled   = true;
+  btn.textContent = '…';
+  feedback.style.display = 'none';
+
+  try {
+    const resp = await fetch('/challenge/progress/flag/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'X-CSRFToken': getDashboardCsrf(),
+      },
+      body: new URLSearchParams({ challenge_id: challengeId, flag: flagValue }),
+    });
+
+    const data = await resp.json();
+
+    if (data.success) {
+      showFeedback(feedback, data.message, true);
+
+      // Update the status badge in this row
+      const row = document.getElementById(`row-${challengeId}`);
+      if (row) {
+        const statusCell = row.querySelector('td:nth-child(3)');
+        if (statusCell) {
+          statusCell.innerHTML = '<span class="status-badge solved">✔ Solved</span>';
+        }
+        // Replace flag form with solved message
+        const formCell = row.querySelector('td:nth-child(5)');
+        if (formCell) {
+          formCell.innerHTML = '<span style="color:#34d399;font-size:0.78rem;font-weight:600;">🏁 Already solved</span>';
+        }
+      }
+
+      // Refresh stat counters via the API
+      refreshStats();
+    } else {
+      showFeedback(feedback, data.message, false);
+      btn.disabled    = false;
+      btn.textContent = 'Submit';
+    }
+  } catch (err) {
+    showFeedback(feedback, 'Network error — try again.', false);
+    btn.disabled    = false;
+    btn.textContent = 'Submit';
+  }
+}
+
+function showFeedback(el, msg, correct) {
+  el.textContent      = msg;
+  el.className        = `flag-feedback ${correct ? 'correct' : 'wrong'}`;
+  el.style.display    = 'block';
+}
+
+/* ── Refresh top stats without a page reload ─────────────────────────────── */
+async function refreshStats() {
+  try {
+    const resp = await fetch('/challenge/progress/api/');
+    const d    = await resp.json();
+
+    // Update DOM labels
+    setText('statSolved',      d.solved);
+    setText('statCompletion',  total => {
+      return d.total > 0 ? Math.round((d.solved / d.total) * 100) + '%' : '0%';
+    });
+    setText('statXP',          `${d.xp_points} XP`);
+    setText('statStreak',      d.streak_days);
+    setText('chartPctLabel',
+      d.total > 0 ? Math.round((d.solved / d.total) * 100) + '%' : '0%'
+    );
+  } catch (_) { /* silent — stale values are acceptable */ }
+}
+
+function setText(id, value) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = typeof value === 'function' ? value() : value;
+}
+
+/* ── Enter key submits flag ──────────────────────────────────────────────── */
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.flag-input').forEach(input => {
+    input.addEventListener('keydown', e => {
+      if (e.key === 'Enter') {
+        const id = input.id.replace('flag-', '');
+        submitFlag(id);
+      }
+    });
+  });
+});
+</script>
+{% endblock %}
