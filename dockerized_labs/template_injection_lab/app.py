@@ -65,6 +65,10 @@ def get_blog_posts():
     return posts
 
 @app.route("/")
+def index():
+    """Display the main lab page with instructions."""
+    return render_template("index.html")
+    
 @app.route("/toggle-theme")
 def toggle_theme():
     current_theme = request.cookies.get("theme", "light")
