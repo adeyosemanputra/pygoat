@@ -42,6 +42,7 @@ from .utility import customHash, filter_blog
 #*****************************************Lab Requirements****************************************************#
 
 #*****************************************Login and Registration****************************************************#
+# test: triggering sentinel review on existing vulnerable code
 
 def register(request):
 	if request.method == "POST":
