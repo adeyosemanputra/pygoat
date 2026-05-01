@@ -825,40 +825,80 @@
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- jQuery CDN - Slim version (=without AJAX) -->
-    <script
-      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-      crossorigin="anonymous"
-    ></script>
-    <!-- Popper.JS -->
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"
-      integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ"
-      crossorigin="anonymous"
-    ></script>
-    <!-- Bootstrap JS -->
-    <script
-      src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"
-      integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm"
-      crossorigin="anonymous"
-    ></script>
+  <!-- jQuery CDN - Slim version (=without AJAX) -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <!-- Popper.JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"
+    integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ"
+    crossorigin="anonymous"></script>
+  <!-- Bootstrap JS -->
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"
+    integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm"
+    crossorigin="anonymous"></script>
 
-    <script type="text/javascript">
-      $(document).ready(function () {
-        $(".sidebar-header").on("click", function () {
-          $("#sidebar").toggleClass("active");
-          $(".pg").toggleClass("active");
-        });
-      });
+  <script type="text/javascript">
+	$(document).ready(function () {
 
-      $(document).ready(function () {
-        $(".pg").on("click", function () {
-          $("#sidebar").toggleClass("active");
-          $(".pg").toggleClass("active");
-        });
-      });
+    		const STORAGE_KEY = "pygoat_sidebar_state_v1";
+
+    		const defaultState = {
+        		collapsed: false,
+        		dropdowns: {}
+    		};
+
+    		function getState() {
+        		try {
+            			const stored = localStorage.getItem(STORAGE_KEY);
+            			return stored ? JSON.parse(stored) : defaultState;
+        		} catch (e) {
+            			return defaultState;
+        		}
+    		}
+
+    		function saveState(state) {
+        		localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    		}
+
+    		let state = getState();
+
+    		if (state.collapsed) {
+        		$("#sidebar").addClass("active");
+        		$(".pg").addClass("active");
+    		}
+
+    		Object.keys(state.dropdowns).forEach(function (id) {
+        		if (state.dropdowns[id]) {
+            			$("#" + id).addClass("show");
+            			$('a[href="#' + id + '"]').attr("aria-expanded", "true");
+        		}
+    		});
+
+    		$(".sidebar-header, .pg, #sidebarCollapse").on("click", function () {
+        		$("#sidebar").toggleClass("active");
+        		$(".pg").toggleClass("active");
+
+        		state.collapsed = $("#sidebar").hasClass("active");
+        		saveState(state);
+    		});
+
+    		$("#sidebar .collapse").on("shown.bs.collapse hidden.bs.collapse", function () {
+
+
+        		const id = $(this).attr("id");
+        		if (!id) return;
+
+        		state.dropdowns[id] = $(this).hasClass("show");
+        		saveState(state);
+    		});
+
+	});
+
+
+
 
       function swapStyleSheet() {
         var elem = document.getElementById('stylesheet-toggle');
