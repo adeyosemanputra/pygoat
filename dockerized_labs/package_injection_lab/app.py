@@ -147,6 +147,8 @@ def api_check_packages():
 def api_use_package():
     """API endpoint that uses the malicious package"""
     data = request.get_json()
+    if data is None:
+        return jsonify({"success": False, "error": "Invalid JSON in request body"})
     action_type = data.get("action_type", "api_call")
 
     if action_type == "api_call":
@@ -250,6 +252,9 @@ def verify_package():
         }
     )
 
+@app.route("/health")
+def health_check():
+	return "OK", 200
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5021, debug=True)

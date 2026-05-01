@@ -119,6 +119,8 @@ def api_check_dependencies():
 def api_use_feature():
     """API endpoint to use application features"""
     data = request.get_json()
+    if not data:
+        return jsonify({"success": False, "error": "Invalid or missing JSON data"})
     feature = data.get("feature")
 
     if feature == "process_data":
@@ -188,6 +190,9 @@ def check_package():
         }
     )
 
+@app.route("/health")
+def health_check():
+	return "OK", 200
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5020, debug=True)

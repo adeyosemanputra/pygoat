@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}<title>Blind SQL Injection Challenge</title>{% endblock %}
+
+{% block content %}
+<div class="box">
+	<h3>Blind SQL Injection Challenge</h3>
+
+	<div class="section">
+		<h4>Login Form</h4>
+		<p class="bp">
+			Target account: <strong>admin</strong>. Find the password using blind SQL techniques.
+		</p>
+
+		<form method="POST" action="/lab">
+			<div class="form-group">
+				<label for="username">Username:</label>
+				<input type="text" id="username" name="username" placeholder="Enter username" required>
+			</div>
+			<div class="form-group">
+				<label for="password">Password:</label>
+				<input type="password" id="password" name="password" placeholder="Enter password" required>
+			</div>
+			<button type="submit">Login</button>
+		</form>
+
+		{% if success %}
+		<div class="section result success-box">
+			<h4>Success</h4>
+			<p class="bp">{{ success }}</p>
+		</div>
+		{% endif %}
+
+		{% if progress %}
+		<div class="section result progress-box">
+			<h4>Hint</h4>
+			<p class="bp">{{ progress }}</p>
+		</div>
+		{% endif %}
+
+		{% if error %}
+		<div class="section result error-box">
+			<h4>Response</h4>
+			<p class="bp">{{ error }}</p>
+		</div>
+		{% endif %}
+	</div>
+
+	<div class="button-container">
+		<button onclick="window.location.href='/'">Back to Lab Details</button>
+	</div>
+</div>
+{% endblock %}

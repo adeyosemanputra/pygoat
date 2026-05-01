@@ -1,0 +1,51 @@
+<!-- Custom CSS Modal for Security Fix -->
+<div id="secureFixModal" class="custom-modal">
+	<div class="modal-overlay"></div>
+	<div class="modal-container">
+		<div class="modal-header">
+			<h2 class="modal-title"> Security Fix for Blind SQL Injection</h2>
+			<button type="button" class="close-btn" onclick="closeModal()">&times;</button>
+		</div>
+		<div class="modal-body">
+			<div class="tabs-container">
+				<div class="tab-buttons">
+					<button class="tab-btn active" style="font-weight: bold; font-size: 18px;" onclick="showTab('secure-code')">Secure Code</button>
+					<button class="tab-btn" style="font-weight: bold; font-size: 18px;" onclick="showTab('prevention')">Solution</button>
+				</div>
+
+				<div class="tab-content">
+					<div id="secure-code" class="tab-panel active">
+						<h4>Secure Implementation (Parameterized Query + Safe Responses)</h4>
+						<pre class="code-block"><code>
+def secure_login(username, password):
+	conn = sqlite3.connect("database.db")
+	cursor = conn.cursor()
+
+	query = "SELECT username FROM users WHERE username = ? AND password = ?"
+	user = cursor.execute(query, (username, password)).fetchone()
+	conn.close()
+
+	if user:
+		return {"status": "ok"}
+
+	# Never reveal query errors or condition-specific hints
+	return {"status": "invalid_credentials"}
+						</code></pre>
+					</div>
+
+					<div id="prevention" class="tab-panel">
+						<h4>How to Prevent Blind SQL Injection</h4>
+						<ul>
+							<li>Use parameterized queries everywhere</li>
+							<li>Do not concatenate user input into SQL</li>
+							<li>Return uniform authentication messages</li>
+							<li>Avoid response differences that reveal boolean results</li>
+							<li>Add rate limits and account lockout controls</li>
+							<li>Log server-side errors securely for developers only</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

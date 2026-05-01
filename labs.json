@@ -119,6 +119,11 @@
       "name": "open_source_library_attack_lab",
       "build_location": "dockerized_labs/open_source_library_attack_lab",
       "port": 5022
+    },
+    {
+      "name": "blind_sql_injection_lab",
+      "build_location": "dockerized_labs/blind_sql_injection_lab",
+      "port": 5023
     }
   ]
 }

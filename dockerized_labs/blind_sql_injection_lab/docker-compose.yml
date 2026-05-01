@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  blind_sql_injection_lab:
+    build: .
+    ports:
+      - "5023:5023"
+    volumes:
+      - .:/app
+    environment:
+      - FLASK_ENV=development
+      - BLIND_SQL_ADMIN_PASSWORD=${BLIND_SQL_ADMIN_PASSWORD}

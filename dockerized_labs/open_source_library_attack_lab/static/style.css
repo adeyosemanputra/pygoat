@@ -62,9 +62,8 @@ body {
 }
 
 .content {
-    width: 100%;
-    max-width: none;
-    margin: 0;
+    max-width: 1000px;
+    margin: 0 auto;
     padding: 20px;
 }
 
@@ -109,7 +108,8 @@ h4 {
 }
 
 input[type="text"],
-input[type="password"] {
+input[type="password"],
+input[type="number"] {
     width: 100%;
     padding: 12px;
     margin: 8px 0;
@@ -248,12 +248,12 @@ li {
     cursor: pointer;
     padding: 10px;
     border-radius: 8px;
-    margin-right: 40px;
     transition: all 0.3s ease;
+    color: white;
 }
 
 .notebook-btn:hover {
-    background: var(--section-bg);
+    background: var(--button-hover);
     transform: scale(1.1);
 }
 
