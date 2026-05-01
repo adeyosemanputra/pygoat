@@ -1,0 +1,214 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h2>XSS Lab - Interactive Playground</h2>
+    
+    <!-- Score Display -->
+    <div class="score-section">
+        <h3>Score: <span id="score">0</span>/150</h3>
+        <div class="progress-bar">
+            <div id="progress-fill" class="progress-fill"></div>
+        </div>
+    </div>
+
+    <!-- Payload Library -->
+    <div class="payload-library">
+        <h4>Payload Library</h4>
+        <select id="payload-selector">
+            <option value="">Select Payload...</option>
+            <option value="&lt;script&gt;alert('Basic XSS!')&lt;/script&gt;">1. Basic Script Alert (+10 pts)</option>
+            <option value="&lt;img src=x onerror=&quot;alert('IMG XSS!')&quot;&gt;">2. IMG Tag XSS (+20 pts)</option>
+            <option value="&lt;svg onload=&quot;alert('SVG XSS!')&quot;&gt;&lt;/svg&gt;">3. SVG XSS (+30 pts)</option>
+        </select>
+        <button id="load-payload">Load Payload</button>
+    </div>
+
+    <!-- Main Comment Form -->
+    <div class="form-section">
+        <h3>Post a Comment</h3>
+        <form id="comment-form">
+            <div style="margin-bottom: 15px;">
+                <textarea id="comment-input" name="comment" rows="4" placeholder="Type your comment or XSS payload here..." style="width: 100%; padding: 10px; font-family: Arial; border: 1px solid #ccc; border-radius: 4px;"></textarea>
+            </div>
+            <button type="submit" id="post-comment" style="background-color: #d32f2f; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">Post Comment</button>
+            <button type="button" id="clear-all" style="background-color: #666; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; margin-left: 10px;">Clear All</button>
+        </form>
+    </div>
+
+    <!-- Real-time Preview -->
+    <div class="preview-section" style="background: #f5f5f5; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+        <h4>Live Preview <small>(What your comment will look like)</small></h4>
+        <div id="live-preview" style="min-height: 100px; border: 2px dashed #ccc; padding: 15px; border-radius: 6px; background: white; font-family: monospace; white-space: pre-wrap;">
+            No content to preview...
+        </div>
+    </div>
+
+    <!-- Hints System -->
+    <div class="hints-section" style="background: #fff3cd; padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #ffc107;">
+        <h4>Hints <span id="hint-count">(0/3 used)</span></h4>
+        <button id="show-hint" style="background-color: #ff9800; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">Get Hint (+5 pts penalty)</button>
+        <div id="hint-text" style="margin-top: 10px; padding: 10px; background: white; border-radius: 4px; display: none;"></div>
+    </div>
+
+    <!-- Display Comments -->
+    <div class="comments-section">
+        <h3>Comments ({{ comments|length }})</h3>
+        
+        {% if comments %}
+            {% for comment in comments %}
+                <div style="border: 1px solid #ddd; padding: 15px; margin-bottom: 10px; background-color: #f9f9f9; border-radius: 4px;">
+                    <p>{{ comment|safe }}</p>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p style="color: #999; font-style: italic; text-align: center; padding: 20px;">No comments yet. Be the first to post!</p>
+        {% endif %}
+    </div>
+
+    <!-- Success Feedback -->
+    <div id="success-message" style="background: linear-gradient(135deg, #4caf50, #45a049); color: white; padding: 20px; border-radius: 10px; text-align: center; margin-top: 20px; display: none;">
+        <h3>✅ XSS Success!</h3>
+        <p id="success-text"></p>
+        <button id="dismiss-success" style="background-color: white; color: #4caf50; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; margin-top: 10px;">Continue Exploiting</button>
+    </div>
+
+    <p><a href="/">← Back to Home</a></p>
+</div>
+
+<script>
+let currentScore = 0;
+const maxScore = 150;
+let hintsUsed = 0;
+const maxHints = 3;
+
+const hints = [
+    "Hint 1: Try using &lt;script&gt; tags to execute JavaScript",
+    "Hint 2: Look at the comments section HTML - notice any special filters?",
+    "Hint 3: The vulnerability is in the template rendering - check Jinja2 documentation"
+];
+
+// Payload selector
+document.getElementById('load-payload').addEventListener('click', function() {
+    const selector = document.getElementById('payload-selector');
+    const input = document.getElementById('comment-input');
+    input.value = selector.value;
+    updatePreview();
+});
+
+// Real-time preview
+document.getElementById('comment-input').addEventListener('input', updatePreview);
+
+function updatePreview() {
+    const input = document.getElementById('comment-input');
+    const preview = document.getElementById('live-preview');
+    preview.textContent = input.value || 'No content to preview...';
+}
+
+// Post comment form
+document.getElementById('comment-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const input = document.getElementById('comment-input');
+    const payload = input.value.trim();
+    
+    if (payload) {
+        if (payload.includes('<script>') || payload.includes('alert(') || payload.includes('onerror=')) {
+            showSuccess(payload);
+            currentScore += 20;
+            updateScore();
+        } else {
+            alert('Nice try! Add some HTML/JavaScript to trigger XSS.');
+        }
+    }
+});
+
+// Success feedback
+function showSuccess(payload) {
+    const successText = document.getElementById('success-text');
+    const successMsg = document.getElementById('success-message');
+    
+    successText.textContent = 'Successfully exploited XSS! The payload would execute in a real scenario.';
+    successMsg.style.display = 'block';
+}
+
+// Update score display
+function updateScore() {
+    document.getElementById('score').textContent = currentScore;
+    const percentage = (currentScore / maxScore) * 100;
+    document.getElementById('progress-fill').style.width = percentage + '%';
+}
+
+// Hints
+document.getElementById('show-hint').addEventListener('click', function() {
+    if (hintsUsed < maxHints) {
+        const hintText = document.getElementById('hint-text');
+        hintText.textContent = hints[hintsUsed];
+        hintText.style.display = 'block';
+        hintsUsed++;
+        document.getElementById('hint-count').textContent = '(' + hintsUsed + '/' + maxHints + ' used)';
+        
+        currentScore = Math.max(0, currentScore - 5);
+        updateScore();
+    } else {
+        alert('No more hints available!');
+    }
+});
+
+// Clear buttons
+document.getElementById('clear-all').addEventListener('click', function() {
+    document.getElementById('comment-input').value = '';
+    document.getElementById('live-preview').textContent = 'No content to preview...';
+});
+
+// Dismiss success
+document.getElementById('dismiss-success').addEventListener('click', function() {
+    document.getElementById('success-message').style.display = 'none';
+});
+
+// Add progress bar CSS
+const style = document.createElement('style');
+style.textContent = `
+.progress-bar {
+    background: rgba(0,0,0,0.2);
+    height: 10px;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-top: 10px;
+}
+.progress-fill {
+    height: 100%;
+    background: #4caf50;
+    width: 0%;
+    transition: width 0.3s ease;
+}
+.score-section {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+.payload-library {
+    background: #f0f8ff;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+.payload-library select, .payload-library button {
+    margin-right: 10px;
+    padding: 8px 12px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+}
+.form-section {
+    background: #e3f2fd;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+`;
+document.head.appendChild(style);
+</script>
+
+{% endblock %}
