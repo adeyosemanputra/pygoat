@@ -292,4 +292,8 @@ def software_and_data_integrity_failure(request):
             request, "Lab_2021/A8_software_and_data_integrity_failure/desc.html"
         )
 
-
+def insufficient_logging(request):
+    if request.user.is_authenticated:
+        return render(request, "Lab_2021/A9_InsufficientLogging/insufficient_logging.html")
+    else:
+        return redirect("login")
