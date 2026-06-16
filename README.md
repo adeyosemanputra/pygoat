@@ -117,22 +117,20 @@ Create the standard application structure with a Dockerfile, docker-compose.yml,
 
 **Important**: Add a `/health` endpoint in your app.py for container health check.
 
-### Step 3: Register Lab in labs.json
+### Step 3: Register Lab in the Database
 
-1. Open [labs.json](labs.json) in the project root directory
+1. Access the Django Admin panel at `http://localhost:8000/admin/` and navigate to the **Labs** section.
 
-2. Add a new entry to the `"labs"` array:
-```json
-{
-  "name": "your_lab_name",
-  "build_location": "dockerized_labs/your_lab_name",
-  "port": <PORT_NUMBER>
-}
-```
+2. Add a new entry with:
+   - **Name**: `your_lab_name`
+   - **Build Location**: `dockerized_labs/your_lab_name`
+   - **Port**: `<PORT_NUMBER>`
+
+   *(Alternatively, you can register it via Django shell or a custom data migration).*
 
 **Important**: 
-- Check [labs.json](labs.json) for all currently used ports before selecting a new one.
-- Use the same port number in `Dockerfile`, `docker-compose.yml`, `app.py`, and `labs.json`
+- Check the database or Django Admin panel for all currently used ports before selecting a new one.
+- Use the same port number in `Dockerfile`, `docker-compose.yml`, `app.py`, and the database entry.
 
 
 ### Step 4: Test Your Lab

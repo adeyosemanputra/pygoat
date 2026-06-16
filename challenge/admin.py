@@ -1,7 +1,14 @@
 from django.contrib import admin
-from .models import Challenge, UserChallenge
+from .models import Challenge, UserChallenge, Lab
 
 # Register your models here.
+
+
+@admin.register(Lab)
+class LabAdmin(admin.ModelAdmin):
+    list_display = ("name", "build_location", "port")
+    search_fields = ("name",)
+    empty_value_display = "-empty-"
 
 
 @admin.register(Challenge)

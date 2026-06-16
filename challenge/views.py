@@ -4,7 +4,7 @@ from django.views.generic import View
 from django.views.decorators.csrf import csrf_exempt
 import subprocess
 from .utility import get_free_port
-from .models import Challenge, UserChallenge
+from .models import Challenge, UserChallenge, Lab
 import docker
 import json
 import os
@@ -142,13 +142,15 @@ def _get_container_name(username: str, lab_image_name: str) -> str:
 
 
 def _get_lab_config(lab_image_name: str) -> dict:
-    labs_json_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'labs.json')
-    with open(labs_json_path, 'r') as f:
-        data = json.load(f)
-    for lab in data.get('labs', []):
-        if lab.get('name') == lab_image_name:
-            return lab
-    raise KeyError(f'Lab config not found: {lab_image_name}')
+    try:
+        lab = Lab.objects.get(name=lab_image_name)
+        return {
+            'name': lab.name,
+            'build_location': lab.build_location,
+            'port': lab.port
+        }
+    except Lab.DoesNotExist:
+        raise KeyError(f'Lab config not found: {lab_image_name}')
 
 
 def _ensure_image_built(client, image: str, build_location: str):
@@ -362,3 +364,124 @@ def stop_lab(request, lab_image_name):
         return JsonResponse({'status': 'error', 'message': 'Lab container not found'}, status=404)
     except Exception as e:
         return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+
+
+def list_custom_labs(request):
+    if not request.user.is_authenticated:
+        return JsonResponse({'status': 'error', 'message': 'Authentication required'}, status=401)
+    if request.method != "GET":
+        return JsonResponse({'status': 'error', 'message': 'Method not allowed'}, status=405)
+    
+    labs = Lab.objects.filter(is_custom=True).order_by('name')
+    labs_list = [{
+        'id': lab.id,
+        'name': lab.name,
+        'build_location': lab.build_location,
+        'port': lab.port
+    } for lab in labs]
+    return JsonResponse({'status': 'success', 'labs': labs_list})
+
+
+def create_custom_lab(request):
+    if not request.user.is_authenticated:
+        return JsonResponse({'status': 'error', 'message': 'Authentication required'}, status=401)
+    if request.method != "POST":
+        return JsonResponse({'status': 'error', 'message': 'Method not allowed'}, status=405)
+    
+    try:
+        data = json.loads(request.body)
+        name = data.get('name')
+        build_location = data.get('build_location')
+        port = data.get('port')
+        
+        if not name or not build_location or not port:
+            return JsonResponse({'status': 'error', 'message': 'Missing required fields'}, status=400)
+            
+        try:
+            port = int(port)
+        except ValueError:
+            return JsonResponse({'status': 'error', 'message': 'Port must be an integer'}, status=400)
+            
+        if Lab.objects.filter(name=name).exists():
+            return JsonResponse({'status': 'error', 'message': f'Lab with name {name} already exists'}, status=400)
+            
+        lab = Lab.objects.create(name=name, build_location=build_location, port=port)
+        return JsonResponse({
+            'status': 'success',
+            'message': f'Lab {name} created successfully',
+            'lab': {
+                'id': lab.id,
+                'name': lab.name,
+                'build_location': lab.build_location,
+                'port': lab.port
+            }
+        })
+    except Exception as e:
+        return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+
+
+def update_custom_lab(request, lab_id):
+    if not request.user.is_authenticated:
+        return JsonResponse({'status': 'error', 'message': 'Authentication required'}, status=401)
+    if request.method != "POST":
+        return JsonResponse({'status': 'error', 'message': 'Method not allowed'}, status=405)
+        
+    try:
+        try:
+            lab = Lab.objects.get(id=lab_id)
+        except Lab.DoesNotExist:
+            return JsonResponse({'status': 'error', 'message': 'Lab not found'}, status=404)
+            
+        data = json.loads(request.body)
+        name = data.get('name')
+        build_location = data.get('build_location')
+        port = data.get('port')
+        
+        if not name or not build_location or not port:
+            return JsonResponse({'status': 'error', 'message': 'Missing required fields'}, status=400)
+            
+        try:
+            port = int(port)
+        except ValueError:
+            return JsonResponse({'status': 'error', 'message': 'Port must be an integer'}, status=400)
+            
+        if Lab.objects.filter(name=name).exclude(id=lab_id).exists():
+            return JsonResponse({'status': 'error', 'message': f'Lab with name {name} already exists'}, status=400)
+            
+        lab.name = name
+        lab.build_location = build_location
+        lab.port = port
+        lab.save()
+        
+        return JsonResponse({
+            'status': 'success',
+            'message': f'Lab {name} updated successfully',
+            'lab': {
+                'id': lab.id,
+                'name': lab.name,
+                'build_location': lab.build_location,
+                'port': lab.port
+            }
+        })
+    except Exception as e:
+        return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+
+
+def delete_custom_lab(request, lab_id):
+    if not request.user.is_authenticated:
+        return JsonResponse({'status': 'error', 'message': 'Authentication required'}, status=401)
+    if request.method != "POST":
+        return JsonResponse({'status': 'error', 'message': 'Method not allowed'}, status=405)
+        
+    try:
+        try:
+            lab = Lab.objects.get(id=lab_id)
+        except Lab.DoesNotExist:
+            return JsonResponse({'status': 'error', 'message': 'Lab not found'}, status=404)
+            
+        name = lab.name
+        lab.delete()
+        return JsonResponse({'status': 'success', 'message': f'Lab {name} deleted successfully'})
+    except Exception as e:
+        return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+

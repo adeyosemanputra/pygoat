@@ -702,6 +702,22 @@
               </li>
             </ul>
             <a
+              href="#customLabsSubmenu"
+              data-toggle="collapse"
+              aria-expanded="false"
+              class="dropdown-toggle"
+              id="customLabsMenu"
+              style="padding: 13% 0 0 0"
+            >
+              <i class="fas fa-cog"></i>
+              Custom Labs
+            </a>
+            <ul class="collapse list-unstyled" id="customLabsSubmenu">
+              <li id="sidebar-custom-labs-container">
+                <!-- Custom labs will be loaded dynamically here -->
+              </li>
+            </ul>
+            <a
               href="#"
               data-toggle="collapse"
               aria-expanded="false"
@@ -745,6 +761,11 @@
                 </li>
 
                 {% if user.is_authenticated %}
+                <li class="nav-item">
+                  <button class="nav-link dark mr-2" onclick="openCustomLabsModal()" id="custom-labs-btn" style="background: #f0f8ff8a; border-radius: 2px; border: none;">
+                    Custom Labs
+                  </button>
+                </li>
                 <li class="nav-item">
                   <button class="nav-link dark" onclick="manageLabs()" id="manage-labs-btn" style="background: #f0f8ff8a; border-radius: 2px; border: none;">
                     Manage Labs
@@ -821,6 +842,74 @@
           <div class="modal-footer">
             <button type="button" class="btn btn-danger" id="manage-modal-stop-all-btn" style="display: none;">Stop All Labs</button>
             <button type="button" class="btn btn-close" data-dismiss="modal" id="manage-modal-close-btn">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="customLabsModal" tabindex="-1" role="dialog" aria-labelledby="customLabsModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="customLabsModalLabel">Custom Labs</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div id="custom-labs-alert" class="alert alert-dismissible fade show d-none" role="alert">
+              <span id="custom-labs-alert-msg"></span>
+            </div>
+
+            <div class="card p-3 mb-4" style="background: #a9cfed2b; color: inherit;">
+              <h6 class="card-title text-primary font-weight-bold" id="custom-lab-form-title">Add New Custom Lab</h6>
+              <form id="custom-lab-form">
+                <input type="hidden" id="custom-lab-id">
+                <div class="form-row">
+                  <div class="form-group col-md-4">
+                    <label for="custom-lab-name">Name</label>
+                    <input type="text" class="form-control" id="custom-lab-name" required placeholder="e.g. my_custom_lab">
+                  </div>
+                  <div class="form-group col-md-5">
+                    <label for="custom-lab-build-location">Build Location</label>
+                    <input type="text" class="form-control" id="custom-lab-build-location" required placeholder="e.g. dockerized_labs/my_custom_lab">
+                  </div>
+                  <div class="form-group col-md-3">
+                    <label for="custom-lab-port">Port</label>
+                    <input type="number" class="form-control" id="custom-lab-port" required placeholder="e.g. 5000">
+                  </div>
+                </div>
+                <div class="d-flex justify-content-end">
+                  <button type="button" class="btn btn-secondary mr-2" id="custom-lab-cancel-btn" style="display: none;" onclick="resetCustomLabForm()">Cancel</button>
+                  <button type="submit" class="btn btn-primary" id="custom-lab-submit-btn">Add Lab</button>
+                </div>
+              </form>
+            </div>
+
+            <h6 class="text-primary font-weight-bold">Existing Custom Labs</h6>
+            <div id="custom-labs-spinner" class="text-center my-3" style="display: none;">
+              <div class="spinner-border text-primary" role="status">
+                <span class="sr-only">Loading...</span>
+              </div>
+            </div>
+            <div id="custom-labs-list-container" class="table-responsive">
+              <table class="table table-striped table-bordered" style="color: inherit;">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Build Location</th>
+                    <th>Port</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="custom-labs-table-body">
+                </tbody>
+              </table>
+              <p id="no-custom-labs-msg" class="text-muted text-center" style="display: none;">No custom labs registered yet.</p>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
           </div>
         </div>
       </div>
@@ -943,6 +1032,7 @@
 
       document.addEventListener('DOMContentLoaded', () => {
         updateLabStatus();
+        loadSidebarCustomLabs();
       });
       function applyModalTheme(modalElement) {
         if (!modalElement) return;
@@ -1230,6 +1320,227 @@
           statusMsg.className = "mt-3 text-danger";
         }
       }
+
+      async function openCustomLabsModal() {
+        const modal = $('#customLabsModal');
+        const modalElement = document.getElementById('customLabsModal');
+        applyModalTheme(modalElement);
+        modal.modal('show');
+        resetCustomLabForm();
+        await fetchAndRenderCustomLabs();
+      }
+
+      async function fetchAndRenderCustomLabs() {
+        const spinner = document.getElementById('custom-labs-spinner');
+        const tableBody = document.getElementById('custom-labs-table-body');
+        const noLabsMsg = document.getElementById('no-custom-labs-msg');
+        
+        spinner.style.display = 'block';
+        tableBody.innerHTML = '';
+        noLabsMsg.style.display = 'none';
+
+        try {
+          const response = await fetch('/challenge/custom-labs/list/');
+          const data = await response.json();
+          spinner.style.display = 'none';
+
+          if (data.status === 'success') {
+            const labs = data.labs || [];
+            if (labs.length === 0) {
+              noLabsMsg.style.display = 'block';
+            } else {
+              labs.forEach(lab => {
+                const tr = document.createElement('tr');
+
+                const tdName = document.createElement('td');
+                tdName.textContent = lab.name;
+
+                const tdLoc = document.createElement('td');
+                tdLoc.textContent = lab.build_location;
+
+                const tdPort = document.createElement('td');
+                tdPort.textContent = lab.port;
+
+                const tdActions = document.createElement('td');
+                
+                const btnEdit = document.createElement('button');
+                btnEdit.type = 'button';
+                btnEdit.className = 'btn btn-sm btn-outline-primary mr-1';
+                btnEdit.textContent = 'Edit';
+                btnEdit.addEventListener('click', () => editCustomLab(lab.id, lab.name, lab.build_location, lab.port));
+
+                const btnDelete = document.createElement('button');
+                btnDelete.type = 'button';
+                btnDelete.className = 'btn btn-sm btn-outline-danger';
+                btnDelete.textContent = 'Remove';
+                btnDelete.addEventListener('click', () => deleteCustomLab(lab.id));
+
+                tdActions.appendChild(btnEdit);
+                tdActions.appendChild(btnDelete);
+
+                tr.appendChild(tdName);
+                tr.appendChild(tdLoc);
+                tr.appendChild(tdPort);
+                tr.appendChild(tdActions);
+
+                tableBody.appendChild(tr);
+              });
+            }
+          } else {
+            showCustomLabsAlert(`Error listing labs: ${data.message}`, 'danger');
+          }
+        } catch (e) {
+          spinner.style.display = 'none';
+          showCustomLabsAlert(`Error listing labs: ${e.message || e}`, 'danger');
+        }
+      }
+
+      function editCustomLab(id, name, buildLocation, port) {
+        document.getElementById('custom-lab-id').value = id;
+        document.getElementById('custom-lab-name').value = name;
+        document.getElementById('custom-lab-build-location').value = buildLocation;
+        document.getElementById('custom-lab-port').value = port;
+        
+        document.getElementById('custom-lab-form-title').textContent = 'Edit Custom Lab';
+        document.getElementById('custom-lab-submit-btn').textContent = 'Update Lab';
+        document.getElementById('custom-lab-cancel-btn').style.display = 'inline-block';
+      }
+
+      function resetCustomLabForm() {
+        document.getElementById('custom-lab-id').value = '';
+        document.getElementById('custom-lab-form').reset();
+        document.getElementById('custom-lab-form-title').textContent = 'Add New Custom Lab';
+        document.getElementById('custom-lab-submit-btn').textContent = 'Add Lab';
+        document.getElementById('custom-lab-cancel-btn').style.display = 'none';
+      }
+
+      function showCustomLabsAlert(message, type) {
+        const alertDiv = document.getElementById('custom-labs-alert');
+        const alertMsg = document.getElementById('custom-labs-alert-msg');
+        alertDiv.className = `alert alert-${type} alert-dismissible fade show`;
+        alertMsg.textContent = message;
+        alertDiv.classList.remove('d-none');
+        setTimeout(() => {
+          alertDiv.classList.add('d-none');
+        }, 5000);
+      }
+
+      async function deleteCustomLab(id) {
+        if (!confirm('Are you sure you want to remove this lab?')) return;
+        const csrftoken = getCookie('csrftoken');
+        try {
+          const response = await fetch(`/challenge/custom-labs/delete/${id}/`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-CSRFToken': csrftoken
+            }
+          });
+          const data = await response.json();
+          if (data.status === 'success') {
+            showCustomLabsAlert(data.message, 'success');
+            await fetchAndRenderCustomLabs();
+            await loadSidebarCustomLabs();
+            updateLabStatus();
+          } else {
+            showCustomLabsAlert(`Error: ${data.message}`, 'danger');
+          }
+        } catch (e) {
+          showCustomLabsAlert(`Error: ${e.message || e}`, 'danger');
+        }
+      }
+
+      async function loadSidebarCustomLabs() {
+        const container = document.getElementById('sidebar-custom-labs-container');
+        if (!container) return;
+        
+        try {
+          const response = await fetch('/challenge/custom-labs/list/');
+          const data = await response.json();
+          
+          container.innerHTML = '';
+          
+          if (data.status === 'success') {
+            const labs = data.labs || [];
+            if (labs.length === 0) {
+              const noLabs = document.createElement('small');
+              noLabs.className = 'text-muted d-block p-3';
+              noLabs.textContent = 'No custom labs';
+              container.appendChild(noLabs);
+            } else {
+              labs.forEach(lab => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'sidebar-list-items lab-button';
+                btn.setAttribute('onclick', `launchLab('${lab.name}')`);
+                btn.setAttribute('data-lab', lab.name);
+                
+                const icon = document.createElement('i');
+                icon.className = 'fas fa-cog';
+                
+                const text = document.createTextNode(` ${lab.name}`);
+                
+                const indicator = document.createElement('span');
+                indicator.className = 'lab-status-indicator not-running';
+                indicator.setAttribute('aria-hidden', 'true');
+                
+                btn.appendChild(icon);
+                btn.appendChild(text);
+                btn.appendChild(indicator);
+                container.appendChild(btn);
+              });
+            }
+            // After loading custom labs, refresh running indicators
+            updateLabStatus();
+          }
+        } catch (e) {
+          console.error('Failed to load custom labs for sidebar:', e);
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', () => {
+        const form = document.getElementById('custom-lab-form');
+        if (form) {
+          form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('custom-lab-id').value;
+            const name = document.getElementById('custom-lab-name').value;
+            const buildLocation = document.getElementById('custom-lab-build-location').value;
+            const port = document.getElementById('custom-lab-port').value;
+
+            const payload = { name, build_location: buildLocation, port };
+            const csrftoken = getCookie('csrftoken');
+            
+            let url = '/challenge/custom-labs/create/';
+            if (id) {
+              url = `/challenge/custom-labs/update/${id}/`;
+            }
+
+            try {
+              const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'X-CSRFToken': csrftoken
+                },
+                body: JSON.stringify(payload)
+              });
+              const data = await response.json();
+              if (data.status === 'success') {
+                showCustomLabsAlert(data.message, 'success');
+                resetCustomLabForm();
+                await fetchAndRenderCustomLabs();
+                await loadSidebarCustomLabs();
+                updateLabStatus();
+              } else {
+                showCustomLabsAlert(`Error: ${data.message}`, 'danger');
+              }
+            } catch (err) {
+              showCustomLabsAlert(`Error: ${err.message || err}`, 'danger');
+            }
+          });
+        }
+      });
     </script>
   </body>
 </html>

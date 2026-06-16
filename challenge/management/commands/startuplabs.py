@@ -1,9 +1,10 @@
-import json
 import os
 
 from django.conf import settings
 from django.core.management.base import BaseCommand
 import docker
+
+from challenge.models import Lab
 
 
 class Command(BaseCommand):
@@ -24,25 +25,14 @@ class Command(BaseCommand):
 			self.stderr.write(self.style.ERROR(f"Failed to connect to Docker daemon: {exc}"))
 			return
 
-		labs_json_path = os.path.join(settings.BASE_DIR, "labs.json")
-		try:
-			with open(labs_json_path, "r") as f:
-				data = json.load(f)
-		except FileNotFoundError:
-			self.stderr.write(self.style.ERROR(f"labs.json not found at {labs_json_path}"))
-			return
-		except json.JSONDecodeError as exc:
-			self.stderr.write(self.style.ERROR(f"Error parsing labs.json: {exc}"))
-			return
-
-		labs = data.get("labs", [])
-		if not labs:
-			self.stdout.write("No labs found in labs.json. Nothing to build.")
+		labs = Lab.objects.all()
+		if not labs.exists():
+			self.stdout.write("No labs found in database. Nothing to build.")
 			return
 
 		for lab in labs:
-			image = lab.get("name")
-			build_location = lab.get("build_location")
+			image = lab.name
+			build_location = lab.build_location
 			if not image or not build_location:
 				self.stderr.write(self.style.WARNING("Skipping invalid lab entry without name/build_location."))
 				continue
