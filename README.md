@@ -50,21 +50,33 @@ If you face any issue while installation, kindly refer to the [documentation](ht
 #### Method 1
 
 1. Install all app and python requirements using installer file - `bash installer.sh`
-2. Apply the migrations `python3 manage.py migrate`.<br>
+2. Apply the migrations and seed data:<br>
+   ```bash
+   python3 manage.py migrate
+   python3 manage.py populate_labs
+   ```
 3. Finally, run the development server `python3 manage.py runserver`.<br>
 4. The project will be available at <http://127.0.0.1:8000> 
 
 #### Method 2
 
 1. Install python3 requirements `pip install -r requirements.txt`.<br> 
-2. Apply the migrations `python3 manage.py migrate`.<br>
+2. Apply the migrations and seed data:<br>
+   ```bash
+   python3 manage.py migrate
+   python3 manage.py populate_labs
+   ```
 3. Finally, run the development server `python3 manage.py runserver`.<br>
 4. The project will be available at <http://127.0.0.1:8000> 
 
 #### Method 3
 
 1. Install all app and python requirements using `setup.py` file - `pip3 install .`
-2. Apply the migrations `python3 manage.py migrate`.<br>
+2. Apply the migrations and seed data:<br>
+   ```bash
+   python3 manage.py migrate
+   python3 manage.py populate_labs
+   ```
 3. Finally, run the development server `python3 manage.py runserver`.<br>
 4. The project will be available at <http://127.0.0.1:8000> 
 

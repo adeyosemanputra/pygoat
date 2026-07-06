@@ -3,6 +3,7 @@ services:
     build: .
     command: >
       sh -c "python manage.py migrate --noinput &&
+             python manage.py populate_labs &&
              python manage.py populate_challenges &&
              python manage.py startuplabs"
     environment:
