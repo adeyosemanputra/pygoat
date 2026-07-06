@@ -1,6 +1,6 @@
 from django.urls import include, path
 
-from . import mitre, views
+from . import views
 
 urlpatterns = [
     path("accounts/", include("allauth.urls")),
