@@ -8,6 +8,7 @@ from .models import Challenge, UserChallenge, Lab
 import docker
 import json
 import os
+import re
 from django.conf import settings
 import time
 import requests
@@ -397,6 +398,9 @@ def create_custom_lab(request):
         if not name or not build_location or not port:
             return JsonResponse({'status': 'error', 'message': 'Missing required fields'}, status=400)
             
+        if not re.match(r'^[-a-zA-Z0-9_]+$', name):
+            return JsonResponse({'status': 'error', 'message': 'Invalid lab name. Only alphanumeric characters, hyphens, and underscores are allowed.'}, status=400)
+            
         try:
             port = int(port)
         except ValueError:
@@ -439,6 +443,9 @@ def update_custom_lab(request, lab_id):
         
         if not name or not build_location or not port:
             return JsonResponse({'status': 'error', 'message': 'Missing required fields'}, status=400)
+            
+        if not re.match(r'^[-a-zA-Z0-9_]+$', name):
+            return JsonResponse({'status': 'error', 'message': 'Invalid lab name. Only alphanumeric characters, hyphens, and underscores are allowed.'}, status=400)
             
         try:
             port = int(port)

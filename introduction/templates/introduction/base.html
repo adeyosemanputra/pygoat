@@ -1472,7 +1472,7 @@
                 const btn = document.createElement('button');
                 btn.type = 'button';
                 btn.className = 'sidebar-list-items lab-button';
-                btn.setAttribute('onclick', `launchLab('${lab.name}')`);
+                btn.addEventListener('click', () => launchLab(lab.name));
                 btn.setAttribute('data-lab', lab.name);
                 
                 const icon = document.createElement('i');
