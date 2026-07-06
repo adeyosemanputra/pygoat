@@ -432,7 +432,7 @@ def update_custom_lab(request, lab_id):
         
     try:
         try:
-            lab = Lab.objects.get(id=lab_id)
+            lab = Lab.objects.get(id=lab_id, is_custom=True)
         except Lab.DoesNotExist:
             return JsonResponse({'status': 'error', 'message': 'Lab not found'}, status=404)
             
@@ -482,7 +482,7 @@ def delete_custom_lab(request, lab_id):
         
     try:
         try:
-            lab = Lab.objects.get(id=lab_id)
+            lab = Lab.objects.get(id=lab_id, is_custom=True)
         except Lab.DoesNotExist:
             return JsonResponse({'status': 'error', 'message': 'Lab not found'}, status=404)
             
