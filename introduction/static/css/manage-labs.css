@@ -1,0 +1,61 @@
+#running-labs-count {
+  font-size: 10px;
+  padding: 2px 6px;
+  line-height: 1.4;
+  vertical-align: middle;
+}
+
+.manage-lab-row {
+  border-radius: 6px;
+  padding: 10px 14px;
+  margin-bottom: 8px;
+  border: 1px solid rgba(128,128,128,.18);
+  transition: background-color .2s, border-color .2s;
+}
+.manage-lab-row:last-child { margin-bottom: 0; }
+
+.manage-lab-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #28a745;
+  margin-right: 10px;
+  flex-shrink: 0;
+  animation: dot-pulse 2s ease-in-out infinite;
+}
+@keyframes dot-pulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(40,167,69,.5); }
+  50%      { box-shadow: 0 0 0 4px rgba(40,167,69,0); }
+}
+
+.manage-lab-name {
+  font-size: 13.5px;
+  font-weight: 600;
+  display: block;
+  line-height: 1.3;
+}
+.manage-lab-status {
+  font-size: 10px;
+  padding: 2px 7px;
+  border-radius: 20px;
+  font-weight: 600;
+  margin-top: 3px;
+  display: inline-block;
+  background: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.modal-dark .modal-content  { background-color: #1c1f2e; border: 1px solid rgba(255,255,255,.09); color: #dce3ed; }
+.modal-dark .modal-footer   { border-top-color: rgba(255,255,255,.08); background-color: rgba(0,0,0,.15); }
+.modal-dark .close          { color: #9aa5b4; text-shadow: none; opacity: 1; }
+.modal-dark .close:hover    { color: #dce3ed; }
+.modal-dark .manage-lab-row { background-color: rgba(255,255,255,.035); border-color: rgba(255,255,255,.08); }
+.modal-dark .manage-lab-row:hover { background-color: rgba(23,162,184,.09); border-color: rgba(23,162,184,.38); }
+.modal-dark .manage-lab-name   { color: #dce3ed; }
+.modal-dark .manage-lab-status { background-color: rgba(40,167,69,.18); color: #6fcf97; border: 1px solid rgba(40,167,69,.3); }
+
+.modal-light .modal-content  { background-color: #ffffff; color: #212529; }
+.modal-light .modal-footer   { background-color: #f8f9fa; }
+.modal-light .manage-lab-row { background-color: #f8f9fa; border-color: #dee2e6; }
+.modal-light .manage-lab-row:hover { background-color: #e8f7fb; border-color: rgba(23,162,184,.45); }

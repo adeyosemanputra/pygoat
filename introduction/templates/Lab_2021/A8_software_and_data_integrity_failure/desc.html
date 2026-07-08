@@ -5,6 +5,7 @@
 {% endblock %}
 <div class="content">
 	<h3>Software and Data Integrity Failures</h3>
+	<div id="lab-controls" data-lab="software_integrity_lab"></div>
 	<div class="box">
 		<h4>What is Software and Data Integrity Failures</h4>
 		<p class="bp">
@@ -34,18 +35,19 @@
 			</p>
 			<br>
 			<div align="right">
-				<button class="btn btn-info" type="button" onclick="launchLab('insec_des_lab')">Access Lab</button>
+				<a class="btn btn-info lab-access-btn" data-path="/lab1" href="#">Access Lab</a>
 			</div>
 		</div>
-        <button class="coll btn btn-info">Lab 2 Details</button>
+		<button class="coll btn btn-info">Lab 2 Details</button>
 		<div class="lab">
 			<p class="bp">
 				This Lab contains a executable file to download, you can access the lab from the Access Lab button or from the below link 
-                Download the file and figure out whats going on. 
+		Download the file and figure out whats going on. 
 			</p>
-			
+			<a href='/2021/A8/lab2?username=user+<script>document.getElementById%28"download_link"%29.setAttribute%28"href"%2C"%2Fstatic%2Ffake.txt"%29%3B<%2Fscript>user+<script>document.getElementById%28"download_link"%29.setAttribute%28"href"%2C"%2Fstatic%2Ffake.txt"%29%3B<%2Fscript>'>Download File</a>
+                        
 			<div align="right">
-				<button class="btn btn-info" type="button" onclick="launchLab('software_integrity_lab')">Access Lab</button>
+				<a class="btn btn-info lab-access-btn" data-path="/lab2" href="#">Access Lab</a>
 			</div>
 		</div>
 		<h4>Insecure Deserialization</h4>
@@ -80,9 +82,7 @@
 		<ul>
 			<li>Implementing integrity checks such as digital signatures on any serialized objects to prevent hostile object
 				creation or data tampering.</li>
-			<li>Enforcing strict type constraints during deserialization before object creation as the code typically expects
-				a definable set of classes. Bypasses to this technique have been demonstrated, so reliance solely on this is not
-				advisable.</li>
+			<li>Enforcing strict type constraints during deserialization before object creation as the code typically expects a definable set of classes. Bypasses to this technique have been demonstrated, so reliance solely on this is not advisable.</li>
 			<li>Isolating and running code that deserializes in low privilege environments when possible.</li>
 			<li>Log deserialization exceptions and failures, such as where the incoming type is not the expected type, or the
 				deserialization throws exceptions.</li>
