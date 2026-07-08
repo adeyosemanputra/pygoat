@@ -14,6 +14,7 @@ class Command(BaseCommand):
             {"name": "business_logic_lab", "build_location": "challenge/labs/business_logic_lab", "port": 5010},
             {"name": "security_headers_lab", "build_location": "challenge/labs/security_headers_lab", "port": 5011},
             {"name": "a9_uckv_lab", "build_location": "dockerized_labs/a9_uckv_lab", "port": 9000},
+            {"name": "mishandling_of_exceptional_conditions_lab", "build_location": "dockerized_labs/mishandling_of_exceptional_conditions_lab", "port": 5016},
             {"name": "auth_failure_lab", "build_location": "dockerized_labs/auth_failure_lab", "port": 5007},
             {"name": "broken_access_lab", "build_location": "dockerized_labs/broken_access_lab", "port": 8080},
             {"name": "broken_auth_lab", "build_location": "dockerized_labs/broken_auth_lab", "port": 5000},
