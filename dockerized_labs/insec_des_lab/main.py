@@ -33,7 +33,20 @@ def deserialize_data():
         serialized_data = request.form.get('serialized_data', '')
         decoded_data = base64.b64decode(serialized_data)
         # Intentionally vulnerable deserialization, matching PyGoat
-        user = pickle.loads(decoded_data)
+        try:
+    payload = json.loads(decoded_data.decode("utf-8"))
+except (UnicodeDecodeError, json.JSONDecodeError):
+    return "Invalid user data", 400
+
+if not isinstance(payload, dict):
+    return "Invalid user data", 400
+
+username = payload.get("username")
+if not isinstance(username, str) or not username or len(username) > 100:
+    return "Invalid user data", 400
+
+# Never accept is_admin or privileges from client input.
+user = User(username=username)
         
         if isinstance(user, User):
             if user.is_admin:
