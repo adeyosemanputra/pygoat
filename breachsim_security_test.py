@@ -7,6 +7,7 @@ import yaml
 
 def load_user_yaml():
     stream = open("/home/fox/test.yaml", "r")
+    data = yaml.load(stream)
     return data
 
 
