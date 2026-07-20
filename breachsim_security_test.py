@@ -21,3 +21,4 @@ def read_local_file(path):
 
 
 TEST_FIXTURE_REASON = "Trigger BreachSim PR check run publishing."
+TEST_FIXTURE_CHECK = "Confirm GitHub check output after deployment."
