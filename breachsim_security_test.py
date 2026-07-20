@@ -18,3 +18,6 @@ def deploy_from_request(branch_name):
 
 def read_local_file(path):
     return open(path).read()
+
+
+TEST_FIXTURE_REASON = "Trigger BreachSim PR check run publishing."
