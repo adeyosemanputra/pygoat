@@ -1,0 +1,27 @@
+name: Dependency Scan
+
+on: [push, pull_request]
+
+jobs:
+  pip-audit:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install system dependencies
+        run: sudo apt-get update && sudo apt-get install -y libpq-dev libffi-dev libjpeg-dev zlib1g-dev build-essential
+
+      - name: Install project dependencies
+        run: pip install -r requirements.txt
+
+      - name: Install pip-audit
+        run: pip install pip-audit
+
+      - name: Run pip-audit
+        run: pip-audit
