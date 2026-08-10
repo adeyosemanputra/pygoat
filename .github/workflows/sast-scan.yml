@@ -1,0 +1,15 @@
+name: SAST Scan
+
+on: [push, pull_request]
+
+jobs:
+  semgrep:
+    runs-on: ubuntu-24.04
+    container:
+      image: semgrep/semgrep
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Semgrep
+        run: semgrep scan --config p/owasp-top-ten --config p/python --config p/django --error
