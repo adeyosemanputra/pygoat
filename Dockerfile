@@ -20,6 +20,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 RUN groupadd -r pygoat && useradd -r -g pygoat -d /app -s /usr/sbin/nologin pygoat
 
+RUN chown pygoat:pygoat /app
+
 COPY --chown=pygoat:pygoat . /app/
 
 EXPOSE 8000
