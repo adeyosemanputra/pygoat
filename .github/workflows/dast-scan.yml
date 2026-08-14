@@ -1,0 +1,29 @@
+name: DAST Scan
+
+on: [push, pull_request]
+
+jobs:
+  zap-scan:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: docker build -t pygoat:latest .
+
+      - name: Run PyGoat container
+        run: docker run -d -p 8000:8000 --name pygoat pygoat:latest
+
+      - name: Wait for app to be ready
+        run: |
+          for i in {1..30}; do
+            curl -sf http://localhost:8000 && break
+            echo "Waiting for app to start..."
+            sleep 2
+          done
+
+      - name: ZAP Baseline Scan
+        uses: zaproxy/action-baseline@v0.15.0
+        with:
+          target: 'http://localhost:8000'
