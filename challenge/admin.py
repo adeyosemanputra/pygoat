@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Challenge, UserChallenge, Lab
+from .models import Challenge, UserChallenge, Lab, LabCategoryMapping
 
 # Register your models here.
 
@@ -30,3 +30,11 @@ class UserChallengeAdmin(admin.ModelAdmin):
     )
     search_fields = ("user__username", "challenge__name")
     empty_value_display = "-empty-"
+
+
+@admin.register(LabCategoryMapping)
+class LabCategoryMappingAdmin(admin.ModelAdmin):
+    list_display = ("lab", "category", "subcategory", "display_name", "sort_order")
+    list_filter = ("category",)
+    search_fields = ("lab__name", "display_name")
+

@@ -1,0 +1,125 @@
+{% load static %}
+<!-- Sidebar  -->
+<nav id="sidebar" style="overflow: scroll" class="sidebarClass">
+  <div class="sidebar-header">
+    <div
+      id="pygoat"
+      style="display: flex; flex-direction: row; align-items: center"
+    >
+      <img
+        src="{% static 'Lab/icons/pygoat-mini.svg' %}"
+        alt="logo"
+        width="100px"
+        height="100px"
+      />
+      <h3>PyGoat</h3>
+    </div>
+    <strong>PG</strong>
+  </div>
+
+  <ul class="list-unstyled components" style="margin-bottom: 0px;">
+    <li >
+      <a
+        href="#homeSubmenu"
+        data-toggle="collapse"
+        aria-expanded="false"
+        class="dropdown-toggle"
+        id="sidebar-home"
+        style="padding: 13% 0 0 0"
+      >
+        <i class="fas fa-flag"></i>
+        Home
+      </a>
+      <ul class="collapse list-unstyled" id="homeSubmenu">
+        <li>
+          <a href="/" class="sidebar-list-items">Introduction</a>
+        </li>
+      </ul>
+    </li>
+    <li>
+      {% for category in sidebar_categories %}
+      <a
+        href="#{{ category.collapse_id }}"
+        data-toggle="collapse"
+        aria-expanded="false"
+        class="dropdown-toggle"
+        id="{{ category.menu_id }}"
+        style="padding: 13% {% if category.key != 'challenges' %}10%{% else %}0{% endif %} 0 0"
+      >
+        <i class="fas fa-flag"></i>
+        {{ category.label }}
+      </a>
+      <ul class="collapse list-unstyled" id="{{ category.collapse_id }}">
+        {% for sub in category.subcategories %}
+        <li>
+          <a
+            href="#sub_{{ category.key }}_{{ forloop.counter }}"
+            data-toggle="collapse"
+            aria-expanded="false"
+            class="dropdown-toggle sidebar-list-items"
+          >
+            <i class="fas fa-bug"></i>
+            {{ sub.name }}
+          </a>
+          <ul class="collapse list-unstyled" id="sub_{{ category.key }}_{{ forloop.counter }}">
+            {% for lab in sub.labs %}
+            {% if lab.overview_url_name %}
+            <li>
+              <a href="{% url lab.overview_url_name %}" class="sidebar-list-items">
+                Overview
+              </a>
+            </li>
+            {% endif %}
+            <li>
+              <button onclick="launchLab('{{ lab.lab_name }}')" class="sidebar-list-items lab-button" data-lab="{{ lab.lab_name }}">
+                <i class="fas fa-bug"></i>
+                {{ lab.display_name }}
+                <span class="lab-status-indicator not-running" aria-hidden="true"></span>
+              </button>
+            </li>
+            {% endfor %}
+          </ul>
+        </li>
+        {% endfor %}
+        {% for lab in category.labs %}
+        <li>
+          <button onclick="launchLab('{{ lab.lab_name }}')" class="sidebar-list-items lab-button" data-lab="{{ lab.lab_name }}">
+            <i class="fas fa-bug"></i>
+            {{ lab.display_name }}
+            <span class="lab-status-indicator not-running" aria-hidden="true"></span>
+          </button>
+        </li>
+        {% endfor %}
+      </ul>
+      {% endfor %}
+
+      <a
+        href="#customLabsSubmenu"
+        data-toggle="collapse"
+        aria-expanded="false"
+        class="dropdown-toggle"
+        id="customLabsMenu"
+        style="padding: 13% 0 0 0"
+      >
+        <i class="fas fa-cog"></i>
+        Custom Labs
+      </a>
+      <ul class="collapse list-unstyled" id="customLabsSubmenu">
+        <li id="sidebar-custom-labs-container">
+          <!-- Custom labs will be loaded dynamically here -->
+        </li>
+      </ul>
+      <a
+        href="#"
+        data-toggle="collapse"
+        aria-expanded="false"
+        class="dropdown-toggle"
+        id="help"
+        style="padding: 13% 0 0 0"
+      >
+        <i class="fas fa-question"></i>
+        Help
+      </a>
+    </li>
+  </ul>
+</nav>

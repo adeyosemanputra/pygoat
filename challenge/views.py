@@ -270,6 +270,16 @@ def start_lab(request, lab_image_name):
             retries=3,
             start_period=2000000000  # 2s in nanoseconds
             )
+
+            # Bind mount single master common_lab.css read-only into container
+            master_css_path = os.path.join(settings.BASE_DIR, "introduction", "static", "css", "common_lab.css")
+            container_volumes = []
+            if os.path.exists(master_css_path):
+                container_volumes = [
+                    f"{master_css_path}:/app/static/common_lab.css:ro",
+                    f"{master_css_path}:/app/static/css/common_lab.css:ro"
+                ]
+
             container = client.containers.run(
                 image=safe_image,
                 name=container_name,
@@ -277,7 +287,8 @@ def start_lab(request, lab_image_name):
                 labels=labels,
                 network=getattr(settings, "DOCKER_NETWORK", "my_network"),
                 mem_limit="512m",
-                healthcheck=healthcheck
+                healthcheck=healthcheck,
+                volumes=container_volumes
             )
             container.reload()
             wait_for_health(container)

@@ -65,3 +65,31 @@ class Lab(models.Model):
     def __str__(self):
         return self.name
 
+
+class LabCategoryMapping(models.Model):
+    """Maps a lab to a sidebar category with display metadata."""
+    CATEGORY_CHOICES = [
+        ('owasp_2025', 'OWASP TOP 10 2025'),
+        ('owasp_2021', 'OWASP TOP 10 2021'),
+        ('owasp_2017', 'OWASP TOP 10 2017'),
+        ('challenges', 'Challenges'),
+    ]
+
+    id = models.AutoField(primary_key=True)
+    lab = models.ForeignKey(Lab, on_delete=models.CASCADE, related_name='category_mappings')
+    category = models.CharField(max_length=20, choices=CATEGORY_CHOICES)
+    subcategory = models.CharField(max_length=100, blank=True, default='')
+    display_name = models.CharField(max_length=150)
+    sort_order = models.IntegerField(default=0)
+    overview_url_name = models.CharField(
+        max_length=100, blank=True, default='',
+        help_text='Django URL name for an overview page (e.g. supply_chain_failures)'
+    )
+
+    class Meta:
+        ordering = ['category', 'sort_order']
+        unique_together = [('lab', 'category', 'subcategory')]
+
+    def __str__(self):
+        return f"{self.lab.name} -> {self.category}/{self.display_name}"
+
