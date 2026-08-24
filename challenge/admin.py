@@ -6,14 +6,16 @@ from .models import Challenge, UserChallenge, Lab
 
 @admin.register(Lab)
 class LabAdmin(admin.ModelAdmin):
-    list_display = ("name", "build_location", "port")
+    list_display = ("name", "build_location", "port", "difficulty")
+    list_filter = ("difficulty",)
     search_fields = ("name",)
     empty_value_display = "-empty-"
 
 
 @admin.register(Challenge)
 class ChallengeAdmin(admin.ModelAdmin):
-    list_display = ("name", "docker_image", "start_port", "end_port", "point")
+    list_display = ("name", "docker_image", "start_port", "end_port", "point", "difficulty")
+    list_filter = ("difficulty",)
     search_fields = ("name", "docker_image")
     empty_value_display = "-empty-"
 

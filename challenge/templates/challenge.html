@@ -2,8 +2,23 @@
 {% block content %}
 <div class="content">
 
-    <div class="title">
+    <div class="title d-flex justify-content-between align-items-center flex-wrap">
         <h2>{{ chal.name }}</h2>
+        <div class="badges mb-2">
+            {% if chal.difficulty %}
+                <span class="badge badge-warning p-2 mr-1">
+                    {{ chal.difficulty.name }} (&times;{{ chal.difficulty.multiplier }})
+                </span>
+            {% endif %}
+            <span class="badge badge-info p-2 mr-1">
+                {{ chal.point }} Base Points
+            </span>
+            {% if user_chal and user_chal.is_solved %}
+                <span class="badge badge-success p-2">
+                    Solved
+                </span>
+            {% endif %}
+        </div>
     </div>
     <div class="box" pre>
         <pre>{{ chal.description }}</pre>
