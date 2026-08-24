@@ -1,5 +1,6 @@
 from django.core.management.base import BaseCommand
 from challenge.models import Lab
+from scoring.models import DifficultyLevel, ScoringSettings
 
 
 class Command(BaseCommand):
@@ -9,6 +10,13 @@ class Command(BaseCommand):
     )
 
     def handle(self, *args, **options):
+        # Ensure scoring settings and difficulty levels exist
+        ScoringSettings.load()
+        medium_difficulty, _ = DifficultyLevel.objects.get_or_create(
+            name="Medium",
+            defaults={"multiplier": 1.0, "order": 2}
+        )
+
         default_labs = [
             {"name": "bopla_lab", "build_location": "challenge/labs/bopla_lab", "port": 8080},
             {"name": "business_logic_lab", "build_location": "challenge/labs/business_logic_lab", "port": 5010},
@@ -42,12 +50,13 @@ class Command(BaseCommand):
                 defaults={
                     "build_location": lab_data["build_location"],
                     "port": lab_data["port"],
-                    "is_custom": False
+                    "is_custom": False,
+                    "difficulty": medium_difficulty,
                 }
             )
             if created:
                 self.stdout.write(
-                    self.style.SUCCESS(f"Lab '{lab.name}' created.")
+                    self.style.SUCCESS(f"Lab '{lab.name}' created with Medium difficulty.")
                 )
             else:
                 updated = False
@@ -59,6 +68,9 @@ class Command(BaseCommand):
                     updated = True
                 if lab.is_custom:
                     lab.is_custom = False
+                    updated = True
+                if lab.difficulty is None:
+                    lab.difficulty = medium_difficulty
                     updated = True
 
                 if updated:

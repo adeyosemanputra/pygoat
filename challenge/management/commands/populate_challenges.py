@@ -2,6 +2,7 @@ import json
 import os
 from django.core.management.base import BaseCommand
 from challenge.models import Challenge
+from scoring.models import DifficultyLevel, ScoringSettings
 
 
 class Command(BaseCommand):
@@ -12,6 +13,13 @@ class Command(BaseCommand):
     )
 
     def handle(self, *args, **options):
+        # Ensure scoring settings and difficulty levels exist
+        ScoringSettings.load()
+        medium_difficulty, _ = DifficultyLevel.objects.get_or_create(
+            name="Medium",
+            defaults={"multiplier": 1.0, "order": 2}
+        )
+
         file_path = os.path.join("challenge", "challenge.json")
 
         try:
@@ -25,6 +33,9 @@ class Command(BaseCommand):
             return
 
         for item in challenges_data:
+            diff_name = item.get("difficulty", "Medium")
+            diff_obj = DifficultyLevel.objects.filter(name=diff_name).first() or medium_difficulty
+
             challenge, created = Challenge.objects.get_or_create(
                 name=item.get("name"),
                 defaults={
@@ -35,6 +46,7 @@ class Command(BaseCommand):
                     "end_port": item.get("end_port", 0),
                     "flag": item.get("flag", ""),
                     "point": item.get("point", 0),
+                    "difficulty": diff_obj,
                 },
             )
             if created:
@@ -42,6 +54,9 @@ class Command(BaseCommand):
                     self.style.SUCCESS(f"Challenge '{challenge.name}' created.")
                 )
             else:
+                if challenge.difficulty is None:
+                    challenge.difficulty = diff_obj
+                    challenge.save()
                 self.stdout.write(f"Challenge '{challenge.name}' already exists.")
 
         self.stdout.write(
