@@ -1,17 +1,30 @@
+# Virtual Environments
+venv/
+.venv/
+env/
 .env/
+pygoat_env/
+*_env/
+
+# Python cache & bytecode
+__pycache__/
 *.pyc
-env
+*.pyo
+*.pyd
+
+# Database
 pygoat/db.sqlite3
-venv
 *.sqlite3
 *db.sqlite3*
-app.log
-bin
-*.env
 
-#  LOG files
+# Logs
+app.log
 *.log
 
-# vscode
-.vscode/
+# Static files collected
+staticfiles/
 
+# IDE
+.vscode/
+.idea/
+bin/
