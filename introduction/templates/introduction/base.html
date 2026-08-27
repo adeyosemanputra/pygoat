@@ -43,6 +43,7 @@
 
   <body>
     <div class="wrapper">
+      {% if user.is_authenticated %}
       <div class="pg active">PG</div>
       <!-- Sidebar  -->
       <nav id="sidebar" style="overflow: scroll" class="sidebarClass">
@@ -630,15 +631,23 @@
           </li>
         </ul>
       </nav>
+      {% endif %}
 
       <!-- Page Content  -->
-      <div id="content" style="height: 100vh">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div id="content" style="height: 100vh; width: 100%;">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light" {% if not user.is_authenticated %}style="border-radius: 10px;"{% endif %}>
           <div class="container-fluid">
+            {% if user.is_authenticated %}
             <button type="button" id="sidebarCollapse" class="btn btn-info">
               <i class="fas fa-align-left"></i>
               <span>Toggle Sidebar</span>
             </button>
+            {% else %}
+            <a class="navbar-brand font-weight-bold d-flex align-items-center" href="/" style="color: inherit; text-decoration: none;">
+              <img src="{% static 'Lab/icons/pygoat-mini.svg' %}" alt="PyGoat Logo" width="36" height="36" class="mr-2" />
+              <span>PyGoat</span>
+            </a>
+            {% endif %}
             <button
               class="btn btn-dark d-inline-block d-lg-none ml-auto"
               type="button"
@@ -654,11 +663,10 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
               <ul class="nav navbar-nav ml-auto">
                 <li class="nav-item">
-                  <button class="nav-link dark" href='{% url "logout" %}?next=/' id="stylesheet-toggle" onclick="swapStyleSheet()"
+                  <button class="nav-link dark" id="stylesheet-toggle" onclick="swapStyleSheet()" style="background: none; border: none; cursor: pointer;"
                     >Theme</button
                   >
                 </li>
-
 
                 {% if user.is_authenticated %}
                 <li class="nav-item">
@@ -704,13 +712,14 @@
 
     <script type="text/javascript">
       $(document).ready(function () {
+        $("#sidebarCollapse").on("click", function () {
+          $("#sidebar").toggleClass("active");
+          $(".pg").toggleClass("active");
+        });
         $(".sidebar-header").on("click", function () {
           $("#sidebar").toggleClass("active");
           $(".pg").toggleClass("active");
         });
-      });
-
-      $(document).ready(function () {
         $(".pg").on("click", function () {
           $("#sidebar").toggleClass("active");
           $(".pg").toggleClass("active");
