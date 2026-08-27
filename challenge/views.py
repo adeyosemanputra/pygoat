@@ -1,8 +1,10 @@
+import hashlib
+import json
+import subprocess
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.views.generic import View
 from django.views.decorators.csrf import csrf_exempt
-import subprocess
 from .utility import get_free_port
 from .models import Challenge, UserChallenge
 # Create your views here.
@@ -82,7 +84,50 @@ class DoItFast(View):
         output, error = process.communicate()
         return JsonResponse({'message': 'success', 'status': '200'})
     
-    def put(self, request, challange):
-        # TODO : implement flag checking
-        return "not implemented"
+    def put(self, request, challenge):
+        if not request.user.is_authenticated:
+            return JsonResponse({'message': 'Authentication required', 'status': '401'}, status=401)
+
+        try:
+            chal = Challenge.objects.get(name=challenge)
+        except Challenge.DoesNotExist:
+            return JsonResponse({'message': 'Challenge not found', 'status': '404'}, status=404)
+
+        try:
+            data = json.loads(request.body.decode('utf-8'))
+            submitted_flag = data.get('flag', '').strip()
+        except (json.JSONDecodeError, UnicodeDecodeError, AttributeError):
+            return JsonResponse({'message': 'Invalid JSON body', 'status': '400'}, status=400)
+
+        if not submitted_flag:
+            return JsonResponse({'message': 'Flag is required', 'status': '400'}, status=400)
+
+        user_chal, _ = UserChallenge.objects.get_or_create(
+            user=request.user,
+            challenge=chal,
+            defaults={'container_id': '', 'port': 0}
+        )
+
+        user_chal.no_of_attempt += 1
+
+        # Challenge.flag is stored as 'hashed_' + sha256 hex digest
+        expected_hashed_flag = "hashed_" + hashlib.sha256(submitted_flag.encode('utf-8')).hexdigest()
+
+        if chal.flag == expected_hashed_flag:
+            user_chal.is_solved = True
+            user_chal.save()
+            return JsonResponse({
+                'message': 'Correct flag! Challenge completed.',
+                'status': '200',
+                'is_solved': True,
+                'attempts': user_chal.no_of_attempt
+            }, status=200)
+        else:
+            user_chal.save()
+            return JsonResponse({
+                'message': 'Incorrect flag. Try again.',
+                'status': '400',
+                'is_solved': False,
+                'attempts': user_chal.no_of_attempt
+            }, status=400)
     

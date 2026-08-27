@@ -22,4 +22,50 @@
 </div>
 </div>
 
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+	const passwordInputs = document.querySelectorAll('input[type="password"]');
+	passwordInputs.forEach(function (input) {
+		const wrapper = document.createElement('div');
+		wrapper.style.position = 'relative';
+		wrapper.style.width = '100%';
+		input.parentNode.insertBefore(wrapper, input);
+		wrapper.appendChild(input);
+
+		input.style.paddingRight = '42px';
+
+		const toggleBtn = document.createElement('button');
+		toggleBtn.type = 'button';
+		toggleBtn.title = 'Show/Hide Password';
+		toggleBtn.setAttribute('aria-label', 'Toggle password visibility');
+		toggleBtn.style.position = 'absolute';
+		toggleBtn.style.right = '8px';
+		toggleBtn.style.top = '50%';
+		toggleBtn.style.transform = 'translateY(-50%)';
+		toggleBtn.style.background = 'none';
+		toggleBtn.style.border = 'none';
+		toggleBtn.style.cursor = 'pointer';
+		toggleBtn.style.color = '#6c757d';
+		toggleBtn.style.padding = '4px 6px';
+		toggleBtn.style.zIndex = '5';
+		toggleBtn.innerHTML = '👁️';
+
+		toggleBtn.addEventListener('click', function (e) {
+			e.preventDefault();
+			if (input.type === 'password') {
+				input.type = 'text';
+				toggleBtn.innerHTML = '🙈';
+				toggleBtn.title = 'Hide Password';
+			} else {
+				input.type = 'password';
+				toggleBtn.innerHTML = '👁️';
+				toggleBtn.title = 'Show Password';
+			}
+		});
+
+		wrapper.appendChild(toggleBtn);
+	});
+});
+</script>
+
 {% endblock %}
