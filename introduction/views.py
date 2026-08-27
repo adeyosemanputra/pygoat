@@ -1013,7 +1013,7 @@ def crypto_failure(request):
     if request.user.is_authenticated:
         return render(request,"Lab_2021/A2_Crypto_failur/crypto_failure.html",{"success":False,"failure":False})
     else:
-        redirect('login')
+        return redirect('login')
 
 def crypto_failure_lab(request):
     if request.user.is_authenticated:

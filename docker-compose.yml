@@ -10,6 +10,6 @@ services:
       - migration
   migration:
     image: pygoat/pygoat:latest
-    command: python manage.py migrate --noinput
+    command: python manage.py migrate --noinput && python manage.py seed_labs
     volumes:
       - .:/app

@@ -1,33 +1,152 @@
-{% extends "introduction/base.html" %} {% block content %}
+{% extends "introduction/base.html" %}
 {% load static %}
-<div class="container">
-  <div id="home-section1 ">
-    <div>
-      <h2>Welcome To PyGoat</h2>
-      <p>
-        Pygoat is a vulnerable web application developed in python to teach
-        developers and Web app pentesters about Owasp top 10 and how to avoid
-        them.
-      </p>
-      <p>
-        The purpose is to give both developers and testers a platform for
-        learning how to test applications and how to code securely. PyGoat is
-        written in python and used Django web framework as a platform. It has
-        both traditional web application vulnerabilities (i.e. XSS, SQLi) as
-        well. PyGoat also has an area where you can see the source code to
-        determine where the mistake was made that caused the vulnerability and
-        allows you to make changes to secure it.
-      </p>
+
+{% block title %}
+<title>PyGoat - Home</title>
+{% endblock %}
+
+{% block content %}
+<style>
+  .dashboard-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 1.5rem 1rem;
+  }
+
+  .dashboard-header {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(128, 128, 128, 0.2);
+  }
+
+  .dashboard-header h2 {
+    font-size: 1.85rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: inherit;
+  }
+
+  .dashboard-header p {
+    font-size: 1rem;
+    line-height: 1.55;
+    color: inherit;
+    opacity: 0.85;
+    margin-bottom: 0;
+    max-width: 850px;
+  }
+
+  .overview-card {
+    background: rgba(128, 128, 128, 0.08);
+    border: 1px solid rgba(128, 128, 128, 0.2);
+    border-radius: 8px;
+    padding: 1.25rem 1rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .overview-card h4 {
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #17a2b8;
+  }
+
+  .overview-card p {
+    font-size: 0.9rem;
+    line-height: 1.45;
+    color: inherit;
+    opacity: 0.8;
+    margin-bottom: 0;
+  }
+
+  .actions-section {
+    margin-top: 1.5rem;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .btn-start {
+    display: inline-block;
+    background: #17a2b8;
+    color: #ffffff !important;
+    font-size: 0.95rem;
+    font-weight: 600;
+    padding: 0.6rem 1.4rem;
+    border-radius: 6px;
+    text-decoration: none;
+    border: 1px solid #17a2b8;
+    transition: background-color 0.2s ease;
+  }
+
+  .btn-start:hover {
+    background: #138496;
+    border-color: #117a8b;
+    text-decoration: none;
+  }
+
+  .btn-secondary-action {
+    display: inline-block;
+    background: transparent;
+    color: inherit !important;
+    font-size: 0.95rem;
+    font-weight: 600;
+    padding: 0.6rem 1.4rem;
+    border-radius: 6px;
+    text-decoration: none;
+    border: 1px solid rgba(128, 128, 128, 0.35);
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+  }
+
+  .btn-secondary-action:hover {
+    background: rgba(128, 128, 128, 0.15);
+    border-color: rgba(128, 128, 128, 0.5);
+    text-decoration: none;
+  }
+</style>
+
+<div class="dashboard-container">
+  <div class="dashboard-header">
+    <h2>Welcome to PyGoat</h2>
+    <p>
+      PyGoat is an educational platform designed to teach web application security through practical OWASP Top 10 exercises. Use the sidebar to browse all modules, or choose an option below to get started.
+    </p>
+  </div>
+
+  <div class="row">
+    <div class="col-12 col-md-4 mb-3 mb-md-0">
+      <div class="overview-card">
+        <h4>1. Understand the Flaw</h4>
+        <p>
+          Read explanations of why vulnerabilities occur, how they can be exploited, and the impact they have on web systems.
+        </p>
+      </div>
     </div>
-    {% comment %} <div>
-        <img src="{% static 'Lab/icons/pygoat-small.png' %}"
-             alt="home-section1"
-             class="img-responsive"
-             id="home-section1-img">
-    </div> {% endcomment %}
+
+    <div class="col-12 col-md-4 mb-3 mb-md-0">
+      <div class="overview-card">
+        <h4>2. Practice in the Lab</h4>
+        <p>
+          Test your knowledge against real, interactive vulnerable endpoints built directly in Python and Django.
+        </p>
+      </div>
+    </div>
+
+    <div class="col-12 col-md-4">
+      <div class="overview-card">
+        <h4>3. Apply the Fix</h4>
+        <p>
+          Review the underlying source code to see where mistakes were made and learn how to implement secure coding patterns.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="actions-section">
+    <a href="/broken_access_control" class="btn-start">Start with OWASP Top 10</a>
+    <a href="/challenge/do-it-fast" class="btn-secondary-action">View Challenges</a>
   </div>
 </div>
-
-{% comment %}
-<div class="line"></div>
-{% endcomment %} {% endblock content %}
+{% endblock content %}
