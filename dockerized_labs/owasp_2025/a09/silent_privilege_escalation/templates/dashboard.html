@@ -1,0 +1,149 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>Dashboard</title>
+{% endblock %}
+
+{% block content %}
+
+<div class="content">
+
+    <!-- ===============================
+         UI Notice (User → Admin via UI)
+    ================================ -->
+    {% if ui_warning %}
+    <div class="alert info">
+        ⚠️ <b>Notice:</b> {{ ui_warning }}
+        <br>
+        Some requests are treated as more trusted than others.
+        Consider what might cause the backend to classify a request as internal.
+    </div>
+    {% endif %}
+    
+    {% if role == "admin" and mode == "secure" %}
+<div class="alert success">
+    ✅ <b>Lab Complete:</b>
+    You successfully demonstrated a silent privilege escalation
+    and verified that secure mode prevents it.
+</div>
+{% endif %}
+
+
+    <!-- ===============================
+         Security Alerts
+    ================================ -->
+    {% if alert %}
+    <div class="alert">
+        🚨 <b>Security Alert:</b> {{ alert }}
+    </div>
+    {% endif %}
+
+
+
+    <!-- ===============================
+         Security Mode Toggle (Top)
+    ================================ -->
+    <div class="box" style="display: flex; justify-content: space-between; align-items: center;">
+        <div>
+            <h3 style="margin-bottom: 5px;">Security Mode</h3>
+            <p class="bp" style="margin: 0;">
+                Current mode:
+                {% if mode == "secure" %}
+                    <b style="color: #28a745;">Secure</b>
+                {% else %}
+                    <b style="color: #dc3545;">Vulnerable</b>
+                {% endif %}
+            </p>
+        </div>
+
+        <form method="GET" action="/toggle-mode" style="margin: 0;">
+            <button type="submit">
+                {% if mode == "secure" %}
+                    Switch to Vulnerable
+                {% else %}
+                    Switch to Secure
+                {% endif %}
+            </button>
+        </form>
+    </div>
+
+    <!-- ===============================
+         User Context
+    ================================ -->
+    <div class="box">
+        <p class="bp"><b>Logged in as:</b> {{ username }}</p>
+        <p class="bp"><b>Current Role:</b> {{ role }}</p>
+    </div>
+
+    <!-- ===============================
+         Admin-Only Audit Access
+    ================================ -->
+    {% if role == "admin" %}
+    <div class="box">
+        <h3>Security Monitoring</h3>
+
+        <p class="bp">
+            Access to internal security audit logs.
+        </p>
+
+        <a href="/audit" style="text-decoration: none;">
+            <button type="button">
+                📋 View Audit Logs
+            </button>
+        </a>
+    </div>
+    {% endif %}
+
+    <!-- ===============================
+         Role Change Action
+    ================================ -->
+    <div class="box">
+        <h3>Change Role</h3>
+
+        <form method="POST" action="/change-role">
+            <label for="role"><b>Select Role</b></label>
+
+            <select name="role" id="role">
+                {% if role == "user" %}
+                    <option value="admin">Administrator</option>
+                {% elif role == "admin" %}
+                    <option value="user">Standard User</option>
+                {% endif %}
+            </select>
+            
+            {% if mode != "secure" %}
+            <input type="hidden" name="workflow" value="ui">
+	    {% endif %}
+
+            <br><br>
+            <button type="submit">Change Role</button>
+        </form>
+
+        <p class="bp" style="font-size: 0.9rem; opacity: 0.8;">
+            Role change requests are recorded for auditing purposes.
+        </p>
+    </div>
+
+    <!-- ===============================
+         Secure Mode Explanation
+    ================================ -->
+    {% if mode == "secure" %}
+    <div class="box">
+        <h3>Security Hardening</h3>
+
+        <p class="bp">
+            The application is currently enforcing strict authorization
+            and alerting rules.
+        </p>
+
+        <a href="/secure-fix" style="text-decoration: none;">
+            <button type="button">
+                🔒 View Secure Fix Explanation
+            </button>
+        </a>
+    </div>
+    {% endif %}
+
+</div>
+
+{% endblock %}

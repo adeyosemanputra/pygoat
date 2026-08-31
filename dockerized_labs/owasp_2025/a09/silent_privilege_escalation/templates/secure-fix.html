@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>Secure Fix – A09</title>
+{% endblock %}
+
+{% block content %}
+
+<div class="content">
+
+    <div class="box">
+        <h2>Why the Exploit Worked</h2>
+
+        <ul>
+            <li>
+                Alert and authorization decisions were inferred from
+                <b>client-supplied context</b>,
+                rather than enforced using server-side identity and permissions.
+            </li>
+
+            <li>
+                The backend implicitly trusted the <i>presence</i> of an
+                internal request signal, assuming it could only originate
+                from trusted systems.
+            </li>
+
+            <li>
+                No verification was performed to confirm that the request
+                actually came from an internal or trusted source.
+            </li>
+
+            <li>
+                The role change was recorded in logs, but no alert was generated
+                when the action succeeded.
+            </li>
+        </ul>
+    </div>
+
+    <div class="box">
+        <h2>Why Secure Mode Stops It</h2>
+
+        <ul>
+            <li>Authorization is enforced server-side for all role changes</li>
+            <li>Client-supplied context is ignored for trust decisions</li>
+            <li>Privilege escalation attempts trigger alerts regardless of outcome</li>
+            <li>
+                Detection is based on <b>intent</b>, not just successful exploitation
+            </li>
+        </ul>
+    </div>
+
+    <div class="box">
+        <h2>OWASP A09 Lesson</h2>
+
+        <p class="bp">
+            Security logging without effective alerting creates a false sense of safety.
+            High-risk actions such as privilege changes must:
+        </p>
+
+        <ul>
+            <li>Be logged with sufficient context</li>
+            <li>Trigger alerts based on intent and risk</li>
+            <li>Be reviewed automatically or by a SOC</li>
+        </ul>
+    </div>
+
+    <div class="box">
+        <a href="/dashboard" style="text-decoration: none;">
+            <button type="button">
+                ← Back to Dashboard
+            </button>
+        </a>
+    </div>
+
+</div>
+
+{% endblock %}
