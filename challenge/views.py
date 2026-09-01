@@ -46,11 +46,15 @@ class DoItFast(View):
         if port == None:
             return JsonResponse({'message': 'failed', 'status': '500', 'endpoint': 'None'})
         
-        command = f"docker run -d -p {port}:{chal.docker_port} {chal.docker_image}"
-        process = subprocess.Popen(command.split(" "), stdout=subprocess.PIPE)
-        output, error = process.communicate()
-        container_id = output.decode('utf-8').strip()
-        
+        command = ["docker", "run", "-d", "-p", f"{port}:{chal.docker_port}", chal.docker_image]
+        try:
+            result = subprocess.run(command, capture_output=True, text=True)
+        except FileNotFoundError:
+            return JsonResponse({'message': 'docker not available', 'status': '500', 'endpoint': 'None'})
+        if result.returncode != 0:
+            return JsonResponse({'message': 'failed to start container', 'status': '500', 'endpoint': 'None'})
+        container_id = result.stdout.strip()
+
         if user_chall_exists:
             # TODO : reuse the container instead of creaing the new one
             user_chal.container_id = container_id
@@ -77,12 +81,14 @@ class DoItFast(View):
 
         user_chal.is_live = False
         user_chal.save()
-        command = f"docker stop {user_chal.container_id}"
-        process = subprocess.Popen(command.split(" "), stdout=subprocess.PIPE)
-        output, error = process.communicate()
+        if user_chal.container_id:
+            try:
+                subprocess.run(["docker", "stop", user_chal.container_id], capture_output=True, text=True)
+            except FileNotFoundError:
+                pass
         return JsonResponse({'message': 'success', 'status': '200'})
-    
-    def put(self, request, challange):
+
+    def put(self, request, challenge):
         # TODO : implement flag checking
-        return "not implemented"
+        return JsonResponse({'message': 'not implemented', 'status': '501'}, status=501)
     
