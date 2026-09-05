@@ -1,5 +1,6 @@
 import base64
 import datetime
+import functools
 import hashlib
 import json
 import logging
@@ -74,6 +75,7 @@ def home(request):
 
 ## authentication check decurator function 
 def authentication_decorator(func):
+    @functools.wraps(func)
     def function(*args, **kwargs):
         if args[0].user.is_authenticated:
             return func(*args, **kwargs)

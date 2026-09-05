@@ -57,7 +57,7 @@ def ssrf_code_checker(request):
 
 
 @csrf_exempt
-# @authentication_decorator
+@authentication_decorator
 def log_function_checker(request):
     if request.method == 'POST':
         csrf_token = request.POST.get("csrfmiddlewaretoken")
