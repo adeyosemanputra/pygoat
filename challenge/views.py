@@ -25,43 +25,60 @@ class DoItFast(View):
             return render(request, 'challenge.html', {'chal': chal, 'user_chal': None})
     
     def post(self, request, challenge):
-        user_chall_exists = False
-        if not request.user.is_authenticated:
-            return redirect('login')
-        
-        try: # checking the existance of challenge
-            chal = Challenge.objects.get(name=challenge)
-        except Exception as e:
-            return render(request, 'chal-not-found.html')
+            user_chall_exists = False
+            if not request.user.is_authenticated:
+                return redirect('login')
+            
+            try: # checking the existance of challenge
+                chal = Challenge.objects.get(name=challenge)
+            except Exception as e:
+                return render(request, 'chal-not-found.html')
 
-        try: # checking if he attempted it before or not, if yes then check if the container is live or not
-            user_chal = UserChallenge.objects.get(user=request.user, challenge=chal)
-            if user_chal.is_live:
-                return JsonResponse({'message':'already running', 'status': '200', 'endpoint': f'http://localhost:{user_chal.port}'})
-            user_chall_exists = True
-        except:
-            pass
+            try: # checking if he attempted it before or not, if yes then check if the container is live or not
+                user_chal = UserChallenge.objects.get(user=request.user, challenge=chal)
+                if user_chal.is_live:
+                    return JsonResponse({'message':'already running', 'status': '200', 'endpoint': f'http://localhost:{user_chal.port}'})
+                user_chall_exists = True
+            except:
+                pass
 
-        port = get_free_port(8000, 8100)
-        if port == None:
-            return JsonResponse({'message': 'failed', 'status': '500', 'endpoint': 'None'})
-        
-        command = f"docker run -d -p {port}:{chal.docker_port} {chal.docker_image}"
-        process = subprocess.Popen(command.split(" "), stdout=subprocess.PIPE)
-        output, error = process.communicate()
-        container_id = output.decode('utf-8').strip()
-        
-        if user_chall_exists:
-            # TODO : reuse the container instead of creaing the new one
-            user_chal.container_id = container_id
-            user_chal.port = port
-            user_chal.is_live = True
-            user_chal.save()
-        else:
-            user_chal = UserChallenge(user=request.user, challenge=chal, container_id=container_id, port=port)
-            user_chal.save()
-        # save the output in database for stoping the container 
-        return JsonResponse({'message': 'success', 'status': '200', 'endpoint': f'http://localhost:{port}'})
+            # Container reuse logic
+            if user_chall_exists and user_chal.container_id:
+                # Check if the existing container is present on host
+                check_cmd = f"docker inspect --format='((.State.Running))' {user_chal.container_id}"
+                process = subprocess.Popen(check_cmd.split(" "), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                output, error = process.communicate()
+                
+                # If inspect succeeded, start the stopped container
+                if process.returncode == 0:
+                    start_cmd = f"docker start {user_chal.container_id}"
+                    start_proc = subprocess.Popen(start_cmd.split(" "), stdout=subprocess.PIPE)
+                    start_proc.communicate()
+
+                    user_chal.is_live = True
+                    user_chal.save()
+                    return JsonResponse({'message': 'success', 'status': '200', 'endpoint': f'http://localhost:{user_chal.port}'})
+
+            # Fallback: Create new container if reuse isn't possible
+            port = get_free_port(8000, 8100)
+            if port is None:
+                return JsonResponse({'message': 'failed', 'status': '500', 'endpoint': 'None'})
+            
+            command = f"docker run -d -p {port}:{chal.docker_port} {chal.docker_image}"
+            process = subprocess.Popen(command.split(" "), stdout=subprocess.PIPE)
+            output, error = process.communicate()
+            container_id = output.decode('utf-8').strip()
+            
+            if user_chall_exists:
+                user_chal.container_id = container_id
+                user_chal.port = port
+                user_chal.is_live = True
+                user_chal.save()
+            else:
+                user_chal = UserChallenge(user=request.user, challenge=chal, container_id=container_id, port=port)
+                user_chal.save()
+
+            return JsonResponse({'message': 'success', 'status': '200', 'endpoint': f'http://localhost:{port}'})
 
 
 
