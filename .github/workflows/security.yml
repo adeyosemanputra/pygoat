@@ -1,0 +1,37 @@
+name: "CI/CD Pipeline"
+
+on:
+  push:
+    branches: [ "master", "main" ]
+  pull_request:
+    branches: [ "master", "main" ]
+
+jobs:
+  semgrep-sast:
+    name: "Semgrep SAST Scan"
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+      actions: read
+      contents: read
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Semgrep (Community Rules + SARIF export)
+        run: |
+          docker run --rm -v "${{ github.workspace }}:/src" returntocorp/semgrep \
+            semgrep scan --config "p/owasp-top-ten" --config "p/cwe-top-25" \
+            --sarif --output=/src/semgrep.sarif /src || true
+
+      - name: Upload SARIF to GitHub Security Tab
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: semgrep.sarif
+        if: always()
+
+      - name: Quality Gate (Fail PR on High Severity)
+        run: |
+          docker run --rm -v "${{ github.workspace }}:/src" returntocorp/semgrep \
+            semgrep scan --config "p/owasp-top-ten" --error --severity ERROR /src
