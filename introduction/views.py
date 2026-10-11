@@ -23,9 +23,12 @@ import requests
 import yaml
 from argon2 import PasswordHasher
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import UserCreationForm
 from django.core import serializers
+from django.views.decorators.http import require_http_methods
+from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
 from django.shortcuts import redirect, render
 from django.template import loader
@@ -411,43 +414,47 @@ def cmd(request):
         return render(request,'Lab/CMD/cmd.html')
     else:
         return redirect('login')
-@csrf_exempt
+
+# Checks for bad characters, validates string
+FQDN_REGEX = re.compile(
+    r"^(?=.{1,253}$)(?!-)[A-Za-z0-9-]{1,63}(?<!-)(\.[A-Za-z0-9-]{1,63})*\.?$"
+)
+
+@login_required
+@require_http_methods(["POST", "GET"])
 def cmd_lab(request):
-    if request.user.is_authenticated:
-        if(request.method=="POST"):
-            domain=request.POST.get('domain')
-            # Remove all common protocols (case-insensitive) and www prefix
-            domain = re.sub(r'^(?:(https?|ftp)://)?(?:www\.)?', '', domain, flags=re.IGNORECASE)
-            os=request.POST.get('os')
-            print(os)
-            if(os=='win'):
-                command="nslookup {}".format(domain)
-            else:
-                command = "dig {}".format(domain)
-            
-            try:
-                # output=subprocess.check_output(command,shell=True,encoding="UTF-8")
-                process = subprocess.Popen(
-                    command,
-                    shell=True,
-                    stdout=subprocess.PIPE, 
-                    stderr=subprocess.PIPE)
-                stdout, stderr = process.communicate()
-                data = stdout.decode('utf-8')
-                stderr = stderr.decode('utf-8')
-                # res = json.loads(data)
-                # print("Stdout\n" + data)
-                output = data + stderr
-                print(data + stderr)
-            except:
-                output = "Something went wrong"
-                return render(request,'Lab/CMD/cmd_lab.html',{"output":output})
-            print(output)
-            return render(request,'Lab/CMD/cmd_lab.html',{"output":output})
-        else:
-            return render(request, 'Lab/CMD/cmd_lab.html')
-    else:
-        return redirect('login')
+    # If request method is GET, reject it
+    if request.method == "GET":
+        return render(request, "Lab/CMD/cmd_lab.html")
+    # Get domain parameter value
+    domain = request.POST.get("domain", "").strip()
+    # Remove scheme from domain string
+    no_scheme_domain = re.sub(r'^(?:(https?|ftp)://)?(?:www\.)?', '', domain, flags=re.IGNORECASE)
+    if not no_scheme_domain or not FQDN_REGEX.match(no_scheme_domain):
+        return render(request, 'Lab/CMD/cmd_lab.html', { "output": "Bad Request: Syntax error at domain value"}, status=400)
+    
+    # Concatinate command with domain value
+    command = ["dig", no_scheme_domain]
+    
+    try:
+        # Use subprocess with shell=False to use direct dig binary, no /bin/sh
+        process = subprocess.run(
+            command,
+            shell=False,
+            capture_output=True,
+            timeout = 5,
+            text = True
+        )
+        output = process.stdout if process.returncode == 0 else (process.stderr or process.stdout)
+        print(output)
+    except subprocess.TimeoutExpired:
+            output = "Execution timed out (5s limit reached)"
+    except FileNotFoundError:
+            output = "Required binary 'dig' not installed on the system"
+    except subprocess.SubprocessError:
+            output = "Subprocess execution failed"
+    print(output)
+    return render(request,'Lab/CMD/cmd_lab.html',{"output":output})
 
 @csrf_exempt
 def cmd_lab2(request):
