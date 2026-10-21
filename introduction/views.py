@@ -3,8 +3,13 @@ import string
 
 from django.contrib import messages
 from django.contrib.auth import login
+from django.conf import settings
+from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import redirect, render
 from django.views.decorators.csrf import csrf_exempt
+
+from challenge.models import Lab
+from challenge.views import _sanitize_image_name, _sanitize_username
 
 from .forms import NewUserForm
 
@@ -61,6 +66,39 @@ def authentication_decorator(func):
             return redirect("login")
 
     return function
+
+def traefik_auth_verify(request):
+    """
+    Traefik ForwardAuth target: allow a request to a lab subdomain only if it
+    belongs to the logged-in user, i.e. the host is exactly
+    lab-<sanitized username>-<known lab>.<LAB_DOMAIN> (see challenge.views).
+    """
+    if not request.user.is_authenticated:
+        return HttpResponse(status=401)
+
+    # Set by Traefik from the real Host header (trustForwardHeader is off)
+    host = request.headers.get("X-Forwarded-Host", "").split(":")[0].lower()
+    domain = getattr(settings, "LAB_DOMAIN", "localhost").lower()
+    if not host.endswith("." + domain):
+        return HttpResponseBadRequest("Invalid host header")
+    subdomain = host[: -len(domain) - 1]
+
+    # Compare against the full owner prefix, not a "-"-split field, so user
+    # "alice" can't match "lab-alice-bob-<lab>" owned by "alice-bob".
+    prefix = f"lab-{_sanitize_username(request.user.username)}-".lower()
+    if not subdomain.startswith(prefix):
+        return HttpResponse(status=403)
+
+    known_labs = {
+        _sanitize_image_name(name).lower()
+        for name in Lab.objects.values_list("name", flat=True)
+    }
+    if subdomain[len(prefix):] not in known_labs:
+        return HttpResponse(status=403)
+
+    response = HttpResponse(status=200)
+    response["X-Forwarded-User"] = request.user.username
+    return response
 
 
 # *****************************************XSS****************************************************#

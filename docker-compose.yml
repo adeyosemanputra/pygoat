@@ -18,6 +18,10 @@ services:
   web:
     build: .
     command: gunicorn --bind 0.0.0.0:8000 --workers 6 pygoat.wsgi
+    environment:
+      - LAB_DOMAIN=lvh.me
+      - LAB_COOKIE_DOMAIN=.lvh.me
+      - LAB_FORWARD_AUTH_URL=http://web:8000/auth/verify/
     ports:
       - "8000:8000"
     volumes:

@@ -27,7 +27,7 @@ SENSITIVE_DATA = "FLAGTHATNEEDSTOBEFOUND"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["pygoat.herokuapp.com", "0.0.0.0", "127.0.0.1", "localhost"]
+ALLOWED_HOSTS = ["pygoat.herokuapp.com", "0.0.0.0", "127.0.0.1", "localhost", "lvh.me", ".lvh.me", "web"]
 
 
 # Application definition
@@ -177,14 +177,30 @@ SOCIALACCOUNT_PROVIDERS = {
 }
 
 SECRET_COOKIE_KEY = "PYGOAT"
-CSRF_TRUSTED_ORIGINS = ["http://127.0.0.1:8000","http://0.0.0.0:8000","http://172.16.189.10"]
+CSRF_TRUSTED_ORIGINS = [
+    "http://127.0.0.1:8000",
+    "http://0.0.0.0:8000",
+    "http://172.16.189.10",
+    "http://lvh.me:8000",
+    "http://lvh.me",
+    "http://*.lvh.me",
+]
 
 TRAEFIK_URLS = [
     'http://localhost:8080/api/http/routers',     
     'http://traefik_proxy:8080/api/http/routers',
 ]
 
-# Labs configuration
-# LAB_DOMAIN = "localhost"
+LAB_DOMAIN = os.environ.get("LAB_DOMAIN", "localhost")
 # DOCKER_NETWORK = "my_network"
 # LABS_PER_USER_LIMIT = 3
+
+# Per-user lab isolation via Traefik ForwardAuth (see traefik_auth_verify).
+# Needs the session cookie shared with lab subdomains, so set all three
+# together, e.g. LAB_DOMAIN=lvh.me, LAB_COOKIE_DOMAIN=.lvh.me,
+# LAB_FORWARD_AUTH_URL=http://web:8000/auth/verify/ (see docker-compose.yml).
+LAB_FORWARD_AUTH_URL = os.environ.get("LAB_FORWARD_AUTH_URL", "")
+SESSION_COOKIE_DOMAIN = os.environ.get("LAB_COOKIE_DOMAIN") or None
+CSRF_COOKIE_DOMAIN = SESSION_COOKIE_DOMAIN
+SESSION_COOKIE_SAMESITE = "Lax"
+CSRF_COOKIE_SAMESITE = "Lax"
