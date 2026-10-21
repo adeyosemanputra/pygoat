@@ -191,11 +191,16 @@ TRAEFIK_URLS = [
     'http://traefik_proxy:8080/api/http/routers',
 ]
 
-LAB_DOMAIN = "lvh.me"
+LAB_DOMAIN = os.environ.get("LAB_DOMAIN", "localhost")
 # DOCKER_NETWORK = "my_network"
 # LABS_PER_USER_LIMIT = 3
 
-SESSION_COOKIE_DOMAIN = ".lvh.me"
-CSRF_COOKIE_DOMAIN = ".lvh.me"
+# Per-user lab isolation via Traefik ForwardAuth (see traefik_auth_verify).
+# Needs the session cookie shared with lab subdomains, so set all three
+# together, e.g. LAB_DOMAIN=lvh.me, LAB_COOKIE_DOMAIN=.lvh.me,
+# LAB_FORWARD_AUTH_URL=http://web:8000/auth/verify/ (see docker-compose.yml).
+LAB_FORWARD_AUTH_URL = os.environ.get("LAB_FORWARD_AUTH_URL", "")
+SESSION_COOKIE_DOMAIN = os.environ.get("LAB_COOKIE_DOMAIN") or None
+CSRF_COOKIE_DOMAIN = SESSION_COOKIE_DOMAIN
 SESSION_COOKIE_SAMESITE = "Lax"
 CSRF_COOKIE_SAMESITE = "Lax"

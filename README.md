@@ -93,6 +93,7 @@ If you face any issue while installation, kindly refer to the [documentation](ht
 ### From Docker-Compose 
 1. Install [Docker](https://www.docker.com)
 2. Run `docker-compose up` or `docker-compose up -d`
+3. Open the app at <http://lvh.me:8000> (not `localhost`). Labs are served at `lab-<username>-<lab>.lvh.me` and are only accessible to the user who started them, which requires the login cookie to be shared across `*.lvh.me`.
 
 ### Build Docker Image and Run
 1. Clone the repository  &ensp; `git clone https://github.com/adeyosemanputra/pygoat.git` 
