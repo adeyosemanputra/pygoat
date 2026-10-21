@@ -31,11 +31,13 @@
             Score: {{ user_total_score|default:"0" }} pts
           </a>
         </li>
+        {% if user.is_staff %}
         <li class="nav-item">
           <button class="nav-link dark mr-2" onclick="openCustomLabsModal()" id="custom-labs-btn" style="background: #f0f8ff8a; border-radius: 2px; border: none;">
             Custom Labs
           </button>
         </li>
+        {% endif %}
         <li class="nav-item">
           <button class="nav-link dark" onclick="manageLabs()" id="manage-labs-btn" style="background: #f0f8ff8a; border-radius: 2px; border: none;">
             Manage Labs

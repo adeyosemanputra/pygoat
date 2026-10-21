@@ -17,7 +17,7 @@ services:
 
   web:
     build: .
-    command: gunicorn --bind 0.0.0.0:8000 --workers 6 pygoat.wsgi
+    command: gunicorn --bind 0.0.0.0:8000 --workers 6 --timeout 600 pygoat.wsgi
     environment:
       - LAB_DOMAIN=lvh.me
       - LAB_COOKIE_DOMAIN=.lvh.me

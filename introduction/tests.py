@@ -54,3 +54,23 @@ class TraefikAuthVerifyTests(TestCase):
     def test_missing_forwarded_host_is_rejected(self):
         self.client.force_login(self.alice)
         self.assertEqual(self.client.get(self.url).status_code, 400)
+
+
+class RegistrationAndRobotsTests(TestCase):
+    def test_register_creates_and_logs_in_user(self):
+        resp = self.client.post("/register", {
+            "username": "newbie", "email": "n@example.com",
+            "password1": "Sup3r-Secret-pw!", "password2": "Sup3r-Secret-pw!",
+        })
+        self.assertEqual(resp.status_code, 302)
+        self.assertTrue(User.objects.filter(username="newbie").exists())
+        self.assertEqual(self.client.get("/").status_code, 200)
+
+    def test_robots_redirects_anonymous_instead_of_500(self):
+        self.assertEqual(self.client.get("/robots.txt").status_code, 302)
+
+    def test_robots_served_to_logged_in_user(self):
+        self.client.force_login(User.objects.create_user("u", password="pw"))
+        resp = self.client.get("/robots.txt")
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp["Content-Type"], "text/plain")

@@ -72,8 +72,8 @@ class ChallengeSolveTests(TestCase):
 
     def _start(self):
         with patch("challenge.views.get_free_port", return_value=8001), \
-             patch("challenge.views.subprocess.Popen") as popen:
-            popen.return_value.communicate.return_value = (b"cid\n", b"")
+             patch("challenge.views.get_docker_client") as get_client:
+            get_client.return_value.containers.run.return_value.id = "cid"
             return self.client.post(self.url)
 
     def _submit(self, flag):

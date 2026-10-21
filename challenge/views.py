@@ -1,16 +1,16 @@
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.views.generic import View
-from django.views.decorators.csrf import csrf_exempt
-import subprocess
 from .utility import get_free_port
 from .models import Challenge, UserChallenge, Lab
 from scoring.services import start_tracking, complete_tracking
 import docker
 import hashlib
 import hmac
+import io
 import json
 import os
+import tarfile
 import re
 from django.conf import settings
 import time
@@ -85,10 +85,24 @@ class DoItFast(View):
                 {"message": "failed", "status": "500", "endpoint": "None"}
             )
 
-        command = f"docker run -d -p {port}:{chal.docker_port} {chal.docker_image}"
-        process = subprocess.Popen(command.split(" "), stdout=subprocess.PIPE)
-        output, error = process.communicate()
-        container_id = output.decode("utf-8").strip()
+        client = get_docker_client()
+        if client is None:
+            return JsonResponse(
+                {"message": "Docker daemon unavailable", "status": "503", "endpoint": "None"},
+                status=503,
+            )
+        try:
+            container = client.containers.run(
+                chal.docker_image,
+                detach=True,
+                ports={f"{chal.docker_port}/tcp": port},
+            )
+        except docker.errors.DockerException as e:
+            return JsonResponse(
+                {"message": f"Failed to start challenge: {e}", "status": "500", "endpoint": "None"},
+                status=500,
+            )
+        container_id = container.id
 
         if user_chall_exists:
             # TODO : reuse the container instead of creating the new one
@@ -123,9 +137,15 @@ class DoItFast(View):
 
         user_chal.is_live = False
         user_chal.save()
-        command = f"docker stop {user_chal.container_id}"
-        process = subprocess.Popen(command.split(" "), stdout=subprocess.PIPE)
-        output, error = process.communicate()
+        client = get_docker_client()
+        if client is None:
+            return JsonResponse({"message": "Docker daemon unavailable", "status": "503"}, status=503)
+        try:
+            container = client.containers.get(user_chal.container_id)
+            container.stop()
+            container.remove()
+        except docker.errors.NotFound:
+            pass
         return JsonResponse({"message": "success", "status": "200"})
 
     def put(self, request, challenge):
@@ -201,20 +221,53 @@ def _get_lab_config(lab_image_name: str) -> dict:
         raise KeyError(f'Lab config not found: {lab_image_name}')
 
 
+# Lab images may only be built from these directories of the repo
+LAB_BUILD_ROOTS = ("dockerized_labs", os.path.join("challenge", "labs"))
+
+
+def _resolve_build_path(build_location: str) -> str:
+    """
+    Return the absolute build directory for a lab, or raise ValueError if it
+    is outside LAB_BUILD_ROOTS (e.g. an absolute path or one using "..") or
+    has no Dockerfile.
+    """
+    base = os.path.realpath(settings.BASE_DIR)
+    build_path = os.path.realpath(os.path.join(base, build_location or ""))
+    roots = [os.path.join(base, root) for root in LAB_BUILD_ROOTS]
+    if not any(build_path.startswith(root + os.sep) for root in roots):
+        raise ValueError(
+            "Build location must be a directory under " + " or ".join(LAB_BUILD_ROOTS)
+        )
+    if not os.path.isfile(os.path.join(build_path, "Dockerfile")):
+        raise ValueError("Build location must contain a Dockerfile")
+    return build_path
+
+
 def _ensure_image_built(client, image: str, build_location: str):
     try:
         client.images.get(image)
     except docker.errors.ImageNotFound:
-        build_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), build_location)
-        client.images.build(path=build_path, tag=image)
+        build_path = _resolve_build_path(build_location)
+        client.images.build(path=build_path, tag=image, rm=True, forcerm=True)
 
 
-def _container_exists(client, container_name: str) -> bool:
+def _copy_common_css(container):
+    """
+    Copy the shared lab stylesheet into a created (not yet started) container.
+    A bind mount can't be used: under docker-compose the web container's path
+    doesn't exist on the Docker host.
+    """
+    css_path = os.path.join(settings.BASE_DIR, "introduction", "static", "css", "common_lab.css")
+    if not os.path.exists(css_path):
+        return
+    buf = io.BytesIO()
+    with tarfile.open(fileobj=buf, mode="w") as tar:
+        tar.add(css_path, arcname="static/common_lab.css")
+        tar.add(css_path, arcname="static/css/common_lab.css")
     try:
-        client.containers.get(container_name)
-        return True
-    except docker.errors.NotFound:
-        return False
+        container.put_archive("/app", buf.getvalue())
+    except docker.errors.APIError as e:
+        print(f"Could not copy common_lab.css into {container.name}: {e}")
 
 
 def _get_user_containers(client, username: str):
@@ -241,12 +294,12 @@ def wait_for_health(container, timeout=60):
             return True
         
         if health_status == 'unhealthy':
-            container.stop()
-            raise RuntimeError(f"Container {container.name} is UNHEALTHY and has been stopped. Check logs for details.")
-
+            container.remove(force=True)
+            raise RuntimeError(f"Container {container.name} is UNHEALTHY and has been removed. Check its /health endpoint.")
 
         if time.time() - start_time > timeout:
-            raise TimeoutError("Timed out waiting for healthcheck.")
+            container.remove(force=True)
+            raise TimeoutError(f"Timed out waiting for {container.name} to become healthy.")
 
         time.sleep(1)
 
@@ -271,13 +324,12 @@ def start_lab(request, lab_image_name):
     
 
     try:
-        if not _container_exists(client, container_name):
-            user_containers = _get_user_containers(client, username)
-            if len(user_containers) >= per_user_limit:
-                try:
-                    client.containers.get(container_name)
-                except docker.errors.NotFound:
-                    return JsonResponse({'status': 'error', 'message': f'Per-user lab limit reached ({per_user_limit})'}, status=429)
+        running_others = [
+            c for c in _get_user_containers(client, username)
+            if c.name != container_name and c.status == 'running'
+        ]
+        if len(running_others) >= per_user_limit:
+            return JsonResponse({'status': 'error', 'message': f'Per-user lab limit reached ({per_user_limit})'}, status=429)
     except Exception:
         return JsonResponse({'status': 'error', 'message': 'Unable to verify user container quota'}, status=503)
 
@@ -330,16 +382,7 @@ def start_lab(request, lab_image_name):
             start_period=2000000000  # 2s in nanoseconds
             )
 
-            # Bind mount single master common_lab.css read-only into container
-            master_css_path = os.path.join(settings.BASE_DIR, "introduction", "static", "css", "common_lab.css")
-            container_volumes = []
-            if os.path.exists(master_css_path):
-                container_volumes = [
-                    f"{master_css_path}:/app/static/common_lab.css:ro",
-                    f"{master_css_path}:/app/static/css/common_lab.css:ro"
-                ]
-
-            container = client.containers.run(
+            container = client.containers.create(
                 image=safe_image,
                 name=container_name,
                 detach=True,
@@ -347,8 +390,9 @@ def start_lab(request, lab_image_name):
                 network=getattr(settings, "DOCKER_NETWORK", "my_network"),
                 mem_limit="512m",
                 healthcheck=healthcheck,
-                volumes=container_volumes
             )
+            _copy_common_css(container)
+            container.start()
             container.reload()
             wait_for_health(container)
             return JsonResponse({'status': 'created', 'url': lab_url})
@@ -456,6 +500,8 @@ def list_custom_labs(request):
 def create_custom_lab(request):
     if not request.user.is_authenticated:
         return JsonResponse({'status': 'error', 'message': 'Authentication required'}, status=401)
+    if not request.user.is_staff:
+        return JsonResponse({'status': 'error', 'message': 'Only staff users can manage custom labs'}, status=403)
     if request.method != "POST":
         return JsonResponse({'status': 'error', 'message': 'Method not allowed'}, status=405)
     
@@ -467,6 +513,11 @@ def create_custom_lab(request):
         
         if not name or not build_location or not port:
             return JsonResponse({'status': 'error', 'message': 'Missing required fields'}, status=400)
+
+        try:
+            _resolve_build_path(build_location)
+        except ValueError as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
             
         if not re.match(r'^[-a-zA-Z0-9_]+$', name):
             return JsonResponse({'status': 'error', 'message': 'Invalid lab name. Only alphanumeric characters, hyphens, and underscores are allowed.'}, status=400)
@@ -497,6 +548,8 @@ def create_custom_lab(request):
 def update_custom_lab(request, lab_id):
     if not request.user.is_authenticated:
         return JsonResponse({'status': 'error', 'message': 'Authentication required'}, status=401)
+    if not request.user.is_staff:
+        return JsonResponse({'status': 'error', 'message': 'Only staff users can manage custom labs'}, status=403)
     if request.method != "POST":
         return JsonResponse({'status': 'error', 'message': 'Method not allowed'}, status=405)
         
@@ -513,6 +566,11 @@ def update_custom_lab(request, lab_id):
         
         if not name or not build_location or not port:
             return JsonResponse({'status': 'error', 'message': 'Missing required fields'}, status=400)
+
+        try:
+            _resolve_build_path(build_location)
+        except ValueError as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
             
         if not re.match(r'^[-a-zA-Z0-9_]+$', name):
             return JsonResponse({'status': 'error', 'message': 'Invalid lab name. Only alphanumeric characters, hyphens, and underscores are allowed.'}, status=400)
@@ -547,6 +605,8 @@ def update_custom_lab(request, lab_id):
 def delete_custom_lab(request, lab_id):
     if not request.user.is_authenticated:
         return JsonResponse({'status': 'error', 'message': 'Authentication required'}, status=401)
+    if not request.user.is_staff:
+        return JsonResponse({'status': 'error', 'message': 'Only staff users can manage custom labs'}, status=403)
     if request.method != "POST":
         return JsonResponse({'status': 'error', 'message': 'Method not allowed'}, status=405)
         
