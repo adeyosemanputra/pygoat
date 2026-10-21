@@ -1,113 +1,19 @@
 from django.http import JsonResponse
 from django.shortcuts import render
-from django.utils import timezone
-from django.views.decorators.http import require_GET, require_POST
+from django.views.decorators.http import require_GET
 from django.contrib.auth.decorators import login_required
 from django.db.models import Sum
 from .models import (
-    LabCompletion, LabScore, UserAchievement,
-    AchievementMilestone, DifficultyLevel
+    LabCompletion, LabScore, UserAchievement, AchievementMilestone
 )
-
-
-@login_required
-@require_POST
-def start_tracking(request, content_type, content_id):
-    """Record that a user has started a lab/challenge. Called when lab is launched."""
-    if content_type not in ('challenge', 'lab'):
-        return JsonResponse({'status': 'error', 'message': 'Invalid content type'}, status=400)
-
-    completion, created = LabCompletion.objects.get_or_create(
-        user=request.user,
-        content_type=content_type,
-        content_id=content_id,
-        defaults={'started_at': timezone.now()}
-    )
-
-    if not created and completion.completed_at:
-        return JsonResponse({
-            'status': 'already_completed',
-            'message': 'This content was already completed'
-        })
-
-    return JsonResponse({
-        'status': 'tracking' if created else 'resumed',
-        'started_at': completion.started_at.isoformat()
-    })
-
-
-@login_required
-@require_POST
-def complete_tracking(request, content_type, content_id):
-    """Mark a lab/challenge as completed. Triggers score calculation via signal."""
-    if content_type not in ('challenge', 'lab'):
-        return JsonResponse({'status': 'error', 'message': 'Invalid content type'}, status=400)
-
-    try:
-        completion = LabCompletion.objects.get(
-            user=request.user,
-            content_type=content_type,
-            content_id=content_id
-        )
-    except LabCompletion.DoesNotExist:
-        # Auto-create with started_at = now (no time bonus)
-        completion = LabCompletion(
-            user=request.user,
-            content_type=content_type,
-            content_id=content_id,
-            started_at=timezone.now()
-        )
-
-    if completion.completed_at:
-        score = getattr(completion, 'score', None)
-        return JsonResponse({
-            'status': 'already_completed',
-            'final_score': score.final_score if score else 0
-        })
-
-    completion.completed_at = timezone.now()
-    # Denormalize content name
-    try:
-        if content_type == 'challenge':
-            from challenge.models import Challenge
-            completion.content_name = Challenge.objects.get(pk=content_id).name
-        else:
-            from challenge.models import Lab
-            completion.content_name = Lab.objects.get(pk=content_id).name
-    except Exception:
-        completion.content_name = f'{content_type}:{content_id}'
-
-    completion.save()  # Triggers signal → score computation → milestone check
-
-    score = getattr(completion, 'score', None)
-    if score is None:
-        try:
-            score = LabScore.objects.get(completion=completion)
-        except LabScore.DoesNotExist:
-            score = None
-
-    achievements = list(
-        UserAchievement.objects.filter(user=request.user)
-        .order_by('-earned_at')[:5]
-        .values('milestone__name', 'milestone__icon', 'earned_at')
-    )
-
-    return JsonResponse({
-        'status': 'completed',
-        'final_score': score.final_score if score else 0,
-        'time_multiplier': score.time_multiplier if score else 1.0,
-        'difficulty_multiplier': score.difficulty_multiplier if score else 1.0,
-        'duration_seconds': completion.duration_seconds,
-        'recent_achievements': achievements
-    })
 
 
 @login_required
 @require_GET
 def user_scores(request):
     """Get the current user's total score and recent scores."""
-    scores = LabScore.objects.filter(user=request.user).order_by('-calculated_at')
-    total = sum(s.final_score for s in scores)
+    scores = LabScore.objects.filter(user=request.user).select_related('completion').order_by('-calculated_at')
+    total = scores.aggregate(total=Sum('final_score'))['total'] or 0
 
     return JsonResponse({
         'status': 'success',

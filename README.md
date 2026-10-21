@@ -53,6 +53,7 @@ If you face any issue while installation, kindly refer to the [documentation](ht
 2. Apply the migrations and seed data:<br>
    ```bash
    python3 manage.py migrate
+   python3 manage.py seed_scoring
    python3 manage.py populate_labs
    ```
 3. Finally, run the development server `python3 manage.py runserver`.<br>
@@ -64,6 +65,7 @@ If you face any issue while installation, kindly refer to the [documentation](ht
 2. Apply the migrations and seed data:<br>
    ```bash
    python3 manage.py migrate
+   python3 manage.py seed_scoring
    python3 manage.py populate_labs
    ```
 3. Finally, run the development server `python3 manage.py runserver`.<br>
@@ -75,6 +77,7 @@ If you face any issue while installation, kindly refer to the [documentation](ht
 2. Apply the migrations and seed data:<br>
    ```bash
    python3 manage.py migrate
+   python3 manage.py seed_scoring
    python3 manage.py populate_labs
    ```
 3. Finally, run the development server `python3 manage.py runserver`.<br>

@@ -14,7 +14,7 @@ SIDEBAR_CATEGORY_META = [
 
 def sidebar_labs(request):
     """Inject structured lab data into all templates for sidebar rendering."""
-    mappings = LabCategoryMapping.objects.select_related('lab').order_by(
+    mappings = LabCategoryMapping.objects.select_related('lab', 'lab__difficulty').order_by(
         'category', 'sort_order'
     )
 
@@ -32,6 +32,7 @@ def sidebar_labs(request):
                 'lab_name': m.lab.name,
                 'display_name': m.display_name,
                 'overview_url_name': m.overview_url_name,
+                'difficulty': m.lab.difficulty,
             }
             if m.subcategory:
                 subcategories.setdefault(m.subcategory, []).append(entry)

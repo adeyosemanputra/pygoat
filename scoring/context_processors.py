@@ -1,4 +1,5 @@
-from django.db.models import Sum
+from django.db import DatabaseError
+from django.db.models import Count, Sum
 
 
 def scoring_user_context(request):
@@ -14,23 +15,20 @@ def scoring_user_context(request):
     if not hasattr(request, 'user') or not request.user.is_authenticated:
         return default_context
 
+    from .models import LabScore, UserAchievement
+    user = request.user
     try:
-        from .models import LabScore, LabCompletion, UserAchievement
-        user = request.user
-        total_score = LabScore.objects.filter(user=user).aggregate(
-            total=Sum('final_score')
-        )['total'] or 0
-
-        solved_count = LabCompletion.objects.filter(
-            user=user, completed_at__isnull=False
-        ).count()
-
+        # One LabScore exists per completed LabCompletion
+        totals = LabScore.objects.filter(user=user).aggregate(
+            total=Sum('final_score'), solved=Count('id')
+        )
         achievements_count = UserAchievement.objects.filter(user=user).count()
-
-        return {
-            'user_total_score': total_score,
-            'user_solved_count': solved_count,
-            'user_achievements_count': achievements_count,
-        }
-    except Exception:
+    except DatabaseError:
+        # e.g. migrations not applied yet
         return default_context
+
+    return {
+        'user_total_score': totals['total'] or 0,
+        'user_solved_count': totals['solved'],
+        'user_achievements_count': achievements_count,
+    }

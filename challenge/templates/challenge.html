@@ -28,6 +28,21 @@
     <button type="submit" class="btn btn-primary" id="cbtn-2" onclick="handleRedirect()" style="display:none">Go to
         Challenge </button>
 
+    <div class="mt-4" style="max-width: 480px">
+        {% if user_chal and user_chal.is_solved %}
+        <p class="text-success mb-0">You have already solved this challenge.</p>
+        {% else %}
+        <label for="flag-input">Submit flag</label>
+        <div class="input-group">
+            <input type="text" class="form-control" id="flag-input" placeholder="flag{...}" autocomplete="off">
+            <div class="input-group-append">
+                <button class="btn btn-success" type="button" onclick="submitFlag()">Submit</button>
+            </div>
+        </div>
+        <small id="flag-result" class="d-block mt-2"></small>
+        {% endif %}
+    </div>
+
 </div>
 <script>
     var button1 = document.getElementById("cbtn-1");
@@ -83,6 +98,27 @@
                 button2.style.display = "none";
             })
             .catch(error => console.log('error', error));
+    }
+
+    function submitFlag() {
+        const input = document.getElementById("flag-input");
+        const resultEl = document.getElementById("flag-result");
+        fetch("/challenge/{{chal.name}}", {
+            method: 'PUT',
+            headers: {'X-CSRFToken': csrf_token, 'Content-Type': 'application/json'},
+            body: JSON.stringify({flag: input.value}),
+        })
+        .then(response => response.json())
+        .then(result => {
+            resultEl.className = "d-block mt-2 " + (result.correct ? "text-success" : "text-danger");
+            resultEl.textContent = result.correct
+                ? result.message + " +" + result.final_score + " pts"
+                : result.message;
+        })
+        .catch(error => {
+            resultEl.className = "d-block mt-2 text-danger";
+            resultEl.textContent = "Could not submit flag.";
+        });
     }
 
     function handleRedirect() {

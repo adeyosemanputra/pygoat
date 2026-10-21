@@ -74,6 +74,7 @@
               <button onclick="launchLab('{{ lab.lab_name }}')" class="sidebar-list-items lab-button" data-lab="{{ lab.lab_name }}">
                 <i class="fas fa-bug"></i>
                 {{ lab.display_name }}
+                {% if lab.difficulty %}<span class="badge badge-secondary ml-1" title="Score multiplier x{{ lab.difficulty.multiplier }}">{{ lab.difficulty.name }}</span>{% endif %}
                 <span class="lab-status-indicator not-running" aria-hidden="true"></span>
               </button>
             </li>
@@ -86,6 +87,7 @@
           <button onclick="launchLab('{{ lab.lab_name }}')" class="sidebar-list-items lab-button" data-lab="{{ lab.lab_name }}">
             <i class="fas fa-bug"></i>
             {{ lab.display_name }}
+            {% if lab.difficulty %}<span class="badge badge-secondary ml-1" title="Score multiplier x{{ lab.difficulty.multiplier }}">{{ lab.difficulty.name }}</span>{% endif %}
             <span class="lab-status-indicator not-running" aria-hidden="true"></span>
           </button>
         </li>

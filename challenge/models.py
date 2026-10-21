@@ -39,13 +39,8 @@ class Challenge(models.Model):
                     "hashed_" + hashlib.sha256(self.flag.encode("utf-8")).hexdigest()
                 )
         if not self.difficulty_id:
-            try:
-                from scoring.models import DifficultyLevel
-                default_diff = DifficultyLevel.objects.filter(name="Medium").first() or DifficultyLevel.objects.first()
-                if default_diff:
-                    self.difficulty = default_diff
-            except Exception:
-                pass
+            from scoring.services import default_difficulty
+            self.difficulty = default_difficulty()
         super(Challenge, self).save(*args, **kwargs)
 
 
@@ -89,13 +84,8 @@ class Lab(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.difficulty_id:
-            try:
-                from scoring.models import DifficultyLevel
-                default_diff = DifficultyLevel.objects.filter(name="Medium").first() or DifficultyLevel.objects.first()
-                if default_diff:
-                    self.difficulty = default_diff
-            except Exception:
-                pass
+            from scoring.services import default_difficulty
+            self.difficulty = default_difficulty()
         super(Lab, self).save(*args, **kwargs)
 
 

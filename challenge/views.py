@@ -5,7 +5,10 @@ from django.views.decorators.csrf import csrf_exempt
 import subprocess
 from .utility import get_free_port
 from .models import Challenge, UserChallenge, Lab
+from scoring.services import start_tracking, complete_tracking
 import docker
+import hashlib
+import hmac
 import json
 import os
 import re
@@ -98,6 +101,7 @@ class DoItFast(View):
                 user=request.user, challenge=chal, container_id=container_id, port=port
             )
             user_chal.save()
+        start_tracking(request.user, "challenge", chal.id)
         # save the output in database for stoping the container
         return JsonResponse(
             {
@@ -124,9 +128,52 @@ class DoItFast(View):
         output, error = process.communicate()
         return JsonResponse({"message": "success", "status": "200"})
 
-    def put(self, request, challange):
-        # TODO : implement flag checking
-        return "not implemented"
+    def put(self, request, challenge):
+        if not request.user.is_authenticated:
+            return JsonResponse({"message": "Authentication required", "status": "401"}, status=401)
+
+        try:
+            chal = Challenge.objects.get(name=challenge)
+        except Challenge.DoesNotExist:
+            return JsonResponse({"message": "Challenge not found", "status": "404"}, status=404)
+
+        try:
+            submitted = json.loads(request.body).get("flag", "")
+        except (json.JSONDecodeError, AttributeError):
+            return JsonResponse({"message": "Invalid request body", "status": "400"}, status=400)
+        if not isinstance(submitted, str) or not submitted:
+            return JsonResponse({"message": "Flag is required", "status": "400"}, status=400)
+
+        # Challenge.flag is stored as "hashed_<sha256>" (see Challenge.save)
+        submitted_hash = "hashed_" + hashlib.sha256(submitted.strip().encode("utf-8")).hexdigest()
+
+        try:
+            user_chal = UserChallenge.objects.get(user=request.user, challenge=chal)
+        except UserChallenge.DoesNotExist:
+            return JsonResponse(
+                {"message": "Start the challenge before submitting a flag", "status": "400"},
+                status=400,
+            )
+
+        user_chal.no_of_attempt += 1
+        if not hmac.compare_digest(submitted_hash, chal.flag):
+            user_chal.save()
+            return JsonResponse({"message": "Incorrect flag", "status": "200", "correct": False})
+
+        user_chal.is_solved = True
+        user_chal.save()
+        completion, newly_completed = complete_tracking(
+            request.user, "challenge", chal.id, content_name=chal.name
+        )
+        score = getattr(completion, "score", None)
+        return JsonResponse(
+            {
+                "message": "Correct flag!" if newly_completed else "Already solved",
+                "status": "200",
+                "correct": True,
+                "final_score": score.final_score if score else 0,
+            }
+        )
 
 def _sanitize_username(username: str) -> str:
     return "".join(ch for ch in username if ch.isalnum() or ch in "-_")
