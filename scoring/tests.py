@@ -71,9 +71,10 @@ class ChallengeSolveTests(TestCase):
         self.url = "/challenge/do-it-fast"
 
     def _start(self):
-        with patch("challenge.views.get_free_port", return_value=8001), \
-             patch("challenge.views.subprocess.Popen") as popen:
-            popen.return_value.communicate.return_value = (b"cid\n", b"")
+        with patch("challenge.views.get_docker_client") as get_client:
+            container = get_client.return_value.containers.run.return_value
+            container.id = "cid"
+            container.ports = {"1/tcp": [{"HostPort": "8001"}]}
             return self.client.post(self.url)
 
     def _submit(self, flag):
