@@ -12,14 +12,36 @@ Table of Contents
 
 * [pygoat](#pygoat)
    * [Installation](#installation)
+      * [Docker Compose (recommended)](#docker-compose-recommended)
       * [From Sources](#from-sources)
-      * [Docker Container](#docker-container)
+      * [Windows Notes](#windows-notes)
       * [Installation Video](#installation-video)
    * [Uninstallation](#uninstallation)
    * [Solutions](/Solutions/solution.md)
    * [For Developers](/docs/dev_guide.md)
 
 ## Installation
+
+Every lab runs in its own Docker container, so PyGoat needs
+[Docker](https://www.docker.com) in all setups.
+
+### Docker Compose (recommended)
+
+This starts PyGoat, Traefik and everything the labs need.
+
+1. Install [Docker](https://www.docker.com) with the Compose plugin
+2. Clone the repository and start the stack:
+   ```bash
+   git clone https://github.com/adeyosemanputra/pygoat.git
+   cd pygoat
+   docker compose up -d
+   ```
+   (Older Docker installs use `docker-compose up -d`.)
+3. Open the app at <http://lvh.me:8000> (not `localhost`). Labs are served at `lab-<username>-<lab>.lvh.me` and are only accessible to the user who started them, which requires the login cookie to be shared across `*.lvh.me`.
+4. The first start of each lab builds its image, so it can take a few minutes. Later starts are fast.
+5. Stop everything with `docker compose down`.
+
+> The `pygoat/pygoat` image on Docker Hub is the old v2 release and does not include the v3 labs. Use Docker Compose instead.
 
 ### From Sources
 
@@ -83,23 +105,12 @@ If you face any issue while installation, kindly refer to the [documentation](ht
 3. Finally, run the development server `python3 manage.py runserver`.<br>
 4. The project will be available at <http://127.0.0.1:8000> 
 
-### Docker Container
-1. Install [Docker](https://www.docker.com)
-2. Run `docker pull pygoat/pygoat` or `docker pull pygoat/pygoat:latest`
-3. Run `docker run --rm -p 8000:8000 pygoat/pygoat:latest`
-4. Browse to <http://127.0.0.1:8000> 
-5. Remove existing image using `docker image rm pygoat/pygoat` and pull again incase of any error
+### Windows Notes
 
-### From Docker-Compose 
-1. Install [Docker](https://www.docker.com)
-2. Run `docker-compose up` or `docker-compose up -d`
-3. Open the app at <http://lvh.me:8000> (not `localhost`). Labs are served at `lab-<username>-<lab>.lvh.me` and are only accessible to the user who started them, which requires the login cookie to be shared across `*.lvh.me`.
-
-### Build Docker Image and Run
-1. Clone the repository  &ensp; `git clone https://github.com/adeyosemanputra/pygoat.git` 
-2. Build the docker image from Dockerfile using &ensp; `docker build -f Dockerfile -t pygoat .`
-3. Run the docker image &ensp;`docker run --rm -p 8000:8000 pygoat:latest`
-4. Browse to <http://127.0.0.1:8000> or <http://0.0.0.0:8000> 
+- Use **Docker Desktop** with the **WSL2** backend. The labs are Linux containers, so they need it.
+- Docker Compose is the easiest way to run PyGoat on Windows. For a source install, running it inside **WSL2 (Ubuntu)** works better than native PowerShell.
+- On some Windows setups the `python3` command is not available. Use `python` instead, and make sure it points to Python 3.
+- Use Python **3.11**. It is the version CI tests with.
 
 ### Installation video 
 
