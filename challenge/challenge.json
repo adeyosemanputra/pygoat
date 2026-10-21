@@ -7,6 +7,7 @@
         "start_port" : 5000,
         "end_port" : 5500,
         "flag": "flag{do_it_fast}",
-        "point" : 100
+        "point" : 100,
+        "difficulty": "Easy"
     }
 ]

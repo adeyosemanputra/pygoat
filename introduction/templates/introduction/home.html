@@ -18,6 +18,26 @@
         determine where the mistake was made that caused the vulnerability and
         allows you to make changes to secure it.
       </p>
+
+      {% if user.is_authenticated %}
+      <div class="box mt-4 p-3">
+        <div class="d-flex justify-content-between align-items-center flex-wrap">
+          <div>
+            <h4 class="mb-1">Hello, {{ user.username }}</h4>
+            <p class="bp mb-0">
+              Current Score: <strong>{{ user_total_score }} pts</strong> &bull;
+              Completed: <strong>{{ user_solved_count }} solves</strong> &bull;
+              Achievements: <strong>{{ user_achievements_count }} unlocked</strong>
+            </p>
+          </div>
+          <div class="mt-2 mt-md-0">
+            <a href="{% url 'scoring:dashboard' %}" class="btn btn-info btn-sm">
+              View Scoreboard
+            </a>
+          </div>
+        </div>
+      </div>
+      {% endif %}
     </div>
     {% comment %} <div>
         <img src="{% static 'Lab/icons/pygoat-small.png' %}"

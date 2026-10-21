@@ -16,6 +16,13 @@ class Challenge(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     flag = models.CharField(max_length=100)
     point = models.IntegerField()
+    difficulty = models.ForeignKey(
+        "scoring.DifficultyLevel",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        help_text="Difficulty rating (affects score multiplier)",
+    )
 
     def __str__(self):
         return self.name
@@ -31,6 +38,9 @@ class Challenge(models.Model):
                 self.flag = (
                     "hashed_" + hashlib.sha256(self.flag.encode("utf-8")).hexdigest()
                 )
+        if not self.difficulty_id:
+            from scoring.services import default_difficulty
+            self.difficulty = default_difficulty()
         super(Challenge, self).save(*args, **kwargs)
 
 
@@ -61,9 +71,22 @@ class Lab(models.Model):
     build_location = models.CharField(max_length=255)
     port = models.IntegerField()
     is_custom = models.BooleanField(default=True)
+    difficulty = models.ForeignKey(
+        "scoring.DifficultyLevel",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        help_text="Difficulty rating (affects score multiplier)",
+    )
 
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        if not self.difficulty_id:
+            from scoring.services import default_difficulty
+            self.difficulty = default_difficulty()
+        super(Lab, self).save(*args, **kwargs)
 
 
 class LabCategoryMapping(models.Model):

@@ -27,6 +27,11 @@
 
         {% if user.is_authenticated %}
         <li class="nav-item">
+          <a class="nav-link dark mr-2" href="{% url 'scoring:dashboard' %}" id="user-score-btn" style="background: #f0f8ff8a; border-radius: 2px; border: none;">
+            Score: {{ user_total_score|default:"0" }} pts
+          </a>
+        </li>
+        <li class="nav-item">
           <button class="nav-link dark mr-2" onclick="openCustomLabsModal()" id="custom-labs-btn" style="background: #f0f8ff8a; border-radius: 2px; border: none;">
             Custom Labs
           </button>
