@@ -8,7 +8,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ("scoring", "0001_initial"),
-        ("challenge", "0006_lab_is_custom"),
+        ("challenge", "0007_labcategorymapping"),
     ]
 
     operations = [

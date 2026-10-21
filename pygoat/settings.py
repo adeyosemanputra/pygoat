@@ -76,6 +76,7 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "scoring.context_processors.scoring_user_context",
+                "challenge.context_processors.sidebar_labs",
             ],
         },
     },
