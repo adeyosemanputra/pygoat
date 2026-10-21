@@ -1,0 +1,116 @@
+{% extends 'introduction/base.html' %}
+{% block title %}
+<title>Scoreboard</title>
+{% endblock %}
+
+{% block content %}
+<div class="content" style="padding-bottom: 50px;">
+    <h3>User Scoreboard</h3>
+
+    <div class="box">
+        <h4>Overview</h4>
+        <p class="bp">
+            <b>Total Score:</b> {{ total_score }} pts<br>
+            <b>Completed Solves:</b> {{ solved_count }}<br>
+            <b>Achievements Unlocked:</b> {{ achievements_count }} / {{ total_achievements }}
+        </p>
+    </div>
+
+    <div class="box">
+        <h4>Completed Labs & Challenges</h4>
+        {% if scores %}
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Difficulty</th>
+                        <th>Time Taken</th>
+                        <th>Time Bonus</th>
+                        <th>Base Points</th>
+                        <th>Final Score</th>
+                        <th>Completed</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in scores %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td><b>{{ item.content_name }}</b></td>
+                        <td>
+                            {% if item.content_type == 'challenge' %}
+                                <span class="badge badge-primary">Challenge</span>
+                            {% else %}
+                                <span class="badge badge-secondary">Lab</span>
+                            {% endif %}
+                        </td>
+                        <td><span class="badge badge-warning">&times;{{ item.difficulty_multiplier }}</span></td>
+                        <td>{{ item.duration_formatted }}</td>
+                        <td><span class="badge badge-info">&times;{{ item.time_multiplier }}</span></td>
+                        <td>{{ item.base_points }} pts</td>
+                        <td><b>+{{ item.final_score }} pts</b></td>
+                        <td>{{ item.completed_at|date:"Y-m-d H:i" }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p class="bp">No labs or challenges completed yet.</p>
+        {% endif %}
+    </div>
+
+    <div class="box">
+        <h4>Achievements</h4>
+        <p class="bp">Milestone achievements unlocked by completing labs and challenges:</p>
+
+        <div class="row mt-3">
+            {% for item in milestones %}
+            <div class="col-md-6 col-lg-4 mb-3">
+                <div class="p-3 h-100 d-flex flex-column"
+                     style="background: rgba(255, 255, 255, 0.04); border: 1px solid {% if item.is_earned %}#28a745{% else %}rgba(255, 255, 255, 0.15){% endif %}; border-radius: 8px;">
+                    <div class="d-flex align-items-center mb-2">
+                        <div class="mr-3">
+                            <i class="{{ item.milestone.icon }} fa-2x {% if item.is_earned %}text-success{% else %}text-muted{% endif %}"></i>
+                        </div>
+                        <div class="flex-grow-1">
+                            <h5 class="mb-0 font-weight-bold" style="font-size: 1.05em;">{{ item.milestone.name }}</h5>
+                            {% if item.is_earned %}
+                                <span class="badge badge-success mt-1">Unlocked</span>
+                            {% else %}
+                                <span class="badge badge-secondary mt-1">Locked</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <p class="bp mb-3" style="font-size: 0.9em; flex-grow: 1;">{{ item.milestone.description }}</p>
+
+                    <div class="mt-auto">
+                        <div class="d-flex justify-content-between mb-1" style="font-size: 0.85em; opacity: 0.85;">
+                            <span>Progress</span>
+                            <span>{{ item.current_progress }} / {{ item.required }}</span>
+                        </div>
+                        <div class="progress" style="height: 6px; background-color: rgba(255, 255, 255, 0.15);">
+                            <div class="progress-bar {% if item.is_earned %}bg-success{% else %}bg-info{% endif %}"
+                                 role="progressbar"
+                                 style="width: {{ item.progress_pct }}%;"
+                                 aria-valuenow="{{ item.progress_pct }}"
+                                 aria-valuemin="0"
+                                 aria-valuemax="100">
+                            </div>
+                        </div>
+                        {% if item.is_earned and item.earned_at %}
+                            <div class="text-right mt-1" style="font-size: 0.8em; opacity: 0.75;">
+                                Earned {{ item.earned_at|date:"Y-m-d" }}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

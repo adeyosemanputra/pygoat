@@ -80,7 +80,7 @@ def page_not_found(e):
     raise Exception(
         "An intentional error was triggered to demonstrate a vulnerability."
     )
-    return result
+    return result  # noqa: F821
 
 
 @app.route("/lab3")

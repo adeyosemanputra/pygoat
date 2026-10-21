@@ -4,10 +4,14 @@ from django.views.generic import View
 from django.views.decorators.csrf import csrf_exempt
 import subprocess
 from .utility import get_free_port
-from .models import Challenge, UserChallenge
+from .models import Challenge, UserChallenge, Lab
+from scoring.services import start_tracking, complete_tracking
 import docker
+import hashlib
+import hmac
 import json
 import os
+import re
 from django.conf import settings
 import time
 import requests
@@ -56,7 +60,7 @@ class DoItFast(View):
         if not request.user.is_authenticated:
             return redirect("login")
 
-        try:  # checking the existance of challenge
+        try:  # checking the existence of challenge
             chal = Challenge.objects.get(name=challenge)
         except Exception as e:
             return render(request, "chal-not-found.html")
@@ -87,7 +91,7 @@ class DoItFast(View):
         container_id = output.decode("utf-8").strip()
 
         if user_chall_exists:
-            # TODO : reuse the container instead of creaing the new one
+            # TODO : reuse the container instead of creating the new one
             user_chal.container_id = container_id
             user_chal.port = port
             user_chal.is_live = True
@@ -97,6 +101,7 @@ class DoItFast(View):
                 user=request.user, challenge=chal, container_id=container_id, port=port
             )
             user_chal.save()
+        start_tracking(request.user, "challenge", chal.id)
         # save the output in database for stoping the container
         return JsonResponse(
             {
@@ -123,9 +128,52 @@ class DoItFast(View):
         output, error = process.communicate()
         return JsonResponse({"message": "success", "status": "200"})
 
-    def put(self, request, challange):
-        # TODO : implement flag checking
-        return "not implemented"
+    def put(self, request, challenge):
+        if not request.user.is_authenticated:
+            return JsonResponse({"message": "Authentication required", "status": "401"}, status=401)
+
+        try:
+            chal = Challenge.objects.get(name=challenge)
+        except Challenge.DoesNotExist:
+            return JsonResponse({"message": "Challenge not found", "status": "404"}, status=404)
+
+        try:
+            submitted = json.loads(request.body).get("flag", "")
+        except (json.JSONDecodeError, AttributeError):
+            return JsonResponse({"message": "Invalid request body", "status": "400"}, status=400)
+        if not isinstance(submitted, str) or not submitted:
+            return JsonResponse({"message": "Flag is required", "status": "400"}, status=400)
+
+        # Challenge.flag is stored as "hashed_<sha256>" (see Challenge.save)
+        submitted_hash = "hashed_" + hashlib.sha256(submitted.strip().encode("utf-8")).hexdigest()
+
+        try:
+            user_chal = UserChallenge.objects.get(user=request.user, challenge=chal)
+        except UserChallenge.DoesNotExist:
+            return JsonResponse(
+                {"message": "Start the challenge before submitting a flag", "status": "400"},
+                status=400,
+            )
+
+        user_chal.no_of_attempt += 1
+        if not hmac.compare_digest(submitted_hash, chal.flag):
+            user_chal.save()
+            return JsonResponse({"message": "Incorrect flag", "status": "200", "correct": False})
+
+        user_chal.is_solved = True
+        user_chal.save()
+        completion, newly_completed = complete_tracking(
+            request.user, "challenge", chal.id, content_name=chal.name
+        )
+        score = getattr(completion, "score", None)
+        return JsonResponse(
+            {
+                "message": "Correct flag!" if newly_completed else "Already solved",
+                "status": "200",
+                "correct": True,
+                "final_score": score.final_score if score else 0,
+            }
+        )
 
 def _sanitize_username(username: str) -> str:
     return "".join(ch for ch in username if ch.isalnum() or ch in "-_")
@@ -142,13 +190,15 @@ def _get_container_name(username: str, lab_image_name: str) -> str:
 
 
 def _get_lab_config(lab_image_name: str) -> dict:
-    labs_json_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'labs.json')
-    with open(labs_json_path, 'r') as f:
-        data = json.load(f)
-    for lab in data.get('labs', []):
-        if lab.get('name') == lab_image_name:
-            return lab
-    raise KeyError(f'Lab config not found: {lab_image_name}')
+    try:
+        lab = Lab.objects.get(name=lab_image_name)
+        return {
+            'name': lab.name,
+            'build_location': lab.build_location,
+            'port': lab.port
+        }
+    except Lab.DoesNotExist:
+        raise KeyError(f'Lab config not found: {lab_image_name}')
 
 
 def _ensure_image_built(client, image: str, build_location: str):
@@ -180,7 +230,11 @@ def wait_for_health(container, timeout=60):
     while True:
         container.reload()
         
-        health_status = container.attrs.get('State', {}).get('Health', {}).get('Status')
+        health_status = container.attrs.get("State", {}).get("Health", {}).get("Status")
+        
+        # Handle case where no HEALTHCHECK exists
+        if health_status is None:
+            return True
         
         if health_status == 'healthy':
             print("Container is HEALTHY!")
@@ -271,6 +325,16 @@ def start_lab(request, lab_image_name):
             retries=3,
             start_period=2000000000  # 2s in nanoseconds
             )
+
+            # Bind mount single master common_lab.css read-only into container
+            master_css_path = os.path.join(settings.BASE_DIR, "introduction", "static", "css", "common_lab.css")
+            container_volumes = []
+            if os.path.exists(master_css_path):
+                container_volumes = [
+                    f"{master_css_path}:/app/static/common_lab.css:ro",
+                    f"{master_css_path}:/app/static/css/common_lab.css:ro"
+                ]
+
             container = client.containers.run(
                 image=safe_image,
                 name=container_name,
@@ -278,7 +342,8 @@ def start_lab(request, lab_image_name):
                 labels=labels,
                 network=getattr(settings, "DOCKER_NETWORK", "my_network"),
                 mem_limit="512m",
-                healthcheck=healthcheck
+                healthcheck=healthcheck,
+                volumes=container_volumes
             )
             container.reload()
             wait_for_health(container)
@@ -366,3 +431,130 @@ def stop_lab(request, lab_image_name):
         return JsonResponse({'status': 'error', 'message': 'Lab container not found'}, status=404)
     except Exception as e:
         return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+
+
+def list_custom_labs(request):
+    if not request.user.is_authenticated:
+        return JsonResponse({'status': 'error', 'message': 'Authentication required'}, status=401)
+    if request.method != "GET":
+        return JsonResponse({'status': 'error', 'message': 'Method not allowed'}, status=405)
+    
+    labs = Lab.objects.filter(is_custom=True).order_by('name')
+    labs_list = [{
+        'id': lab.id,
+        'name': lab.name,
+        'build_location': lab.build_location,
+        'port': lab.port
+    } for lab in labs]
+    return JsonResponse({'status': 'success', 'labs': labs_list})
+
+
+def create_custom_lab(request):
+    if not request.user.is_authenticated:
+        return JsonResponse({'status': 'error', 'message': 'Authentication required'}, status=401)
+    if request.method != "POST":
+        return JsonResponse({'status': 'error', 'message': 'Method not allowed'}, status=405)
+    
+    try:
+        data = json.loads(request.body)
+        name = data.get('name')
+        build_location = data.get('build_location')
+        port = data.get('port')
+        
+        if not name or not build_location or not port:
+            return JsonResponse({'status': 'error', 'message': 'Missing required fields'}, status=400)
+            
+        if not re.match(r'^[-a-zA-Z0-9_]+$', name):
+            return JsonResponse({'status': 'error', 'message': 'Invalid lab name. Only alphanumeric characters, hyphens, and underscores are allowed.'}, status=400)
+            
+        try:
+            port = int(port)
+        except ValueError:
+            return JsonResponse({'status': 'error', 'message': 'Port must be an integer'}, status=400)
+            
+        if Lab.objects.filter(name=name).exists():
+            return JsonResponse({'status': 'error', 'message': f'Lab with name {name} already exists'}, status=400)
+            
+        lab = Lab.objects.create(name=name, build_location=build_location, port=port)
+        return JsonResponse({
+            'status': 'success',
+            'message': f'Lab {name} created successfully',
+            'lab': {
+                'id': lab.id,
+                'name': lab.name,
+                'build_location': lab.build_location,
+                'port': lab.port
+            }
+        })
+    except Exception as e:
+        return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+
+
+def update_custom_lab(request, lab_id):
+    if not request.user.is_authenticated:
+        return JsonResponse({'status': 'error', 'message': 'Authentication required'}, status=401)
+    if request.method != "POST":
+        return JsonResponse({'status': 'error', 'message': 'Method not allowed'}, status=405)
+        
+    try:
+        try:
+            lab = Lab.objects.get(id=lab_id, is_custom=True)
+        except Lab.DoesNotExist:
+            return JsonResponse({'status': 'error', 'message': 'Lab not found'}, status=404)
+            
+        data = json.loads(request.body)
+        name = data.get('name')
+        build_location = data.get('build_location')
+        port = data.get('port')
+        
+        if not name or not build_location or not port:
+            return JsonResponse({'status': 'error', 'message': 'Missing required fields'}, status=400)
+            
+        if not re.match(r'^[-a-zA-Z0-9_]+$', name):
+            return JsonResponse({'status': 'error', 'message': 'Invalid lab name. Only alphanumeric characters, hyphens, and underscores are allowed.'}, status=400)
+            
+        try:
+            port = int(port)
+        except ValueError:
+            return JsonResponse({'status': 'error', 'message': 'Port must be an integer'}, status=400)
+            
+        if Lab.objects.filter(name=name).exclude(id=lab_id).exists():
+            return JsonResponse({'status': 'error', 'message': f'Lab with name {name} already exists'}, status=400)
+            
+        lab.name = name
+        lab.build_location = build_location
+        lab.port = port
+        lab.save()
+        
+        return JsonResponse({
+            'status': 'success',
+            'message': f'Lab {name} updated successfully',
+            'lab': {
+                'id': lab.id,
+                'name': lab.name,
+                'build_location': lab.build_location,
+                'port': lab.port
+            }
+        })
+    except Exception as e:
+        return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+
+
+def delete_custom_lab(request, lab_id):
+    if not request.user.is_authenticated:
+        return JsonResponse({'status': 'error', 'message': 'Authentication required'}, status=401)
+    if request.method != "POST":
+        return JsonResponse({'status': 'error', 'message': 'Method not allowed'}, status=405)
+        
+    try:
+        try:
+            lab = Lab.objects.get(id=lab_id, is_custom=True)
+        except Lab.DoesNotExist:
+            return JsonResponse({'status': 'error', 'message': 'Lab not found'}, status=404)
+            
+        name = lab.name
+        lab.delete()
+        return JsonResponse({'status': 'success', 'message': f'Lab {name} deleted successfully'})
+    except Exception as e:
+        return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+

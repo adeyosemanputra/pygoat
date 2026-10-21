@@ -536,7 +536,7 @@ h2 {
   background-color: #bfb05100;
 }
 
-#challengeMenu {
+#challengeMenu, #customLabsMenu {
   width: 90%;
   margin-top: 15px;
   background: #283036;
@@ -548,7 +548,7 @@ h2 {
   text-align: center;
   padding: 13% 0% 0% 0%;
 }
-#challengeSubmenu {
+#challengeSubmenu, #customLabsSubmenu {
   width: 95%;
   padding-left: 5%;
 }

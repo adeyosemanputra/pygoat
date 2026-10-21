@@ -50,21 +50,36 @@ If you face any issue while installation, kindly refer to the [documentation](ht
 #### Method 1
 
 1. Install all app and python requirements using installer file - `bash installer.sh`
-2. Apply the migrations `python3 manage.py migrate`.<br>
+2. Apply the migrations and seed data:<br>
+   ```bash
+   python3 manage.py migrate
+   python3 manage.py seed_scoring
+   python3 manage.py populate_labs
+   ```
 3. Finally, run the development server `python3 manage.py runserver`.<br>
 4. The project will be available at <http://127.0.0.1:8000> 
 
 #### Method 2
 
 1. Install python3 requirements `pip install -r requirements.txt`.<br> 
-2. Apply the migrations `python3 manage.py migrate`.<br>
+2. Apply the migrations and seed data:<br>
+   ```bash
+   python3 manage.py migrate
+   python3 manage.py seed_scoring
+   python3 manage.py populate_labs
+   ```
 3. Finally, run the development server `python3 manage.py runserver`.<br>
 4. The project will be available at <http://127.0.0.1:8000> 
 
 #### Method 3
 
 1. Install all app and python requirements using `setup.py` file - `pip3 install .`
-2. Apply the migrations `python3 manage.py migrate`.<br>
+2. Apply the migrations and seed data:<br>
+   ```bash
+   python3 manage.py migrate
+   python3 manage.py seed_scoring
+   python3 manage.py populate_labs
+   ```
 3. Finally, run the development server `python3 manage.py runserver`.<br>
 4. The project will be available at <http://127.0.0.1:8000> 
 
@@ -117,22 +132,20 @@ Create the standard application structure with a Dockerfile, docker-compose.yml,
 
 **Important**: Add a `/health` endpoint in your app.py for container health check.
 
-### Step 3: Register Lab in labs.json
+### Step 3: Register Lab in the Database
 
-1. Open [labs.json](labs.json) in the project root directory
+1. Access the Django Admin panel at `http://localhost:8000/admin/` and navigate to the **Labs** section.
 
-2. Add a new entry to the `"labs"` array:
-```json
-{
-  "name": "your_lab_name",
-  "build_location": "dockerized_labs/your_lab_name",
-  "port": <PORT_NUMBER>
-}
-```
+2. Add a new entry with:
+   - **Name**: `your_lab_name`
+   - **Build Location**: `dockerized_labs/your_lab_name`
+   - **Port**: `<PORT_NUMBER>`
+
+   *(Alternatively, you can register it via Django shell or a custom data migration).*
 
 **Important**: 
-- Check [labs.json](labs.json) for all currently used ports before selecting a new one.
-- Use the same port number in `Dockerfile`, `docker-compose.yml`, `app.py`, and `labs.json`
+- Check the database or Django Admin panel for all currently used ports before selecting a new one.
+- Use the same port number in `Dockerfile`, `docker-compose.yml`, `app.py`, and the database entry.
 
 
 ### Step 4: Test Your Lab

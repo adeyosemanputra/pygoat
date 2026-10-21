@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: OWASP PyGoat Documentation
+    url: https://owasp.org/www-project-pygoat/
+    about: Check the official OWASP PyGoat page for documentation and resources.
+  - name: General Questions & Discussions
+    url: https://github.com/adeyosemanputra/pygoat/discussions
+    about: Ask questions and discuss ideas in GitHub Discussions instead of opening an issue.
