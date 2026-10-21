@@ -29,7 +29,7 @@ Every lab runs in its own Docker container, so PyGoat needs
 
 This starts PyGoat, Traefik and everything the labs need.
 
-1. Install [Docker](https://www.docker.com) with the Compose plugin
+1. Install [Docker](https://www.docker.com) with the Compose plugin. Ports `8000`, `80` (Traefik, serves the labs) and `8080` (Traefik dashboard) must be free.
 2. Clone the repository and start the stack:
    ```bash
    git clone https://github.com/adeyosemanputra/pygoat.git
@@ -37,8 +37,8 @@ This starts PyGoat, Traefik and everything the labs need.
    docker compose up -d
    ```
    (Older Docker installs use `docker-compose up -d`.)
-3. Open the app at <http://lvh.me:8000> (not `localhost`). Labs are served at `lab-<username>-<lab>.lvh.me` and are only accessible to the user who started them, which requires the login cookie to be shared across `*.lvh.me`.
-4. The first start of each lab builds its image, so it can take a few minutes. Later starts are fast.
+3. The first run builds every lab image before the web app starts, which can take 10 minutes or more. Follow the progress with `docker compose logs -f migration`. Later runs reuse the images and start quickly.
+4. Open the app at <http://lvh.me:8000> (not `localhost`). Labs are served at `lab-<username>-<lab>.lvh.me` and are only accessible to the user who started them, which requires the login cookie to be shared across `*.lvh.me`.
 5. Stop everything with `docker compose down`.
 
 > The `pygoat/pygoat` image on Docker Hub is the old v2 release and does not include the v3 labs. Use Docker Compose instead.
