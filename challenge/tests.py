@@ -1,5 +1,7 @@
 import json
 import os
+import threading
+import time
 from unittest.mock import MagicMock, patch
 
 import docker
@@ -7,7 +9,7 @@ from django.contrib.auth.models import User
 from django.test import TestCase, override_settings
 
 from challenge.models import Challenge, Lab, UserChallenge
-from challenge.views import _resolve_build_path, _ensure_image_built, wait_for_health
+from challenge.views import _ensure_image_built, _resolve_build_path, _user_lab_lock, wait_for_health
 
 
 class DoItFastDockerTests(TestCase):
@@ -19,21 +21,61 @@ class DoItFastDockerTests(TestCase):
             end_port=2, flag="flag{x}", point=100,
         )
 
-    @patch("challenge.views.get_free_port", return_value=8001)
+    def _mock_run(self, get_client, container_id="abc123", host_port="49153"):
+        container = get_client.return_value.containers.run.return_value
+        container.id = container_id
+        container.ports = {"5050/tcp": [{"HostPort": host_port}]}
+        return container
+
     @patch("challenge.views.get_docker_client")
-    def test_start_uses_docker_sdk(self, get_client, _port):
-        get_client.return_value.containers.run.return_value.id = "abc123"
+    def test_start_uses_docker_sdk_and_docker_assigned_port(self, get_client):
+        self._mock_run(get_client)
         resp = self.client.post("/challenge/do-it-fast")
         self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.json()["endpoint"], "http://localhost:49153")
         get_client.return_value.containers.run.assert_called_once_with(
-            "img", detach=True, ports={"5050/tcp": 8001}
+            "img", detach=True, ports={"5050/tcp": None}
         )
-        self.assertEqual(UserChallenge.objects.get().container_id, "abc123")
+        user_chal = UserChallenge.objects.get()
+        self.assertEqual((user_chal.container_id, user_chal.port, user_chal.is_live), ("abc123", 49153, True))
 
-    @patch("challenge.views.get_free_port", return_value=8001)
     @patch("challenge.views.get_docker_client", return_value=None)
-    def test_start_without_docker_returns_503(self, _client, _port):
+    def test_start_without_docker_returns_503(self, _client):
         self.assertEqual(self.client.post("/challenge/do-it-fast").status_code, 503)
+
+    @patch("challenge.views.get_docker_client")
+    def test_start_failure_removes_container(self, get_client):
+        container = self._mock_run(get_client)
+        container.ports = {}  # exited immediately, no port published
+        self.assertEqual(self.client.post("/challenge/do-it-fast").status_code, 500)
+        container.remove.assert_called_once_with(force=True)
+        self.assertFalse(UserChallenge.objects.exists())
+
+    @patch("challenge.views.get_docker_client")
+    def test_running_challenge_is_reused(self, get_client):
+        UserChallenge.objects.create(user=self.user, challenge=self.chal, container_id="old", port=49000, is_live=True)
+        get_client.return_value.containers.get.return_value.status = "running"
+        resp = self.client.post("/challenge/do-it-fast")
+        self.assertEqual(resp.json()["message"], "already running")
+        get_client.return_value.containers.run.assert_not_called()
+
+    @patch("challenge.views.get_docker_client")
+    def test_dead_challenge_container_is_replaced(self, get_client):
+        UserChallenge.objects.create(user=self.user, challenge=self.chal, container_id="old", port=49000, is_live=True)
+        dead = MagicMock(status="exited")
+        get_client.return_value.containers.get.return_value = dead
+        self._mock_run(get_client, container_id="new")
+        resp = self.client.post("/challenge/do-it-fast")
+        self.assertEqual(resp.json()["message"], "success")
+        dead.remove.assert_called_once_with(force=True)
+        self.assertEqual(UserChallenge.objects.get().container_id, "new")
+
+    @patch("challenge.views.get_docker_client")
+    def test_missing_challenge_container_is_replaced(self, get_client):
+        UserChallenge.objects.create(user=self.user, challenge=self.chal, container_id="gone", port=49000, is_live=True)
+        get_client.return_value.containers.get.side_effect = docker.errors.NotFound("x")
+        self._mock_run(get_client, container_id="new")
+        self.assertEqual(self.client.post("/challenge/do-it-fast").json()["message"], "success")
 
     @patch("challenge.views.get_docker_client")
     def test_stop_removes_container(self, get_client):
@@ -43,9 +85,21 @@ class DoItFastDockerTests(TestCase):
         container = get_client.return_value.containers.get.return_value
         resp = self.client.delete("/challenge/do-it-fast")
         self.assertEqual(resp.status_code, 200)
-        container.stop.assert_called_once()
-        container.remove.assert_called_once()
+        container.remove.assert_called_once_with(force=True)
         self.assertFalse(UserChallenge.objects.get().is_live)
+
+    @patch("challenge.views.get_docker_client", return_value=None)
+    def test_stop_without_docker_keeps_challenge_live(self, _client):
+        UserChallenge.objects.create(user=self.user, challenge=self.chal, container_id="abc", port=8001, is_live=True)
+        self.assertEqual(self.client.delete("/challenge/do-it-fast").status_code, 503)
+        self.assertTrue(UserChallenge.objects.get().is_live)
+
+    @patch("challenge.views.get_docker_client")
+    def test_stop_error_keeps_challenge_live(self, get_client):
+        UserChallenge.objects.create(user=self.user, challenge=self.chal, container_id="abc", port=8001, is_live=True)
+        get_client.return_value.containers.get.return_value.remove.side_effect = docker.errors.APIError("boom")
+        self.assertEqual(self.client.delete("/challenge/do-it-fast").status_code, 500)
+        self.assertTrue(UserChallenge.objects.get().is_live)
 
 
 class CustomLabPermissionTests(TestCase):
@@ -109,12 +163,42 @@ class LabContainerTests(TestCase):
             _ensure_image_built(client, "evil", "/etc")
         client.images.build.assert_not_called()
 
-    def test_unhealthy_container_is_removed(self):
+    def test_unhealthy_new_container_is_removed(self):
         container = MagicMock()
         container.attrs = {"State": {"Health": {"Status": "unhealthy"}}}
         with self.assertRaises(RuntimeError):
             wait_for_health(container)
         container.remove.assert_called_once_with(force=True)
+
+    def test_unhealthy_existing_container_is_only_stopped(self):
+        container = MagicMock()
+        container.attrs = {"State": {"Health": {"Status": "unhealthy"}}}
+        with self.assertRaises(RuntimeError):
+            wait_for_health(container, remove_on_failure=False)
+        container.stop.assert_called_once()
+        container.remove.assert_not_called()
+
+    def test_user_lab_lock_is_exclusive(self):
+        order = []
+        held = threading.Event()
+
+        def first():
+            with _user_lab_lock("dave"):
+                held.set()
+                time.sleep(0.3)
+                order.append("first-done")
+
+        def second():
+            held.wait()
+            with _user_lab_lock("dave"):
+                order.append("second-in")
+
+        threads = [threading.Thread(target=first), threading.Thread(target=second)]
+        for t in threads:
+            t.start()
+        for t in threads:
+            t.join()
+        self.assertEqual(order, ["first-done", "second-in"])
 
 
 @override_settings(LABS_PER_USER_LIMIT=1)
@@ -141,6 +225,21 @@ class LabQuotaTests(TestCase):
         self.assertEqual(resp.status_code, 200, resp.content)
         new.put_archive.assert_called_once()
         new.start.assert_called_once()
+
+    @patch("challenge.views.check_traefik_reachable", return_value=True)
+    @patch("challenge.views.get_docker_client")
+    def test_restarted_lab_failing_health_is_not_deleted(self, get_client, _traefik):
+        client = get_client.return_value
+        client.containers.list.return_value = []
+        existing = self._container("lab-carol-xss_lab", "exited")
+        existing.attrs = {"State": {"Health": {"Status": "unhealthy"}}}
+        client.containers.get.return_value = existing
+        resp = self.client.get("/challenge/start-lab/xss_lab/")
+        self.assertEqual(resp.status_code, 500)
+        existing.start.assert_called_once()
+        existing.stop.assert_called_once()
+        existing.remove.assert_not_called()
+        client.containers.create.assert_not_called()
 
     @patch("challenge.views.check_traefik_reachable", return_value=True)
     @patch("challenge.views.get_docker_client")

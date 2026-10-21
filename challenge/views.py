@@ -1,16 +1,22 @@
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.views.generic import View
-from .utility import get_free_port
 from .models import Challenge, UserChallenge, Lab
 from scoring.services import start_tracking, complete_tracking
 import docker
+
+try:
+    import fcntl
+except ImportError:  # Windows
+    fcntl = None
 import hashlib
 import hmac
 import io
 import json
 import os
 import tarfile
+import tempfile
+from contextlib import contextmanager
 import re
 from django.conf import settings
 import time
@@ -56,34 +62,13 @@ class DoItFast(View):
             return render(request, "challenge.html", {"chal": chal, "user_chal": None})
 
     def post(self, request, challenge):
-        user_chall_exists = False
         if not request.user.is_authenticated:
             return redirect("login")
 
         try:  # checking the existence of challenge
             chal = Challenge.objects.get(name=challenge)
-        except Exception as e:
+        except Exception:
             return render(request, "chal-not-found.html")
-
-        try:  # checking if he attempted it before or not, if yes then check if the container is live or not
-            user_chal = UserChallenge.objects.get(user=request.user, challenge=chal)
-            if user_chal.is_live:
-                return JsonResponse(
-                    {
-                        "message": "already running",
-                        "status": "200",
-                        "endpoint": f"http://localhost:{user_chal.port}",
-                    }
-                )
-            user_chall_exists = True
-        except:
-            pass
-
-        port = get_free_port(8000, 8100)
-        if port == None:
-            return JsonResponse(
-                {"message": "failed", "status": "500", "endpoint": "None"}
-            )
 
         client = get_docker_client()
         if client is None:
@@ -91,32 +76,48 @@ class DoItFast(View):
                 {"message": "Docker daemon unavailable", "status": "503", "endpoint": "None"},
                 status=503,
             )
+
+        user_chal = UserChallenge.objects.filter(user=request.user, challenge=chal).first()
+        if user_chal and user_chal.is_live:
+            container = _get_container_or_none(client, user_chal.container_id)
+            if container is not None and container.status == "running":
+                return JsonResponse(
+                    {
+                        "message": "already running",
+                        "status": "200",
+                        "endpoint": f"http://localhost:{user_chal.port}",
+                    }
+                )
+            # Container exited or was removed outside the app: replace it
+            if container is not None:
+                container.remove(force=True)
+
+        container = None
         try:
+            # Let Docker pick a free host port; checking from inside the web
+            # container can't see ports in use on the Docker host.
             container = client.containers.run(
                 chal.docker_image,
                 detach=True,
-                ports={f"{chal.docker_port}/tcp": port},
+                ports={f"{chal.docker_port}/tcp": None},
             )
-        except docker.errors.DockerException as e:
+            container.reload()
+            port = int(container.ports[f"{chal.docker_port}/tcp"][0]["HostPort"])
+        except (docker.errors.DockerException, KeyError, IndexError, TypeError) as e:
+            if container is not None:
+                container.remove(force=True)
             return JsonResponse(
                 {"message": f"Failed to start challenge: {e}", "status": "500", "endpoint": "None"},
                 status=500,
             )
-        container_id = container.id
 
-        if user_chall_exists:
-            # TODO : reuse the container instead of creating the new one
-            user_chal.container_id = container_id
-            user_chal.port = port
-            user_chal.is_live = True
-            user_chal.save()
-        else:
-            user_chal = UserChallenge(
-                user=request.user, challenge=chal, container_id=container_id, port=port
-            )
-            user_chal.save()
+        if user_chal is None:
+            user_chal = UserChallenge(user=request.user, challenge=chal)
+        user_chal.container_id = container.id
+        user_chal.port = port
+        user_chal.is_live = True
+        user_chal.save()
         start_tracking(request.user, "challenge", chal.id)
-        # save the output in database for stoping the container
         return JsonResponse(
             {
                 "message": "success",
@@ -132,20 +133,22 @@ class DoItFast(View):
         try:
             chal = Challenge.objects.get(name=challenge)
             user_chal = UserChallenge.objects.get(user=request.user, challenge=chal)
-        except Exception as e:
+        except Exception:
             return JsonResponse({"message": "failed", "status": "500"})
 
-        user_chal.is_live = False
-        user_chal.save()
         client = get_docker_client()
         if client is None:
             return JsonResponse({"message": "Docker daemon unavailable", "status": "503"}, status=503)
-        try:
-            container = client.containers.get(user_chal.container_id)
-            container.stop()
-            container.remove()
-        except docker.errors.NotFound:
-            pass
+        container = _get_container_or_none(client, user_chal.container_id)
+        if container is not None:
+            try:
+                container.remove(force=True)
+            except docker.errors.APIError as e:
+                return JsonResponse({"message": f"Failed to stop challenge: {e}", "status": "500"}, status=500)
+
+        # Only mark stopped once the container is really gone
+        user_chal.is_live = False
+        user_chal.save()
         return JsonResponse({"message": "success", "status": "200"})
 
     def put(self, request, challenge):
@@ -270,13 +273,53 @@ def _copy_common_css(container):
         print(f"Could not copy common_lab.css into {container.name}: {e}")
 
 
+def _get_container_or_none(client, container_id: str):
+    if not container_id:
+        return None
+    try:
+        return client.containers.get(container_id)
+    except docker.errors.NotFound:
+        return None
+
+
+@contextmanager
+def _user_lab_lock(username: str):
+    """
+    Serialize the quota check and container creation for one user across
+    gunicorn workers/threads, so parallel requests can't exceed the limit.
+    No-op where fcntl is unavailable (Windows).
+    """
+    if fcntl is None:
+        yield
+        return
+    path = os.path.join(tempfile.gettempdir(), f"pygoat-lab-{_sanitize_username(username)}.lock")
+    with open(path, "w") as fh:
+        fcntl.flock(fh, fcntl.LOCK_EX)
+        try:
+            yield
+        finally:
+            fcntl.flock(fh, fcntl.LOCK_UN)
+
+
 def _get_user_containers(client, username: str):
     safe_username = _sanitize_username(username)
     container_prefix = f"lab-{safe_username}-"
     containers = client.containers.list(all=True)
     return [c for c in containers if c.name.startswith(container_prefix)]
 
-def wait_for_health(container, timeout=60):
+def _discard_container(container, remove):
+    if remove:
+        container.remove(force=True)
+    else:
+        container.stop()
+
+
+def wait_for_health(container, timeout=60, remove_on_failure=True):
+    """
+    Wait for the container's healthcheck. On failure the container is removed
+    if it was just created, or only stopped if it already existed, so a slow
+    restart doesn't destroy the user's lab state.
+    """
     print(f"Waiting for {container.name} to become healthy...")
     start_time = time.time()
 
@@ -294,11 +337,11 @@ def wait_for_health(container, timeout=60):
             return True
         
         if health_status == 'unhealthy':
-            container.remove(force=True)
-            raise RuntimeError(f"Container {container.name} is UNHEALTHY and has been removed. Check its /health endpoint.")
+            _discard_container(container, remove_on_failure)
+            raise RuntimeError(f"Container {container.name} is UNHEALTHY and has been stopped. Check its /health endpoint.")
 
         if time.time() - start_time > timeout:
-            container.remove(force=True)
+            _discard_container(container, remove_on_failure)
             raise TimeoutError(f"Timed out waiting for {container.name} to become healthy.")
 
         time.sleep(1)
@@ -324,16 +367,6 @@ def start_lab(request, lab_image_name):
     
 
     try:
-        running_others = [
-            c for c in _get_user_containers(client, username)
-            if c.name != container_name and c.status == 'running'
-        ]
-        if len(running_others) >= per_user_limit:
-            return JsonResponse({'status': 'error', 'message': f'Per-user lab limit reached ({per_user_limit})'}, status=429)
-    except Exception:
-        return JsonResponse({'status': 'error', 'message': 'Unable to verify user container quota'}, status=503)
-
-    try:
         lab_config = _get_lab_config(safe_image)
         build_location = lab_config['build_location']
         lab_port = str(lab_config['port'])
@@ -341,64 +374,83 @@ def start_lab(request, lab_image_name):
         return JsonResponse({'status': 'error', 'message': f'Error loading lab configuration: {str(e)}'}, status=500)
 
     try:
-        try:
-            container = client.containers.get(container_name)
-            container.reload()
-            if container.status != 'running':
-                container.start()
-            wait_for_health(container)
-            return JsonResponse({'status': 'ready', 'url': lab_url})
-        except docker.errors.NotFound:
+        container = _get_container_or_none(client, container_name)
+        if container is None:
+            # Can take minutes; done before taking the per-user lock
             _ensure_image_built(client, safe_image, build_location)
 
-            labels = {
-                "traefik.enable": "true",
-                f"traefik.http.routers.{container_name}.rule": f"Host(`{container_name}.{domain}`)",
-                f"traefik.http.services.{container_name}.loadbalancer.server.port": lab_port,
-            }
-            forward_auth_url = getattr(settings, "LAB_FORWARD_AUTH_URL", "")
-            if forward_auth_url:
-                # trustForwardHeader stays off so clients can't spoof X-Forwarded-Host
-                labels.update({
-                    "traefik.http.middlewares.django-auth.forwardauth.address": forward_auth_url,
-                    "traefik.http.middlewares.django-auth.forwardauth.authResponseHeaders": "X-Forwarded-User",
-                    f"traefik.http.routers.{container_name}.middlewares": "django-auth",
-                })
-            healthcheck = docker.types.Healthcheck(
-            test=[
-                "CMD",
-                "python",
-                "-c",
-                (
-                    "import urllib.request, sys;"
-                    "sys.exit(0) if urllib.request.urlopen("
-                    f"'http://localhost:{lab_port}/health'"
-                    ").status == 200 else sys.exit(1)"
-                )
-            ],
-            interval=5000000000,  # 5s in nanoseconds
-            timeout=2000000000,     # 2s in nanoseconds
-            retries=3,
-            start_period=2000000000  # 2s in nanoseconds
-            )
+        created = False
+        with _user_lab_lock(username):
+            # Re-read: a parallel request may have created/started it meanwhile
+            container = _get_container_or_none(client, container_name)
+            if container is None or container.status != 'running':
+                try:
+                    running_others = [
+                        c for c in _get_user_containers(client, username)
+                        if c.name != container_name and c.status == 'running'
+                    ]
+                except Exception:
+                    return JsonResponse({'status': 'error', 'message': 'Unable to verify user container quota'}, status=503)
+                if len(running_others) >= per_user_limit:
+                    return JsonResponse({'status': 'error', 'message': f'Per-user lab limit reached ({per_user_limit})'}, status=429)
 
-            container = client.containers.create(
-                image=safe_image,
-                name=container_name,
-                detach=True,
-                labels=labels,
-                network=getattr(settings, "DOCKER_NETWORK", "my_network"),
-                mem_limit="512m",
-                healthcheck=healthcheck,
-            )
-            _copy_common_css(container)
-            container.start()
-            container.reload()
-            wait_for_health(container)
-            return JsonResponse({'status': 'created', 'url': lab_url})
+            if container is None:
+                container = _create_lab_container(client, safe_image, container_name, domain, lab_port)
+                created = True
+            elif container.status != 'running':
+                container.start()
+
+        container.reload()
+        wait_for_health(container, remove_on_failure=created)
+        return JsonResponse({'status': 'created' if created else 'ready', 'url': lab_url})
 
     except Exception as e:
         return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+
+
+def _create_lab_container(client, image, container_name, domain, lab_port):
+    labels = {
+        "traefik.enable": "true",
+        f"traefik.http.routers.{container_name}.rule": f"Host(`{container_name}.{domain}`)",
+        f"traefik.http.services.{container_name}.loadbalancer.server.port": lab_port,
+    }
+    forward_auth_url = getattr(settings, "LAB_FORWARD_AUTH_URL", "")
+    if forward_auth_url:
+        # trustForwardHeader stays off so clients can't spoof X-Forwarded-Host
+        labels.update({
+            "traefik.http.middlewares.django-auth.forwardauth.address": forward_auth_url,
+            "traefik.http.middlewares.django-auth.forwardauth.authResponseHeaders": "X-Forwarded-User",
+            f"traefik.http.routers.{container_name}.middlewares": "django-auth",
+        })
+    healthcheck = docker.types.Healthcheck(
+        test=[
+            "CMD",
+            "python",
+            "-c",
+            (
+                "import urllib.request, sys;"
+                "sys.exit(0) if urllib.request.urlopen("
+                f"'http://localhost:{lab_port}/health'"
+                ").status == 200 else sys.exit(1)"
+            )
+        ],
+        interval=5000000000,  # 5s in nanoseconds
+        timeout=2000000000,     # 2s in nanoseconds
+        retries=3,
+        start_period=2000000000  # 2s in nanoseconds
+    )
+    container = client.containers.create(
+        image=image,
+        name=container_name,
+        detach=True,
+        labels=labels,
+        network=getattr(settings, "DOCKER_NETWORK", "my_network"),
+        mem_limit="512m",
+        healthcheck=healthcheck,
+    )
+    _copy_common_css(container)
+    container.start()
+    return container
 
 
 def stop_user_labs(request):
