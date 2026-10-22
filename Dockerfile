@@ -5,8 +5,13 @@ FROM python:3.11.0b1-buster
 WORKDIR /app
 
 
-# dependencies for psycopg2
-RUN apt-get update && apt-get install --no-install-recommends -y dnsutils=1:9.11.5.P4+dfsg-5.1+deb10u11 libpq-dev=11.16-0+deb10u1 python3-dev=3.7.3-1 && apt-get clean && rm -rf /var/lib/apt/lists/*
+# Debian buster is EOL; its packages were moved off the live mirrors to the
+# permanent archive, so point apt there (and skip the now-expired Valid-Until check).
+RUN sed -i 's|deb.debian.org/debian |archive.debian.org/debian |g; s|security.debian.org/debian-security|archive.debian.org/debian-security|g' /etc/apt/sources.list \
+    && echo 'Acquire::Check-Valid-Until "false";' > /etc/apt/apt.conf.d/99no-check-valid-until
+
+# dnsutils provides nslookup/dig, used by the cmd_lab feature
+RUN apt-get update && apt-get install --no-install-recommends -y dnsutils && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 
 # Set environment variables
