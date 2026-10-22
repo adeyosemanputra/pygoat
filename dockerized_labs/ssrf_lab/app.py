@@ -15,10 +15,10 @@ def index():
 @app.route("/lab1", methods=["GET", "POST"])
 def lab1():
     if request.method == "POST":
-        file = request.form.get("blog")
+        blog_file = request.form.get("blog")
         try:
             # Vulnerable implementation - allows directory traversal
-            file_path = os.path.join(os.path.dirname(__file__), file)
+            file_path = os.path.join(os.path.dirname(__file__), blog_file)
             with open(file_path, "r") as f:
                 blog_content = f.read()
             flash("Success! Keep exploring...", "success")
