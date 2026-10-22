@@ -1,0 +1,88 @@
+<div id="secureFixModal" class="custom-modal">
+    <div class="modal-overlay"></div>
+    <div class="modal-container">
+        <div class="modal-header">
+            <h2 class="modal-title">
+                🛡️ Security Fix for Path Traversal
+            </h2>
+            <button type="button" class="close-btn" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="tabs-container">
+                <div class="tab-buttons">
+                    <button class="tab-btn active" style="font-weight: bold; font-size: 18px;" onclick="showTab('secure-code')">Secure Code</button>
+                    <button class="tab-btn" style="font-weight: bold; font-size: 18px;" onclick="showTab('prevention')">Solution</button>
+                </div>
+
+                <div class="tab-content">
+                    <div id="secure-code" class="tab-panel active">
+                        <h4>Secure Implementation</h4>
+                        <pre class="code-block"><code>
+import os
+from flask import Flask, request, abort, send_file
+
+UPLOAD_DIR = os.path.realpath("uploads")
+
+@app.route('/download')
+def download_secure():
+    filename = request.args.get('file')
+    if not filename:
+        abort(400)
+
+    # 1. Resolve the absolute, canonical path
+    requested = os.path.realpath(
+        os.path.join(UPLOAD_DIR, filename)
+    )
+
+    # 2. Confirm it is still inside the allowed directory
+    if not requested.startswith(UPLOAD_DIR + os.sep):
+        abort(403, "Path traversal blocked")
+
+    # 3. Confirm the file exists
+    if not os.path.isfile(requested):
+        abort(404)
+
+    return send_file(requested)
+                        </code></pre>
+
+                        <h4>Why This Works</h4>
+                        <ul>
+                            <li><code>os.path.realpath()</code> resolves symlinks and <code>..</code> components, producing the true absolute path.</li>
+                            <li>The <code>startswith()</code> check guarantees the resolved path is still inside the uploads folder.</li>
+                            <li>Even encoded traversal variants (<code>%2e%2e%2f</code>, <code>..%5c</code>) are caught because the OS resolves them before the check.</li>
+                        </ul>
+                    </div>
+
+                    <div id="prevention" class="tab-panel">
+                        <h4>Solution Walkthrough</h4>
+                        <p>When you open the lab, you see a list of shared documents with download links.</p>
+
+                        <strong>Step 1 — Observe the URL pattern</strong>
+                        <p>Click any file and note the URL:</p>
+                        <pre>/download?file=report_q1.txt</pre>
+
+                        <strong>Step 2 — Attempt path traversal</strong>
+                        <p>The <code>file</code> parameter is passed directly to the server without validation. Replace the filename with a relative path that escapes the <code>uploads/</code> directory:</p>
+                        <pre>/download?file=../secret/admin_credentials.txt</pre>
+
+                        <strong>Step 3 — Read the secret</strong>
+                        <p>The server resolves <code>uploads/../secret/admin_credentials.txt</code> to <code>secret/admin_credentials.txt</code> and returns its contents, including the admin credentials and the flag.</p>
+
+                        <strong>Try the Secure Endpoint</strong>
+                        <p>Now try the same payload against the secure endpoint:</p>
+                        <pre>/download/secure?file=../secret/admin_credentials.txt</pre>
+                        <p>You will get an "Access denied" message because the secure version validates the resolved path.</p>
+
+                        <br>
+                        <h4>OWASP References</h4>
+                        <ul>
+                            <li><a href="https://owasp.org/Top10/A01_2021-Broken_Access_Control/" target="_blank">OWASP A01 – Broken Access Control</a></li>
+                            <li><a href="https://owasp.org/www-community/attacks/Path_Traversal" target="_blank">OWASP Path Traversal Attack</a></li>
+                            <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Input_Validation_Cheat_Sheet.html" target="_blank">OWASP Input Validation Cheat Sheet</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
