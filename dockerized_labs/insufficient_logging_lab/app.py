@@ -91,6 +91,7 @@ def health_check():
 if __name__ == '__main__':
     # Create log file if it doesn't exist
     if not os.path.exists("app.log"):
-        open("app.log", "a").close()
+        with open("app.log", "a"):
+            pass
 
     app.run(host="0.0.0.0", port=5014, debug=True)
