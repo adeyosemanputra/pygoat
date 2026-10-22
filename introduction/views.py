@@ -1,5 +1,6 @@
 import random
 import string
+from functools import wraps
 
 from django.contrib import messages
 from django.contrib.auth import login
@@ -57,15 +58,16 @@ def home(request):
         return redirect("login")
 
 
-## authentication check decurator function
+## authentication check decorator function
 def authentication_decorator(func):
-    def function(*args, **kwargs):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
         if args[0].user.is_authenticated:
             return func(*args, **kwargs)
         else:
             return redirect("login")
 
-    return function
+    return wrapper
 
 def traefik_auth_verify(request):
     """
@@ -330,5 +332,4 @@ def software_and_data_integrity_failure(request):
         return render(
             request, "Lab_2021/A8_software_and_data_integrity_failure/desc.html"
         )
-
 
