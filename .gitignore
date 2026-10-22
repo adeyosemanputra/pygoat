@@ -15,3 +15,7 @@ bin
 # vscode
 .vscode/
 
+.venv-bandit/
+.venv-audit/
+bandit_report.*
+pip_audit_report*.json
