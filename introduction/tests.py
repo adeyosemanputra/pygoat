@@ -1,3 +1,4 @@
+from django.apps import apps
 from django.contrib.auth.models import User
 from django.test import TestCase, override_settings
 
@@ -74,3 +75,9 @@ class RegistrationAndRobotsTests(TestCase):
         resp = self.client.get("/robots.txt")
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(resp["Content-Type"], "text/plain")
+
+
+class LegacyIntegratedLabCleanupTests(TestCase):
+    def test_removed_csrf_model_is_not_registered(self):
+        model_names = {model.__name__ for model in apps.get_models()}
+        self.assertNotIn("CSRF_user_tbl", model_names)
