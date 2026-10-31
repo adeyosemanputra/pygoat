@@ -145,7 +145,11 @@ class CustomLabPermissionTests(TestCase):
 
 class LabContainerTests(TestCase):
     def test_build_path_accepts_shipped_labs(self):
-        for lab in ("dockerized_labs/xss_lab", "challenge/labs/bopla_lab"):
+        for lab in (
+            "dockerized_labs/xss_lab",
+            "dockerized_labs/path_traversal_lab",
+            "challenge/labs/bopla_lab",
+        ):
             self.assertTrue(os.path.isdir(_resolve_build_path(lab)))
 
     def test_build_removes_intermediate_containers(self):
