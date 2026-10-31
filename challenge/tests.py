@@ -2,13 +2,15 @@ import json
 import os
 import threading
 import time
+from io import StringIO
 from unittest.mock import MagicMock, patch
 
 import docker
 from django.contrib.auth.models import User
+from django.core.management import call_command
 from django.test import TestCase, override_settings
 
-from challenge.models import Challenge, Lab, UserChallenge
+from challenge.models import Challenge, Lab, LabCategoryMapping, UserChallenge
 from challenge.views import _ensure_image_built, _resolve_build_path, _user_lab_lock, wait_for_health
 
 
@@ -252,3 +254,16 @@ class LabQuotaTests(TestCase):
             self._container("lab-carol-sql_injection_lab", "running")
         ]
         self.assertEqual(self.client.get("/challenge/start-lab/xss_lab/").status_code, 429)
+
+
+class PopulateLabsTests(TestCase):
+    def test_path_traversal_lab_is_registered_under_owasp_2025_a01(self):
+        call_command("populate_labs", stdout=StringIO())
+        lab = Lab.objects.get(name="path_traversal_lab")
+        self.assertEqual(lab.build_location, "dockerized_labs/path_traversal_lab")
+        self.assertEqual(lab.port, 5031)
+        self.assertFalse(lab.is_custom)
+        mapping = LabCategoryMapping.objects.get(lab=lab, category="owasp_2025")
+        self.assertEqual(mapping.subcategory, "A01:2025 - Broken Access Control")
+        self.assertEqual(mapping.display_name, "Path Traversal Lab")
+        self.assertEqual(mapping.sort_order, 1)
