@@ -48,6 +48,8 @@
       <div class="pg active">PG</div>
       <!-- Sidebar -->
       {% include "introduction/includes/_sidebar.html" %}
+      <!-- Kept here, not with the scripts at the bottom, so the saved sidebar state is restored before the first paint. -->
+      <script src="{% static 'js/sidebar.js' %}"></script>
 
       <!-- Page Content -->
       <div id="content" style="height: 97vh; overflow-y: auto;">
