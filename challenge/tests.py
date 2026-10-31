@@ -266,4 +266,5 @@ class PopulateLabsTests(TestCase):
         mapping = LabCategoryMapping.objects.get(lab=lab, category="owasp_2025")
         self.assertEqual(mapping.subcategory, "A01:2025 - Broken Access Control")
         self.assertEqual(mapping.display_name, "Path Traversal Lab")
+        self.assertEqual(mapping.overview_url_name, "path_traversal_lab")
         self.assertEqual(mapping.sort_order, 1)

@@ -263,6 +263,14 @@ def a1_broken_access(request):
     return render(request, "Lab_2021/A1_BrokenAccessControl/broken_access.html")
 
 
+@authentication_decorator
+def path_traversal_lab_page(request):
+    """In-page theory view for A01:2025 - Path Traversal."""
+    return render(
+        request, "Lab_2021/A01_Broken_Access_Control/path_traversal_lab.html"
+    )
+
+
 ###################################################### 2021 A3: Injection
 
 

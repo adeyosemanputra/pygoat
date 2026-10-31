@@ -74,3 +74,20 @@ class RegistrationAndRobotsTests(TestCase):
         resp = self.client.get("/robots.txt")
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(resp["Content-Type"], "text/plain")
+
+
+class PathTraversalOverviewTests(TestCase):
+    url = "/path_traversal_lab"
+
+    def test_anonymous_is_redirected(self):
+        resp = self.client.get(self.url)
+        self.assertEqual(resp.status_code, 302)
+        self.assertIn("/login", resp["Location"])
+
+    def test_authenticated_user_sees_launch_button(self):
+        self.client.force_login(User.objects.create_user("u", password="pw"))
+        resp = self.client.get(self.url)
+        self.assertEqual(resp.status_code, 200)
+        self.assertContains(resp, "launchLab('path_traversal_lab')")
+        self.assertNotContains(resp, "127.0.0.1:5031")
+        self.assertNotContains(resp, "<iframe")

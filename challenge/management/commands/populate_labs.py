@@ -96,7 +96,7 @@ class Command(BaseCommand):
         category_mappings = [
             # === OWASP TOP 10 2025 ===
             ("path_traversal_lab", "owasp_2025", "A01:2025 - Broken Access Control",
-             "Path Traversal Lab", 1, ""),
+             "Path Traversal Lab", 1, "path_traversal_lab"),
             ("dependency_attack_lab", "owasp_2025", "A03:2025 - Software Supply Chain Failures",
              "Dependency Attack Lab", 2, "supply_chain_failures"),
             ("package_injection_lab", "owasp_2025", "A03:2025 - Software Supply Chain Failures",
