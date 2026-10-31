@@ -1,0 +1,4 @@
+# pillow==8.0.0 and pyyaml==5.1 have no Python 3.12 wheels, so pip builds them
+# from source in an isolated environment that would otherwise pull the newest
+# setuptools. Pin it so a future setuptools release can't break the build.
+setuptools==84.2.1
