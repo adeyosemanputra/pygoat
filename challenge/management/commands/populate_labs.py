@@ -41,7 +41,8 @@ class Command(BaseCommand):
             {"name": "xxe_lab", "build_location": "dockerized_labs/xxe_lab", "port": 5010},
             {"name": "dependency_attack_lab", "build_location": "dockerized_labs/dependency_attack_lab", "port": 5020},
             {"name": "package_injection_lab", "build_location": "dockerized_labs/package_injection_lab", "port": 5021},
-            {"name": "open_source_library_attack_lab", "build_location": "dockerized_labs/open_source_library_attack_lab", "port": 5022}
+            {"name": "open_source_library_attack_lab", "build_location": "dockerized_labs/open_source_library_attack_lab", "port": 5022},
+            {"name": "path_traversal_lab", "build_location": "dockerized_labs/path_traversal_lab", "port": 5031},
         ]
 
         for lab_data in default_labs:
@@ -94,12 +95,14 @@ class Command(BaseCommand):
         # Each entry: (lab_name, category, subcategory, display_name, sort_order, overview_url_name)
         category_mappings = [
             # === OWASP TOP 10 2025 ===
+            ("path_traversal_lab", "owasp_2025", "A01:2025 - Broken Access Control",
+             "Path Traversal Lab", 1, "path_traversal_lab"),
             ("dependency_attack_lab", "owasp_2025", "A03:2025 - Software Supply Chain Failures",
-             "Dependency Attack Lab", 1, "supply_chain_failures"),
+             "Dependency Attack Lab", 2, "supply_chain_failures"),
             ("package_injection_lab", "owasp_2025", "A03:2025 - Software Supply Chain Failures",
-             "Package Injection Lab", 2, ""),
+             "Package Injection Lab", 3, ""),
             ("open_source_library_attack_lab", "owasp_2025", "A03:2025 - Software Supply Chain Failures",
-             "Open Source Library Attack Lab", 3, ""),
+             "Open Source Library Attack Lab", 4, ""),
 
             # === OWASP TOP 10 2021 ===
             ("broken_access_lab", "owasp_2021", "", "A1: Broken Access Control", 1, ""),

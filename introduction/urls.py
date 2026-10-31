@@ -27,6 +27,7 @@ urlpatterns = [
     path("ssti", views.ssti, name="SSTI"),
     path("cryptographic_failure", views.crypto_failure, name="cryptographic_failure"),
     path("A03", views.supply_chain_failures, name="supply_chain_failures"),
+    path("path_traversal_lab", views.path_traversal_lab_page, name="path_traversal_lab"),
     path("auth_failure", views.auth_failure, name="auth_failure"),
     path("2021/A8", views.software_and_data_integrity_failure, name="A8"),
 ]

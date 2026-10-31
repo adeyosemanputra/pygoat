@@ -1,0 +1,9 @@
+Meeting Notes - Sprint Planning
+
+Date: 2025-01-15
+Attendees: Engineering Team
+
+Action Items:
+- Migrate auth service to v2 API
+- Fix rate limiter edge case
+- Update deployment docs

@@ -1,0 +1,47 @@
+{% extends 'introduction/base.html' %}
+{% block content %}
+{% block title %}
+<title>A01:2025 - Path Traversal</title>
+{% endblock %}
+<div class="content">
+  <h3>A01:2025 - Path Traversal</h3>
+  <div class="box">
+    <h4>What is Path Traversal?</h4>
+    <p class="bp">
+      Path traversal (directory traversal) happens when an application builds a
+      file path from user input and does not keep the result inside the intended
+      directory. An attacker can then read files they should not see.
+    </p>
+    <p class="bp">
+      This sits under <strong>A01:2025 – Broken Access Control</strong> because
+      the application fails to enforce the file-access boundary.
+    </p>
+
+    <h4>How the lab is exploited</h4>
+    <ul>
+      <li>
+        Relative escape: <code>../secret/admin_credentials.txt</code> walks out
+        of the uploads folder.
+      </li>
+      <li>
+        Absolute path: <code>/etc/passwd</code> works too.
+        <code>os.path.join</code> drops the uploads base when the second part
+        is absolute, so the check that only looks for <code>..</code> misses it.
+      </li>
+    </ul>
+
+    <h4>Correct fix</h4>
+    <p class="bp">
+      Resolve the path with <code>os.path.realpath</code>, then require
+      <code>os.path.commonpath([base, filepath]) == base</code>.
+      A <code>startswith</code> prefix check is not enough: it would allow a
+      sibling directory such as <code>/app/uploads_backup</code>.
+    </p>
+
+    <div align="right">
+      <button class="btn btn-info" type="button"
+        onclick="launchLab('path_traversal_lab')">Access Lab</button>
+    </div>
+  </div>
+</div>
+{% endblock %}
