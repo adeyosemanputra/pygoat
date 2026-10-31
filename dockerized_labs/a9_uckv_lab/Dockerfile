@@ -11,9 +11,10 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     libpng-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Python dependencies
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+# Install Python dependencies. PIP_CONSTRAINT also applies to the isolated
+# build environments pip uses for the source builds, so setuptools stays pinned.
+COPY requirements.txt build-constraints.txt ./
+RUN PIP_CONSTRAINT=build-constraints.txt pip install --no-cache-dir -r requirements.txt
 
 # Copy application code
 COPY . .

@@ -4,6 +4,11 @@
 
 - Lab and challenge images now build on `python:3.12-alpine` (and `python:3.12-slim` for `a9_uckv_lab`) instead of the end-of-life `python:3.9-alpine` and `python:3.8-slim`. This resolves the "Most lab images use `python:3.9-alpine`" known issue from v3.0.0. `a9_uckv_lab` moves from gunicorn 20.1 to 23.0 because 20.1 imports `pkg_resources`, which the Python 3.12 images no longer ship; its intentionally vulnerable `pyyaml` and `pillow` pins are unchanged.
 - The Hadolint workflow passes again. The three lab Dockerfiles that failed it (`a9_uckv_lab`, `command_injection_lab`, `sec_misconfig`) are fixed or carry an explicit `hadolint ignore` where the finding is intentional.
+- `a9_uckv_lab` pins `setuptools` through `build-constraints.txt`, because `pillow==8.0.0` and `pyyaml==5.1` have no Python 3.12 wheels and are built from source.
+
+## Known Issues
+
+- `sensitive_data_exposure` runs Django 3.2 on Python 3.12. Django 3.2 officially supports Python up to 3.10. The lab works, and the old Django version is kept on purpose for the lab.
 
 ---
 
