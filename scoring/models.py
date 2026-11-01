@@ -37,6 +37,7 @@ class ScoringSettings(models.Model):
     )
     time_bonus_window_minutes = models.PositiveIntegerField(
         default=30,
+        validators=[MinValueValidator(1)],
         help_text="Solves within this many minutes get max time bonus"
     )
     time_penalty_floor = models.FloatField(

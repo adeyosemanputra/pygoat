@@ -12,7 +12,8 @@ def compute_score(base_points, difficulty_multiplier, duration_seconds, settings
     """
     window_seconds = settings.time_bonus_window_minutes * 60
 
-    if duration_seconds is None or duration_seconds <= 0:
+    # Existing records or direct ORM writes can bypass model validation.
+    if window_seconds <= 0 or duration_seconds is None or duration_seconds <= 0:
         time_multiplier = 1.0
     elif duration_seconds <= window_seconds:
         # Linear interpolation: fast → max bonus
