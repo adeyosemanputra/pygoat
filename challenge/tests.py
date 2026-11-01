@@ -6,6 +6,7 @@ from unittest.mock import MagicMock, patch
 
 import docker
 from django.contrib.auth.models import User
+from django.db import transaction
 from django.test import TestCase, override_settings
 
 from challenge.models import Challenge, Lab, UserChallenge
@@ -135,6 +136,44 @@ class CustomLabPermissionTests(TestCase):
         resp = self.post("/challenge/custom-labs/create/",
                          {"name": "xss2", "build_location": "dockerized_labs/xss_lab", "port": 5006})
         self.assertEqual(resp.status_code, 200)
+
+    def test_invalid_ports_are_rejected_without_changing_labs(self):
+        self.client.force_login(self.staff)
+        for port in (-1, 0, 65536, "invalid", True, 1.5, [5006], {"port": 5006}):
+            for url in (
+                "/challenge/custom-labs/create/",
+                f"/challenge/custom-labs/update/{self.lab.id}/",
+            ):
+                with self.subTest(port=port, url=url), transaction.atomic():
+                    resp = self.post(url, {
+                        "name": "invalid-port",
+                        "build_location": "dockerized_labs/xss_lab",
+                        "port": port,
+                    })
+                    self.assertEqual(resp.status_code, 400, resp.content)
+                    self.lab.refresh_from_db()
+                    self.assertEqual(self.lab.port, 5006)
+                    self.assertEqual(self.lab.name, "mine")
+                    self.assertEqual(Lab.objects.count(), 1)
+
+    def test_valid_port_boundaries_can_be_created_and_updated(self):
+        self.client.force_login(self.staff)
+        for port in (1, "65535"):
+            with self.subTest(port=port):
+                resp = self.post("/challenge/custom-labs/create/", {
+                    "name": f"port-{port}",
+                    "build_location": "dockerized_labs/xss_lab",
+                    "port": port,
+                })
+                self.assertEqual(resp.status_code, 200, resp.content)
+                lab_id = resp.json()["lab"]["id"]
+                resp = self.post(f"/challenge/custom-labs/update/{lab_id}/", {
+                    "name": f"updated-{port}",
+                    "build_location": "dockerized_labs/xss_lab",
+                    "port": port,
+                })
+                self.assertEqual(resp.status_code, 200, resp.content)
+                self.assertEqual(Lab.objects.get(pk=lab_id).port, int(port))
 
     def test_custom_labs_button_hidden_for_non_staff(self):
         self.client.force_login(self.user)
