@@ -3,6 +3,7 @@ import json
 from unittest.mock import patch
 
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 from django.core.management import call_command
 from django.test import TestCase
 from django.urls import NoReverseMatch, reverse
@@ -37,6 +38,18 @@ class ComputeScoreTests(TestCase):
     def test_score_never_below_one(self):
         score, _ = compute_score(0, 1.0, None, self.settings)
         self.assertEqual(score, 1)
+
+    def test_zero_time_window_uses_neutral_time_multiplier(self):
+        self.settings.time_bonus_window_minutes = 0
+        score, mult = compute_score(100, 1.5, 60, self.settings)
+        self.assertEqual(score, 150)
+        self.assertEqual(mult, 1.0)
+
+    def test_zero_time_window_is_rejected_by_validation(self):
+        self.settings.time_bonus_window_minutes = 0
+        with self.assertRaises(ValidationError) as raised:
+            self.settings.full_clean()
+        self.assertIn("time_bonus_window_minutes", raised.exception.message_dict)
 
 
 class SeedAndDefaultsTests(TestCase):
