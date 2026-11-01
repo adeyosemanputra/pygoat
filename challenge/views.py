@@ -448,8 +448,12 @@ def _create_lab_container(client, image, container_name, domain, lab_port):
         mem_limit="512m",
         healthcheck=healthcheck,
     )
-    _copy_common_css(container)
-    container.start()
+    try:
+        _copy_common_css(container)
+        container.start()
+    except Exception:
+        container.remove(force=True)
+        raise
     return container
 
 
