@@ -549,6 +549,15 @@ def list_custom_labs(request):
     return JsonResponse({'status': 'success', 'labs': labs_list})
 
 
+def _parse_lab_port(value):
+    if isinstance(value, bool) or not isinstance(value, (int, str)):
+        raise ValueError("Port must be an integer between 1 and 65535")
+    port = int(value)
+    if not 1 <= port <= 65535:
+        raise ValueError("Port must be an integer between 1 and 65535")
+    return port
+
+
 def create_custom_lab(request):
     if not request.user.is_authenticated:
         return JsonResponse({'status': 'error', 'message': 'Authentication required'}, status=401)
@@ -575,9 +584,9 @@ def create_custom_lab(request):
             return JsonResponse({'status': 'error', 'message': 'Invalid lab name. Only alphanumeric characters, hyphens, and underscores are allowed.'}, status=400)
             
         try:
-            port = int(port)
+            port = _parse_lab_port(port)
         except ValueError:
-            return JsonResponse({'status': 'error', 'message': 'Port must be an integer'}, status=400)
+            return JsonResponse({'status': 'error', 'message': 'Port must be an integer between 1 and 65535'}, status=400)
             
         if Lab.objects.filter(name=name).exists():
             return JsonResponse({'status': 'error', 'message': f'Lab with name {name} already exists'}, status=400)
@@ -628,9 +637,9 @@ def update_custom_lab(request, lab_id):
             return JsonResponse({'status': 'error', 'message': 'Invalid lab name. Only alphanumeric characters, hyphens, and underscores are allowed.'}, status=400)
             
         try:
-            port = int(port)
+            port = _parse_lab_port(port)
         except ValueError:
-            return JsonResponse({'status': 'error', 'message': 'Port must be an integer'}, status=400)
+            return JsonResponse({'status': 'error', 'message': 'Port must be an integer between 1 and 65535'}, status=400)
             
         if Lab.objects.filter(name=name).exclude(id=lab_id).exists():
             return JsonResponse({'status': 'error', 'message': f'Lab with name {name} already exists'}, status=400)
