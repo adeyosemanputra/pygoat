@@ -215,6 +215,33 @@ class LabQuotaTests(TestCase):
 
     @patch("challenge.views.check_traefik_reachable", return_value=True)
     @patch("challenge.views.get_docker_client")
+    def test_new_container_is_removed_when_start_fails(self, get_client, _traefik):
+        client = get_client.return_value
+        client.containers.list.return_value = []
+        client.containers.get.side_effect = docker.errors.NotFound("x")
+        container = client.containers.create.return_value
+        container.start.side_effect = docker.errors.APIError("start failed")
+        resp = self.client.get("/challenge/start-lab/xss_lab/")
+        self.assertEqual(resp.status_code, 500)
+        self.assertIn("start failed", resp.json()["message"])
+        container.remove.assert_called_once_with(force=True)
+
+    @patch("challenge.views._copy_common_css", side_effect=OSError("archive failed"))
+    @patch("challenge.views.check_traefik_reachable", return_value=True)
+    @patch("challenge.views.get_docker_client")
+    def test_new_container_is_removed_when_setup_fails(self, get_client, _traefik, _css):
+        client = get_client.return_value
+        client.containers.list.return_value = []
+        client.containers.get.side_effect = docker.errors.NotFound("x")
+        container = client.containers.create.return_value
+        resp = self.client.get("/challenge/start-lab/xss_lab/")
+        self.assertEqual(resp.status_code, 500)
+        self.assertIn("archive failed", resp.json()["message"])
+        container.start.assert_not_called()
+        container.remove.assert_called_once_with(force=True)
+
+    @patch("challenge.views.check_traefik_reachable", return_value=True)
+    @patch("challenge.views.get_docker_client")
     def test_stopped_labs_do_not_count_toward_limit(self, get_client, _traefik):
         client = get_client.return_value
         client.containers.list.return_value = [self._container("lab-carol-sql_injection_lab", "exited")]
