@@ -38,14 +38,4 @@ $(document).ready(function () {
       pagestyle.setAttribute('href', '/static/css/light.css');
     }
   }
-
-  $(".sidebar-header").on("click", function () {
-    $("#sidebar").toggleClass("active");
-    $(".pg").toggleClass("active");
-  });
-
-  $(".pg").on("click", function () {
-    $("#sidebar").toggleClass("active");
-    $(".pg").toggleClass("active");
-  });
 });
