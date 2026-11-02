@@ -452,7 +452,10 @@ def _create_lab_container(client, image, container_name, domain, lab_port):
         _copy_common_css(container)
         container.start()
     except Exception:
-        container.remove(force=True)
+        try:
+            container.remove(force=True)
+        except Exception as cleanup_err:
+            print(f"Failed to remove {container.name} after startup error: {cleanup_err}")
         raise
     return container
 

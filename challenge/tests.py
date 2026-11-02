@@ -226,6 +226,21 @@ class LabQuotaTests(TestCase):
         self.assertIn("start failed", resp.json()["message"])
         container.remove.assert_called_once_with(force=True)
 
+    @patch("challenge.views.check_traefik_reachable", return_value=True)
+    @patch("challenge.views.get_docker_client")
+    def test_cleanup_failure_preserves_original_start_error(self, get_client, _traefik):
+        client = get_client.return_value
+        client.containers.list.return_value = []
+        client.containers.get.side_effect = docker.errors.NotFound("x")
+        container = client.containers.create.return_value
+        container.start.side_effect = docker.errors.APIError("original start failed")
+        container.remove.side_effect = docker.errors.APIError("cleanup failed")
+        resp = self.client.get("/challenge/start-lab/xss_lab/")
+        self.assertEqual(resp.status_code, 500)
+        self.assertIn("original start failed", resp.json()["message"])
+        self.assertNotIn("cleanup failed", resp.json()["message"])
+        container.remove.assert_called_once_with(force=True)
+
     @patch("challenge.views._copy_common_css", side_effect=OSError("archive failed"))
     @patch("challenge.views.check_traefik_reachable", return_value=True)
     @patch("challenge.views.get_docker_client")
