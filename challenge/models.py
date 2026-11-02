@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 import hashlib  # Import hashlib
 from django.core.exceptions import ValidationError  # Import ValidationError
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 class Challenge(models.Model):
@@ -69,7 +70,7 @@ class Lab(models.Model):
     id = models.AutoField(primary_key=True, unique=True)
     name = models.CharField(max_length=100, unique=True)
     build_location = models.CharField(max_length=255)
-    port = models.IntegerField()
+    port = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(65535)])
     is_custom = models.BooleanField(default=True)
     difficulty = models.ForeignKey(
         "scoring.DifficultyLevel",

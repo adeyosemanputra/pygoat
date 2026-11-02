@@ -6,6 +6,8 @@ from unittest.mock import MagicMock, patch
 
 import docker
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
+from django.forms import modelform_factory
 from django.test import TestCase, override_settings
 
 from challenge.models import Challenge, Lab, UserChallenge
@@ -141,6 +143,29 @@ class CustomLabPermissionTests(TestCase):
         self.assertNotContains(self.client.get("/"), 'id="custom-labs-btn"')
         self.client.force_login(self.staff)
         self.assertContains(self.client.get("/"), 'id="custom-labs-btn"')
+
+
+class LabPortValidationTests(TestCase):
+    def test_model_rejects_ports_outside_the_tcp_range(self):
+        for port in (-1, 0, 65536):
+            with self.subTest(port=port):
+                lab = Lab(name="port-check", build_location="dockerized_labs/xss_lab", port=port)
+                with self.assertRaises(ValidationError) as raised:
+                    lab.full_clean()
+                self.assertIn("port", raised.exception.message_dict)
+
+    def test_model_accepts_tcp_port_boundaries(self):
+        for port in (1, 65535):
+            with self.subTest(port=port):
+                Lab(name="port-check", build_location="dockerized_labs/xss_lab", port=port).full_clean()
+
+    def test_model_form_rejects_invalid_port(self):
+        form_class = modelform_factory(Lab, fields=("name", "build_location", "port"))
+        form = form_class(data={
+            "name": "port-check", "build_location": "dockerized_labs/xss_lab", "port": 65536,
+        })
+        self.assertFalse(form.is_valid())
+        self.assertIn("port", form.errors)
 
 
 class LabContainerTests(TestCase):
