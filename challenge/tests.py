@@ -6,9 +6,9 @@ from unittest.mock import MagicMock, patch
 
 import docker
 from django.contrib.auth.models import User
+from django.test import TestCase, override_settings
 from django.core.exceptions import ValidationError
 from django.forms import modelform_factory
-from django.test import TestCase, override_settings
 
 from challenge.models import Challenge, Lab, UserChallenge
 from challenge.views import _ensure_image_built, _resolve_build_path, _user_lab_lock, wait_for_health
