@@ -33,6 +33,7 @@ class ScoringSettings(models.Model):
     )
     time_bonus_max = models.FloatField(
         default=2.0,
+        validators=[MinValueValidator(1.0)],
         help_text="Maximum time bonus multiplier (for fastest solves)"
     )
     time_bonus_window_minutes = models.PositiveIntegerField(
@@ -42,6 +43,7 @@ class ScoringSettings(models.Model):
     )
     time_penalty_floor = models.FloatField(
         default=0.5,
+        validators=[MinValueValidator(0.0), MaxValueValidator(1.0)],
         help_text="Minimum time multiplier (for slowest solves)"
     )
     updated_at = models.DateTimeField(auto_now=True)

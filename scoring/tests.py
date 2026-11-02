@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.core.management import call_command
 from django.test import TestCase
+from django.forms import modelform_factory
 from django.urls import NoReverseMatch, reverse
 
 from challenge.models import Challenge, Lab, UserChallenge
@@ -50,6 +51,39 @@ class ComputeScoreTests(TestCase):
         with self.assertRaises(ValidationError) as raised:
             self.settings.full_clean()
         self.assertIn("time_bonus_window_minutes", raised.exception.message_dict)
+
+
+class ScoringSettingsValidationTests(TestCase):
+    def test_invalid_time_multipliers_are_rejected(self):
+        for field, value in (
+            ("time_bonus_max", -1.0),
+            ("time_bonus_max", 0.5),
+            ("time_penalty_floor", -0.1),
+            ("time_penalty_floor", 1.1),
+        ):
+            with self.subTest(field=field, value=value):
+                settings = ScoringSettings.load()
+                setattr(settings, field, value)
+                with self.assertRaises(ValidationError) as raised:
+                    settings.full_clean()
+                self.assertIn(field, raised.exception.message_dict)
+
+    def test_valid_multiplier_boundaries_and_defaults_are_accepted(self):
+        for bonus, floor in ((1.0, 0.0), (1.0, 1.0), (2.0, 0.5)):
+            with self.subTest(bonus=bonus, floor=floor):
+                settings = ScoringSettings.load()
+                settings.time_bonus_max = bonus
+                settings.time_penalty_floor = floor
+                settings.full_clean()
+
+    def test_model_form_reports_both_invalid_multiplier_fields(self):
+        form_class = modelform_factory(
+            ScoringSettings, fields=("time_bonus_max", "time_penalty_floor")
+        )
+        form = form_class(data={"time_bonus_max": 0.5, "time_penalty_floor": 1.1})
+        self.assertFalse(form.is_valid())
+        self.assertIn("time_bonus_max", form.errors)
+        self.assertIn("time_penalty_floor", form.errors)
 
 
 class SeedAndDefaultsTests(TestCase):
