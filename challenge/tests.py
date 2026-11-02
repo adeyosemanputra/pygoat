@@ -139,7 +139,7 @@ class CustomLabPermissionTests(TestCase):
 
     def test_invalid_ports_are_rejected_without_changing_labs(self):
         self.client.force_login(self.staff)
-        for port in (-1, 0, 65536, "invalid", True, 1.5, [5006], {"port": 5006}):
+        for port in (-1, 0, 65536, "invalid", "5_006", " 80 ", "+80", "٨٠", True, 1.5, [5006], {"port": 5006}):
             for url in (
                 "/challenge/custom-labs/create/",
                 f"/challenge/custom-labs/update/{self.lab.id}/",
@@ -151,6 +151,7 @@ class CustomLabPermissionTests(TestCase):
                         "port": port,
                     })
                     self.assertEqual(resp.status_code, 400, resp.content)
+                    self.assertEqual(resp.json()["message"], "Port must be an integer between 1 and 65535")
                     self.lab.refresh_from_db()
                     self.assertEqual(self.lab.port, 5006)
                     self.assertEqual(self.lab.name, "mine")

@@ -552,6 +552,8 @@ def list_custom_labs(request):
 def _parse_lab_port(value):
     if isinstance(value, bool) or not isinstance(value, (int, str)):
         raise ValueError("Port must be an integer between 1 and 65535")
+    if isinstance(value, str) and not re.fullmatch(r"[0-9]+", value):
+        raise ValueError("Port must be an integer between 1 and 65535")
     port = int(value)
     if not 1 <= port <= 65535:
         raise ValueError("Port must be an integer between 1 and 65535")
@@ -572,7 +574,7 @@ def create_custom_lab(request):
         build_location = data.get('build_location')
         port = data.get('port')
         
-        if not name or not build_location or not port:
+        if not name or not build_location or port is None or port == "":
             return JsonResponse({'status': 'error', 'message': 'Missing required fields'}, status=400)
 
         try:
@@ -585,8 +587,8 @@ def create_custom_lab(request):
             
         try:
             port = _parse_lab_port(port)
-        except ValueError:
-            return JsonResponse({'status': 'error', 'message': 'Port must be an integer between 1 and 65535'}, status=400)
+        except ValueError as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
             
         if Lab.objects.filter(name=name).exists():
             return JsonResponse({'status': 'error', 'message': f'Lab with name {name} already exists'}, status=400)
@@ -625,7 +627,7 @@ def update_custom_lab(request, lab_id):
         build_location = data.get('build_location')
         port = data.get('port')
         
-        if not name or not build_location or not port:
+        if not name or not build_location or port is None or port == "":
             return JsonResponse({'status': 'error', 'message': 'Missing required fields'}, status=400)
 
         try:
@@ -638,8 +640,8 @@ def update_custom_lab(request, lab_id):
             
         try:
             port = _parse_lab_port(port)
-        except ValueError:
-            return JsonResponse({'status': 'error', 'message': 'Port must be an integer between 1 and 65535'}, status=400)
+        except ValueError as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
             
         if Lab.objects.filter(name=name).exclude(id=lab_id).exists():
             return JsonResponse({'status': 'error', 'message': f'Lab with name {name} already exists'}, status=400)
