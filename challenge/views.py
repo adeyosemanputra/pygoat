@@ -533,6 +533,16 @@ def stop_lab(request, lab_image_name):
         return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
 
 
+def _parse_custom_lab_json(body):
+    try:
+        data = json.loads(body)
+    except (json.JSONDecodeError, UnicodeDecodeError) as error:
+        raise ValueError("Request body must be a JSON object") from error
+    if not isinstance(data, dict):
+        raise ValueError("Request body must be a JSON object")
+    return data
+
+
 def list_custom_labs(request):
     if not request.user.is_authenticated:
         return JsonResponse({'status': 'error', 'message': 'Authentication required'}, status=401)
@@ -558,7 +568,10 @@ def create_custom_lab(request):
         return JsonResponse({'status': 'error', 'message': 'Method not allowed'}, status=405)
     
     try:
-        data = json.loads(request.body)
+        try:
+            data = _parse_custom_lab_json(request.body)
+        except ValueError as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
         name = data.get('name')
         build_location = data.get('build_location')
         port = data.get('port')
@@ -611,7 +624,10 @@ def update_custom_lab(request, lab_id):
         except Lab.DoesNotExist:
             return JsonResponse({'status': 'error', 'message': 'Lab not found'}, status=404)
             
-        data = json.loads(request.body)
+        try:
+            data = _parse_custom_lab_json(request.body)
+        except ValueError as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
         name = data.get('name')
         build_location = data.get('build_location')
         port = data.get('port')
