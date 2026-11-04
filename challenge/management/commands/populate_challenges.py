@@ -1,5 +1,6 @@
 import json
 import os
+from django.conf import settings
 from django.core.management.base import BaseCommand
 from challenge.models import Challenge
 from scoring.models import DifficultyLevel, ScoringSettings
@@ -20,7 +21,7 @@ class Command(BaseCommand):
             defaults={"multiplier": 1.0, "order": 2}
         )
 
-        file_path = os.path.join("challenge", "challenge.json")
+        file_path = os.path.join(settings.BASE_DIR, "challenge", "challenge.json")
 
         try:
             with open(file_path, "r") as json_file:
