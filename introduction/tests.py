@@ -25,6 +25,14 @@ class TraefikAuthVerifyTests(TestCase):
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(resp["X-Forwarded-User"], "alice")
 
+    def test_dashed_lab_hostname_is_allowed(self):
+        resp = self.verify("lab-alice-xss-lab.lvh.me", self.alice)
+        self.assertEqual(resp.status_code, 200)
+
+    def test_dashed_lab_hostname_of_other_user_is_forbidden(self):
+        resp = self.verify("lab-alice-bob-xss-lab.lvh.me", self.alice)
+        self.assertEqual(resp.status_code, 403)
+
     def test_host_with_port_and_mixed_case_is_allowed(self):
         resp = self.verify("LAB-Alice-XSS_lab.lvh.me:80", self.alice)
         self.assertEqual(resp.status_code, 200)
@@ -55,6 +63,14 @@ class TraefikAuthVerifyTests(TestCase):
     def test_missing_forwarded_host_is_rejected(self):
         self.client.force_login(self.alice)
         self.assertEqual(self.client.get(self.url).status_code, 400)
+
+    def test_lab_session_cookie_does_not_log_owner_out(self):
+        # A Django lab sets its own "sessionid" on the lab host, which the
+        # browser sends alongside PyGoat's shared session cookie.
+        self.client.force_login(self.alice)
+        self.client.cookies["sessionid"] = "session-from-the-lab"
+        resp = self.client.get(self.url, HTTP_X_FORWARDED_HOST="lab-alice-xss_lab.lvh.me")
+        self.assertEqual(resp.status_code, 200)
 
 
 class RegistrationAndRobotsTests(TestCase):

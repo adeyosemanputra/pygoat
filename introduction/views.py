@@ -91,10 +91,12 @@ def traefik_auth_verify(request):
     if not subdomain.startswith(prefix):
         return HttpResponse(status=403)
 
-    known_labs = {
-        _sanitize_image_name(name).lower()
-        for name in Lab.objects.values_list("name", flat=True)
-    }
+    # Lab hostnames use "-" for "_" (see _get_lab_hostname). The "_" form is
+    # still accepted for containers created before that change.
+    known_labs = set()
+    for name in Lab.objects.values_list("name", flat=True):
+        safe_name = _sanitize_image_name(name).lower()
+        known_labs.update({safe_name, safe_name.replace("_", "-")})
     if subdomain[len(prefix):] not in known_labs:
         return HttpResponse(status=403)
 

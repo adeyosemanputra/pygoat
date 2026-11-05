@@ -212,6 +212,14 @@ def _get_container_name(username: str, lab_image_name: str) -> str:
     return f"lab-{safe_username}-{safe_image}"
 
 
+def _get_lab_hostname(username: str, lab_image_name: str) -> str:
+    # Django labs reject hosts containing "_" (DisallowedHost), and every lab
+    # name has one, so the lab part of the hostname uses "-" instead.
+    safe_username = _sanitize_username(username)
+    safe_image = _sanitize_image_name(lab_image_name).replace("_", "-")
+    return f"lab-{safe_username}-{safe_image}"
+
+
 def _get_lab_config(lab_image_name: str) -> dict:
     try:
         lab = Lab.objects.get(name=lab_image_name)
@@ -361,7 +369,8 @@ def start_lab(request, lab_image_name):
     safe_image = _sanitize_image_name(lab_image_name)
     container_name = _get_container_name(username, lab_image_name)
     domain = getattr(settings, 'LAB_DOMAIN', 'localhost')
-    lab_url = f"http://{container_name}.{domain}"
+    hostname = _get_lab_hostname(username, lab_image_name)
+    lab_url = f"http://{hostname}.{domain}"
 
     per_user_limit = getattr(settings, 'LABS_PER_USER_LIMIT', 3)
     
@@ -395,7 +404,7 @@ def start_lab(request, lab_image_name):
                     return JsonResponse({'status': 'error', 'message': f'Per-user lab limit reached ({per_user_limit})'}, status=429)
 
             if container is None:
-                container = _create_lab_container(client, safe_image, container_name, domain, lab_port)
+                container = _create_lab_container(client, safe_image, container_name, hostname, domain, lab_port)
                 created = True
             elif container.status != 'running':
                 container.start()
@@ -408,10 +417,10 @@ def start_lab(request, lab_image_name):
         return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
 
 
-def _create_lab_container(client, image, container_name, domain, lab_port):
+def _create_lab_container(client, image, container_name, hostname, domain, lab_port):
     labels = {
         "traefik.enable": "true",
-        f"traefik.http.routers.{container_name}.rule": f"Host(`{container_name}.{domain}`)",
+        f"traefik.http.routers.{container_name}.rule": f"Host(`{hostname}.{domain}`)",
         f"traefik.http.services.{container_name}.loadbalancer.server.port": lab_port,
     }
     forward_auth_url = getattr(settings, "LAB_FORWARD_AUTH_URL", "")

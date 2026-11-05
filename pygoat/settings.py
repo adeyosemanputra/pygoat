@@ -201,6 +201,11 @@ LAB_DOMAIN = os.environ.get("LAB_DOMAIN", "localhost")
 # LAB_FORWARD_AUTH_URL=http://web:8000/auth/verify/ (see docker-compose.yml).
 LAB_FORWARD_AUTH_URL = os.environ.get("LAB_FORWARD_AUTH_URL", "")
 SESSION_COOKIE_DOMAIN = os.environ.get("LAB_COOKIE_DOMAIN") or None
+# Django labs (sensitive_data_exposure) set their own "sessionid" on the lab
+# host. With the default name the browser then sends two "sessionid" cookies,
+# Django keeps the lab's one and ForwardAuth returns 401, so use a name no lab
+# uses for the cookie shared with lab subdomains.
+SESSION_COOKIE_NAME = "pygoat_sessionid"
 CSRF_COOKIE_DOMAIN = SESSION_COOKIE_DOMAIN
 SESSION_COOKIE_SAMESITE = "Lax"
 CSRF_COOKIE_SAMESITE = "Lax"
