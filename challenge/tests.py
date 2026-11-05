@@ -248,3 +248,28 @@ class LabQuotaTests(TestCase):
             self._container("lab-carol-sql_injection_lab", "running")
         ]
         self.assertEqual(self.client.get("/challenge/start-lab/xss_lab/").status_code, 429)
+
+
+@override_settings(LAB_DOMAIN="lvh.me")
+class LabHostnameTests(TestCase):
+    def setUp(self):
+        self.client.force_login(User.objects.create_user("carol", password="pw"))
+        Lab.objects.create(name="sensitive_data_exposure", build_location="dockerized_labs/sensitive_data_exposure", port=8000)
+
+    @patch("challenge.views.check_traefik_reachable", return_value=True)
+    @patch("challenge.views.get_docker_client")
+    def test_lab_hostname_has_no_underscores(self, get_client, _traefik):
+        # Django labs answer DisallowedHost for hosts containing "_"
+        client = get_client.return_value
+        client.containers.list.return_value = []
+        client.containers.get.side_effect = docker.errors.NotFound("x")
+        client.containers.create.return_value.attrs = {"State": {"Health": {"Status": "healthy"}}}
+        resp = self.client.get("/challenge/start-lab/sensitive_data_exposure/")
+        self.assertEqual(resp.status_code, 200, resp.content)
+        self.assertEqual(resp.json()["url"], "http://lab-carol-sensitive-data-exposure.lvh.me")
+        kwargs = client.containers.create.call_args.kwargs
+        self.assertEqual(kwargs["name"], "lab-carol-sensitive_data_exposure")
+        self.assertEqual(
+            kwargs["labels"]["traefik.http.routers.lab-carol-sensitive_data_exposure.rule"],
+            "Host(`lab-carol-sensitive-data-exposure.lvh.me`)",
+        )
