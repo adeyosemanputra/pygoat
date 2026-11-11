@@ -9,7 +9,13 @@ from django.contrib.auth.models import User
 from django.test import TestCase, override_settings
 
 from challenge.models import Challenge, Lab, UserChallenge
-from challenge.views import _ensure_image_built, _resolve_build_path, _user_lab_lock, wait_for_health
+from challenge.views import (
+    _ensure_image_built,
+    _ensure_lab_network,
+    _resolve_build_path,
+    _user_lab_lock,
+    wait_for_health,
+)
 
 
 class DoItFastDockerTests(TestCase):
@@ -248,3 +254,72 @@ class LabQuotaTests(TestCase):
             self._container("lab-carol-sql_injection_lab", "running")
         ]
         self.assertEqual(self.client.get("/challenge/start-lab/xss_lab/").status_code, 429)
+
+
+@patch("challenge.views.check_traefik_reachable", return_value=True)
+@patch("challenge.views.get_docker_client")
+class LabNetworkTests(TestCase):
+    """Labs must start on a source install, where nothing creates the network."""
+
+    def setUp(self):
+        self.client.force_login(User.objects.create_user("dave", password="pw"))
+        Lab.objects.create(name="xss_lab", build_location="dockerized_labs/xss_lab", port=5006)
+
+    def _docker(self, get_client):
+        docker_client = get_client.return_value
+        docker_client.containers.list.return_value = []
+        docker_client.containers.get.side_effect = docker.errors.NotFound("x")
+        docker_client.containers.create.return_value.attrs = {"State": {"Health": {"Status": "healthy"}}}
+        return docker_client
+
+    def test_missing_network_is_created_before_the_lab(self, get_client, _traefik):
+        docker_client = self._docker(get_client)
+        docker_client.networks.get.side_effect = docker.errors.NotFound("x")
+        resp = self.client.get("/challenge/start-lab/xss_lab/")
+        self.assertEqual(resp.status_code, 200, resp.content)
+        docker_client.networks.create.assert_called_once_with("my_network", driver="bridge", check_duplicate=True)
+        self.assertEqual(docker_client.containers.create.call_args.kwargs["network"], "my_network")
+        calls = [c[0] for c in docker_client.mock_calls]
+        self.assertLess(calls.index("networks.create"), calls.index("containers.create"))
+
+    def test_existing_network_is_reused(self, get_client, _traefik):
+        docker_client = self._docker(get_client)
+        resp = self.client.get("/challenge/start-lab/xss_lab/")
+        self.assertEqual(resp.status_code, 200, resp.content)
+        docker_client.networks.create.assert_not_called()
+
+    @override_settings(DOCKER_NETWORK="pygoat_labs")
+    def test_docker_network_setting_is_used(self, get_client, _traefik):
+        docker_client = self._docker(get_client)
+        docker_client.networks.get.side_effect = docker.errors.NotFound("x")
+        self.client.get("/challenge/start-lab/xss_lab/")
+        self.assertEqual(docker_client.networks.create.call_args.args, ("pygoat_labs",))
+        self.assertEqual(docker_client.containers.create.call_args.kwargs["network"], "pygoat_labs")
+
+    def test_network_created_while_waiting_for_the_lock_is_not_created_again(self, get_client, _traefik):
+        docker_client = self._docker(get_client)
+        docker_client.networks.get.side_effect = [docker.errors.NotFound("x"), MagicMock()]
+        resp = self.client.get("/challenge/start-lab/xss_lab/")
+        self.assertEqual(resp.status_code, 200, resp.content)
+        docker_client.networks.create.assert_not_called()
+
+    def test_parallel_starts_create_the_network_once(self, get_client, _traefik):
+        created = []
+
+        def get(name):
+            if not created:
+                raise docker.errors.NotFound("x")
+
+        def create(name, **kwargs):
+            time.sleep(0.2)  # wide window for the other thread to race in
+            created.append(name)
+
+        docker_client = MagicMock()
+        docker_client.networks.get.side_effect = get
+        docker_client.networks.create.side_effect = create
+        threads = [threading.Thread(target=_ensure_lab_network, args=(docker_client,)) for _ in range(2)]
+        for thread in threads:
+            thread.start()
+        for thread in threads:
+            thread.join()
+        self.assertEqual(created, ["my_network"])

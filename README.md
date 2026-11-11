@@ -54,21 +54,22 @@ First, Clone the repository using GitHub website or git in Terminal
   ### To Download a specific branch
   git clone -b <branch_name> https://github.com/adeyosemanputra/pygoat.git
 ```
-Then, download Traefik to your local machine in the Pygoat directory (if you are not using Docker Compose) from the Traefik [releases](https://github.com/traefik/traefik/releases) page. Open a separate terminal and run the following commands:
+Then start Traefik, which serves the labs. It has to use the `traefik.yml` in the PyGoat directory, so run these commands from there, in a separate terminal.
 
-For Linux/WSL - 
+On **Linux**, with Docker Engine installed directly, download Traefik v3.6 or later from the [releases](https://github.com/traefik/traefik/releases) page into the PyGoat directory (older versions can't talk to Docker 29 and later) and run:
 ```
-tar -zxvf traefik_<traefik_version>_linux_<arch>.tar.gz
-sudo ./traefik
+tar -zxvf traefik_<traefik_version>_linux_<arch>.tar.gz traefik
+sudo ./traefik --configFile=traefik.yml
 ```
 
-For Windows (Powershell) - 
+With **Docker Desktop** (macOS, Windows and WSL2), a Traefik binary running on your machine can't reach the lab containers, so run Traefik in Docker instead (this works in Bash and PowerShell):
 ```
-Expand-Archive traefik_<traefik_version>_windows_<arch>.zip
-cd traefik_<traefik_version>_windows_<arch>
-./traefik.exe
+docker network create my_network
+docker run -d --name traefik_proxy -p 80:80 -p 8080:8080 --network my_network -v /var/run/docker.sock:/var/run/docker.sock:ro -v "${PWD}/traefik.yml:/traefik.yml:ro" traefik:v3.6 --configFile=/traefik.yml
 ```
-If you face any issue while installation, kindly refer to the [documentation](https://doc.traefik.io/traefik/getting-started/install-traefik/)
+Skip `docker network create` if `my_network` already exists, for example from Docker Compose. Stop Traefik later with `docker rm -f traefik_proxy`.
+
+On Linux, PyGoat creates the `my_network` Docker network the first time you start a lab. If you face any issue while installing Traefik, kindly refer to the [documentation](https://doc.traefik.io/traefik/getting-started/install-traefik/).
 #### Method 1
 
 1. Install all app and python requirements using installer file - `bash installer.sh`
