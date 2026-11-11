@@ -283,22 +283,29 @@ def _get_container_or_none(client, container_id: str):
 
 
 @contextmanager
-def _user_lab_lock(username: str):
+def _file_lock(filename: str):
     """
-    Serialize the quota check and container creation for one user across
-    gunicorn workers/threads, so parallel requests can't exceed the limit.
+    Exclusive lock shared by all gunicorn workers/threads on this host.
     No-op where fcntl is unavailable (Windows).
     """
     if fcntl is None:
         yield
         return
-    path = os.path.join(tempfile.gettempdir(), f"pygoat-lab-{_sanitize_username(username)}.lock")
+    path = os.path.join(tempfile.gettempdir(), filename)
     with open(path, "w") as fh:
         fcntl.flock(fh, fcntl.LOCK_EX)
         try:
             yield
         finally:
             fcntl.flock(fh, fcntl.LOCK_UN)
+
+
+def _user_lab_lock(username: str):
+    """
+    Serialize the quota check and container creation for one user, so
+    parallel requests can't exceed the limit.
+    """
+    return _file_lock(f"pygoat-lab-{_sanitize_username(username)}.lock")
 
 
 def _get_user_containers(client, username: str):
@@ -408,6 +415,29 @@ def start_lab(request, lab_image_name):
         return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
 
 
+def _ensure_lab_network(client) -> str:
+    """
+    Return the Docker network labs run on, creating it if it doesn't exist.
+    Docker Compose creates it, but a source install (manage.py runserver)
+    doesn't, and Docker can't start a container on a missing network.
+    """
+    name = getattr(settings, "DOCKER_NETWORK", "my_network")
+    try:
+        client.networks.get(name)
+        return name
+    except docker.errors.NotFound:
+        pass
+    # Docker allows two networks with the same name when they're created at
+    # the same time, and then can't start a container on either, so only one
+    # request may create it.
+    with _file_lock("pygoat-docker-network.lock"):
+        try:
+            client.networks.get(name)
+        except docker.errors.NotFound:
+            client.networks.create(name, driver="bridge", check_duplicate=True)
+    return name
+
+
 def _create_lab_container(client, image, container_name, domain, lab_port):
     labels = {
         "traefik.enable": "true",
@@ -439,12 +469,13 @@ def _create_lab_container(client, image, container_name, domain, lab_port):
         retries=3,
         start_period=2000000000  # 2s in nanoseconds
     )
+    network = _ensure_lab_network(client)
     container = client.containers.create(
         image=image,
         name=container_name,
         detach=True,
         labels=labels,
-        network=getattr(settings, "DOCKER_NETWORK", "my_network"),
+        network=network,
         mem_limit="512m",
         healthcheck=healthcheck,
     )
