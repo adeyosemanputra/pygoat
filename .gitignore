@@ -18,3 +18,4 @@ bin
 .venv-*/
 bandit_report.*
 pip_audit_report*.json
+trivy_report*.txt
