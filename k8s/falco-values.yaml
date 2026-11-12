@@ -1,0 +1,12 @@
+# Falco runtime security agent — deploy with:
+#   helm repo add falcosecurity https://falcosecurity.github.io/charts
+#   helm install falco falcosecurity/falco \
+#     --namespace falco --create-namespace \
+#     -f k8s/falco-values.yaml \
+#     --kube-context kind-pygoat-tp3
+#
+# driver.kind=modern_ebpf: no kernel module to load, works on a wider
+# range of hosts (including nested/sandboxed environments) than the
+# classic kernel-module or legacy eBPF-probe drivers.
+driver:
+  kind: modern_ebpf
