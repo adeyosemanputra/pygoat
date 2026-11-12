@@ -20,7 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'lr66%-a!$km5ed@n5ug!tya5bv!0(yqwa1tn!q%0%3m2nh%oml'
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-change-me-in-production')
 
 SENSITIVE_DATA = 'FLAGTHATNEEDSTOBEFOUND'
 
@@ -163,5 +163,5 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
-SECRET_COOKIE_KEY = "PYGOAT"
+SECRET_COOKIE_KEY = os.environ.get('SECRET_COOKIE_KEY', 'change-me-in-production')
 CSRF_TRUSTED_ORIGINS = ["http://127.0.0.1:8000","http://0.0.0.0:8000","http://172.16.189.10"]

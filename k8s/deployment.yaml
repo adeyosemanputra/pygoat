@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pygoat
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pygoat
+  template:
+    metadata:
+      labels:
+        app: pygoat
+    spec:
+      containers:
+        - name: pygoat
+          image: pygoat:hardened
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8000
+          env:
+            - name: DJANGO_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: pygoat-secrets
+                  key: DJANGO_SECRET_KEY
+            - name: SECRET_COOKIE_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: pygoat-secrets
+                  key: SECRET_COOKIE_KEY
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pygoat
+spec:
+  selector:
+    app: pygoat
+  ports:
+    - port: 8000
+      targetPort: 8000
