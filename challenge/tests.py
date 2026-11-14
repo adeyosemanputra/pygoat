@@ -201,6 +201,30 @@ class LabContainerTests(TestCase):
         self.assertEqual(order, ["first-done", "second-in"])
 
 
+class StopUserLabsTests(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user("dave", password="pw")
+        self.client.force_login(self.user)
+
+    @patch("challenge.views.get_docker_client")
+    def test_partial_removal_failure_is_reported(self, get_client):
+        removed = MagicMock(name="removed", status="running")
+        removed.name = "lab-dave-xss_lab"
+        failed = MagicMock(name="failed", status="running")
+        failed.name = "lab-dave-sql_lab"
+        failed.remove.side_effect = docker.errors.APIError("Docker unavailable")
+        get_client.return_value.containers.list.return_value = [removed, failed]
+
+        response = self.client.post("/challenge/stop-labs/")
+
+        self.assertEqual(response.status_code, 500)
+        self.assertEqual(response.json()["status"], "error")
+        self.assertEqual(response.json()["count"], 1)
+        self.assertEqual(response.json()["failed"], 1)
+        removed.remove.assert_called_once()
+        failed.remove.assert_called_once()
+
+
 @override_settings(LABS_PER_USER_LIMIT=1)
 class LabQuotaTests(TestCase):
     def setUp(self):
