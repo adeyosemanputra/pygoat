@@ -466,6 +466,7 @@ def stop_user_labs(request):
         user_containers = _get_user_containers(client, username)
         
         stopped_count = 0
+        failed_count = 0
         for container in user_containers:
             try:
                 if container.status == 'running':
@@ -474,6 +475,19 @@ def stop_user_labs(request):
                 stopped_count += 1
             except Exception as e:
                 print(f"Error stopping container {container.name}: {e}")
+
+                failed_count += 1
+
+        if failed_count:
+            return JsonResponse({
+                'status': 'error',
+                'message': (
+                    f'Stopped and removed {stopped_count} lab container(s); '
+                    f'failed to remove {failed_count}'
+                ),
+                'count': stopped_count,
+                'failed': failed_count,
+            }, status=500)
         
         return JsonResponse({
             'status': 'success', 
