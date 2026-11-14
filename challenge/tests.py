@@ -71,6 +71,24 @@ class DoItFastDockerTests(TestCase):
         self.assertEqual(UserChallenge.objects.get().container_id, "new")
 
     @patch("challenge.views.get_docker_client")
+    def test_failed_dead_container_removal_does_not_start_replacement(self, get_client):
+        user_chal = UserChallenge.objects.create(
+            user=self.user, challenge=self.chal, container_id="old", port=49000, is_live=True
+        )
+        dead = MagicMock(status="exited")
+        dead.remove.side_effect = docker.errors.APIError("remove failed")
+        get_client.return_value.containers.get.return_value = dead
+
+        resp = self.client.post("/challenge/do-it-fast")
+
+        self.assertEqual(resp.status_code, 500)
+        self.assertIn("Failed to replace challenge", resp.json()["message"])
+        get_client.return_value.containers.run.assert_not_called()
+        user_chal.refresh_from_db()
+        self.assertEqual(user_chal.container_id, "old")
+        self.assertTrue(user_chal.is_live)
+
+    @patch("challenge.views.get_docker_client")
     def test_missing_challenge_container_is_replaced(self, get_client):
         UserChallenge.objects.create(user=self.user, challenge=self.chal, container_id="gone", port=49000, is_live=True)
         get_client.return_value.containers.get.side_effect = docker.errors.NotFound("x")
