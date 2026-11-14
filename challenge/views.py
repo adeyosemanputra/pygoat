@@ -90,7 +90,13 @@ class DoItFast(View):
                 )
             # Container exited or was removed outside the app: replace it
             if container is not None:
-                container.remove(force=True)
+                try:
+                    container.remove(force=True)
+                except docker.errors.DockerException as e:
+                    return JsonResponse(
+                        {"message": f"Failed to replace challenge: {e}", "status": "500", "endpoint": "None"},
+                        status=500,
+                    )
 
         container = None
         try:
