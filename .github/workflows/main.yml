@@ -1,0 +1,64 @@
+name: CI
+
+# triggers pipeline when push is made to any branch (typical CI pipeline rule)
+on: [push]
+
+jobs:
+  sast_scan:
+    name: Run Bandit Scan
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: Install Bandit
+      run: pip install bandit
+
+    - name: Run Bandit Scan
+      # save report in json format
+      run: bandit -ll -ii -r . -f json -o bandit-report.json
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v4
+      if: always()
+      # execute this step no matter of previous status
+      with:
+        # how artifacts will be named when exported
+        name: bandit-findings
+        path: bandit-report.json
+
+  image_scan:
+    # each new job runs in a new isolated environment
+    name: Build and Run Image Scan
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Build Docker Image
+      run: docker build -f Dockerfile -t mytestapp:latest .
+
+    - name: Docker Scout Scan
+      uses: docker/scout-action@v1.15.1
+      with:
+        dockerhub-user: ${{ secrets.DOCKERHUB_USERNAME }}
+        dockerhub-password: ${{ secrets.DOCKERHUB_PASSWORD }}
+        command: quickview,cves
+        only-severities: critical,high
+        sarif-file: scout-report.sarif
+        # exit code by default is true which means 0, add true to produce non success
+        exit-code: true
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: docker-scout-findings
+        path: scout-report.sarif
