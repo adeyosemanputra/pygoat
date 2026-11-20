@@ -1,64 +1,102 @@
 name: CI
 
-# triggers pipeline when push is made to any branch (typical CI pipeline rule)
 on: [push]
 
 jobs:
   sast_scan:
     name: Run Bandit Scan
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.11'
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
 
-    - name: Install Bandit
-      run: pip install bandit
+      - name: Install Bandit
+        run: pip install bandit
 
-    - name: Run Bandit Scan
-      # save report in json format
-      run: bandit -ll -ii -r . -f json -o bandit-report.json
+      - name: Run Bandit Scan
+        run: bandit -ll -ii -r . -f json -o bandit-report.json
 
-    - name: Upload Artifact
-      uses: actions/upload-artifact@v4
-      if: always()
-      # execute this step no matter of previous status
-      with:
-        # how artifacts will be named when exported
-        name: bandit-findings
-        path: bandit-report.json
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: bandit-findings
+          path: bandit-report.json
 
   image_scan:
-    # each new job runs in a new isolated environment
     name: Build and Run Image Scan
     runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build Docker Image
+        run: docker build -f Dockerfile -t mytestapp:latest .
+
+      - name: Docker Scout Scan
+        uses: docker/scout-action@v1.15.1
+        with:
+          dockerhub-user: ${{ secrets.DOCKERHUB_USERNAME }}
+          dockerhub-password: ${{ secrets.DOCKERHUB_PASSWORD }}
+          command: quickview,cves
+          only-severities: critical,high
+          sarif-file: scout-report.sarif
+          exit-code: true
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: docker-scout-findings
+          path: scout-report.sarif
+
+  dast_scan:
+    name: DAST with OWASP ZAP
+    runs-on: ubuntu-latest
+    
+    services:
+      pygoat:
+        image: pygoat/pygoat:latest
+        ports:
+          - 8000:8000
+        options: >-
+          --health-cmd="curl -f http://localhost:8000/ || exit 1"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Build Docker Image
-      run: docker build -f Dockerfile -t mytestapp:latest .
+      - name: Wait for PyGoat to be ready
+        run: |
+          for i in {1..30}; do
+            if curl -s -o /dev/null -w "%{http_code}" http://localhost:8000/ | grep -q "200"; then
+              echo "PyGoat is up"
+              exit 0
+            fi
+            echo "Waiting for PyGoat... ($i)"
+            sleep 2
+          done
+          echo "PyGoat did not start in time"
+          exit 1
 
-    - name: Docker Scout Scan
-      uses: docker/scout-action@v1.15.1
-      with:
-        dockerhub-user: ${{ secrets.DOCKERHUB_USERNAME }}
-        dockerhub-password: ${{ secrets.DOCKERHUB_PASSWORD }}
-        command: quickview,cves
-        only-severities: critical,high
-        sarif-file: scout-report.sarif
-        # exit code by default is true which means 0, add true to produce non success
-        exit-code: true
+      - name: ZAP Baseline Scan
+        uses: zaproxy/action-baseline@v0.12.0
+        with:
+          target: 'http://localhost:8000'
+          cmd_options: '-a -j'
+          allow_issue_writing: false
 
-    - name: Upload Artifact
-      uses: actions/upload-artifact@v4
-      if: always()
-      with:
-        name: docker-scout-findings
-        path: scout-report.sarif
+      - name: Upload ZAP Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: zap-dast-report
+          path: report_html.html
