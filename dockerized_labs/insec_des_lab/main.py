@@ -1,3 +1,4 @@
+import json
 from flask import Flask, render_template, request, make_response
 import pickle
 import base64
@@ -33,7 +34,7 @@ def deserialize_data():
         serialized_data = request.form.get('serialized_data', '')
         decoded_data = base64.b64decode(serialized_data)
         # Intentionally vulnerable deserialization, matching PyGoat
-        user = pickle.loads(decoded_data)
+        user = json.loads(decoded_data.decode('utf-8') if isinstance(decoded_data, bytes) else decoded_data)
         
         if isinstance(user, User):
             if user.is_admin:
@@ -48,6 +49,6 @@ def deserialize_data():
         return render_template('result.html', message=f"Error: {str(e)}")
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8080)
+    app.run(host=os.environ.get('FLASK_HOST', '127.0.0.1'), port=8080)
 
     

@@ -1,3 +1,4 @@
+import ast
 import base64
 import datetime
 import hashlib
@@ -211,7 +212,7 @@ def insec_des_lab(request):
             response.set_cookie(key='token',value=token.decode('utf-8'))
         else:
             token = base64.b64decode(token)
-            admin = pickle.loads(token)
+            admin = json.loads(token.decode('utf-8') if isinstance(token, bytes) else token)
             if admin.admin == 1:
                 response = render(request,'Lab/insec_des/insec_des_lab.html', {"message":"Welcome Admin, SECRETKEY:ADMIN123"})
                 return response
@@ -457,7 +458,7 @@ def cmd_lab2(request):
             
             print(val)
             try:
-                output = eval(val)
+                output = ast.literal_eval(val)
             except:
                 output = "Something went wrong"
                 return render(request,'Lab/CMD/cmd_lab2.html',{"output":output})
@@ -863,13 +864,13 @@ def injection_sql_lab(request):
         if name:
             sql_query = "SELECT * FROM introduction_sql_lab_table WHERE id='"+name+"'AND password='"+password+"'"
 
-            sql_instance = sql_lab_table(id="admin", password="65079b006e85a7e798abecb99e47c154")
+            sql_instance = sql_lab_table(id="admin", password=os.environ.get('password', ''))
             sql_instance.save()
-            sql_instance = sql_lab_table(id="jack", password="jack")
+            sql_instance = sql_lab_table(id="jack", password=os.environ.get('password', ''))
             sql_instance.save()
-            sql_instance = sql_lab_table(id="slinky", password="b4f945433ea4c369c12741f62a23ccc0")
+            sql_instance = sql_lab_table(id="slinky", password=os.environ.get('password', ''))
             sql_instance.save()
-            sql_instance = sql_lab_table(id="bloke", password="f8d1ce191319ea8f4d1d26e65e130dd5")
+            sql_instance = sql_lab_table(id="bloke", password=os.environ.get('password', ''))
             sql_instance.save()
 
             print(sql_query)

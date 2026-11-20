@@ -225,7 +225,7 @@
         
         // more bad practices
         // function checkAdminStatus() {
-        //    const adminPassword = "super_secure_admin_pw123"; // Hard-coded credentials
+        //    const adminPassword = process.env.SECRET_KEY || "REMOVED_HARDCODED_SECRET"; // Hard-coded credentials
         // }
     </script>
 </body>

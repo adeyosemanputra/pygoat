@@ -18,7 +18,7 @@
     var button1 = document.getElementById("cbtn-1");
     var button2 = document.getElementById("cbtn-2");
     var url = null;
-    const csrf_token = "{{ csrf_token|safe }}";
+    const csrf_token = process.env.SECRET_KEY || "REMOVED_HARDCODED_SECRET";
 
     function handleonclick() {
         var requestOptions = {

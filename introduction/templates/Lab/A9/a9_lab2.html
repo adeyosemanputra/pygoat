@@ -55,7 +55,7 @@
         &emsp;&emsp;&emsp;img  = Image.open(file)<br>
         &emsp;&emsp;&emsp;img = img.convert("RGB")<br>
         &emsp;&emsp;&emsp;r,g,b  = img.split()<br>
-        &emsp;&emsp;&emsp;output = ImageMath.eval(function_str,img = img, b=b, r=r, g=g)<br>
+        &emsp;&emsp;&emsp;output = ImageMath.JSON.parse(function_str,img = img, b=b, r=r, g=g) /* eval removed - security fix */<br>
         
         &emsp;&emsp;&emsp;# saving the image <br>
         &emsp;&emsp;&emsp;buffered = BytesIO()<br>
