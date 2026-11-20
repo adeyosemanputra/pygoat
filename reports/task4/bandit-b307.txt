@@ -1,0 +1,31 @@
+Run started:2026-11-20 13:50:42.044493+00:00
+
+Test results:
+>> Issue: [B307:blacklist] Use of possibly insecure function - consider using safer ast.literal_eval.
+   Severity: Medium   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_calls.html#b307-eval
+   Location: .\dockerized_labs\command_injection_lab\app.py:49:21
+48	            expression = request.form.get("val", "")
+49	            output = eval(expression)
+50	            return render_template("lab2.html", output=str(output))
+
+--------------------------------------------------
+
+Code scanned:
+	Total lines of code: 6329
+	Total lines skipped (#nosec): 0
+	Total potential issues skipped due to specifically being disabled (e.g., #nosec BXXX): 0
+
+Run metrics:
+	Total issues (by severity):
+		Undefined: 0
+		Low: 0
+		Medium: 1
+		High: 0
+	Total issues (by confidence):
+		Undefined: 0
+		Low: 0
+		Medium: 0
+		High: 1
+Files skipped (0):
