@@ -61,3 +61,44 @@ jobs:
         with:
           name: docker-scout-findings
           path: scout-report.sarif
+
+
+  dast_scan:
+    name: DAST Scan (OWASP ZAP)
+    runs-on: ubuntu-latest
+    needs: [sast_scan, image_scan]   # runs after them...
+    if: ${{ always() }}              # ...but still runs even when they fail (expected by design)
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy PyGoat (official image)
+        # host networking so the app is reachable at localhost:8000 from the ZAP container
+        run: docker run -d --name pygoat --network host pygoat/pygoat:latest
+
+      - name: Wait for PyGoat to be ready
+        run: |
+          for i in $(seq 1 30); do
+            if curl -sSf http://localhost:8000/ >/dev/null 2>&1; then
+              echo "PyGoat is up"; exit 0
+            fi
+            echo "waiting for PyGoat... ($i/30)"; sleep 5
+          done
+          echo "PyGoat did not start in time"; docker logs pygoat; exit 1
+
+      - name: OWASP ZAP baseline scan
+        run: |
+          mkdir -p zap-report && chmod 777 zap-report
+          docker run --network host -v "${{ github.workspace }}/zap-report:/zap/wrk/:rw" \
+            ghcr.io/zaproxy/zaproxy:stable \
+            zap-baseline.py -t http://localhost:8000 \
+            -r zap_report.html -J zap_report.json -a \
+            || true   # ZAP exits non-zero when it reports findings; don't fail the job on that
+
+      - name: Upload ZAP report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: zap-dast-findings
+          path: zap-report/
