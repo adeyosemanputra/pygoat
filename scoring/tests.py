@@ -1,5 +1,6 @@
 from io import StringIO
 import json
+from datetime import timedelta
 from unittest.mock import patch
 
 from django.contrib.auth.models import User
@@ -7,6 +8,7 @@ from django.core.exceptions import ValidationError
 from django.core.management import call_command
 from django.test import TestCase
 from django.urls import NoReverseMatch, reverse
+from django.utils import timezone
 
 from challenge.models import Challenge, Lab, UserChallenge
 from scoring.models import (
@@ -163,3 +165,41 @@ class ServiceTests(TestCase):
         self.assertTrue(first)
         self.assertFalse(second)
         self.assertEqual(start_tracking(user, "lab", 1).pk, completion.pk)
+
+    def test_changing_global_base_points_rescores_completed_labs(self):
+        user = User.objects.create_user("alice", password="pw")
+        complete_tracking(user, "lab", 1, content_name="Lab")
+        score = LabScore.objects.get(user=user)
+        self.assertEqual(score.final_score, 100)
+
+        settings = ScoringSettings.load()
+        settings.base_points = 200
+        settings.save()
+
+        score.refresh_from_db()
+        self.assertEqual(score.base_points, 200)
+        self.assertEqual(score.final_score, 200)
+
+    def test_changing_time_bonus_preserves_challenge_points_and_difficulty(self):
+        user = User.objects.create_user("bob", password="pw")
+        difficulty = DifficultyLevel.objects.create(name="Hard", multiplier=2.0)
+        challenge = Challenge.objects.create(
+            name="challenge", docker_image="img", docker_port=1,
+            start_port=1, end_port=2, flag="flag{x}", point=50,
+            difficulty=difficulty,
+        )
+        completion = start_tracking(user, "challenge", challenge.pk)
+        completion.started_at = timezone.now() - timedelta(minutes=5)
+        completion.save()
+        complete_tracking(user, "challenge", challenge.pk, content_name=challenge.name)
+        score = LabScore.objects.get(user=user)
+        original_score = score.final_score
+
+        settings = ScoringSettings.load()
+        settings.time_bonus_max = 3.0
+        settings.save()
+
+        score.refresh_from_db()
+        self.assertEqual(score.base_points, 50)
+        self.assertEqual(score.difficulty_multiplier, 2.0)
+        self.assertGreater(score.final_score, original_score)

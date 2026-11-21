@@ -51,6 +51,38 @@ def on_completion_saved(sender, instance, **kwargs):
     check_milestones(instance.user)
 
 
+@receiver(post_save, sender='scoring.ScoringSettings')
+def on_scoring_settings_changed(sender, instance, created, **kwargs):
+    """Keep completed scores in sync when the global scoring rules change."""
+    if created:
+        return
+
+    from .models import LabCompletion
+    from challenge.models import Challenge, Lab
+
+    completions = LabCompletion.objects.filter(
+        completed_at__isnull=False
+    ).select_related('user')
+    challenge_points = {
+        challenge.pk: (challenge.point, challenge.difficulty.multiplier if challenge.difficulty else 1.0)
+        for challenge in Challenge.objects.select_related('difficulty').all()
+    }
+    lab_multipliers = {
+        lab.pk: lab.difficulty.multiplier if lab.difficulty else 1.0
+        for lab in Lab.objects.select_related('difficulty').all()
+    }
+
+    for completion in completions.iterator():
+        base_points = instance.base_points
+        difficulty_multiplier = 1.0
+        if completion.content_type == 'challenge':
+            points, difficulty_multiplier = challenge_points.get(completion.content_id, (None, 1.0))
+            base_points = points or base_points
+        elif completion.content_type == 'lab':
+            difficulty_multiplier = lab_multipliers.get(completion.content_id, 1.0)
+        _write_score(completion, base_points, difficulty_multiplier, instance)
+
+
 @receiver(post_save, sender='scoring.DifficultyLevel')
 def on_difficulty_changed(sender, instance, **kwargs):
     """When an admin changes a difficulty rating, recalculate all affected scores."""
