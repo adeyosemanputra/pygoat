@@ -31,3 +31,33 @@ jobs:
         with:
           name: bandit-findings
           path: bandit-report.json
+
+
+  image_scan:
+    name: Build and Run Image Scan
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build Docker Image
+        run: docker build -f Dockerfile -t mytestapp:latest .
+
+      - name: Docker Scout Scan
+        uses: docker/scout-action@v1.15.1
+        with:
+          dockerhub-user: ${{ secrets.DOCKERHUB_USERNAME }}
+          dockerhub-password: ${{ secrets.DOCKERHUB_PASSWORD }}
+          command: quickview,cves
+          image: local://mytestapp:latest
+          only-severities: critical,high
+          sarif-file: scout-report.sarif
+          exit-code: true
+
+      - name: Upload Artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: docker-scout-findings
+          path: scout-report.sarif
