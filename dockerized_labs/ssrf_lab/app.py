@@ -5,6 +5,14 @@ import requests
 app = Flask(__name__)
 app.secret_key = "your_secret_key_here"  # Required for flash messages
 
+BLOG_FILES = {
+    "blog1": "blog1.txt",
+    "blog2": "blog2.txt",
+    "blog3": "blog3.txt",
+    "blog4": "blog4.txt",
+}
+BLOG_DIR = os.path.join(os.path.dirname(__file__), "blogs")
+
 
 @app.route("/")
 def index():
@@ -15,15 +23,15 @@ def index():
 @app.route("/lab1", methods=["GET", "POST"])
 def lab1():
     if request.method == "POST":
-        file = request.form.get("blog")
+        blog_file = BLOG_FILES.get(request.form.get("blog"))
+        if blog_file is None:
+            return render_template("lab1.html", blog="No blog found")
         try:
-            # Vulnerable implementation - allows directory traversal
-            file_path = os.path.join(os.path.dirname(__file__), file)
-            with open(file_path, "r") as f:
+            with open(os.path.join(BLOG_DIR, blog_file), "r", encoding="utf-8") as f:
                 blog_content = f.read()
             flash("Success! Keep exploring...", "success")
             return render_template("lab1.html", blog=blog_content)
-        except:
+        except OSError:
             return render_template("lab1.html", blog="No blog found")
     return render_template("lab1.html", blog="Read Blog About SSRF")
 

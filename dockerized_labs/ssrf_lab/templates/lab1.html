@@ -14,19 +14,19 @@
             </div>
             <div style="display:flex;flex-direction:row;align-items:center;margin:15px">
                 <form method="post" action="/lab1">
-                    <input type="hidden" name="blog" value="blogs/blog1.txt">
+                    <input type="hidden" name="blog" value="blog1">
                     <button type="submit" class="btn btn-info">Blog 1</button>
                 </form>
                 <form method="post" action="/lab1">
-                    <input type="hidden" name="blog" value="blogs/blog2.txt">
+                    <input type="hidden" name="blog" value="blog2">
                     <button type="submit" class="btn btn-info">Blog 2</button>
                 </form>
                 <form method="post" action="/lab1">
-                    <input type="hidden" name="blog" value="blogs/blog3.txt">
+                    <input type="hidden" name="blog" value="blog3">
                     <button type="submit" class="btn btn-info">Blog 3</button>
                 </form>
                 <form method="post" action="/lab1">
-                    <input type="hidden" name="blog" value="blogs/blog4.txt">
+                    <input type="hidden" name="blog" value="blog4">
                     <button type="submit" class="btn btn-info">Blog 4</button>
                 </form>
             </div>
@@ -39,24 +39,19 @@
 </div>
 
 
-    <button class="coll2 btn btn-info" style="position: fixed; right:330px; bottom: 7px" onclick="toggleHint()">Hint</button>
-    <div id="hint" class="lab code" style="display: none;">
-        Try to find a .env file
-    </div>
-
     <button class="coll2 btn btn-info" style="position: fixed; right:200px; bottom: 7px" onclick="toggleSourceCode()">View Code</button>
     <div id="sourceCode" class="lab code" style="display: none;">
         <pre>
 def lab1():
     if request.method == 'POST':
-        file = request.form.get('blog')
+        blog_file = BLOG_FILES.get(request.form.get('blog'))
+        if blog_file is None:
+            return render_template('lab1.html', blog="No blog found")
         try:
-            # Vulnerable implementation - allows directory traversal
-            file_path = os.path.join(os.path.dirname(__file__), file)
-            with open(file_path, "r") as f:
+            with open(os.path.join(BLOG_DIR, blog_file), "r", encoding="utf-8") as f:
                 blog_content = f.read()
             return render_template('lab1.html', blog=blog_content)
-        except:
+        except OSError:
             return render_template('lab1.html', blog="No blog found")
     return render_template('lab1.html', blog="Read Blog About SSRF")
         </pre>
@@ -72,9 +67,5 @@ def lab1():
         element.style.display = element.style.display === 'none' ? 'block' : 'none';
     }
     
-    function toggleHint() {
-        const element = document.getElementById('hint');
-        element.style.display = element.style.display === 'none' ? 'block' : 'none';
-    }
     </script>
 {% endblock %}
