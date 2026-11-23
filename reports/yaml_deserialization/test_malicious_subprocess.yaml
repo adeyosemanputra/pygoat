@@ -1,0 +1,3 @@
+!!python/object/apply:subprocess.Popen
+- - echo
+  - "This is a code execution payload"

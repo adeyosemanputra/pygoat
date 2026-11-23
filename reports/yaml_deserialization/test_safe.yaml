@@ -1,0 +1,10 @@
+name: John Doe
+age: 30
+email: john@example.com
+address:
+  street: 123 Main St
+  city: Springfield
+  country: USA
+phone_numbers:
+  - 555-1234
+  - 555-5678

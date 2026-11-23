@@ -1,0 +1,31 @@
+Run started:2026-11-22 16:47:18.079294+00:00
+
+Test results:
+>> Issue: [B506:yaml_load] Use of unsafe yaml load. Allows instantiation of arbitrary objects. Consider yaml.safe_load().
+   Severity: Medium   Confidence: High
+   CWE: CWE-20 (https://cwe.mitre.org/data/definitions/20.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b506_yaml_load.html
+   Location: ./dockerized_labs/a9_uckv_lab/app.py:62:19
+61	            # Intentionally vulnerable YAML loading
+62	            data = yaml.load(file.stream, Loader=yaml.Loader)
+63	            return render_template("result.html", content=data, filename=file.filename)
+
+--------------------------------------------------
+
+Code scanned:
+	Total lines of code: 6354
+	Total lines skipped (#nosec): 0
+	Total potential issues skipped due to specifically being disabled (e.g., #nosec BXXX): 0
+
+Run metrics:
+	Total issues (by severity):
+		Undefined: 0
+		Low: 0
+		Medium: 1
+		High: 0
+	Total issues (by confidence):
+		Undefined: 0
+		Low: 0
+		Medium: 0
+		High: 1
+Files skipped (0):

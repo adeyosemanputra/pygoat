@@ -1,0 +1,86 @@
+================================================================================
+BANDIT SCAN COMPARISON: YAML Deserialization Vulnerability Fix
+================================================================================
+
+BEFORE: Vulnerable code with yaml.load(file.stream, Loader=yaml.Loader)
+========================================================================
+
+Command: python3 -m bandit -ll -ii -t B506 app_vulnerable.py -f txt
+
+>> Issue: [B506:yaml_load] Use of unsafe yaml load. Allows instantiation of arbitrary objects. Consider yaml.safe_load().
+   Severity: Medium   Confidence: High
+   CWE: CWE-20 (https://cwe.mitre.org/data/definitions/20.html)
+   Location: app_vulnerable.py:62:19
+   
+Code snippet:
+   61            # Intentionally vulnerable YAML loading
+   62            data = yaml.load(file.stream, Loader=yaml.Loader)
+   63            return render_template("result.html", content=data, filename=file.filename)
+
+Scan Results:
+   Total issues (by severity):
+      Undefined: 0
+      Low: 0
+      Medium: 1
+      High: 0
+   Total issues (by confidence):
+      Undefined: 0
+      Low: 0
+      Medium: 0
+      High: 1
+
+
+AFTER: Fixed code with yaml.safe_load()
+========================================
+
+Command: python3 -m bandit -ll -ii -t B506 app_fixed.py -f txt
+
+Test results:
+   No issues identified.
+
+Code snippet:
+   59            # FIXED: Use safe_load() to prevent arbitrary object instantiation
+   60            data = yaml.safe_load(file.stream)
+   61            
+   62            # Validate that the parsed YAML is a dictionary
+   63            if not isinstance(data, (dict, list)):
+   64                flash("Invalid YAML format: expected a dictionary or list")
+
+Scan Results:
+   Total issues (by severity):
+      Undefined: 0
+      Low: 0
+      Medium: 0
+      High: 0
+   Total issues (by confidence):
+      Undefined: 0
+      Low: 0
+      Medium: 0
+      High: 0
+
+
+SUMMARY OF CHANGES
+==================
+
+1. Replaced yaml.load(file.stream, Loader=yaml.Loader) with yaml.safe_load(file.stream)
+   - yaml.safe_load() only permits basic YAML types (dict, list, strings, numbers)
+   - Prevents instantiation of arbitrary Python objects
+   - Raises yaml.YAMLError on dangerous tags like !!python/object
+
+2. Added type validation
+   if not isinstance(data, (dict, list)):
+       flash("Invalid YAML format: expected a dictionary or list")
+   - Ensures parsed YAML matches expected structure
+   - Provides user feedback on validation failure
+
+3. Improved error handling
+   - Separated yaml.YAMLError from generic Exception
+   - More specific error messages for different failure modes
+   - Better logging for debugging
+
+RESULT
+======
+✓ B506 vulnerability is ELIMINATED
+✓ No new B506 issues detected in fixed code
+✓ File is now safe to process user-uploaded YAML
+✓ All validation checks remain in place
