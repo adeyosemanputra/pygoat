@@ -33,3 +33,4 @@ d945dfc0272e147abd3a065d6bdae87dfd65111b:pygoat/introduction/static/js/a9.js:gen
 d945dfc0272e147abd3a065d6bdae87dfd65111b:pygoat/introduction/static/js/a9.js:jwt:18
 ff94a38e4f5425a69f70319ef76f12389ae2e854:pygoat/introduction/views.py:generic-api-key:683
 ff94a38e4f5425a69f70319ef76f12389ae2e854:pygoat/introduction/views.py:generic-api-key:685
+2608a01a454cfd9401be8330ba1560dde31cbc99:pygoat/config/aws_client.py:generic-api-key:3
