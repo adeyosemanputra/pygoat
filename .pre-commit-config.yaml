@@ -1,0 +1,8 @@
+repos:
+  - repo: local
+    hooks:
+      - id: gitleaks
+        name: Gitleaks
+        entry: gitleaks git --pre-commit --staged --redact --verbose
+        language: system
+        pass_filenames: false
