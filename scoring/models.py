@@ -95,9 +95,19 @@ class LabCompletion(models.Model):
         ]
 
     def save(self, *args, **kwargs):
-        if self.completed_at and self.started_at:
-            delta = self.completed_at - self.started_at
-            self.duration_seconds = max(0, int(delta.total_seconds()))
+        update_fields = kwargs.get("update_fields")
+        timestamp_fields = {"started_at", "completed_at"}
+        if update_fields is not None:
+            update_fields = set(update_fields)
+            kwargs["update_fields"] = update_fields
+        if update_fields is None or timestamp_fields.intersection(update_fields):
+            if self.completed_at and self.started_at:
+                delta = self.completed_at - self.started_at
+                self.duration_seconds = max(0, int(delta.total_seconds()))
+            else:
+                self.duration_seconds = None
+            if update_fields is not None:
+                kwargs["update_fields"] = update_fields | {"duration_seconds"}
         super().save(*args, **kwargs)
 
     def __str__(self):
