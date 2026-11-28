@@ -78,3 +78,31 @@ def on_difficulty_changed(sender, instance, **kwargs):
         if completion.content_type == 'challenge':
             base_points = challenge_points.get(completion.content_id) or base_points
         _write_score(completion, base_points, instance.multiplier, settings)
+
+
+@receiver(post_save, sender='challenge.Challenge')
+@receiver(post_save, sender='challenge.Lab')
+def on_content_scoring_changed(sender, instance, update_fields=None, raw=False, **kwargs):
+    """Keep earned scores in sync with content points and difficulty assignments."""
+    if raw:
+        return
+    relevant_fields = {'point', 'difficulty', 'difficulty_id'}
+    if update_fields is not None and not relevant_fields.intersection(update_fields):
+        return
+
+    from .models import LabCompletion, ScoringSettings
+
+    content_type = sender._meta.model_name
+    completions = LabCompletion.objects.filter(
+        content_type=content_type, content_id=instance.pk, completed_at__isnull=False
+    ).select_related('user')
+    if not completions.exists():
+        return
+    # Read persisted values so a partial save cannot use an unrelated, unsaved
+    # difficulty assignment still present on the caller's model instance.
+    content = sender.objects.select_related('difficulty').get(pk=instance.pk)
+    settings = ScoringSettings.load()
+    base_points = (content.point or settings.base_points) if content_type == 'challenge' else settings.base_points
+    multiplier = content.difficulty.multiplier if content.difficulty else 1.0
+    for completion in completions:
+        _write_score(completion, base_points, multiplier, settings)
