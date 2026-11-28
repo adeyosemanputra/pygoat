@@ -26,7 +26,13 @@ def _write_score(completion, base_points, difficulty_multiplier, settings):
 def on_completion_saved(sender, instance, **kwargs):
     """When a LabCompletion is marked complete, compute/update its score."""
     if instance.completed_at is None:
-        return  # Not yet completed
+        update_fields = kwargs.get('update_fields')
+        if update_fields is not None and 'completed_at' not in update_fields:
+            return
+        from .models import LabScore
+
+        LabScore.objects.filter(completion=instance).delete()
+        return
 
     from .models import ScoringSettings
     from .scoring_engine import check_milestones
